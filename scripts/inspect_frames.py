@@ -10,9 +10,10 @@ import re
 from statistics import median
 
 from PIL import Image, ImageChops, ImageStat
+from asset_contracts import extraction_projection
 from extract_strip_frames import (EXTRACTION_ALGORITHM, EXTRACTION_SCHEMA,
     SEGMENTATION_STRATEGY, atomic_json, connected_components, digest,
-    extraction_configuration, load_extraction_config, object_hash, pixels)
+    extraction_configuration, load_extraction_config, object_hash, pixels, extractor_fingerprint)
 
 IMAGE_SUFFIXES = {'.png', '.webp', '.jpg', '.jpeg'}
 CELL_WIDTH, CELL_HEIGHT = 192, 208
@@ -99,21 +100,23 @@ def validate_provenance(root, state, files, row, profile=None):
         return [f'{state}: missing or unsupported row extraction provenance']
     if row.get('method') != 'stable-slots':
         errors.append(f'{state}: unsupported extraction strategy')
+    if row.get('extractor_sha256') != extractor_fingerprint():
+        errors.append(f'{state}: extractor implementation changed; re-extract from retained sources')
     indices = row.get('frame_indices')
-    if not isinstance(indices, list) or any(type(v) is not int for v in indices) or indices != list(range(len(files))) or row.get('frames') != [str(p.resolve()) for p in files]:
+    if not isinstance(indices, list) or any(type(v) is not int for v in indices) or indices != list(range(len(files))) or row.get('frames') != [p.resolve().relative_to(Path(root).resolve()).as_posix() for p in files]:
         errors.append(f'{state}: provenance frame ordering does not match exact files')
     hashes = row.get('frame_hashes')
     if not isinstance(hashes, list) or not all(_hash(v) for v in hashes) or hashes != [digest(p) for p in files]:
         errors.append(f'{state}: stale extracted frame hashes')
     source_value = row.get('source_path')
-    source = Path(source_value) if isinstance(source_value, str) else Path()
+    source = (Path(root).parent / source_value).resolve() if isinstance(source_value, str) else Path()
     if (Path(root).parent / 'imagegen-jobs.json').is_file():
         run_root = Path(root).parent.resolve()
         expected_source = run_root / 'decoded' / (state + '.png')
         if source != expected_source or expected_source.resolve() != expected_source:
             errors.append(f'{state}: source provenance must identify the current prepared decoded/{state}.png')
     source_size = None
-    if not isinstance(source_value, str) or not source.is_absolute() or not source.is_file() or not _hash(row.get('source_sha256')) or row.get('source_sha256') != digest(source):
+    if not isinstance(source_value, str) or not source.is_file() or not _hash(row.get('source_sha256')) or row.get('source_sha256') != digest(source):
         errors.append(f'{state}: missing or stale source provenance')
     else:
         try:
@@ -122,14 +125,33 @@ def validate_provenance(root, state, files, row, profile=None):
         except OSError:
             errors.append(f'{state}: extraction source cannot be decoded')
     settings = row.get('settings')
+    annotation_path = Path(root).parent / 'annotations' / (state + '.json')
+    annotated_evidence = None
+    if row.get('annotation_sha256') != (digest(annotation_path) if annotation_path.is_file() else None):
+        errors.append(f'{state}: changed extraction annotation; re-extract and review')
+    if annotation_path.is_file() and source_size is not None:
+        try:
+            from extraction_annotations import annotated_source
+            from extract_strip_frames import mask_background, analyze_slots
+            config = load_extraction_config(Path(root).parent)
+            with Image.open(source) as opened:
+                masked, _ = mask_background(opened, tuple(config['chroma_key']), config['key_threshold'], config['background'], config['holes'], config['edge_cleanup'])
+            count = next(s['frames'] for s in profile['states'] if s['id'] == state)
+            normalized, overrides = annotated_source(masked, count, json.loads(annotation_path.read_text(encoding='utf-8')), digest(source))
+            _, annotated_evidence = analyze_slots(normalized, count, profile['validation']['allow_detached_details'], overrides)
+            source_size = normalized.size
+            if row.get('evidence') != annotated_evidence:
+                errors.append(f'{state}: annotated segmentation evidence does not match source')
+        except (ValueError, KeyError, TypeError, StopIteration) as exc:
+            errors.append(f'{state}: invalid annotation: {exc}')
     if not isinstance(settings, dict) or not _hash(row.get('settings_sha256')) or row.get('settings_sha256') != object_hash(settings):
         errors.append(f'{state}: malformed or stale extraction settings')
     root = Path(root)
     for field, path in (('request_sha256', root.parent / 'pet_request.json'), ('extraction_settings_sha256', root.parent / 'extraction-settings.json')):
-        expected = digest(path) if path.is_file() else None
+        expected = (object_hash(extraction_configuration(profile, state, load_extraction_config(root.parent))) if field == 'extraction_settings_sha256' else digest(path)) if path.is_file() else None
         if field not in row or row[field] != expected:
             errors.append(f'{state}: stale {"request" if field == "request_sha256" else "calibrated extraction settings"} provenance; extract after preparing changed inputs')
-    if profile and (not _hash(row.get('profile_sha256')) or row.get('profile_sha256') != object_hash(profile)):
+    if profile and (not _hash(row.get('profile_sha256')) or row.get('profile_sha256') != object_hash(extraction_projection(profile, state))):
         errors.append(f'{state}: stale profile provenance')
     if isinstance(settings, dict) and source_size is not None:
         try:
@@ -148,12 +170,12 @@ def validate_provenance(root, state, files, row, profile=None):
             expected_scale = current['requested_scale']
             if expected_scale is None:
                 expected_scale = min(available[0] / math.ceil(slot_width), available[1] / height, 1.0)
-            expected_fields = {'alignment': current['alignment'], 'source_viewport': [slot_width, 0, height], 'source_size': list(source_size), 'scale': expected_scale, 'cell_size': size, 'padding': current['padding'], 'anchor': current['anchor']}
+            expected_fields = {'alignment': current['alignment'], 'source_viewport': [slot_width, 0, height], 'source_size': list(source_size), 'scale': expected_scale, 'cell_size': size, 'padding': current['padding'], 'anchor': current['anchor'], 'resampling': current['resampling']}
             if any(settings.get(key) != value for key, value in expected_fields.items()):
                 raise ValueError('recorded viewport/scale differs from source and current policy')
         except (ValueError, KeyError, TypeError, StopIteration, ZeroDivisionError) as exc:
             errors.append(f'{state}: invalid extraction configuration: {exc}')
-    if source_size is None or not _valid_evidence(row.get('evidence'), len(files), source_size):
+    if source_size is None or (annotated_evidence is None and not _valid_evidence(row.get('evidence'), len(files), source_size)):
         errors.append(f'{state}: missing or malformed segmentation evidence')
     mask = row.get('mask')
     if not isinstance(mask, dict) or mask.get('mode') not in ('alpha', 'edge-connected-chroma') or type(mask.get('removed_pixels')) is not int or mask['removed_pixels'] < 0 or type(mask.get('cleaned_edge_pixels')) is not int or mask['cleaned_edge_pixels'] < 0 or not isinstance(mask.get('warnings'), list) or not all(isinstance(v, str) for v in mask.get('warnings', [])):

@@ -27,10 +27,11 @@ class BrowserExportTests(unittest.TestCase):
                     errors = []
                     page.on('pageerror', lambda error: errors.append(str(error)))
                     page.add_init_script('''
-                        window.fixtureTimers = new Map(); let serial = 0;
+                        window.fixtureTimers = new Map(); let serial = 0, fixtureTime = 0;
+                        Object.defineProperty(performance, 'now', {value: () => fixtureTime});
                         window.setTimeout = (callback, delay) => {const id=++serial;fixtureTimers.set(id,{callback,delay});return id};
                         window.clearTimeout = id => fixtureTimers.delete(id);
-                        window.fixtureTick = () => {const [id,t]=Array.from(fixtureTimers.entries())[0];fixtureTimers.delete(id);t.callback();return t.delay};
+                        window.fixtureTick = () => {const [id,t]=Array.from(fixtureTimers.entries())[0];fixtureTimers.delete(id);fixtureTime+=t.delay;t.callback();return t.delay};
                     ''')
                     page.goto((exported / 'preview.html').as_uri())
                     rest = metadata['states'][0]

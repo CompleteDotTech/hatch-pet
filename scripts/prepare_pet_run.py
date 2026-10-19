@@ -16,6 +16,7 @@ from types import SimpleNamespace
 from PIL import Image
 from PIL import ImageDraw
 from profile_spec import load_profile
+from asset_contracts import validate_identity, reference_roles, check_image
 
 # Module defaults come from the same profile as every deterministic consumer.
 _DEFAULT_PROFILE = load_profile()
@@ -190,10 +191,11 @@ def default_output_dir(pet_id: str) -> Path:
 
 
 def rel(path: Path, root: Path) -> str:
-    return str(path.resolve().relative_to(root.resolve()))
+    return path.resolve().relative_to(root.resolve()).as_posix()
 
 
 def image_metadata(path: Path) -> dict[str, object]:
+    check_image(path)
     with Image.open(path) as image:
         return {
             "path": str(path),
@@ -484,7 +486,7 @@ def _background_instructions(args):
 
 
 def _constraint_instructions(args):
-    constraints = getattr(args, "constraints", {})
+    constraints = {**getattr(args, "constraints", {}), 'identity': getattr(args, 'identity', {})}
     return "Explicit user requirements and avoidances (preserve across retries):\n" + json.dumps({"require": constraints.get("require", []), "avoid": constraints.get("avoid", [])}, ensure_ascii=False) + "\nInferred brand guidance (subordinate to explicit user instructions; preserve sources and uncertainty):\n" + json.dumps({"guidance": constraints.get("brand_guidance", {}), "effective_avoid": constraints.get("effective_brand_avoid", []), "reported_conflicts": constraints.get("conflicts", [])}, ensure_ascii=False) + "\nComplete structured constraints for provenance:\n" + json.dumps(constraints, ensure_ascii=False)
 
 
@@ -501,13 +503,20 @@ def _profile_requirements(args, state=None):
     return "\n".join("- " + value for value in items)
 
 
+def artwork_style(args):
+    if args.profile_data['schema_version'] == 1:
+        return resolved_style_contract(args.style_preset, args.style_notes)
+    return f"Consistent reusable artwork; style choice: {args.style_preset}. {args.style_notes}. Follow this profile's subject and medium requirements."
+
+
 def base_pet_prompt(args: argparse.Namespace) -> str:
     width, height = args.profile_data["layout"]["cell_width"], args.profile_data["layout"]["cell_height"]
-    return f"""Create one canonical full-body character reference for `{args.pet_id}` using the installed imagegen skill.
+    subject = 'full-body character' if args.profile_data['schema_version'] == 1 else 'asset identity'
+    return f"""Create one canonical {subject} reference for `{args.pet_id}` using the installed imagegen skill.
 
 Identity: {args.pet_notes}.
-Style: {resolved_style_contract(args.style_preset, args.style_notes)}
-Preserve the approved input references. Keep the entire character visible and readable at {width}x{height}.
+Style: {artwork_style(args)}
+Preserve the approved input references. Keep the entire subject visible and readable at {width}x{height}.
 {_background_instructions(args)}
 
 Profile requirements:
@@ -521,12 +530,13 @@ def row_prompt(args: argparse.Namespace, state: str, row: int, frames: int, purp
     spec = next(s for s in args.profile_data["states"] if s["id"] == state)
     policy = spec["alignment"]
     detached = args.profile_data["validation"]["allow_detached_details"]
+    invariants = 'face, proportions, markings, palette, material, style, and approved props' if args.profile_data['schema_version'] == 1 else 'geometry, proportions, markings, palette, materials, style and approved components'
     return f"""Create one horizontal animation strip for `{args.pet_id}`, state `{state}`, using the installed imagegen skill.
 
 Attach every identity and layout input listed in this job, including the canonical base and all original references. Use the layout guide for slot geometry only; never draw its lines or labels.
 Output exactly {frames} complete poses in left-to-right playback order, one pose in each equal-width slot, with clear gutters and no overlap or clipping.
-Identity: {args.pet_notes}. Preserve the same face, proportions, markings, palette, material, style, and approved props in every frame.
-Style: {resolved_style_contract(args.style_preset, args.style_notes)}
+Identity: {args.pet_notes}. Preserve the same {invariants} in every frame except explicitly approved state differences.
+Style: {artwork_style(args)}
 Action: {purpose}
 Motion policy: {spec['motion']}. Preserve intentional vertical motion, including jump height. Maintain one consistent source viewport and apparent character scale across the row; a wider or taller pose must not be drawn at a different scale.
 Extraction alignment: {json.dumps(policy, ensure_ascii=False)}. This describes extraction; do not draw anchors or guides.
@@ -569,13 +579,13 @@ def regenerate_prompts(run_dir: Path, request: dict, profile: dict, settings: di
 
 def make_jobs(run_dir: Path, copied_refs: list[dict[str, object]], profile=None) -> list[dict[str, object]]:
     profile = load_profile(profile)
-    reference_inputs = [{"path": rel(Path(str(ref["copied_path"])), run_dir), "role": "original identity reference"} for ref in copied_refs]
+    reference_inputs = [{"path": ref['copied_path'], "role": ref.get('role', 'identity'), "note": ref.get('note', 'Original required reference')} for ref in copied_refs]
     jobs = [{"id": "base", "kind": "base-pet", "status": "pending", "prompt_file": "prompts/base-pet.md", "input_images": reference_inputs, "output_path": "decoded/base.png", "depends_on": [], "generation_skill": "$imagegen", "requires_grounded_generation": bool(reference_inputs), "allow_prompt_only_generation": not reference_inputs}]
     for spec in profile["states"]:
         state, frames = spec["id"], spec["frames"]
         derivations = spec["allowed_derivations"]
-        dependencies = ["base"] + list(dict.fromkeys(item["source"] for item in derivations))
-        source_inputs = [{"path": f"decoded/{source}.png", "role": "source reference for explicitly approved optional derivation; generation still requires all identity inputs"} for source in dependencies if source != "base"]
+        dependencies = ["base"]
+        source_inputs = []
         policy = {"may_derive": bool(derivations), "allowed": derivations, "requires_explicit_approval": bool(derivations)}
         jobs.append({"id": state, "kind": "row-strip", "status": "pending", "prompt_file": f"prompts/rows/{state}.md", "retry_prompt_file": f"prompts/row-retries/{state}.md", "input_images": [*reference_inputs, {"path": f"{LAYOUT_GUIDE_DIR}/{state}.png", "role": f"layout guide for {frames} frame slots; do not copy guide lines"}, {"path": CANONICAL_BASE_PATH, "role": "canonical identity reference"}, *source_inputs], "output_path": f"decoded/{state}.png", "depends_on": dependencies, "generation_skill": "$imagegen", "requires_grounded_generation": True, "allow_prompt_only_generation": False, "identity_reference_paths": [CANONICAL_BASE_PATH], "parallelizable_after": dependencies, "derivation_policy": policy})
     return jobs
@@ -641,6 +651,8 @@ def main() -> None:
     parser.add_argument("--avoid", action="append", default=[])
     parser.add_argument("--require", action="append", default=[])
     parser.add_argument("--constraints", help="JSON structured user requirements and inferred guidance")
+    parser.add_argument('--identity', help='Versioned structured identity JSON')
+    parser.add_argument('--reference-roles', help='JSON list of role/note records, in --reference order')
     args = parser.parse_args()
     global ATLAS, ROWS
     profile = load_profile(args.profile)
@@ -648,6 +660,8 @@ def main() -> None:
     ATLAS = dict(profile["layout"])
     ROWS = [(s["id"], i, s["frames"], s["purpose"]) for i, s in enumerate(profile["states"])]
     raw_constraints = json.loads(Path(args.constraints).read_text(encoding="utf-8")) if args.constraints else {}
+    args.identity = validate_identity(json.loads(Path(args.identity).read_text(encoding='utf-8')) if args.identity else None, profile)
+    roles = reference_roles(json.loads(Path(args.reference_roles).read_text(encoding='utf-8')) if args.reference_roles else None, len(args.reference))
 
     raw_reference_paths = [
         Path(raw_path).expanduser().resolve() for raw_path in args.reference
@@ -673,6 +687,9 @@ def main() -> None:
     if not args.pet_id:
         raise SystemExit("pet id must contain at least one letter or digit")
     constraints = build_constraints(raw_constraints, args.require, args.avoid, discovery_guidance(raw_brand_discovery_path), args.brand_brief, args.brand_source)
+    conflicts = set(x.casefold() for x in args.identity['markings'] + args.identity['approved_props']) & set(x.casefold() for x in constraints['avoid'])
+    if conflicts:
+        raise ValueError('identity contradicts explicit avoidances: ' + ', '.join(sorted(conflicts)))
     args.constraints = constraints
 
     run_dir = (
@@ -710,7 +727,9 @@ def main() -> None:
         shutil.copy2(source, copied)
         meta = image_metadata(copied)
         meta["source_path"] = str(source)
-        meta["copied_path"] = str(copied)
+        meta['path'] = rel(copied, run_dir)
+        meta["copied_path"] = rel(copied, run_dir)
+        meta.update(roles[index - 1])
         copied_refs.append(meta)
         copied_ref_paths.append(copied)
 
@@ -727,7 +746,8 @@ def main() -> None:
     layout_guides = create_layout_guides(run_dir)
 
     request = {
-        "schema_version": 2,
+        "schema_version": 3,
+        "identity": args.identity,
         "profile": profile,
         "constraints": constraints,
         "pet_id": args.pet_id,

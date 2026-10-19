@@ -14,12 +14,13 @@ import uuid
 
 from PIL import Image
 from profile_spec import load_profile
+from asset_contracts import RESAMPLING, check_image, extraction_projection
 
 _DEFAULT = load_profile()
 CELL_WIDTH, CELL_HEIGHT = _DEFAULT['layout']['cell_width'], _DEFAULT['layout']['cell_height']
 ROW_FRAME_COUNTS = {s['id']: s['frames'] for s in _DEFAULT['states']}
-EXTRACTION_SCHEMA = 3
-EXTRACTION_ALGORITHM = 'equal-slots-v3'
+EXTRACTION_SCHEMA = 4
+EXTRACTION_ALGORITHM = 'bounded-viewports-v4'
 SEGMENTATION_STRATEGY = 'equal-slot-boundaries-8-connected-core-and-bridge-checks'
 CONFIG_DEFAULTS = {'background': 'auto', 'key_threshold': 48.0, 'holes': 'preserve', 'edge_cleanup': True}
 
@@ -30,6 +31,12 @@ def digest(path):
 
 def object_hash(value):
     return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
+
+
+def extractor_fingerprint():
+    scripts = Path(__file__).parent
+    return object_hash({name: digest(scripts / name) for name in
+                        ('extract_strip_frames.py', 'extraction_annotations.py', 'asset_contracts.py')})
 
 
 def atomic_json(path, value):
@@ -295,7 +302,7 @@ def _bridge_evidence(component, width):
     return None
 
 
-def analyze_slots(strip, frame_count, allow_detached=False):
+def analyze_slots(strip, frame_count, allow_detached=False, overrides=None):
     if strip.width < frame_count:
         raise ValueError('source narrower than frame count')
     groups, core_groups = [[] for _ in range(frame_count)], [[] for _ in range(frame_count)]
@@ -313,15 +320,19 @@ def analyze_slots(strip, frame_count, allow_detached=False):
             destination[slot].append(component)
     evidence = []
     for index, group in enumerate(groups):
+        permissions = (overrides or {}).get(index, [])
+        def permits(box, kind):
+            from extraction_annotations import contains
+            return any(p['permit'] == kind and contains(p['bounds'], box) for p in permissions)
         if not group or not core_groups[index]:
             raise ValueError(f'missing pose in slot {index}')
         ordered = sorted(group, key=lambda c: c['area'], reverse=True)
         cores = sorted(core_groups[index], key=lambda c: c['area'], reverse=True)
         major = [c for c in cores if c['area'] >= max(4, cores[0]['area'] * .20)]
-        if len(major) > 1:
+        if len(major) > 1 and any(not permits(c['bbox'], 'disconnected') for c in major[1:]):
             raise ValueError(f'ambiguous extra complete pose or disconnected major part in slot {index}: {len(major)} opaque-core components; inspect faint connections and regenerate')
         bridge = _bridge_evidence(cores[0], strip.width)
-        if bridge:
+        if bridge and not permits(cores[0]['bbox'], 'bridge'):
             raise ValueError(f'ambiguous merged poses in slot {index}: broad silhouettes connected through a narrow bridge at columns {bridge["columns"]}; inspect source')
         if ordered[1:] and not allow_detached:
             main = ordered[0]['bbox']
@@ -329,7 +340,7 @@ def analyze_slots(strip, frame_count, allow_detached=False):
             for component in ordered[1:]:
                 box = component['bbox']
                 gap = max(main[0] - box[2], box[0] - main[2], main[1] - box[3], box[1] - main[3], 0)
-                if gap > limit:
+                if gap > limit and not permits(box, 'disconnected'):
                     raise ValueError(f'uncertain detached detail in slot {index} at {box}; profile must permit detached details or source needs repair')
         evidence.append({'slot': index, 'bounds': list(component_bounds(group)), 'components': len(group), 'core_components': len(cores), 'major_components': len(major), 'pixels': sum(c['area'] for c in group), 'core_pixels': sum(c['area'] for c in cores), 'narrow_bridge': None})
     return groups, {'strategy': SEGMENTATION_STRATEGY, 'confidence': 'geometry-consistent-semantic-review-required', 'slots': evidence, 'alpha_connectivity': 8, 'alpha_threshold': 0, 'core_alpha_threshold': core_threshold, 'source_size': list(strip.size)}
@@ -339,9 +350,11 @@ def component_frame_groups(strip, frame_count):
     return analyze_slots(strip, frame_count)[0]
 
 
-def render_slots(strip, frame_count, cell_size=(192, 208), alignment='source', scale=None, padding=5, anchor=(.5, .5)):
+def render_slots(strip, frame_count, cell_size=(192, 208), alignment='source', scale=None, padding=5, anchor=(.5, .5), resampling='lanczos'):
     """Use one viewport and one scale for the row; slot coordinates preserve jumping."""
     slot_width, viewport_height = strip.width / frame_count, strip.height
+    if resampling not in RESAMPLING:
+        raise ValueError('unsupported resampling filter')
     if alignment not in ('source', 'row', 'center', 'bottom'):
         raise ValueError(f'unsupported alignment {alignment}')
     if type(padding) is not int or not 0 <= padding < min(cell_size) / 2:
@@ -369,12 +382,14 @@ def render_slots(strip, frame_count, cell_size=(192, 208), alignment='source', s
             sprite = view.crop(box)
             view = Image.new('RGBA', view.size)
             view.alpha_composite(sprite, ((view.width - sprite.width) // 2, (view.height - sprite.height) // 2 if alignment == 'center' else view.height - sprite.height))
-        view = view.resize((max(1, round(view.width * chosen)), max(1, round(view.height * chosen))), Image.Resampling.LANCZOS)
+        view = view.resize((max(1, round(view.width * chosen)), max(1, round(view.height * chosen))), RESAMPLING[resampling])
         offset = (padding + round((available[0] - view.width) * anchor[0]), padding + round((available[1] - view.height) * anchor[1]))
         canvas = Image.new('RGBA', cell_size)
         canvas.alpha_composite(view, offset)
         result.append(normalize(canvas))
-    return result, {'alignment': alignment, 'source_viewport': [slot_width, top, view_height], 'source_size': list(strip.size), 'scale': chosen, 'cell_size': list(cell_size), 'padding': padding, 'anchor': list(anchor)}
+    return result, {'alignment': alignment, 'source_viewport': [slot_width, top, view_height], 'source_size': list(strip.size), 'scale': chosen, 'cell_size': list(cell_size), 'padding': padding, 'anchor': list(anchor), 'resampling': resampling,
+                    'source_bounds': boxes, 'output_bounds': [list(f.getbbox()) for f in result],
+                    'baseline_pixels': [f.getbbox()[3] for f in result], 'viewport_offset': list(offset)}
 
 
 def extract_component_frames(strip, frame_count):
@@ -411,7 +426,7 @@ def extraction_configuration(profile, state, config, method='auto', alignment=No
         chosen_scale = config.get('shared_scale') or policy.get('scale')
         if chosen_scale is None:
             raise ValueError('shared scale policy requires extraction-settings.json shared_scale calibration')
-    return {'chroma_key': list(config['chroma_key']), 'key_threshold': float(config['key_threshold']), 'background': config['background'], 'holes': config['holes'], 'edge_cleanup': config['edge_cleanup'], 'requested_method': method, 'alignment': chosen_alignment, 'scale_policy': scale_policy, 'requested_scale': chosen_scale, 'padding': policy.get('padding', 5), 'anchor': list(policy.get('anchor', [.5, .5]))}
+    return {'chroma_key': list(config['chroma_key']), 'key_threshold': float(config['key_threshold']), 'background': config['background'], 'holes': config['holes'], 'edge_cleanup': config['edge_cleanup'], 'requested_method': method, 'alignment': chosen_alignment, 'scale_policy': scale_policy, 'requested_scale': chosen_scale, 'padding': policy.get('padding', 5), 'anchor': list(policy.get('anchor', [.5, .5])), 'resampling': policy.get('resampling', 'lanczos')}
 
 
 def extract_state(strip_path, state, output_root, chroma_key, threshold, method, profile=None, alpha_mode='auto', alignment=None, scale=None, extraction_config=None):
@@ -424,11 +439,29 @@ def extract_state(strip_path, state, output_root, chroma_key, threshold, method,
     if not count:
         raise ValueError(f'unknown state {state}')
     policy = extraction_configuration(profile, state, config, method, alignment, scale)
+    check_image(strip_path)
     with Image.open(strip_path) as source:
         strip, mask = mask_background(source, tuple(config['chroma_key']), config['key_threshold'], config['background'], config['holes'], config['edge_cleanup'])
-    _, evidence = analyze_slots(strip, count, (profile or {}).get('validation', {}).get('allow_detached_details', False))
+    annotation_path = Path(output_root).parent / 'annotations' / (state + '.json')
+    annotation = json.loads(annotation_path.read_text(encoding='utf-8')) if annotation_path.is_file() else None
+    original_size = list(strip.size)
+    overrides = None
+    try:
+        if annotation:
+            from extraction_annotations import annotated_source
+            strip, overrides = annotated_source(strip, count, annotation, digest(strip_path))
+        _, evidence = analyze_slots(strip, count, (profile or {}).get('validation', {}).get('allow_detached_details', False), overrides)
+    except ValueError as exc:
+        from extraction_annotations import diagnostic
+        diagnostic(strip, count, Path(output_root).parent / 'qa/extraction-diagnostics', state, exc, annotation)
+        raise
     layout = (profile or {}).get('layout', {})
-    frames, viewport = render_slots(strip, count, (layout.get('cell_width', 192), layout.get('cell_height', 208)), policy['alignment'], policy['requested_scale'], policy['padding'], policy['anchor'])
+    try:
+        frames, viewport = render_slots(strip, count, (layout.get('cell_width', 192), layout.get('cell_height', 208)), policy['alignment'], policy['requested_scale'], policy['padding'], policy['anchor'], policy['resampling'])
+    except ValueError as exc:
+        from extraction_annotations import diagnostic
+        diagnostic(strip, count, Path(output_root).parent / 'qa/extraction-diagnostics', state, exc, annotation)
+        raise
     output_root = Path(output_root).resolve()
     state_dir = output_root / state
     if state_dir.resolve() != state_dir:
@@ -453,8 +486,12 @@ def extract_state(strip_path, state, output_root, chroma_key, threshold, method,
         paths.append(path)
     settings = {'configuration': policy, **viewport}
     run_root = Path(output_root).parent
-    provenance = {field: digest(path) if path.is_file() else None for field, path in (('request_sha256', run_root / 'pet_request.json'), ('extraction_settings_sha256', run_root / 'extraction-settings.json'))}
-    return {'state': state, 'schema_version': EXTRACTION_SCHEMA, 'algorithm': EXTRACTION_ALGORITHM, 'frames': [str(p) for p in paths], 'frame_indices': list(range(count)), 'frame_hashes': [digest(p) for p in paths], 'method': 'stable-slots', 'source_path': str(Path(strip_path).resolve()), 'source_sha256': digest(strip_path), 'settings': settings, 'settings_sha256': object_hash(settings), 'profile_sha256': object_hash(profile) if profile else None, 'evidence': evidence, 'mask': mask, **provenance}
+    provenance = {'request_sha256': digest(run_root / 'pet_request.json') if (run_root / 'pet_request.json').is_file() else None,
+                  'extraction_settings_sha256': object_hash(policy) if (run_root / 'extraction-settings.json').is_file() else None,
+                  'calibration_file_sha256': digest(run_root / 'extraction-settings.json') if (run_root / 'extraction-settings.json').is_file() else None}
+    source_path = Path(strip_path).resolve()
+    portable_source = source_path.relative_to(run_root.resolve()).as_posix() if source_path.is_relative_to(run_root.resolve()) else str(source_path)
+    return {'state': state, 'schema_version': EXTRACTION_SCHEMA, 'algorithm': EXTRACTION_ALGORITHM, 'extractor_sha256': extractor_fingerprint(), 'frames': [p.relative_to(output_root).as_posix() for p in paths], 'frame_indices': list(range(count)), 'frame_hashes': [digest(p) for p in paths], 'method': 'stable-slots', 'source_path': portable_source, 'source_sha256': digest(strip_path), 'settings': settings, 'settings_sha256': object_hash(settings), 'profile_sha256': object_hash(extraction_projection(profile, state)) if profile else None, 'evidence': evidence, 'mask': mask, 'original_source_size': original_size, 'annotation_sha256': digest(annotation_path) if annotation else None, **provenance}
 
 
 def main():
@@ -500,8 +537,6 @@ def main():
             if not source.is_file():
                 raise ValueError(f'missing generated strip: {source}')
             row = extract_state(source, state, out, tuple(config['chroma_key']), config['key_threshold'], args.method, profile, config['background'], args.alignment, args.scale, config)
-            for field, path in (('request_sha256', decoded.parent / 'pet_request.json'), ('extraction_settings_sha256', decoded.parent / 'extraction-settings.json')):
-                row[field] = digest(path) if path.is_file() else None
             rows[state] = row
             manifest.update({'schema_version': EXTRACTION_SCHEMA, 'algorithm': EXTRACTION_ALGORITHM, 'ok': True, 'chroma_key': {'rgb': list(config['chroma_key']), 'threshold': config['key_threshold']}, 'rows': [rows[s] for s in ROW_FRAME_COUNTS if s in rows]})
             atomic_json(manifest_path, manifest)

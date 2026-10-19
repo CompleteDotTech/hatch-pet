@@ -1,0 +1,13 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width">
+<title>Hatch / Asset playback</title>
+<style>
+:root{color-scheme:light;--paper:#f4f1e8;--ink:#253b37;--accent:#a13d21}*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px Georgia,serif}main{max-width:1100px;margin:auto;padding:32px}
+h1{font-size:32px;font-weight:400;letter-spacing:-1px}button,select,input{font:14px ui-monospace,monospace;padding:8px;border:1px solid #9aada4;border-radius:3px;background:#fff;color:var(--ink)}button{cursor:pointer}button:focus-visible,select:focus-visible{outline:3px solid var(--accent)}
+#viewport{display:grid;place-items:center;min-height:280px;border:1px solid #9aada4;background:repeating-conic-gradient(#ddd 0% 25%,#fff 0% 50%) 0/24px 24px;margin:20px 0}
+#viewport[data-background=light]{background:white}#viewport[data-background=dark]{background:#182527}#viewport[data-background=green]{background:#51b08e}
+#character{object-fit:contain;image-rendering:auto}.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center}output{font:13px ui-monospace,monospace}#origin{border-top:1px solid #9aada4;padding-top:18px;font-size:14px}.overlay{background:transparent}.overlay main{padding:0}.overlay h1,.overlay .controls,.overlay #origin{display:none}.overlay #viewport{min-height:0;margin:0;border:0;background:transparent}
+</style>
+<main><h1>Hatch / Playback desk</h1><div id="viewport"><img id="character" alt="Asset preview"></div><div class="controls"><label>State <select id="state"></select></label><label><input id="still" type="checkbox"> Reduced motion</label><button id="previous">Previous frame</button><button id="pause">Pause / play</button><button id="next">Next frame</button><button id="event">Send local event</button><button id="cancel">Cancel</button><label>Background <select id="background"><option>checker</option><option>light</option><option>dark</option><option>green</option></select></label><output id="status" aria-live="polite"></output></div><p id="origin"></p></main>
+<script>const metadata = __METADATA__;
+__PLAYBACK__</script></html>

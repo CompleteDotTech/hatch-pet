@@ -1,0 +1,101 @@
+{
+  "schema_version": 2,
+  "id": "perception-v2",
+  "layout": {
+    "columns": 4,
+    "cell_width": 64,
+    "cell_height": 64
+  },
+  "states": [
+    {
+      "id": "low-contrast",
+      "frames": 4,
+      "durations": [
+        120,
+        120,
+        120,
+        120
+      ],
+      "purpose": "Equal-diameter disks translate through the same positions; the controlled difference is luminance contrast. Stage/condition: low-contrast.",
+      "motion": "gesture",
+      "alignment": {
+        "coordinate_policy": "slot",
+        "scale_policy": "shared",
+        "scale": 1,
+        "padding": 0,
+        "resampling": "nearest",
+        "anchor": [
+          0.5,
+          0.5
+        ]
+      },
+      "playback": {
+        "mode": "loop"
+      }
+    },
+    {
+      "id": "high-contrast",
+      "frames": 4,
+      "durations": [
+        120,
+        120,
+        120,
+        120
+      ],
+      "purpose": "Equal-diameter disks translate through the same positions; the controlled difference is luminance contrast. Stage/condition: high-contrast.",
+      "motion": "gesture",
+      "alignment": {
+        "coordinate_policy": "slot",
+        "scale_policy": "shared",
+        "scale": 1,
+        "padding": 0,
+        "resampling": "nearest",
+        "anchor": [
+          0.5,
+          0.5
+        ]
+      },
+      "playback": {
+        "mode": "loop"
+      }
+    }
+  ],
+  "generation": {
+    "instructions": "Equal-diameter disks translate through the same positions; the controlled difference is luminance contrast.",
+    "requirements": [
+      "Check size/position equality and intended condition differences; review study design and ethics where applicable.",
+      "Keep frames within the source viewport and retain approved references."
+    ]
+  },
+  "validation": {
+    "require_provenance": true,
+    "allow_detached_details": true
+  },
+  "events": {
+    "low-contrast": "low-contrast",
+    "high-contrast": "high-contrast"
+  },
+  "export": {
+    "formats": [
+      "frames",
+      "atlas",
+      "stimuli",
+      "browser"
+    ],
+    "static_state": "low-contrast",
+    "static_frame": 0,
+    "options": {
+      "labels": {
+        "low-contrast": "low contrast",
+        "high-contrast": "high contrast"
+      },
+      "content_review": "Check size/position equality and intended condition differences; review study design and ethics where applicable.",
+      "cell_mm": 40,
+      "dpi": 150,
+      "conditions": {
+        "low-contrast": "disk luminance 120 on transparent field",
+        "high-contrast": "disk luminance 230 on transparent field"
+      }
+    }
+  }
+}

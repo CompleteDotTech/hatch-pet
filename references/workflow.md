@@ -1,111 +1,73 @@
-# Local workflow and recovery
+# Local workflow
 
-Use Python 3.10+ and Pillow (`python -m pip install Pillow`). Run commands from the skill directory. All paths below work in PowerShell; Python accepts the same commands on macOS/Linux. Bash and jq are unnecessary. `hatch.py` delegates image generation through human/agent handoffs to the installed imagegen skill; it contains no generation client. Never substitute fixture drawings for requested production artwork.
+Use Python 3.10+ and Pillow 10.1+. Commands work in PowerShell and POSIX shells. Paths below are local examples. `python scripts/doctor.py` diagnoses missing Pillow before importing the pipeline. Production generation is a handoff to the installed imagegen skill, not an API client.
 
-## Prepare and generate
-
-Choose a new run directory outside the skill source and outside installed pets:
+## Prepare and acquire sources
 
 ```powershell
-python scripts/hatch.py prepare --run-dir C:/work/otter-run --pet-name Otter --pet-notes "sleepy otter barista" --style-preset plush --avoid "readable text"
-python scripts/hatch.py status --run-dir C:/work/otter-run
-python scripts/hatch.py claim --run-dir C:/work/otter-run --job base --out C:/work/base-handoff.json
+python scripts/hatch.py doctor --destination output/otter-run
+python scripts/hatch.py prepare --run-dir output/otter-run --pet-name Otter --pet-notes "sleepy otter barista" --style-preset plush --avoid "readable text"
+python scripts/hatch.py limits --run-dir output/otter-run --max-attempts 3 --concurrency 1 --max-calls 30
+python scripts/hatch.py claim --run-dir output/otter-run --job base --out output/base-handoff.json
 ```
 
-Optional preparation fields: `--reference path` (repeatable), `--description`, `--display-name`, `--pet-id`, `--style-notes`, `--require`, `--constraints constraints.json`, `--brand-name`, `--brand-brief`, `--brand-source`, `--brand-discovery-file`, `--profile examples/web-status.json`, `--background auto|alpha|chroma`, and `--chroma-key '#FF00FF'`. Quote hex colors in PowerShell. `auto` initially requests actual transparency and decides from the selected image; it does not equate incidental partial alpha with a cutout.
+Preparation accepts repeated `--reference`, `--reference-roles roles.json`, `--identity identity.json`, `--constraints`, `--require`, `--avoid`, style/brand fields, and `--profile`. The default is the exact Codex contract. Preserve required references and constraints through every call. Brand discovery has separate attribution and uncertainty.
 
-Read the handoff's exact prompt, attached-image paths/roles, prior failures, job ID, token, and receipt template. The worker must follow the installed imagegen skill, including viewing local references and attaching every required image. The base is the only job that can have no image inputs. Select and inspect the generated source, then ingest it:
+Read the handoff's prompt, attachments/roles, identity, token and failure history. Follow the installed imagegen skill, inspect the original selected result and save project-bound output as it requires. Receipts attest actual inputs used; never submit one if attachments were omitted. Record genuine provider IDs/model/parameters in optional `model_call` when exposed; otherwise retain unavailable fields. A hatch token is not a model-call ID.
 
 ```powershell
-python scripts/hatch.py ingest --run-dir C:/work/otter-run --job base --token TOKEN_FROM_HANDOFF --source C:/work/selected-base.png --receipt C:/work/base-handoff.json --note "Full body, required markings and style checked."
-python scripts/hatch.py base-review --run-dir C:/work/otter-run --note "Viewed canonical base and color analysis; alpha and identity are suitable."
-python scripts/hatch.py claim --run-dir C:/work/otter-run --job idle --out C:/work/idle-handoff.json
+python scripts/hatch.py ingest --run-dir output/otter-run --job base --token ACTIVE_TOKEN --source output/selected-base.png --receipt output/base-handoff.json --note "Viewed full body, markings, style and alpha."
+python scripts/hatch.py base-review --run-dir output/otter-run --note "Canonical identity and transparency inspected."
+python scripts/hatch.py claim --run-dir output/otter-run --job idle --out output/idle-handoff.json
 ```
 
-The complete handoff JSON or its `receipt_template` may be supplied as `--receipt`. This is the worker's attestation that the listed prompt and image hashes were actually used. Do not submit it if they were omitted. Receipts establish recorded provenance, not independent proof of a remote model call. Worker output rules never override imagegen's required image display or final-output behavior. Ingest the original selected source from outside managed run outputs; the controller preserves it and owns only its decoded copy.
+Ingest each row with its own active token/receipt. `fail --job idle --token ACTIVE_TOKEN --note "..."` records a failed call. Retry preserves references and constraints. `repair --job jumping --note "Preserve markings; raise peak."` starts a deliberate attempt series without erasing history. `status` and `resume` reconcile existing work without model calls.
 
-Ingest each row with its own active token and receipt. Rows depend on the canonical base; configured mirror targets also depend on their source row. An attempt is reserved before generation, so a lost tool result remains `running`. Reconcile that token using the recovered image or record failure; do not start a duplicate call:
+For existing artwork, use [the complete import recipe](sources-and-identity.md). Imports have import receipts and never count as imagegen output. Fixture imports require both a fixture-mode run and fixture descriptor.
+
+## Extract, inspect and review
 
 ```powershell
-python scripts/hatch.py fail --run-dir C:/work/otter-run --job idle --token TOKEN_FROM_HANDOFF --note "Tool failed before producing a usable output."
-python scripts/hatch.py claim --run-dir C:/work/otter-run --job idle --out C:/work/idle-retry.json
+python scripts/hatch.py validate --run-dir output/otter-run
+python scripts/hatch.py review-ui --run-dir output/otter-run --destination output/otter-review-v1
 ```
 
-Three claims per job are allowed before explicit repair. Failure history and every repair reason are retained. Subsequent claims select the retry prompt, which preserves style, constraints, and required references.
-
-## Extraction policy and calibration
-
-`extraction-settings.json` records the selected base hash, actual background policy, key/color-collision measurements, warnings, and extraction settings. It is separate from the original request. Inspect it before `base-review`. A chroma collision blocks that checkpoint unless a specific reviewed exception uses `--accept-color-warning`; prefer a safer key or preserved alpha instead.
+Open `output/otter-review-v1/review.html`. Inspect references, sources, extracted frames, timings, static alternatives and backgrounds. Record six review dimensions and each numerical warning. Download the bound JSON outside the run, then submit it:
 
 ```powershell
-python scripts/hatch.py configure --run-dir C:/work/otter-run --background chroma --chroma-key '#00FFFF' --key-threshold 36 --holes preserve
-python scripts/hatch.py base-review --run-dir C:/work/otter-run --note "Viewed base with the revised key; checked cyan against the character palette."
+python scripts/hatch.py review --run-dir output/otter-run --receipt output/visual-review.json
+python scripts/hatch.py export --run-dir output/otter-run --destination output/otter-export-v1
+python scripts/hatch.py package --run-dir output/otter-run --destination output/otter-package-v1
 ```
 
-Configuration changes invalidate row generation, extraction, validation, and approval. They rebuild row/retry prompts without rewriting the base's original generation receipt. `--shared-scale 0.5` records a common pixels-to-cell multiplier for states using `scale_policy: shared`. The multiplier must fit every source viewport; the extractor rejects clipping instead of resizing an individual pose to fit. It does not infer physical character height from arbitrary generated resolutions.
+`review-template --out output/visual-review.json` provides the same receipt for another review method. Missing evidence/dimensions/warning notes, changed artifacts or failing verdicts block acceptance. Rebuild the review UI after changes: it is a snapshot. An evaluation export may be unreviewed and says so. A package requires current passing review. Default packages contain Codex-compatible `pet.json` and `spritesheet.webp`; custom profiles create asset packages.
 
-Alpha is preserved and fully transparent RGB is normalized. Chroma uses edge-connected background masking with constrained edge unmixing. Enclosed matching colors are preserved by default. `--holes key` explicitly classifies enclosed key-colored regions as holes; inspect this decision because they could be foreground colors. Neither color distance nor components can reliably resolve every foreground/background ambiguity.
-
-## Validate, review, repair
+## Calibration and profile revision
 
 ```powershell
-python scripts/hatch.py validate --run-dir C:/work/otter-run
-python scripts/hatch.py review-template --run-dir C:/work/otter-run --out C:/work/visual-review.json
+python scripts/hatch.py configure --run-dir output/otter-run --holes preserve --key-threshold 36
+python scripts/hatch.py configure --run-dir output/otter-run --shared-scale 0.5
+python scripts/hatch.py base-review --run-dir output/otter-run --note "Rechecked settings against canonical artwork."
+python scripts/hatch.py annotate --run-dir output/otter-run --job jumping --receipt output/jump-annotation.json
+python scripts/hatch.py revise-profile --run-dir output/otter-run --profile output/revised-profile.json
 ```
 
-Validation extracts only missing/stale rows, merges frame provenance by state, checks exact indices and files, composes PNG/WebP, and renders `qa/contact-sheet.png` and timed `qa/previews/*.gif`. It rejects missing or unsupported schema-3 extraction evidence, changed sources/settings, and ambiguous segmentation. It reports temporal measurements and thresholds in `qa/review.json`; geometric success does not prove identity or action quality.
+Thresholds, hole handling and shared scale affect deterministic extraction and reuse model output. Generation background/key changes rebuild prompts and mark generated rows stale; imported pixels need no new model call. `revise-profile` distinguishes generation, extraction and playback/export dependencies. State set/order changes require a separate run. See [extraction](extraction-and-review.md).
 
-View the canonical base, contact sheet, and every timed row. Complete the template's reviewer, `evidence` fields, and each row's `verdict` (`pass` or `fail`) and specific `notes`. Leave its exact `artifact_hashes` and fixture label intact. Then record it:
+## Optional installation and retention
 
-```powershell
-python scripts/hatch.py review --run-dir C:/work/otter-run --receipt C:/work/visual-review.json
-python scripts/hatch.py repair --run-dir C:/work/otter-run --job jumping --note "Peak never leaves the ground; keep the approved face and palette."
-```
+Only if requested: `install --run-dir ... --package-path ... --destination ...` installs a verified reviewed package into an isolated destination outside run/package trees. Recognized existing packages are backed up; unrecognized files block replacement. `rollback --run-dir ...` restores the bound previous package. Neither selects a pet nor proves app behavior. `--test-destination` permits temporary fixture installations and refuses the live Codex pets directory.
 
-A failing row prevents packaging/installation. Repair regenerates the smallest row, preserving untouched rows and their evidence. A base repair invalidates its dependent rows. Run validation and record a fresh complete review afterward; old receipts remain in history. Changing a reviewed frame, source, prompt, calibration, profile, canonical reference, or review file invalidates the relevant gate. Never restore approval by manually changing the manifest.
+`cleanup --run-dir ...` previews exact run-owned removals. `--apply` writes/verifies a compact repair archive first. `--mode minimal-delivery` also discards decoded rows, losing re-extraction unless matching originals are restored or generation is repeated. It never removes external inputs, imagegen originals, installations or unrelated files. [Portable full archives](portability-and-operations.md) work independently of cleanup.
 
-Only a profile-declared, explicitly approved mirror is allowed:
+## Deterministic checks
 
 ```powershell
-python scripts/hatch.py derive --run-dir C:/work/otter-run --job running-left --approve-mirror --note "Viewed rightward gait: symmetric markings, no readable marks or sided props; mirroring preserves identity."
-```
-
-This mirrors each frame in place, preserving time order, and records source hashes and approval. `derive_running_left_from_running_right.py` is a compatibility wrapper for the same controller gate. `--force` is not a bypass. All other default states require generation.
-
-## Export, package, install
-
-```powershell
-python scripts/hatch.py export --run-dir C:/work/otter-run --destination C:/work/otter-export
-python scripts/hatch.py package --run-dir C:/work/otter-run --destination C:/work/otter-package-v1
-```
-
-Choose new destination paths. Export requires deterministic validation and includes review status and metrics for evaluation use. Package requires current passing visual review, stages the exported files, verifies their hashes, then promotes the package. Default Codex packages include `pet.json` and `spritesheet.webp`; custom profiles produce generic asset packages. A package is not an installed pet.
-
-Only if the user requested installation, use `install --package-path ... --destination ...`. The destination must be an isolated package directory outside the run and source package. Existing verified packages or recognizable legacy Codex packages are backed up to a sibling `.previous-...` directory. Unrecognized contents block replacement. A failed installation restores the previous version, retaining a failed new version for inspection. `rollback --run-dir ...` restores the recorded previous package and keeps the displaced new one. The app is not automatically selected or exercised; `app_integration_verified` stays false.
-
-`--test-destination` permits fixture/custom-profile installation only for isolated test directories and rejects the installed Codex pets directory. It is not a production override. Never use it to install fixtures as real pets.
-
-## Resume and retention
-
-```powershell
-python scripts/hatch.py resume --run-dir C:/work/otter-run
-python scripts/hatch.py cleanup --run-dir C:/work/otter-run
-python scripts/hatch.py cleanup --run-dir C:/work/otter-run --apply
-```
-
-`status` derives pending/running/failed/generated/validated/reviewed/packaged from live hashes and receipts, writing `run-summary.json`. `resume` preserves the same run identity and generation tokens, reconciles interrupted local transactions, and explains the next action. It never invokes generation. A short OS lock protects manifest mutations; it releases on process exit. Atomic JSON replacement preserves the previous complete manifest if interrupted. Low-level extraction has its own OS lock.
-
-`prepare --replace-inputs` deliberately creates a new run revision and preserves the entire previous directory as a sibling; it refuses to replace a run with active generation claims. `resume` does not reinterpret its original request. The preserved revision is historical evidence at its prior paths; do not claim its old absolute-path receipts validate a relocated directory without re-extraction.
-
-Cleanup is preview-only unless `--apply`. Default `repair` writes and verifies a compact ZIP containing canonical identity, source strips, request/profile, constraints, prompts, hashes, generation/extraction records, metrics, and visual-review receipts. It removes only exact owned frame files, generated GIF previews, and the redundant PNG atlas. Raw row sources remain available; `resume`, then `validate` reconstructs those intermediates without generation. Keep the package/export separately.
-
-`cleanup --mode minimal-delivery --apply` additionally removes the run-owned decoded row-strip copies and excludes them from the archive. Identity and receipts remain, but those rows require generation (or the original matching source supplied again) before extraction. It never deletes external imagegen outputs, user references, shared assets, installed packages, or unrelated files. Archive contents are explicitly listed in the preview. Deleting local generated files cannot remove image payloads embedded in earlier tool results or rollouts.
-
-## Offline validation
-
-```powershell
+python scripts/demonstrate.py --all --output-dir output/capability-demos
+python tests/fixture_workflow.py --output-dir output/legacy-fixture-demo --profile examples/web-status.json
 python -m unittest discover -s tests -v
-python tests/fixture_workflow.py --output-dir C:/work/hatch-fixture-demo --profile examples/web-status.json
 ```
 
-The second command creates clearly labeled synthetic sources, a complete run, export/preview, and package. Its review receipt exercises gates only; it is not a semantic judgment of production art. It never installs anything or calls a model. Browser tests use optional locally installed Playwright/Chromium; core tests need only Pillow. All test installations use temporary isolated destinations.
+These produce labeled synthetic fixtures and exercise gates/exporters/local consumers without model calls or production-art acceptance. Browser tests exercise actual exported HTML with controlled clocks. Physical display timing remains unmeasured.
+
+Use a new output directory for a rerun; existing demonstrations are preserved. Fixture pixels and layouts are deterministic. Run identities, timestamps and document metadata may differ between executions.

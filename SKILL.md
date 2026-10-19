@@ -1,63 +1,46 @@
 ---
 name: hatch-pet
-description: Create, repair, review, and package Codex pets or profile-driven animated character assets from concepts, brand cues, or references. Uses the installed imagegen skill for production art and a resumable Python pipeline for extraction, validation, previews, exports, and optional local installation.
+description: Create, import, extract, review, and package Codex pets or reusable raster asset sequences, including process illustrations, product variants, printable frames, pictograms, research stimuli, cursors, and craft grids. Uses installed imagegen for production generation and a local, resumable validation/export pipeline. Does not install, publish, or certify external integrations implicitly.
 ---
 
 # Hatch Pet
 
-Use the default Codex profile for a Codex pet. For another application, use a validated custom profile and describe the result as a local asset export; example configurations do not establish a production integration.
+Use `profiles/codex-v1.json` for a Codex pet. Its state order, counts, durations, 192×208 cells, 8 columns, transparency rules and package contract are fixed. Existing `examples/*.json` remain supported. For another purpose, use a validated profile or one of the ten [purpose-specific presets](references/additional-uses.md).
 
-Read [workflow.md](references/workflow.md) for commands and lifecycle details, [qa-rubric.md](references/qa-rubric.md) before visual acceptance, and [profiles-and-exports.md](references/profiles-and-exports.md) when changing the animation contract. The versioned default is `profiles/codex-v1.json`; the structural schema is `profiles/profile.schema.json`. The [animation table](references/animation-rows.md) is generated from the default.
+## Choose the source and contract
 
-## Non-negotiable production gates
+- **Generate artwork:** read the installed `$imagegen` skill and use it for every production model call. Hatch-pet has no alternate generation backend. Follow its attachment, transparency, output-display and save-path rules. Only an unreferenced base may be text-only. Every image in a claimed handoff must actually be attached, including original references, canonical identity and the layout guide. Preserve explicit constraints on every retry and repair.
+- **Import existing artwork:** use `import-source` with an explicit origin and ordered image, strip or frame source. Imports never become imagegen output. Validate and visually review them. See [sources and identity](references/sources-and-identity.md) for the complete import-and-review recipe, reference roles and structured identity specification.
+- **Develop/test:** use labeled synthetic fixtures. A fixture receipt tests the gate; it is not production artwork acceptance. Never relabel fixtures as user artwork or model output.
 
-- Production artwork must use the installed `$imagegen` skill. Read its installed `SKILL.md` before generation and follow its tool, permission, attachment, and final-output rules. Hatch-pet does not provide another generation backend.
-- Only the base may be text-only. Attach every input image listed in the claimed row job, including the canonical base and layout guide. Original references and any additional identity inputs remain required when listed. A path mentioned in text is not an attached image.
-- Preserve explicit user requirements, avoidances, style choices, and approved references through base, row, retry, and repair prompts. Keep researched brand guidance separate from user instructions, with source URLs and uncertainty. Report conflicts rather than silently dropping a requirement.
-- Every state needs its own generated animation. In the default profile, only explicitly approved framewise mirroring of `running-right` into `running-left` may replace generation. Check asymmetric markings, prop side, readable marks, lighting, and direction first; preserve temporal order.
-- Fixtures are for deterministic tests only. Label them as fixtures, and never represent their validation or visual-review receipts as production artwork acceptance.
-- Deterministic validation and a persisted, hash-bound visual review must pass before packaging or installation. Measurements cannot establish identity, facing direction, action meaning, or artistic quality.
-- Installation is a separate, explicitly requested action. Package creation never implies permission to overwrite an installed pet or publish anything.
+Run `python scripts/hatch.py doctor` before unfamiliar workflows; `capabilities` lists bounded interfaces. Use [workflow](references/workflow.md) for lifecycle commands. Unsupported formats, policies and excessive allocations must fail clearly.
 
-## Working method
+## Execute and preserve evidence
 
-1. **Prepare.** Infer an omitted friendly name or description when reasonable. Record the concept, style, original references, constraints, and selected profile through `scripts/hatch.py prepare`. Use `status` for durable progress; do not manually mark manifest jobs complete.
-2. **Discover brand cues when needed.** For a bare brand/company/product request, research a few relevant official sources. Save a short brief covering palette, personality, motifs, avoidances, sources, and inferred guidance. Pass discovery's `avoid` values as well as its other handoff fields into preparation. Skip unnecessary research when the user already supplied a concrete character.
-3. **Generate the canonical base.** Claim the base job, read its exact handoff, generate via `$imagegen`, inspect the selected image, and ingest it. Inspect the base color analysis, then record `base-review` before rows. The initial text-only chroma key is provisional; a fallback selection is not evidence that the key is safe. Prefer preserved alpha where available. Use `configure` to change the key or extraction policy; this regenerates prompts and invalidates affected outputs. `pet_request.json` stays immutable during calibration.
-4. **Generate rows.** Claim only ready jobs. Generate and inspect one strip per job using every listed identity reference and guide. Start with idle and directional movement when useful for early style checks. A failed call is recorded with `fail`; retry only within the recorded attempt limit. Reuse the same identity references and structured constraints.
-5. **Extract and validate.** Use `validate` to extract changed source strips, check provenance and frame indices, compose the atlas, measure consistency, and render QA assets. Preserve intended motion with the profile's coordinate/scale policy. `slot` preserves the source viewport; `center` and `baseline` deliberately align individual poses and are unsuitable for preserving jumps. Shared calibration uses `shared_scale` in `extraction-settings.json`. Ambiguous segmentation is a source/layout problem, not permission to guess which poses belong in the animation.
-6. **Review.** Inspect the canonical identity reference, contact sheet, and actual timed playback. Read numerical warnings in context. Record one verdict and repair note per state using `review`. If any state fails, repair the smallest affected row and repeat validation and review. Changed assets invalidate prior approval.
-7. **Deliver.** Export the accepted assets, create a verified local package, and report the actual receipt state and paths. `export` also supports validated evaluation assets before acceptance and labels their review state; it never installs them. Install only when requested, with a recoverable previous package. Keep the compact repair archive by default; preview cleanup before applying it.
+1. **Prepare** a new run with profile, concept, style, user constraints, structured identity and required references. Keep inferred brand guidance separate, attributed and subordinate to explicit requirements. Report unresolved conflicts. Structured identity helps inspection; it does not prove visual consistency.
+2. **Acquire the base** through a claimed imagegen handoff or explicit import. Inspect canonical identity, transparency and color analysis, then record `base-review` before states.
+3. **Acquire each state.** Claim only ready jobs. Keep the existing claim/token until its output is ingested or failure is recorded. Optional mirroring is not a generation dependency. Derive only where the profile permits it and explicit approval covers asymmetries, markings, props and direction; never when identity forbids mirroring.
+4. **Extract and validate.** Preserve the conservative default. Use exact, hash-bound annotations for legitimate disconnected components or non-strip layouts; never disable validation globally. Keep one shared viewport and scale, including intended jump displacement. Choose validated resampling for the artwork. See [extraction and review](references/extraction-and-review.md) for diagnostics and calibration.
+5. **Review actual artifacts.** Build `review-ui`, inspect references, sources, extracted frames and actual-size timed playback on multiple backgrounds. Record identity, action, direction, loop, extraction and reduced-motion verdicts plus warning-specific notes. Submit the exact bound receipt. A change to covered artifacts requires fresh review; numerical QA cannot supply a semantic verdict.
+6. **Export/package.** An evaluation export may be unreviewed and must say so. Packaging requires current deterministic validation and passing visual review. Report source origin, fixture status, review status and exact output locations separately from integration status.
 
-Keep progress concise and factual: preparation, base, rows, deterministic checks, review, and package are different milestones. Report pending, failed, or unverified stages honestly. Do not claim the app, OBS, a game engine, or a device was exercised unless it actually was.
+## Recovery and operational scope
 
-## Delegation and image payloads
+`status` and `resume` reconcile existing claims and explain stale inputs; they never start duplicate model calls. Configure attempt, concurrency and call limits; optional budgets use explicit user estimates, not invented prices. Deterministic calibration changes reuse generation. Use `revise-profile` for controlled playback/extraction/export revisions. See [portability and operations](references/portability-and-operations.md) for migrations, verified archives and restoration.
 
-Where delegation is authorized and available, one worker may own one claimed generation job or the final visual review. Keep the controller as the sole manifest owner, and do not launch another worker for a running claim. Without delegation, execute the same workflow sequentially. No additional permission ritual is implied by this skill.
+Installation is a separate, explicitly requested action with verified backups and rollback. Package creation, exported adapters, local browser exercises, installation and live integration are different outcomes. Do not claim an external consumer was exercised without evidence. No live installation, publishing or deployment is implied. Never shut down or terminate WSL.
 
-A generation handoff contains the claimed job ID/token, prompt path, all image paths and roles, output selection instructions, and current constraints. Workers load and follow the installed imagegen skill; its required image/tool/final output behavior takes precedence over a preferred concise hatch-pet handoff. After satisfying that behavior, return the selected source path and a short QA note. Do not ask workers to suppress imagegen-required output. Workers do not mutate manifests, install, publish, or delete inputs.
+When authorized to delegate, one worker may own one existing generation claim or visual review; keep a single manifest owner. Handoffs retain token, prompt, image roles/hashes, identity and failure history. Workers follow imagegen's required output behavior and return the selected original source plus a QA note. Without delegation, execute sequentially.
 
-The reviewer must see enough visual evidence to assess every state, including actual timing and intended vertical motion. Do not substitute textual descriptions or aggregate metrics for viewing the art. Delegating review does not weaken the acceptance criteria.
+## Reference map
 
-Image payloads already embedded in tool results or prior rollouts cannot be removed by deleting generated files. Cleanup only affects files explicitly owned by the run. Never delete external generation outputs, user inputs, shared assets, or installed packages as an incidental cleanup step.
+- [Workflow](references/workflow.md): preparation, acquisition, validation, review and delivery commands.
+- [Sources and identity](references/sources-and-identity.md): schemas and complete import recipe.
+- [Extraction and review](references/extraction-and-review.md): annotations, filters, calibration and evidence UI.
+- [Portability and operations](references/portability-and-operations.md): limits, stale work, schema migration, archives and restore.
+- [Playback and extensions](references/playback-and-extensions.md): state-machine and exporter/consumer contracts.
+- [Ten uses](references/additional-uses.md): inputs, semantics, constraints, commands and external requirements.
+- [Profiles and exports](references/profiles-and-exports.md), [QA rubric](references/qa-rubric.md), [Codex contract](references/codex-pet-contract.md), [default animation table](references/animation-rows.md).
+- [Traceability](references/traceability.md): L01–L10 / I01–I10 / U01–U10 and validation evidence.
 
-## Default Codex semantics
-
-The default remains nine states, 192×208 cells, eight columns, and a 1536×1872 atlas with transparent unused cells. Counts and exact durations come from the versioned profile.
-
-- `idle`: quiet breathing/blinking; the static alternative must read well. Low amplitude is valid, complete visual stasis needs review.
-- `running-right` / `running-left`: directional locomotion with the correct facing and alternating gait.
-- `waving`: limb gesture; no decorative wave marks.
-- `jumping`: anticipation, lift, peak, descent, settle; preserve vertical displacement.
-- `failed`: readable deflation or sadness. Any effects must satisfy the profile's detail policy.
-- `waiting`: expectant, needs-input behavior distinct from idle and review.
-- `running`: active task work/processing; this is not foot-running.
-- `review`: focused inspection, with no newly invented props.
-
-Keep identity, materials, palette, proportions, and approved props consistent. For the default profile, avoid detached decorations, shadows, scenery, labels, guide marks, dust, glows, and motion trails. Other profiles may allow detached details deliberately; an extraction policy must preserve rather than accidentally discard them.
-
-## Recovery and retention
-
-Use `resume` for the same inputs and run identity. A running generation claim is not an invitation to generate again: reconcile its selected output or explicitly record failure first. Input replacement is deliberate and invalidates affected generation, extraction, reviews, and package receipts. Preserve failure history.
-
-The default `repair` retention mode preserves the canonical reference, request/profile, constraints, source strips needed for row repair, hashes, prompts, provenance, and review receipts. `minimal-delivery` explicitly discards run-owned row-strip copies and omits them from the archive; those rows need new generation before extraction can resume. Original external inputs and imagegen outputs are never cleanup targets. See the cleanup preview and [workflow](references/workflow.md) before discarding anything.
+Cleanup affects only exact run-owned files. Preview it first. Keep repair archives, original inputs, external imagegen outputs, failure history and unrelated files. Removing files cannot remove image payloads already embedded in a conversation.

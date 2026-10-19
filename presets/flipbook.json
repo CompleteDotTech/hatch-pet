@@ -1,0 +1,77 @@
+{
+  "schema_version": 2,
+  "id": "flipbook-v2",
+  "layout": {
+    "columns": 12,
+    "cell_width": 64,
+    "cell_height": 64
+  },
+  "states": [
+    {
+      "id": "bounce",
+      "frames": 12,
+      "durations": [
+        80,
+        80,
+        80,
+        80,
+        80,
+        80,
+        80,
+        80,
+        80,
+        80,
+        80,
+        80
+      ],
+      "purpose": "A single ball bounces vertically through twelve ordered drawings with a fixed diameter and ground baseline. Stage/condition: bounce.",
+      "motion": "vertical",
+      "alignment": {
+        "coordinate_policy": "slot",
+        "scale_policy": "shared",
+        "scale": 1,
+        "padding": 0,
+        "resampling": "nearest",
+        "anchor": [
+          0.5,
+          0.5
+        ]
+      },
+      "playback": {
+        "mode": "loop"
+      }
+    }
+  ],
+  "generation": {
+    "instructions": "A single ball bounces vertically through twelve ordered drawings with a fixed diameter and ground baseline.",
+    "requirements": [
+      "Check frame order, constant ball diameter, retained vertical displacement and physical test assembly.",
+      "Keep frames within the source viewport and retain approved references."
+    ]
+  },
+  "validation": {
+    "require_provenance": true,
+    "allow_detached_details": true
+  },
+  "events": {
+    "bounce": "bounce"
+  },
+  "export": {
+    "formats": [
+      "frames",
+      "atlas",
+      "flipbook",
+      "browser"
+    ],
+    "static_state": "bounce",
+    "static_frame": 0,
+    "options": {
+      "labels": {
+        "bounce": "bounce"
+      },
+      "content_review": "Check frame order, constant ball diameter, retained vertical displacement and physical test assembly.",
+      "cell_mm": 40,
+      "dpi": 150
+    }
+  }
+}

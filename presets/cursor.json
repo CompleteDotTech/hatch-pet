@@ -1,0 +1,75 @@
+{
+  "schema_version": 2,
+  "id": "cursor-v2",
+  "layout": {
+    "columns": 6,
+    "cell_width": 32,
+    "cell_height": 32
+  },
+  "states": [
+    {
+      "id": "busy",
+      "frames": 6,
+      "durations": [
+        80,
+        80,
+        80,
+        80,
+        80,
+        80
+      ],
+      "purpose": "A pixel pointer with fixed hotspot at (4,4) and a six-frame activity marker. Keep pointer geometry stable. Stage/condition: busy.",
+      "motion": "gesture",
+      "alignment": {
+        "coordinate_policy": "slot",
+        "scale_policy": "shared",
+        "scale": 1,
+        "padding": 0,
+        "resampling": "nearest",
+        "anchor": [
+          0.5,
+          0.5
+        ]
+      },
+      "playback": {
+        "mode": "loop"
+      }
+    }
+  ],
+  "generation": {
+    "instructions": "A pixel pointer with fixed hotspot at (4,4) and a six-frame activity marker. Keep pointer geometry stable.",
+    "requirements": [
+      "Check hotspot alignment, pointer legibility and animation at actual size on light/dark backgrounds.",
+      "Keep frames within the source viewport and retain approved references."
+    ]
+  },
+  "validation": {
+    "require_provenance": true,
+    "allow_detached_details": true
+  },
+  "events": {
+    "busy": "busy"
+  },
+  "export": {
+    "formats": [
+      "frames",
+      "atlas",
+      "cursor",
+      "browser"
+    ],
+    "static_state": "busy",
+    "static_frame": 0,
+    "options": {
+      "labels": {
+        "busy": "busy"
+      },
+      "content_review": "Check hotspot alignment, pointer legibility and animation at actual size on light/dark backgrounds.",
+      "cell_mm": 40,
+      "dpi": 150,
+      "hotspot": [
+        4,
+        4
+      ]
+    }
+  }
+}

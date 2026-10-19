@@ -4,8 +4,8 @@ Read the selected profile and the exact source assets. Default Codex geometry is
 
 ## Deterministic evidence
 
-- `frames/frames-manifest.json` has schema 3, supported extraction algorithm, exact state/frame indices and order, source/frame/request/profile/calibration hashes, and valid segmentation/viewport/masking evidence. Missing or stale provenance blocks acceptance.
-- Each state contains exactly `00.png` through its last index. Extra images, missing poses, cross-slot components, multiple major cores, and suspicious thin connections are rejected. A count of N components alone is not proof of N valid animation frames.
+- `frames/frames-manifest.json` has schema 4, supported extraction algorithm, exact state/frame indices and order, source/frame/request/extraction-profile/calibration hashes, and valid segmentation/viewport/masking evidence. Missing or stale provenance blocks acceptance. Schema-3 evidence requires re-extraction from retained sources.
+- Each state contains exactly `00.png` through its last index. Extra images, missing poses, cross-slot components, multiple major cores, and suspicious thin connections are rejected unless a source-bound annotation explicitly permits the relevant component. Review every permitted override; it is not proof of semantic correctness.
 - Occupied cells fit the profile, unused cells are transparent, and fully transparent pixels have zero RGB.
 - Inspect `qa/review.json` measurements: exact/near duplicates, adjacent and loop differences, area ratios, baseline displacement, palette change, and possible ordering outliers. Thresholds are state-aware and printed with the measurements.
 - Confirm extraction preserved source movement. `slot` alignment shares the source viewport; `center`/`baseline` can intentionally remove displacement. A wider pose must not cause the body to shrink.
@@ -25,7 +25,7 @@ View the canonical reference, labeled contact sheet, and timed playback of every
 - Detached effects obey the profile. The Codex profile excludes detached decorations, shadows, text, scenery, dust, glows and trails. Small attached details should survive extraction.
 - A mirrored row preserves identity, asymmetric details, prop side, marks and lighting, and retains temporal order. Only a declared, explicitly approved derivation is valid.
 
-Record `pass` or `fail` and specific notes per row in `qa/visual-review.json` through `hatch.py review`. A failing row blocks packaging and installation. Repair the smallest affected row; a wrong canonical identity requires base repair. Changed artifacts invalidate the review. Preserve prior evidence in history; never edit a receipt to pretend an old review covered new files.
+Use `hatch.py review-ui` or `review-template`, then record verdicts and evidence notes for identity, action, direction, loop, extraction and reduced-motion suitability in every row. Provide a note for each current warning and submit through `hatch.py review`. A failing row blocks packaging and installation. Repair the smallest affected row; a wrong canonical identity requires base repair. Changed artifacts invalidate the review. Preserve prior evidence in history. Imports, fixtures and generated artwork retain distinct origin labels.
 
 ## Reporting boundaries
 
