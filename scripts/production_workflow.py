@@ -964,3 +964,345 @@ def migrate_project(root):
         _save(root, state)
     return {'migrated': True, 'schema_version': WORKFLOW_VERSION, 'backup': str(backup),
             'review_required': True, 'generation_claims_preserved': True}
+
+
+def _write_immutable(path, content):
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    if path.exists():
+        if path.read_bytes() != content:
+            raise ValueError('immutable production artifact already exists with different bytes: ' + str(path))
+        return
+    temporary = path.with_name(path.name + '.' + uuid.uuid4().hex + '.incoming')
+    try:
+        with temporary.open('xb') as output:
+            output.write(content)
+        os.replace(temporary, path)
+    finally:
+        temporary.unlink(missing_ok=True)
+
+
+def _json_bytes(value):
+    return (json.dumps(value, sort_keys=True, indent=2) + '\n').encode('utf-8')
+
+
+def _next_patch(version):
+    if not isinstance(version, str) or not re.fullmatch(r'(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)', version):
+        raise ValueError('production versions must be explicit numeric semantic versions')
+    major, minor, patch = map(int, version.split('.'))
+    return f'{major}.{minor}.{patch + 1}'
+
+
+def _import_descriptor(descriptor):
+    location = Path(descriptor).resolve() if isinstance(descriptor, (str, Path)) else None
+    value = hatch.read(location) if location else copy.deepcopy(descriptor)
+    strict_keys(value, {'schema_version', 'kind', 'source', 'source_sha256', 'fixture', 'origin',
+                       'note', 'viewpoint', 'costume', 'drawing_id', 'crop', 'attribution', 'permissions'},
+                'component import descriptor')
+    if value.get('schema_version') != 1 or value.get('kind') != 'component-import':
+        raise ValueError('component import descriptor needs schema_version 1 and kind component-import')
+    text(value.get('note'), 'component import note')
+    return value, location
+
+
+def _component_import(root, bundle, character_id, version, component_id, spec, source, new_version, provenance):
+    from io import BytesIO
+    from production_contracts import load_project
+    character = _character(bundle, character_id, version)
+    _next_patch(new_version)
+    if new_version == version or f'{character_id}@{new_version}' in bundle['characters']:
+        raise ValueError('component import requires a new unoccupied character version')
+    if tuple(map(int, new_version.split('.'))) <= tuple(map(int, version.split('.'))):
+        raise ValueError('new character version must advance the existing version')
+    component = next((item for item in character['components'] if item['id'] == component_id), None)
+    if component is None:
+        raise ValueError('component import target does not exist')
+    viewpoint, costume = spec.get('viewpoint'), spec.get('costume')
+    if viewpoint not in character['views'] or costume not in {item['id'] for item in character['costumes']}:
+        raise ValueError('import viewpoint and costume must already be explicitly declared by the character')
+    drawing_id = spec.get('drawing_id', component['default_drawing'])
+    if not isinstance(drawing_id, str) or not re.fullmatch(r'[a-z][a-z0-9_-]{0,63}', drawing_id):
+        raise ValueError('component drawing id must be a portable production id')
+    source = Path(source).resolve()
+    check_image(source)
+    source_bytes = source.read_bytes()
+    source_sha256 = hashlib.sha256(source_bytes).hexdigest()
+    if spec.get('source_sha256') is not None and spec['source_sha256'] != source_sha256:
+        raise ValueError('import source bytes differ from the declared source SHA-256')
+    with Image.open(source) as opened:
+        image = opened.convert('RGBA')
+    crop = spec.get('crop')
+    if crop is not None:
+        if (not isinstance(crop, list) or len(crop) != 4 or any(type(value) is not int for value in crop) or
+                not 0 <= crop[0] < crop[2] <= image.width or not 0 <= crop[1] < crop[3] <= image.height):
+            raise ValueError('crop must be an integer rectangle inside the original source')
+        image = image.crop(crop)
+    sizes = {tuple(drawing['image']['size']) for drawing in component['drawings'].values()}
+    if len(sizes) != 1 or image.size not in sizes:
+        raise ValueError('component import must preserve the exact component viewport; no implicit resizing')
+    if image.getchannel('A').getbbox() is None:
+        raise ValueError('component import cannot replace a drawing with an empty alpha plane')
+    suffix = source.suffix.lower()
+    suffix = suffix if suffix in ('.png', '.webp', '.jpg', '.jpeg') else '.source'
+    original_relative = 'sources/imports/' + source_sha256 + suffix
+    _write_immutable(safe_path(root, original_relative), source_bytes)
+    output = BytesIO()
+    image.save(output, format='PNG')
+    image_bytes = output.getvalue()
+    image_sha256 = hashlib.sha256(image_bytes).hexdigest()
+    image_relative = f'art/imports/{character_id}/{component_id}-{image_sha256}.png'
+    _write_immutable(safe_path(root, image_relative), image_bytes)
+    provenance = {**copy.deepcopy(provenance),
+                  'source': {'path': original_relative, 'sha256': source_sha256},
+                  'source_sha256': source_sha256,
+                  'operation': {'kind': 'crop' if crop else 'rgba-copy',
+                                **({'rect': crop} if crop else {}),
+                                'note': 'Original bytes retained; component viewport preserved without resizing.'},
+                  'note': spec['note']}
+    updated = copy.deepcopy(character)
+    updated['version'] = new_version
+    replacement = next(item for item in updated['components'] if item['id'] == component_id)
+    replacement['drawings'][drawing_id] = {
+        'viewpoint': viewpoint, 'costume': costume, 'alpha': 'straight',
+        'image': {'path': image_relative, 'sha256': image_sha256,
+                  'size': list(image.size), 'provenance': provenance}}
+    updated['view_reviews'] = {view: {'status': 'pending', 'kind': 'unreviewed', 'reviewer': None,
+        'evidence': [], 'note': 'New component version requires construction and visual review.'}
+        for view in updated['views']}
+    cast = copy.deepcopy(bundle['cast'])
+    cast['version'] = _next_patch(cast['version'])
+    cast['characters'].append(updated)
+    cast_bytes = _json_bytes(cast)
+    cast_sha256 = hashlib.sha256(cast_bytes).hexdigest()
+    cast_relative = 'cast/cast-' + cast_sha256 + '.json'
+    _write_immutable(safe_path(root, cast_relative), cast_bytes)
+    project = copy.deepcopy(bundle['project'])
+    project['cast'] = {'path': cast_relative, 'sha256': cast_sha256}
+    candidate = Path(root) / ('.candidate-project-' + uuid.uuid4().hex + '.json')
+    try:
+        hatch.atomic(candidate, project)
+        load_project(candidate)
+        os.replace(candidate, Path(root) / 'project.json')
+    finally:
+        candidate.unlink(missing_ok=True)
+    state = _state(root, bundle)
+    _event(state, 'component-imported', character_id=character_id, previous_version=version,
+           new_version=new_version, component_id=component_id, drawing_id=drawing_id,
+           source_sha256=source_sha256, image_sha256=image_sha256, provenance_kind=provenance['kind'])
+    _save(root, state)
+    return {'imported': True, 'character': f'{character_id}@{new_version}',
+            'previous_character': f'{character_id}@{version}', 'component': component_id,
+            'drawing_id': drawing_id, 'image': replacement['drawings'][drawing_id]['image'],
+            'cast': project['cast'], 'fixture': bundle['project']['fixture'],
+            'review_required': True, 'clip_rebinding_required': True, 'provider_called': False}
+
+
+def import_component(root, character_id, version, component_id, descriptor, new_version):
+    root = Path(root).resolve()
+    spec, location = _import_descriptor(descriptor)
+    text(spec.get('origin'), 'import source origin')
+    text(spec.get('source'), 'original component source path')
+    source = Path(spec['source'])
+    source = source.resolve() if source.is_absolute() else ((location.parent if location else Path.cwd()) / source).resolve()
+    if source.is_relative_to(root):
+        raise ValueError('import source must be the original file outside the managed project')
+    with hatch.ownership(root):
+        bundle = _bundle(root)
+        if spec.get('fixture') is not bundle['project']['fixture']:
+            raise ValueError('component import must preserve the explicit project fixture label')
+        provenance = {'kind': 'import', 'origin': spec['origin'], 'fixture': spec['fixture'],
+                      **{key: spec[key] for key in ('attribution', 'permissions') if key in spec}}
+        return _component_import(root, bundle, character_id, version, component_id, spec, source,
+                                 new_version, provenance)
+
+
+def adopt_generated_component(root, binding_id, job, character_id, version, component_id, descriptor, new_version):
+    root = Path(root).resolve()
+    spec, _ = _import_descriptor(descriptor)
+    if 'source' in spec or 'origin' in spec:
+        raise ValueError('generated component adoption takes its source and origin from the bound acquisition')
+    with hatch.ownership(root):
+        bundle = _bundle(root)
+        if 'fixture' in spec and spec['fixture'] is not bundle['project']['fixture']:
+            raise ValueError('generated component adoption cannot relabel fixture provenance')
+        state = _state(root, bundle)
+        selected = next((item for item in _bound_runs(root, state) if item[0] == binding_id), None)
+        if selected is None:
+            raise ValueError('unknown production acquisition binding')
+        _, binding, run, _ = selected
+        with hatch.ownership(run):
+            data = hatch.manifest(run)
+            hatch.reconcile(run, data)
+            item = hatch.job_for(data, job)
+            if item['status'] != 'generated' or not isinstance(item.get('generation_receipt'), dict):
+                raise ValueError('adoption requires a current generated job with its original generation receipt')
+            source = hatch.inside(run, item['output_path'])
+            if not source.is_file() or file_hash(source) != item['output_hash']:
+                raise ValueError('generated source is missing or differs from its acquisition receipt')
+            acquisition = {'schema_version': 1, 'kind': 'production-acquisition', 'binding_id': binding_id,
+                           **_binding_context(binding_id, binding), 'job': copy.deepcopy(item)}
+            receipt_bytes = _json_bytes(acquisition)
+            receipt_sha256 = hashlib.sha256(receipt_bytes).hexdigest()
+            receipt_relative = 'provenance/acquisition-' + receipt_sha256 + '.json'
+            _write_immutable(safe_path(root, receipt_relative), receipt_bytes)
+            model = item.get('model_call', {'id': None, 'model': None, 'parameters': None,
+                              'unavailable_reason': 'The handoff did not expose provider call metadata.'})
+            provenance = {'kind': 'fixture' if bundle['project']['fixture'] else 'imagegen',
+                          'origin': 'Bound hatch acquisition ' + data['run_id'] + '/' + job,
+                          'fixture': bundle['project']['fixture'],
+                          'acquisition': {'run_id': data['run_id'], 'job': job,
+                              'receipt_path': receipt_relative, 'receipt_sha256': receipt_sha256,
+                              'model_call': copy.deepcopy(model)}}
+            return _component_import(root, bundle, character_id, version, component_id, spec, source,
+                                     new_version, provenance)
+
+
+def dependency_snapshot(root, scene_id=None, project=None):
+    bundle = _bundle(root, project, verify_hashes=False)
+    scenes = [scene for scene in bundle['scenes'] if scene_id is None or scene['id'] == scene_id]
+    if not scenes:
+        raise ValueError('unknown scene: ' + str(scene_id))
+    shots = {}
+    for scene in scenes:
+        for item in scene['shots']:
+            shot_id = item['id'] if isinstance(item, dict) else item
+            dependencies = shot_dependencies(root, scene['id'], shot_id, project=bundle)
+            shots[scene['id'] + '/' + shot_id] = {'dependencies': dependencies, 'sha256': hash_object(dependencies)}
+    return {'schema_version': 1, 'project_id': bundle['project']['id'],
+            'fixture': bundle['project']['fixture'], 'shots': shots}
+
+
+def impact_report(root, snapshot, scene_id=None):
+    previous = hatch.read(snapshot) if isinstance(snapshot, (str, Path)) else copy.deepcopy(snapshot)
+    current = dependency_snapshot(root, scene_id)
+    if (previous.get('schema_version') != 1 or previous.get('project_id') != current['project_id'] or
+            previous.get('fixture') is not current['fixture'] or not isinstance(previous.get('shots'), dict)):
+        raise ValueError('dependency snapshot must retain the exact project identity and fixture label')
+    affected, reusable = [], []
+    for shot in sorted(set(current['shots']) | set(previous['shots'])):
+        before = previous['shots'].get(shot, {}).get('dependencies', {})
+        after = current['shots'].get(shot, {}).get('dependencies', {})
+        changes = sorted(key for key in set(before) | set(after) if before.get(key) != after.get(key))
+        if not changes:
+            reusable.append(shot)
+            continue
+        actions = {'rerender', 'review_changed_dimensions'}
+        if any(key.startswith('audio') or key == 'dialogue' for key in changes):
+            actions.add('remix_audio_and_check_sync')
+        if any(after.get(key) == 'missing' for key in changes):
+            actions.add('recover_exact_missing_source')
+        affected.append({'shot': shot, 'changed_dependencies': changes, 'required_actions': sorted(actions),
+                         'generation_required': False,
+                         'reason': 'Only declared source, track, camera and continuity dependencies used by this shot are compared.'})
+    return {'schema_version': 1, 'project_id': current['project_id'], 'fixture': current['fixture'],
+            'affected_shots': affected, 'reusable_shots': reusable, 'current_snapshot': current,
+            'provider_called': False}
+
+
+def _available_values(character, dimension):
+    values = set(character['capabilities'].get(dimension, []))
+    if dimension == 'viewpoint':
+        values.update(character['views'])
+    elif dimension == 'facing':
+        values.update(character['identity']['allowed_facings'])
+    elif dimension == 'costume':
+        values.update(item['id'] for item in character['costumes'])
+    return values
+
+
+def coverage_report(root, scene_id=None):
+    """Plan independent requirements and bounded missing work, never a Cartesian asset explosion."""
+    from production_contracts import planned_requirements
+    root = Path(root).resolve()
+    try:
+        bundle = _bundle(root, verify_hashes=False)
+    except (ValueError, OSError) as exc:
+        return {'schema_version': 1, 'validated': False, 'ready': False, 'requirements': [],
+                'reusable': [], 'missing': [],
+                'incompatible': [{'reason': str(exc), 'required_action': 'Repair the project contract or source references before planning generation.'}],
+                'unreviewed': [], 'expected_generation': None, 'provider_called': False}
+    scenes = [scene for scene in bundle['scenes'] if scene_id is None or scene['id'] == scene_id]
+    if not scenes:
+        raise ValueError('unknown scene: ' + str(scene_id))
+    requirements, selected_shots = [], []
+    for scene in scenes:
+        for item in scene['shots']:
+            shot_id = item['id'] if isinstance(item, dict) else item
+            selected_shots.append((scene['id'], shot_id))
+            requirements.extend({**requirement, 'scene': scene['id']}
+                                for requirement in planned_requirements(bundle, shot_id))
+    reusable, missing, incompatible, unreviewed, statuses = [], [], [], [], {}
+    for requirement in requirements:
+        character = bundle['characters'][requirement['character']]
+        if requirement['value'] not in _available_values(character, requirement['dimension']):
+            missing.append({**requirement, 'reason': 'This independently requested capability is not declared.',
+                            'work_key': hash_object([requirement['character'], requirement['dimension'], requirement['value']])})
+            continue
+        key = requirement['character']
+        if key not in statuses:
+            character_id, version = key.rsplit('@', 1)
+            target = {'kind': 'character', 'character_id': character_id, 'version': version}
+            statuses[key] = review_status(root, target, bundle)
+        status = statuses[key]
+        if status['current_pass'] and (bundle['project']['fixture'] or status['production_art_acceptance']):
+            reusable.append(requirement)
+        else:
+            unreviewed.append({**requirement, 'target': status['target'], 'review': status,
+                               'reason': 'Current construction review is required for the declared asset coverage.'})
+    seen_clips = set()
+    for scene, shot_id in selected_shots:
+        shot = bundle['shots'][shot_id]
+        for instance in shot['instances']:
+            for placement in instance['clips']:
+                key = placement['clip']
+                if key in seen_clips:
+                    continue
+                seen_clips.add(key)
+                clip_id, version = key.rsplit('@', 1)
+                target = {'kind': 'clip', 'clip_id': clip_id, 'version': version}
+                status = review_status(root, target, bundle)
+                if not status['current_pass'] or (not bundle['project']['fixture'] and not status['production_art_acceptance']):
+                    unreviewed.append({'scene': scene, 'shot': shot_id, 'instance': instance['id'],
+                                       'dimension': 'clip_review', 'value': key, 'target': target, 'review': status,
+                                       'reason': 'Reusable motion, contact and timing dimensions require current clip review.'})
+            scoped = [item for item in requirements if item['shot'] == shot_id and item['instance'] == instance['id']]
+            boundaries = sorted({frame for item in scoped for frame in (item['start_frame'], item['end_frame'])})
+            character = bundle['characters'][instance['character']]
+            for restriction in character['restrictions']:
+                matched = None
+                for frame in boundaries:
+                    active = [item for item in scoped if item['start_frame'] <= frame < item['end_frame']]
+                    if all(any(item['dimension'] == dimension and item['value'] in values for item in active)
+                           for dimension, values in restriction['when'].items()):
+                        matched = active
+                        break
+                if matched is not None:
+                    incompatible.append({'scene': scene, 'shot': shot_id, 'instance': instance['id'],
+                        'requirements': [item['id'] for item in matched], 'reason': restriction['reason'],
+                        'required_action': 'Revise the overlapping performance or author and review compatible assets.'})
+        dependencies = shot_dependencies(root, scene, shot_id, project=bundle)
+        for key, digest in dependencies.items():
+            if digest == 'missing':
+                missing.append({'scene': scene, 'shot': shot_id, 'dimension': 'asset', 'value': key,
+                                'work_key': key, 'reason': 'Recover the exact referenced source; generation is not a substitute for missing provenance or audio.'})
+    work = {item['work_key']: item for item in missing}
+    recovery = [item for item in work.values() if item['dimension'] == 'asset']
+    authoring_dimensions = {'action', 'pose', 'gaze', 'intensity', 'contact'}
+    authoring = [item for item in work.values() if item['dimension'] in authoring_dimensions]
+    raster = [item for item in work.values() if item not in recovery and item not in authoring]
+    generation = generation_status(root, project=bundle)
+    remaining = generation['remaining_calls']
+    expected = {'unique_missing_work_items': len(work), 'raster_asset_requests': len(raster),
+                'motion_or_track_authoring_items': len(authoring), 'source_recovery_items': len(recovery),
+                'minimum_calls_if_each_raster_request_needs_generation': len(raster),
+                'bounded_attempts': min(len(raster) * generation['limits']['attempts_per_job'], remaining),
+                'remaining_call_limit': remaining, 'within_limit': len(raster) <= remaining,
+                'estimate_note': 'Generation is optional for missing raster coverage. Recover exact missing source, provenance and audio bytes; author clips or tracks for motion work.'}
+    stale = bundle.get('stale', [])
+    return {'schema_version': 1, 'project_id': bundle['project']['id'], 'fixture': bundle['project']['fixture'],
+            'scene_id': scene_id, 'requirements': requirements, 'requirements_sha256': hash_object(requirements),
+            'reusable': reusable, 'missing': missing, 'incompatible': incompatible, 'unreviewed': unreviewed,
+            'expected_generation': expected, 'generation': generation, 'stale_sources': stale,
+            'validated': not stale, 'ready': not (missing or incompatible or unreviewed or stale),
+            'coverage_method': 'Independent dimensions plus declared combination restrictions; no exhaustive state generation.',
+            'provider_called': False}
