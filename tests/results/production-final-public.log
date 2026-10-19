@@ -1,11 +1,12 @@
-Final local regression: 298 tests, 297 passed, 1 skipped, zero failures/errors.
+Final local regression: ran 299 tests, 298 passed, 1 skipped, zero failures/errors.
 Command: python -m unittest discover -s tests -v
-UTC: 2026-10-19T20:59:06.381753+00:00 to 2026-10-19T21:01:36.667515+00:00
-Unittest duration: 149.929 s; process wall duration: 150.285741 s; exit code 0.
+UTC: 2026-10-19T21:24:29.456211+00:00 to 2026-10-19T21:27:10.030628+00:00
+Unittest duration: 160.239 s; process wall duration: 160.574398 s; exit code 0.
 All 123 baseline legacy cases passed. All 11 browser, 13 retained-pilot,
-and 11 acquisition-preparation cases passed. The only skip is unavailable Krita.
+11 acquisition-preparation and 13 source-transport cases passed. The only skip is unavailable Krita.
+The source-transport suite includes an actual Git autocrlf staging/checkout regression.
 
-Publication scope: exact unittest stdout/stderr and hashes of 90 public runtime,
+Publication scope: exact unittest stdout/stderr and hashes of 91 public runtime,
 test and configuration source files only. Complete local metadata is retained
 separately; production media, render artifact paths/hashes, source payloads,
 and the review-dependency inventory are omitted pending publication approval.
@@ -186,6 +187,7 @@ test_cli_verification_restore_and_required_origin_label (test_production_sources
 test_duplicate_json_keys_and_duplicate_inventory_members_are_rejected (test_production_sources.ProductionSourcesTests.test_duplicate_json_keys_and_duplicate_inventory_members_are_rejected) ... ok
 test_empty_selected_file_is_preserved_without_invented_parts (test_production_sources.ProductionSourcesTests.test_empty_selected_file_is_preserved_without_invented_parts) ... ok
 test_existing_destinations_dangling_links_and_unlisted_provenance_are_preserved (test_production_sources.ProductionSourcesTests.test_existing_destinations_dangling_links_and_unlisted_provenance_are_preserved) ... ok
+test_git_autocrlf_preserves_all_production_transport_part_bytes (test_production_sources.ProductionSourcesTests.test_git_autocrlf_preserves_all_production_transport_part_bytes) ... ok
 test_identical_files_share_bounded_content_addressed_parts (test_production_sources.ProductionSourcesTests.test_identical_files_share_bounded_content_addressed_parts) ... ok
 test_interrupted_staging_preserves_atomic_destination_and_can_retry (test_production_sources.ProductionSourcesTests.test_interrupted_staging_preserves_atomic_destination_and_can_retry) ... ok
 test_missing_tampered_and_extra_parts_are_rejected_without_promotion (test_production_sources.ProductionSourcesTests.test_missing_tampered_and_extra_parts_are_rejected_without_promotion) ... ok
@@ -315,12 +317,13 @@ test_prepare_recovers_before_and_after_old_directory_rename (test_workflow.Workf
 test_retry_bound_and_inflight_resume (test_workflow.WorkflowTests.test_retry_bound_and_inflight_resume) ... ok
 
 ----------------------------------------------------------------------
-Ran 298 tests in 149.929s
+Ran 299 tests in 160.239s
 
 OK (skipped=1)
 
-=== Public source hashes, equal before and after ===
+=== Public source SHA-256 before and after (identical) ===
 {
+  ".gitattributes": "ba51f7878340a5740fcfbfd10dce7d43ea46ef4d2e2ed106e7cd0af769838826",
   "assets/playback.html": "531e6407405be8d7e7db23d72a095269dac08908751d3b2d402ace1e415eacde",
   "assets/playback.js": "078d218c82fbc41653bd346f932b7c30f873b9e44a2b2078cef909773c347b21",
   "assets/production-preview.html": "3d5fce3fa06ad46fcbf0dba48008a001e02a355c751295fd16402ce5f81f3efa",
@@ -404,7 +407,7 @@ OK (skipped=1)
   "tests/test_production_provenance.py": "973ab5c8dc4b4381870babe614389b62838ca661d06ad06cd60e5c53fbe8b059",
   "tests/test_production_render.py": "e9048da19eab57b2ff1c73414e1c662962b30658c6abdeaa412355bd22ca4e37",
   "tests/test_production_review_regressions.py": "a2a2e1907becd16810e8a73b4e1fc59996e77e23a64c48d44c65238f889bfdfd",
-  "tests/test_production_sources.py": "cb1a93dc3cefe00cefb53a3a0b361fe3c869e9a64f42b4605feec2e2731a620e",
+  "tests/test_production_sources.py": "37feed06c6d5bafbc86e9b95a19f72b417fae80dc15a64ecaa325333ffeeab0e",
   "tests/test_production_workflow.py": "f15a7c3beb3cf455e331f2b01a97fc0c4620ec799a01a126b1b7104f9dfcf8bf",
   "tests/test_profiles.py": "bd8470f622036ccebf32d1f1cae4f6226e0fb9f65005d83c4789d7ca4b2225be",
   "tests/test_raster.py": "b575b4f1143318909e76fb65f62141a151be79e99194fc942937025158698651",

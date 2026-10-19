@@ -1,14 +1,16 @@
 # Public production validation summary
 
-The final local suite passed **298 tests: 297 passed, one skipped, zero failures or errors**. The [exact public test output](../tests/results/production-final-public.log) records the command, UTC interval, test results and the 90 implementation/test/configuration hashes that remained unchanged throughout the run. It contains no production source payload or render/review dependency inventory.
+The final local suite ran **299 tests: 298 passed, one skipped, zero failures or errors**. The [exact public test output](../tests/results/production-final-public.log) records the command, UTC interval, test results and the 91 implementation/test/configuration hashes that remained unchanged throughout the run. It contains no production source payload or render/review dependency inventory.
 
 ## What was verified
 
-The fresh original baseline passed all 123 cases. The final full run, after the acquisition-input preservation fix, retained all 123 passes and completed all 11 actual-browser tests, all 13 retained-pilot tests, and all 11 new preparation-preservation tests. The complete suite took 149.929 seconds under unittest and exited successfully. The actual browser was Chrome 155.0.8059.84; Python was 3.12.14 and Pillow 13.0.0.
+The fresh original baseline passed all 123 cases. The final full run, after the acquisition-input preservation and Git transport portability fixes, retained all 123 passes and completed all 11 actual-browser tests, all 13 retained-pilot tests, and all 11 new preparation-preservation tests. The complete suite took 160.239 seconds under unittest and exited successfully. The actual browser was Chrome 155.0.8059.84; Python was 3.12.14 and Pillow 13.0.0.
 
 The only skip was the unavailable Krita application. Structural and pixel-roundtrip tests of the OpenRaster handoff passed independently. Neither those tests nor browser playback constitute a verified native editor timeline integration or human production-art acceptance.
 
 The preservation fix rejects existing acquisition destinations, sibling input collisions, symlinks and recovery journals before writes; exclusive creation and ownership-aware cleanup preserve other writers' data. Its eleven regressions exercise both failures and real model-free preparation for new characters.
+
+The final Git transport regression exercises all three content-addressed bundle paths with `core.autocrlf=true`. It checks exact index blobs, actual checkout bytes, part hashes and complete bundle verification, while an unprotected text control proves conversion is active. The repository marks only those immutable `.bin` fragments as binary. A separate isolated negative control without the copied attributes failed as expected; no original payload was reformatted.
 
 ## Compatibility and migration
 

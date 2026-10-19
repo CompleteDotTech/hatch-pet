@@ -2,7 +2,7 @@
 
 The feature branch implements versioned casts, layered components, reusable motion and facial tracks, dialogue and coordinated props, scene/camera contracts, deterministic rendering, local previews, scoped review, dependency tracking, portable archives and an OpenRaster handoff. Existing Codex asset contracts remain unchanged.
 
-The [final local regression](references/production-public-validation.md) passed 298 tests: 297 passed and one optional external-application check was skipped. Its public test output is distinct from the production media/evidence held pending authorization.
+The [final local regression](references/production-public-validation.md) ran 299 tests: 298 passed and one optional external-application check was skipped. Its public test output is distinct from the production media/evidence held pending authorization.
 
 ## Public branch boundary
 
@@ -24,4 +24,4 @@ Use a new output directory. Optional movie creation requires FFmpeg/ffprobe; mod
 
 ## Repository delivery
 
-The user authorized the repository workflow. Work is being committed to `feat/cast-scene-production`, preserving all existing changes. The pull request must remain open while publication is blocked; no checks or branch protections may be bypassed. A completed merge and synchronized default branch will be reported only after they actually succeed.
+The user authorized the repository workflow. The implementation and safe validation output are committed to `feat/cast-scene-production`. Complete retained production assets and evidence are preserved on a separate local branch pending publication authorization. The pull request must remain open while publication is blocked; no checks or branch protections may be bypassed. A completed merge and synchronized default branch will be reported only after they actually succeed.
