@@ -2,6 +2,8 @@
 
 The feature branch implements versioned casts, layered components, reusable motion and facial tracks, dialogue and coordinated props, scene/camera contracts, deterministic rendering, local previews, scoped review, dependency tracking, portable archives and an OpenRaster handoff. Existing Codex asset contracts remain unchanged.
 
+The [final local regression](references/production-public-validation.md) passed 298 tests: 297 passed and one optional external-application check was skipped. Its public test output is distinct from the production media/evidence held pending authorization.
+
 ## Public branch boundary
 
 **This branch is not ready to merge.** Automatic approval review has blocked additional production media and derived review/evidence publication. Some previously accepted source parts and manifests are present, but the public production source transports are incomplete. Their presence must not be interpreted as a self-contained pilot distribution.

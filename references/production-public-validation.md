@@ -1,0 +1,21 @@
+# Public production validation summary
+
+The final local suite passed **298 tests: 297 passed, one skipped, zero failures or errors**. The [exact public test output](../tests/results/production-final-public.log) records the command, UTC interval, test results and the 90 implementation/test/configuration hashes that remained unchanged throughout the run. It contains no production source payload or render/review dependency inventory.
+
+## What was verified
+
+The fresh original baseline passed all 123 cases. The final full run, after the acquisition-input preservation fix, retained all 123 passes and completed all 11 actual-browser tests, all 13 retained-pilot tests, and all 11 new preparation-preservation tests. The complete suite took 149.929 seconds under unittest and exited successfully. The actual browser was Chrome 155.0.8059.84; Python was 3.12.14 and Pillow 13.0.0.
+
+The only skip was the unavailable Krita application. Structural and pixel-roundtrip tests of the OpenRaster handoff passed independently. Neither those tests nor browser playback constitute a verified native editor timeline integration or human production-art acceptance.
+
+The preservation fix rejects existing acquisition destinations, sibling input collisions, symlinks and recovery journals before writes; exclusive creation and ownership-aware cleanup preserve other writers' data. Its eleven regressions exercise both failures and real model-free preparation for new characters.
+
+## Compatibility and migration
+
+The default Codex profile, state order, frames, millisecond timing, dimensions, transparency and package compatibility remain unchanged. Production projects use a separate versioned project/cast/clip/scene contract with integer-frame or rational timing. Existing pet runs remain pet runs; migration and archive restoration retain identities and history and report stale dependencies. No live installation, settings change or WSL shutdown was performed.
+
+## Public delivery boundary
+
+See [delivery status](../DELIVERY_STATUS.md). Automatic approval review has blocked further production media and derived evidence publication. The complete local project, demonstrations, reviews and detailed reports are retained, but the public source transports remain incomplete. Consequently this local passing result is not a claim that a fresh public clone can restore the pilot or pass its retained-source tests yet. The pull request must remain unmerged until the publication blocker is resolved and the complete public snapshot is verified.
+
+A [synthetic demonstration](../examples/production-fixture/README.md) remains reproducible without model calls or pilot media. The detailed local production validation and traceability reports distinguish fixture metrics, actual assistant visual decisions, offline timing, adapter roundtrips and unavailable external integration. Those detailed records are held with the blocked evidence rather than republished through this summary.
