@@ -1,0 +1,6 @@
+# Content-addressed transport parts preserve exact original bytes, even when a
+# fragment happens to contain UTF-8 text. Do not convert line endings or merge
+# fragments independently of their verified inventories.
+examples/production-pilot/source-bundle/parts/*.bin binary
+examples/production-pilot/audio-source-bundle/parts/*.bin binary
+examples/production-pilot/reviews-source-bundle/parts/*.bin binary

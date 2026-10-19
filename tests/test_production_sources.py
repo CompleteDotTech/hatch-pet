@@ -3,8 +3,10 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
+import os
 from pathlib import Path
 import random
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -70,6 +72,81 @@ class ProductionSourcesTests(unittest.TestCase):
             self.assertLessEqual(part['bytes'], 65535)
             self.assertEqual(part['path'], 'parts/' + part['sha256'] + '.bin')
             self.assertEqual(hashlib.sha256((self.parts / part['path']).read_bytes()).hexdigest(), part['sha256'])
+
+    @unittest.skipUnless(shutil.which('git'), 'Git unavailable; checkout portability not exercised')
+    def test_git_autocrlf_preserves_all_production_transport_part_bytes(self):
+        checkout = self.home / 'git-checkout'
+        checkout.mkdir()
+        attributes = Path(__file__).resolve().parents[1] / '.gitattributes'
+        shutil.copyfile(attributes, checkout / '.gitattributes')
+        template = self.home / 'empty-git-template'
+        template.mkdir()
+        # Keep this disposable repository independent of user Git configuration,
+        # attributes, templates and any inherited repository/index environment.
+        environment = {key: value for key, value in os.environ.items() if not key.startswith('GIT_')}
+        environment.update(GIT_CONFIG_NOSYSTEM='1', GIT_CONFIG_GLOBAL=os.devnull,
+                           GIT_ATTR_NOSYSTEM='1')
+
+        def git(*arguments):
+            result = subprocess.run([shutil.which('git'), '-c', 'core.autocrlf=true',
+                '-c', 'core.safecrlf=false', '-c', 'core.attributesFile=' + os.devnull,
+                *arguments], cwd=checkout, env=environment, capture_output=True)
+            self.assertEqual(result.returncode, 0, result.stderr.decode('utf-8', errors='replace'))
+            return result.stdout
+
+        git('init', '--quiet', '--template=' + str(template))
+        original = self.home / 'checkout-original'
+        original.mkdir()
+        # Fifteen-byte lines make the full 65,535-byte part end in whitespace.
+        # CRLF input separately catches conversion during staging, while LF
+        # input catches conversion during checkout. No NUL marks these as binary.
+        line = b'fixture line \t\n'
+        payloads = {
+            'lf.txt': line * (sources.MAX_PART_BYTES // len(line) + 2) + 'Café fixture\n \t'.encode(),
+            'crlf.txt': b'fixture CRLF line \t\r\nsecond line \r\n',
+        }
+        receipt = {'kind': 'fixture', 'fixture': True,
+                   'source_sha256': {name: hashlib.sha256(data).hexdigest() for name, data in payloads.items()},
+                   'note': 'Synthetic Git checkout transport only; no production media or provider call.'}
+        payloads['receipt.json'] = (json.dumps(receipt) + '\n').encode()
+        for name, data in payloads.items():
+            (original / name).write_bytes(data)
+        expected, bundles = {}, []
+        for name in ('source-bundle', 'audio-source-bundle', 'reviews-source-bundle'):
+            bundle = checkout / 'examples/production-pilot' / name
+            sources.create_source_bundle(original, list(payloads), bundle,
+                fixture=True, origin='Synthetic Git checkout fixture.', provenance_paths=['receipt.json'])
+            index = json.loads((bundle / sources.SOURCE_INDEX).read_text())
+            bundles.append(bundle)
+            for part in index['parts']:
+                path = bundle / part['path']
+                relative = path.relative_to(checkout).as_posix()
+                data = path.read_bytes()
+                self.assertEqual(part['path'], 'parts/' + hashlib.sha256(data).hexdigest() + '.bin')
+                expected[relative] = data
+        self.assertTrue(any(len(data) == sources.MAX_PART_BYTES and data.endswith(b'\t\n')
+                            for data in expected.values()))
+        control = checkout / 'unprotected-control.txt'
+        control_bytes = b'ordinary text\nsecond line\n'
+        control.write_bytes(control_bytes)
+        git('add', '--', '.gitattributes', control.name, 'examples')
+        for relative, data in expected.items():
+            with self.subTest(path=relative, phase='staging'):
+                self.assertEqual(git('show', ':' + relative), data)
+            (checkout / relative).unlink()
+        control.unlink()
+        git('checkout-index', '--force', '--', control.name, *expected)
+        self.assertEqual(control.read_bytes(), control_bytes.replace(b'\n', b'\r\n'))
+        for relative, data in expected.items():
+            with self.subTest(path=relative, phase='checkout'):
+                actual = (checkout / relative).read_bytes()
+                self.assertEqual(actual, data)
+                self.assertEqual(Path(relative).stem, hashlib.sha256(actual).hexdigest())
+        for bundle in bundles:
+            with self.subTest(bundle=bundle.name):
+                verified = sources.verify_source_bundle(bundle)
+                self.assertTrue(verified['verified'])
+                self.assertTrue(verified['fixture'])
 
     def test_missing_tampered_and_extra_parts_are_rejected_without_promotion(self):
         first = self.parts / self.read()['parts'][0]['path']
