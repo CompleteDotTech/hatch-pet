@@ -4,11 +4,13 @@ Current formats: controller run schema 3, immutable request schema 3, profile sc
 
 ## Dependencies and stale work
 
+New preparations add a version-1 `resolved_style` snapshot to the existing immutable request schema 3. It contains the complete selected specification, modifiers, notes, rendered contract, catalog version/hash and snapshot hash. The controller records the snapshot hash and includes the full specification in generation handoffs/history. Saved snapshots are validated without resolving against a newer catalog; request hashes already bind them to generation/extraction/review. Historical requests and package receipt schema 2 remain supported without a new migration. See [style reproducibility](style-catalog.md#reproducibility-and-historical-runs).
+
 Generation hashes cover the immutable request, required images, prompt/retry prompt and the relevant generation projection of the profile. Only actual derivations depend on their source state. Independent generation of a mirror-capable state never depends on the optional mirror source. Repair preserves history and invalidates actual descendants.
 
 Extraction hashes cover relevant geometry/alignment/masking/calibration, annotation and source bytes. Playback timing/events and export options do not require another model call or re-extraction. `revise-profile` computes affected generation and extraction states; state-set/order changes deliberately require a new run. Direct file edits remain detectable but may be broader than a controlled revision. Reviews and packages bind exact artifacts and pipeline version, so profile edits require renewed applicable review even when raster sources are reused.
 
-`configure --holes`, `--key-threshold`, or `--shared-scale` changes deterministic processing, invalidates review, and reuses generation. Generation background/key changes rebuild affected prompts. Base review is refreshed after calibration. `status` reports active token age, stale inputs, progress, operation failures and next recovery action. It cannot establish that an external imagegen worker is alive from a token alone.
+`configure --holes`, `--key-threshold`, `--shared-scale`, or `--resampling` changes deterministic processing, invalidates review, and reuses generation. Generation background/key changes rebuild affected prompts. Base review is refreshed after calibration. `status` reports active token age, stale inputs, progress, operation failures and next recovery action. It cannot establish that an external imagegen worker is alive from a token alone.
 
 An unresolved token is never automatically expired or replaced. Recover its original selected output and `ingest`, or explicitly `fail` the token with the observed reason. `resume` records interrupted local operations, reconciles recoverable transactions, and never starts duplicate controllers. Locks release on process exit. No WSL lifecycle operations are used.
 

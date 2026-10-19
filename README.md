@@ -114,10 +114,23 @@ That check does not recreate generation provenance or prove current app integrat
 <div align="center">
 <img src="assets/art/styles.jpg" alt="Pip drawn seven ways: pixel, plush, clay, sticker, flat vector, 3D toy, painterly" width="100%">
 
-`pixel` · `plush` · `clay` · `sticker` · `flat-vector` · `3d-toy` · `painterly` · `brand-inspired` · `auto`
+The original looks remain available: `pixel` · `plush` · `clay` · `sticker` · `flat-vector` · `3d-toy` · `painterly` · `brand-inspired` · `auto`.
 </div>
 
-Pixel art is one option. The Codex profile requires a **compact, readable silhouette** at `192×208`, a **consistent face, palette, and props** across nine rows, and a clean transparent background. Existing alpha is preserved; chroma handling is available after checking the selected base. Custom profiles can explicitly permit detached character details.
+The [versioned style catalog](references/style-catalog.md) provides **205 selectable entries: 195 distinct techniques, 8 palette/finish treatments and 2 adaptive selectors**, plus **14 separate thematic modifiers**. Explore pixel and game art, cartoons, comics, painting, printmaking, sculpture, textiles, paper craft, glass and unusual materials, historical design, contemporary graphics and electronic techniques. Every entry includes seven specific generation dimensions, avoidances, use cases, limitations and extraction guidance. The illustration above is the retained historical seven-look artwork; it is not a preview of the expanded catalog.
+
+```bash
+python scripts/hatch.py styles
+python scripts/hatch.py styles --search "felt"
+python scripts/hatch.py styles --category printmaking --json
+python scripts/hatch.py style --style-preset watercolor
+python scripts/hatch.py style-modifiers
+python scripts/hatch.py prepare --run-dir output/otter-linocut --pet-name Otter --pet-notes "sleepy otter" --style-preset linocut --style-modifier cozy --style-notes "Keep the approved white ear tip."
+```
+
+The Codex profile still requires a **compact, readable silhouette** at `192×208`, a **consistent face, palette, materials and props** across nine rows, and clean transparency. The selected style is saved with a version and content hash and retained through retries, repairs, resume, review, export and packaging. Imported art keeps its origin and approved rendering. Explicit identity and user constraints take precedence over preset guidance. Compatibility warnings flag fragile chroma, scaling, GIF and small-cell combinations; subjective art quality still requires visual review. Existing alpha is preserved, and explicit profile extraction settings retain precedence. Custom profiles can explicitly permit detached character details.
+
+The [validation record](references/style-validation.md) documents all 403 passing tests, independent review, historical compatibility and the distinction between automated fixtures and production artwork.
 
 <br>
 
@@ -191,6 +204,8 @@ flowchart LR
 | `scripts/hatch.py` | Locked lifecycle, imagegen/import handoffs, identity, review, archives, budgets, packaging and optional install/rollback |
 | `scripts/profile_spec.py` | Validates the single versioned animation contract |
 | `scripts/prepare_pet_run.py` | Prepares profile-driven prompts, constraints, layout guides and jobs |
+| `scripts/style_registry.py` | Validates declarative styles/modifiers, searches metadata and freezes reproducible style contracts |
+| `scripts/generate_style_reference.py` | Generates the complete category/ID reference and checks documentation drift |
 | `scripts/derive_running_left_from_running_right.py` | Compatibility wrapper for approved controller mirroring |
 | `scripts/extract_strip_frames.py` | Conservative slots, shared viewport/scale, masking and hash provenance |
 | `scripts/inspect_frames.py` | Exact files/provenance, geometry, temporal and consistency measurements |
