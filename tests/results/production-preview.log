@@ -1,0 +1,6 @@
+setUpClass (test_production_preview.ProductionPreviewTests) ... skipped 'Chromium executable unavailable; install the documented browser test dependency'
+
+----------------------------------------------------------------------
+Ran 0 tests in 0.437s
+
+OK (skipped=1)
