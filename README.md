@@ -4,8 +4,8 @@
 
 <img src="assets/title.svg" alt="hatch-pet" width="720">
 
-**A Codex skill that turns one idea into a living, animated desktop pet.**<br>
-Give it a concept, a brand, or a sketch. It hands back a fully animated, validated, ready-to-install Codex pet.
+**A Codex skill for animated pets and reusable character assets.**<br>
+Start with a concept, brand, or sketch. Generate through the installed imagegen skill, validate and review the result, then export or create a local package.
 
 <br>
 
@@ -27,16 +27,16 @@ Give it a concept, a brand, or a sketch. It hands back a fully animated, validat
 <td width="50%" valign="top">
 
 ### Chapter I · Getting ready
-A name, a one-line description, some reference art, a style. If you only give a **brand name**, a small research worker reads the brand's official pages and writes a mascot brief. It never copies logos or text.
+A name, a description, reference art, and a style become a durable request. Brand research retains source attribution and separates inferred guidance from explicit user constraints.
 
 ### Chapter II · Imagining the main look
 `$imagegen` paints the **canonical base**, a single portrait that every later frame has to match.
 
 ### Chapter III · Picturing the poses
-Nine lightweight workers each paint one animation strip, grounded in the base and an invisible layout guide.
+Each state gets an animation strip grounded in the base, original references, and a layout guide. Generation can be sequential or delegated when authorized.
 
 ### Chapter IV · Hatching
-Deterministic scripts cut the frames, check them, compose the atlas and package the pet.
+Deterministic scripts preserve motion, validate provenance, compose the atlas, and render review assets. A passing visual review precedes packaging and optional installation.
 
 </td>
 </tr>
@@ -97,14 +97,15 @@ Codex reads one fixed atlas: **8 columns × 9 rows** of `192×208` cells. Each r
 Unused cells stay perfectly transparent. The final atlas is `1536×1872`.
 </details>
 
-### 🐣 Adopt Pip
+### 🐣 Inspect Pip
 
-Pip is a real, validated Codex pet (`1536×1872`, 0 errors, 0 transparent-pixel residue). Take Pip home:
+Pip is the bundled historical sample artwork. Check its atlas geometry locally:
 
-```bash
-mkdir -p "${CODEX_HOME:-$HOME/.codex}/pets/pip"
-cp assets/pet/pet.json assets/pet/spritesheet.webp "${CODEX_HOME:-$HOME/.codex}/pets/pip/"
+```powershell
+python scripts/validate_atlas.py assets/pet/spritesheet.webp
 ```
+
+That check does not recreate generation provenance or prove current app integration. New runs use the review and packaging gates described in [the workflow](references/workflow.md).
 
 <br>
 
@@ -116,7 +117,7 @@ cp assets/pet/pet.json assets/pet/spritesheet.webp "${CODEX_HOME:-$HOME/.codex}/
 `pixel` · `plush` · `clay` · `sticker` · `flat-vector` · `3d-toy` · `painterly` · `brand-inspired` · `auto`
 </div>
 
-Pixel art is just one option. Any look is fine as long as the pet keeps a **compact, readable silhouette** at `192×208`, a **consistent face, palette, and props** across all nine rows, and a **clean chroma-key background** for extraction. Effects like tears, smoke or stars are allowed only when they're opaque and physically attached to the pet. Shadows, speed lines, glows and floating sparkles get rejected.
+Pixel art is one option. The Codex profile requires a **compact, readable silhouette** at `192×208`, a **consistent face, palette, and props** across nine rows, and a clean transparent background. Existing alpha is preserved; chroma handling is available after checking the selected base. Custom profiles can explicitly permit detached character details.
 
 <br>
 
@@ -140,13 +141,17 @@ Use $hatch-pet to make a mascot pet for Acme Robotics.
 Use $hatch-pet on ./ref/my-cat.png. Clay style, please.
 ```
 
-Your pet is packaged here:
+Choose a new local run and package location. Package creation is separate from installing into Codex:
 
 ```text
-~/.codex/pets/<pet-name>/
+chosen-package-directory/
 ├── pet.json
 └── spritesheet.webp
 ```
+
+Packages also retain profile, review, metrics, and export metadata. [Cross-platform commands](references/workflow.md) cover preparation, generation handoffs, resume, repair, review, export, packaging, optional installation, rollback, and cleanup.
+
+For other applications, see [profiles and exports](references/profiles-and-exports.md). Ten complete example profiles cover game NPCs, web status characters, OBS local browser sources, tutor/support avatars, IoT displays, stickers, storyboards, evaluation, and UI assets. They share PNG/atlas/animated exports and an event-driven browser preview; they do not claim external production integrations.
 
 <br>
 
@@ -154,10 +159,10 @@ Your pet is packaged here:
 
 ```mermaid
 flowchart LR
-    A([💡 idea · brand · reference]) --> B[prepare_pet_run.py<br/>prompts + layout guides]
+    A([💡 idea · brand · reference]) --> B[hatch.py prepare<br/>profile + prompts + layout guides]
     B --> C[[🎨 $imagegen<br/>canonical base]]
     C --> D[[🎨 $imagegen ×9<br/>row strips]]
-    D -->|mirror if safe| E[derive_running_left…]
+    D -->|explicit approved mirror| E[hatch.py derive]
     D --> F[extract_strip_frames.py]
     E --> F
     F --> G[inspect_frames.py]
@@ -171,23 +176,28 @@ flowchart LR
 
 | Script | Job |
 | --- | --- |
-| `scripts/prepare_pet_run.py` | Infers name, description and chroma key, then writes prompts, 9 layout guides and `imagegen-jobs.json` |
-| `scripts/derive_running_left_from_running_right.py` | Mirrors each frame in place while keeping frame order |
-| `scripts/extract_strip_frames.py` | Cuts generated strips into transparent cells (`auto` or `stable-slots`) |
-| `scripts/inspect_frames.py` | Per-frame checks: components, emptiness, clipping, popping |
+| `scripts/hatch.py` | Locked, atomic lifecycle, generation handoffs, review receipts, packaging, install/rollback and retention |
+| `scripts/profile_spec.py` | Validates the single versioned animation contract |
+| `scripts/prepare_pet_run.py` | Prepares profile-driven prompts, constraints, layout guides and jobs |
+| `scripts/derive_running_left_from_running_right.py` | Compatibility wrapper for approved controller mirroring |
+| `scripts/extract_strip_frames.py` | Conservative slots, shared viewport/scale, masking and hash provenance |
+| `scripts/inspect_frames.py` | Exact files/provenance, geometry, temporal and consistency measurements |
 | `scripts/compose_atlas.py` | Builds the `1536×1872` PNG + WebP atlas |
 | `scripts/validate_atlas.py` | Checks geometry, used and unused cells, and transparency |
 | `scripts/make_contact_sheet.py` | Lays out every frame on one sheet for a human-eye check |
 | `scripts/render_animation_previews.py` | Renders one GIF per row so motion can be judged |
+| `scripts/export_assets.py` | Frames, atlas, static alternatives, GIF/WebP and local browser playback |
 
 **Design principles**
 
 - 🧠 **Models paint, scripts measure.** Image models never decide atlas geometry. Deterministic code does.
-- 🪶 **One lightweight worker per image** keeps each rollout small, and the parent never opens every PNG.
+- 🪶 **One claim per generated image** prevents duplicate generation. A reviewer sees all states and actual timed playback.
 - 🔒 **Identity lock.** Every row is grounded in the canonical base. Drift blocks the hatch even when all automated checks pass.
 - 🩹 **Repair the row, not the sheet.** A failure regenerates only the smallest scope that broke.
 
 More detail lives in [`SKILL.md`](SKILL.md), [`references/animation-rows.md`](references/animation-rows.md), [`references/codex-pet-contract.md`](references/codex-pet-contract.md) and [`references/qa-rubric.md`](references/qa-rubric.md).
+
+Run `python -m unittest discover -s tests -v` for fixture-only regression tests. `python tests/fixture_workflow.py --output-dir C:/work/hatch-fixture-demo --profile examples/web-status.json` creates a clearly labeled complete local demonstration without calling imagegen or installing a pet.
 
 <br>
 

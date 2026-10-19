@@ -1,0 +1,418 @@
+{
+  "schema_version": 1,
+  "id": "codex-v1",
+  "layout": {
+    "columns": 8,
+    "cell_width": 192,
+    "cell_height": 208
+  },
+  "states": [
+    {
+      "id": "idle",
+      "frames": 6,
+      "durations": [
+        280,
+        110,
+        110,
+        140,
+        140,
+        320
+      ],
+      "purpose": "calm resting, breathing and blinking",
+      "alignment": {
+        "coordinate_policy": "slot",
+        "scale_policy": "row",
+        "anchor": [
+          0.5,
+          0.5
+        ],
+        "padding": 5
+      },
+      "motion": "quiet",
+      "generation": {
+        "requires_identity_reference": true,
+        "skill": "imagegen",
+        "instructions": "Calm low-distraction resting loop: subtle breathing, tiny blink, slight head/body bob, and only quiet persona-preserving motion.",
+        "requirements": [
+          "CRITICAL: idle is the low-distraction baseline state and the first frame is also used as the reduced-motion static pet.",
+          "Use only subtle idle motion: gentle breathing, a tiny blink, a slight head or body bob, a very small material sway, or another quiet motion that fits the pet persona.",
+          "Keep the pet essentially in the same pose, facing direction, silhouette, markings, palette, and prop state across all 6 frames.",
+          "Idle variation must stay calm but still read as animation; do not repeat effectively identical copies across the loop.",
+          "Do not show waving, walking, running, jumping, talking, working, reviewing, emotional reactions, large gestures, item interactions, or new props.",
+          "Feet, base, body, or object anchor should remain planted or nearly planted.",
+          "The first and last frames should be very close visually so the loop feels calm and does not pop."
+        ]
+      },
+      "allowed_derivations": [],
+      "validation": {
+        "min_motion": 0.0001,
+        "max_baseline_shift": 0.18,
+        "max_size_ratio": 1.8,
+        "loop_warning_ratio": 3.0
+      }
+    },
+    {
+      "id": "running-right",
+      "frames": 8,
+      "durations": [
+        120,
+        120,
+        120,
+        120,
+        120,
+        120,
+        120,
+        220
+      ],
+      "purpose": "rightward drag locomotion",
+      "alignment": {
+        "coordinate_policy": "slot",
+        "scale_policy": "row",
+        "anchor": [
+          0.5,
+          0.5
+        ],
+        "padding": 5
+      },
+      "motion": "directional",
+      "generation": {
+        "requires_identity_reference": true,
+        "skill": "imagegen",
+        "instructions": "Dragging-right loop: show directional movement to the right through body and limb poses only.",
+        "requirements": [
+          "Show directional drag movement to the right through body, limb, and prop movement only.",
+          "The row must unmistakably face and travel right.",
+          "The movement cadence must alternate visibly across the 8 frames instead of repeating one nearly static stride.",
+          "Do not draw speed lines, dust clouds, floor shadows, motion trails, or detached motion effects."
+        ]
+      },
+      "allowed_derivations": [],
+      "validation": {
+        "min_motion": 0.0001,
+        "max_baseline_shift": 0.18,
+        "max_size_ratio": 1.8,
+        "loop_warning_ratio": 3.0
+      }
+    },
+    {
+      "id": "running-left",
+      "frames": 8,
+      "durations": [
+        120,
+        120,
+        120,
+        120,
+        120,
+        120,
+        120,
+        220
+      ],
+      "purpose": "leftward drag locomotion",
+      "alignment": {
+        "coordinate_policy": "slot",
+        "scale_policy": "row",
+        "anchor": [
+          0.5,
+          0.5
+        ],
+        "padding": 5
+      },
+      "motion": "directional",
+      "generation": {
+        "requires_identity_reference": true,
+        "skill": "imagegen",
+        "instructions": "Dragging-left loop: show directional movement to the left through body and limb poses only.",
+        "requirements": [
+          "Show directional drag movement to the left through body, limb, and prop movement only.",
+          "The row must unmistakably face and travel left.",
+          "The movement cadence must alternate visibly across the 8 frames instead of repeating one nearly static stride.",
+          "Do not draw speed lines, dust clouds, floor shadows, motion trails, or detached motion effects."
+        ]
+      },
+      "allowed_derivations": [
+        {
+          "kind": "horizontal-mirror",
+          "source": "running-right",
+          "requires_explicit_approval": true
+        }
+      ],
+      "validation": {
+        "min_motion": 0.0001,
+        "max_baseline_shift": 0.18,
+        "max_size_ratio": 1.8,
+        "loop_warning_ratio": 3.0
+      }
+    },
+    {
+      "id": "waving",
+      "frames": 4,
+      "durations": [
+        140,
+        140,
+        140,
+        280
+      ],
+      "purpose": "greeting or attention gesture",
+      "alignment": {
+        "coordinate_policy": "slot",
+        "scale_policy": "row",
+        "anchor": [
+          0.5,
+          0.5
+        ],
+        "padding": 5
+      },
+      "motion": "gesture",
+      "generation": {
+        "requires_identity_reference": true,
+        "skill": "imagegen",
+        "instructions": "Greeting loop: paw or limb down, raised, tilted, and returning in a friendly attention gesture.",
+        "requirements": [
+          "Show the greeting through paw, hand, wing, or limb pose only.",
+          "Do not draw wave marks, motion arcs, lines, sparkles, symbols, or floating effects around the gesture."
+        ]
+      },
+      "allowed_derivations": [],
+      "validation": {
+        "min_motion": 0.0001,
+        "max_baseline_shift": 0.18,
+        "max_size_ratio": 1.8,
+        "loop_warning_ratio": 3.0
+      }
+    },
+    {
+      "id": "jumping",
+      "frames": 5,
+      "durations": [
+        140,
+        140,
+        140,
+        140,
+        280
+      ],
+      "purpose": "anticipation, lift, airborne peak, descent and settle",
+      "alignment": {
+        "coordinate_policy": "slot",
+        "scale_policy": "row",
+        "anchor": [
+          0.5,
+          0.5
+        ],
+        "padding": 5
+      },
+      "motion": "vertical",
+      "generation": {
+        "requires_identity_reference": true,
+        "skill": "imagegen",
+        "instructions": "Hover jump loop: anticipation, lift, airborne peak, descent, and settle through body height.",
+        "requirements": [
+          "Show the jump through pose and vertical body position only: anticipation, lift, airborne peak, descent, settle.",
+          "Do not draw ground shadows, contact shadows, drop shadows, oval shadows, landing marks, dust, smears, bounce pads, or motion marks under the pet.",
+          "Keep the area outside the pet clean for the selected background mode: true transparency, or a perfectly flat selected key without darker patches."
+        ]
+      },
+      "allowed_derivations": [],
+      "validation": {
+        "min_motion": 0.0001,
+        "max_baseline_shift": 0.65,
+        "max_size_ratio": 1.8,
+        "loop_warning_ratio": 3.0
+      }
+    },
+    {
+      "id": "failed",
+      "frames": 8,
+      "durations": [
+        140,
+        140,
+        140,
+        140,
+        140,
+        140,
+        140,
+        240
+      ],
+      "purpose": "blocked, failed or cancelled reaction",
+      "alignment": {
+        "coordinate_policy": "slot",
+        "scale_policy": "row",
+        "anchor": [
+          0.5,
+          0.5
+        ],
+        "padding": 5
+      },
+      "motion": "gesture",
+      "generation": {
+        "requires_identity_reference": true,
+        "skill": "imagegen",
+        "instructions": "Blocked/failed loop: slumped or deflated reaction with sad or closed eyes.",
+        "requirements": [
+          "Show failure through slumped pose, drooping ears/limbs, closed or sad eyes, and lower body position.",
+          "Tears, small smoke puffs, or tiny stars are allowed only if attached to or overlapping the pet silhouette and kept inside the same frame slot.",
+          "Do not draw red X marks, floating symbols, detached stars, separated smoke clouds, falling tear drops, dust, or other loose effects."
+        ]
+      },
+      "allowed_derivations": [],
+      "validation": {
+        "min_motion": 0.0001,
+        "max_baseline_shift": 0.18,
+        "max_size_ratio": 1.8,
+        "loop_warning_ratio": 3.0
+      }
+    },
+    {
+      "id": "waiting",
+      "frames": 6,
+      "durations": [
+        150,
+        150,
+        150,
+        150,
+        150,
+        260
+      ],
+      "purpose": "waiting for approval, help or user input",
+      "alignment": {
+        "coordinate_policy": "slot",
+        "scale_policy": "row",
+        "anchor": [
+          0.5,
+          0.5
+        ],
+        "padding": 5
+      },
+      "motion": "gesture",
+      "generation": {
+        "requires_identity_reference": true,
+        "skill": "imagegen",
+        "instructions": "Needs-input loop: expectant asking pose for approval, help, or user input.",
+        "requirements": [
+          "Show that Codex needs approval, help, or user input through an expectant asking pose.",
+          "Keep the motion patient and readable, without turning it into ordinary idle or review."
+        ]
+      },
+      "allowed_derivations": [],
+      "validation": {
+        "min_motion": 0.0001,
+        "max_baseline_shift": 0.18,
+        "max_size_ratio": 1.8,
+        "loop_warning_ratio": 3.0
+      }
+    },
+    {
+      "id": "running",
+      "frames": 6,
+      "durations": [
+        120,
+        120,
+        120,
+        120,
+        120,
+        220
+      ],
+      "purpose": "active task work or processing; not foot-running",
+      "alignment": {
+        "coordinate_policy": "slot",
+        "scale_policy": "row",
+        "anchor": [
+          0.5,
+          0.5
+        ],
+        "padding": 5
+      },
+      "motion": "gesture",
+      "generation": {
+        "requires_identity_reference": true,
+        "skill": "imagegen",
+        "instructions": "Working loop: focused active-task processing, thinking, typing, scanning, or effortful concentration; not literal foot-running, jogging, sprinting, treadmill motion, raised knees, long steps, pumping arms, or directional travel.",
+        "requirements": [
+          "Show the pet actively working or processing, as if running a task: focused posture, busy hands or paws, purposeful bobbing, thinking motion, tool or prop motion only if already part of the pet identity, or other non-locomotion activity.",
+          "Do not show literal foot-running, jogging, sprinting, treadmill motion, raised knees, long steps, pumping arms, directional travel, speed lines, dust clouds, floor shadows, motion trails, or detached motion effects."
+        ]
+      },
+      "allowed_derivations": [],
+      "validation": {
+        "min_motion": 0.0001,
+        "max_baseline_shift": 0.18,
+        "max_size_ratio": 1.8,
+        "loop_warning_ratio": 3.0
+      }
+    },
+    {
+      "id": "review",
+      "frames": 6,
+      "durations": [
+        150,
+        150,
+        150,
+        150,
+        150,
+        280
+      ],
+      "purpose": "focused inspection of completed output",
+      "alignment": {
+        "coordinate_policy": "slot",
+        "scale_policy": "row",
+        "anchor": [
+          0.5,
+          0.5
+        ],
+        "padding": 5
+      },
+      "motion": "gesture",
+      "generation": {
+        "requires_identity_reference": true,
+        "skill": "imagegen",
+        "instructions": "Ready-review loop: focused inspection of completed output with lean, blink, narrowed eyes, head tilt, or paw pose.",
+        "requirements": [
+          "Show review through lean, blink, narrowed eyes, head tilt, or paw/hand position.",
+          "Do not add magnifying glasses, papers, code, UI, punctuation, symbols, or other new props unless they already exist in the base pet identity."
+        ]
+      },
+      "allowed_derivations": [],
+      "validation": {
+        "min_motion": 0.0001,
+        "max_baseline_shift": 0.18,
+        "max_size_ratio": 1.8,
+        "loop_warning_ratio": 3.0
+      }
+    }
+  ],
+  "generation": {
+    "skill": "imagegen",
+    "requires_identity_reference": true,
+    "instructions": "Create a compact full-body mascot readable at the profile cell size. Preserve a consistent identity, face, palette, material, proportions and approved props across every state.",
+    "requirements": [
+      "Use the selected installed imagegen workflow for production artwork.",
+      "No scenery, visible layout guides, labels, shadows, motion trails, glows, or detached decorations.",
+      "Use only approved props. Any allowed effects must remain attached to or overlap the character silhouette."
+    ]
+  },
+  "validation": {
+    "require_provenance": true,
+    "allow_detached_details": false
+  },
+  "export": {
+    "formats": [
+      "frames",
+      "atlas",
+      "gif",
+      "browser"
+    ],
+    "static_state": "idle",
+    "static_frame": 0,
+    "codex_compatible": true
+  },
+  "events": {
+    "idle": "idle",
+    "drag-right": "running-right",
+    "drag-left": "running-left",
+    "hello": "waving",
+    "success": "jumping",
+    "error": "failed",
+    "input-required": "waiting",
+    "working": "running",
+    "review": "review"
+  }
+}

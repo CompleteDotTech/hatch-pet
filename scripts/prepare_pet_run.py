@@ -4,107 +4,28 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import math
 import re
 import shutil
 from datetime import datetime, timezone
 from pathlib import Path
+from types import SimpleNamespace
 
 from PIL import Image
 from PIL import ImageDraw
+from profile_spec import load_profile
 
-ATLAS = {"columns": 8, "rows": 9, "cell_width": 192, "cell_height": 208}
-ATLAS["width"] = ATLAS["columns"] * ATLAS["cell_width"]
-ATLAS["height"] = ATLAS["rows"] * ATLAS["cell_height"]
-
-ROWS = [
-    ("idle", 0, 6, "calm resting, breathing, and blinking loop"),
-    ("running-right", 1, 8, "rightward drag movement loop"),
-    ("running-left", 2, 8, "leftward drag movement loop"),
-    ("waving", 3, 4, "greeting or attention gesture"),
-    ("jumping", 4, 5, "hover or playful jump"),
-    ("failed", 5, 8, "blocked, failed, or cancelled reaction"),
-    ("waiting", 6, 6, "waiting for approval, help, or user input"),
-    ("running", 7, 6, "active task work or processing"),
-    ("review", 8, 6, "ready or completed output review"),
-]
-
-STATE_PROMPTS = {
-    "idle": "Calm low-distraction resting loop: subtle breathing, tiny blink, slight head/body bob, and only quiet persona-preserving motion.",
-    "running-right": "Dragging-right loop: show directional movement to the right through body and limb poses only.",
-    "running-left": "Dragging-left loop: show directional movement to the left through body and limb poses only.",
-    "waving": "Greeting loop: paw or limb down, raised, tilted, and returning in a friendly attention gesture.",
-    "jumping": "Hover jump loop: anticipation, lift, airborne peak, descent, and settle through body height.",
-    "failed": "Blocked/failed loop: slumped or deflated reaction with sad or closed eyes.",
-    "waiting": "Needs-input loop: expectant asking pose for approval, help, or user input.",
-    "running": "Working loop: focused active-task processing, thinking, typing, scanning, or effortful concentration; not literal foot-running, jogging, sprinting, treadmill motion, raised knees, long steps, pumping arms, or directional travel.",
-    "review": "Ready-review loop: focused inspection of completed output with lean, blink, narrowed eyes, head tilt, or paw pose.",
-}
-
-STATE_REQUIREMENTS = {
-    "idle": [
-        "CRITICAL: idle is the low-distraction baseline state and the first frame is also used as the reduced-motion static pet.",
-        "Use only subtle idle motion: gentle breathing, a tiny blink, a slight head or body bob, a very small material sway, or another quiet motion that fits the pet persona.",
-        "Keep the pet essentially in the same pose, facing direction, silhouette, markings, palette, and prop state across all 6 frames.",
-        "Idle variation must stay calm but still read as animation; do not repeat effectively identical copies across the loop.",
-        "Do not show waving, walking, running, jumping, talking, working, reviewing, emotional reactions, large gestures, item interactions, or new props.",
-        "Feet, base, body, or object anchor should remain planted or nearly planted.",
-        "The first and last frames should be very close visually so the loop feels calm and does not pop.",
-    ],
-    "waving": [
-        "Show the greeting through paw, hand, wing, or limb pose only.",
-        "Do not draw wave marks, motion arcs, lines, sparkles, symbols, or floating effects around the gesture.",
-    ],
-    "jumping": [
-        "Show the jump through pose and vertical body position only: anticipation, lift, airborne peak, descent, settle.",
-        "Do not draw ground shadows, contact shadows, drop shadows, oval shadows, landing marks, dust, smears, bounce pads, or motion marks under the pet.",
-        "Keep the background outside the pet perfectly flat chroma key with no darker key-colored patches.",
-    ],
-    "failed": [
-        "Show failure through slumped pose, drooping ears/limbs, closed or sad eyes, and lower body position.",
-        "Tears, small smoke puffs, or tiny stars are allowed only if attached to or overlapping the pet silhouette and kept inside the same frame slot.",
-        "Do not draw red X marks, floating symbols, detached stars, separated smoke clouds, falling tear drops, dust, or other loose effects.",
-    ],
-    "waiting": [
-        "Show that Codex needs approval, help, or user input through an expectant asking pose.",
-        "Keep the motion patient and readable, without turning it into ordinary idle or review.",
-    ],
-    "running": [
-        "Show the pet actively working or processing, as if running a task: focused posture, busy hands or paws, purposeful bobbing, thinking motion, tool or prop motion only if already part of the pet identity, or other non-locomotion activity.",
-        "Do not show literal foot-running, jogging, sprinting, treadmill motion, raised knees, long steps, pumping arms, directional travel, speed lines, dust clouds, floor shadows, motion trails, or detached motion effects.",
-    ],
-    "review": [
-        "Show review through lean, blink, narrowed eyes, head tilt, or paw/hand position.",
-        "Do not add magnifying glasses, papers, code, UI, punctuation, symbols, or other new props unless they already exist in the base pet identity.",
-    ],
-    "running-right": [
-        "Show directional drag movement to the right through body, limb, and prop movement only.",
-        "The row must unmistakably face and travel right.",
-        "The movement cadence must alternate visibly across the 8 frames instead of repeating one nearly static stride.",
-        "Do not draw speed lines, dust clouds, floor shadows, motion trails, or detached motion effects.",
-    ],
-    "running-left": [
-        "Show directional drag movement to the left through body, limb, and prop movement only.",
-        "The row must unmistakably face and travel left.",
-        "The movement cadence must alternate visibly across the 8 frames instead of repeating one nearly static stride.",
-        "Do not draw speed lines, dust clouds, floor shadows, motion trails, or detached motion effects.",
-    ],
-}
-
-NON_DERIVABLE_STATES = {
-    "waving",
-    "jumping",
-    "failed",
-    "waiting",
-    "running",
-    "review",
-}
+# Module defaults come from the same profile as every deterministic consumer.
+_DEFAULT_PROFILE = load_profile()
+ATLAS = dict(_DEFAULT_PROFILE["layout"])
+ROWS = [(s["id"], i, s["frames"], s["purpose"]) for i, s in enumerate(_DEFAULT_PROFILE["states"])]
 
 PET_SAFE_STYLE = (
-    "Pet-safe sprite: compact full-body mascot, readable in a 192x208 cell, "
+    "Pet-safe sprite: compact full-body mascot, readable at the selected profile cell size, "
     "clear silhouette, simple face, stable palette/materials, and crisp edges "
-    "for chroma-key extraction."
+    "for alpha or selected chroma-key extraction."
 )
 
 STYLE_PRESETS = {
@@ -243,12 +164,12 @@ def infer_description(args: argparse.Namespace, reference_paths: list[Path]) -> 
     if args.description.strip():
         return sentence(args.description)
     if args.pet_notes.strip():
-        return sentence(f"A compact Codex pet: {args.pet_notes}")
+        return sentence(f"An animated character: {args.pet_notes}")
     if args.brand_name.strip():
-        return sentence(f"A compact Codex pet inspired by {args.brand_name}")
+        return sentence(f"An animated character inspired by {args.brand_name}")
     if reference_paths:
-        return "A compact Codex pet based on the provided reference image."
-    return "A compact original Codex pet ready for animation."
+        return "An animated character based on the provided reference image."
+    return "An original character ready for animation."
 
 
 def infer_pet_notes(args: argparse.Namespace, reference_paths: list[Path]) -> str:
@@ -280,6 +201,7 @@ def image_metadata(path: Path) -> dict[str, object]:
             "height": image.height,
             "mode": image.mode,
             "format": image.format,
+            "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
         }
 
 
@@ -319,10 +241,12 @@ def create_layout_guide(path: Path, state: str, frames: int) -> dict[str, object
         right = left + cell_width - 1
         draw.rectangle((left, 0, right, height - 1), outline="#111111", width=2)
 
-        safe_left = left + LAYOUT_GUIDE_SAFE_MARGIN_X
-        safe_top = LAYOUT_GUIDE_SAFE_MARGIN_Y
-        safe_right = right - LAYOUT_GUIDE_SAFE_MARGIN_X
-        safe_bottom = height - 1 - LAYOUT_GUIDE_SAFE_MARGIN_Y
+        margin_x = min(LAYOUT_GUIDE_SAFE_MARGIN_X, max(0, (cell_width - 1) // 4))
+        margin_y = min(LAYOUT_GUIDE_SAFE_MARGIN_Y, max(0, (height - 1) // 4))
+        safe_left = left + margin_x
+        safe_top = margin_y
+        safe_right = right - margin_x
+        safe_bottom = height - 1 - margin_y
         draw.rectangle(
             (safe_left, safe_top, safe_right, safe_bottom),
             outline="#2f80ed",
@@ -354,8 +278,8 @@ def create_layout_guide(path: Path, state: str, frames: int) -> dict[str, object
         "frames": frames,
         "cell_width": ATLAS["cell_width"],
         "cell_height": ATLAS["cell_height"],
-        "safe_margin_x": LAYOUT_GUIDE_SAFE_MARGIN_X,
-        "safe_margin_y": LAYOUT_GUIDE_SAFE_MARGIN_Y,
+        "safe_margin_x": margin_x,
+        "safe_margin_y": margin_y,
         "usage": "layout guide input only; do not copy visible guide lines into generated sprite strips",
     }
 
@@ -466,164 +390,194 @@ def compact(value: str) -> str:
     return " ".join(value.strip().split())
 
 
-def brand_inspiration_line(args: argparse.Namespace) -> str:
-    brand_name = compact(args.brand_name)
-    brand_brief = compact(args.brand_brief)
-    if not brand_name and not brand_brief:
-        return ""
+def _constraint_term(value: str) -> str:
+    return " ".join(value.casefold().strip(" .;:!?").split())
 
-    prefix = f"{brand_name}: " if brand_name else ""
-    if brand_brief:
-        return (
-            f"{prefix}{brand_brief} Use only broad mascot-safe cues; do not copy "
-            "readable logos, marks, UI screenshots, or text."
-        )
-    return (
-        f"{prefix}Use only broad mascot-safe brand cues. Do not copy readable "
-        "logos, marks, UI screenshots, or text."
-    )
+
+def _text_list(value, label):
+    if not isinstance(value, list) or any(not isinstance(x, str) or not x.strip() for x in value):
+        raise ValueError(label + " must be a list of nonempty strings")
+    return list(dict.fromkeys(x.strip() for x in value))
+
+
+def discovery_guidance(path: Path | None) -> dict:
+    """Read the established JSON or brief markdown handoff without losing avoidances."""
+    if path is None:
+        return {"avoid": [], "sources": [], "text": "", "uncertainty": "No researched brand guidance supplied."}
+    text = path.read_text(encoding="utf-8")
+    if path.suffix.lower() == ".json" or text.lstrip().startswith("{"):
+        value = json.loads(text)
+        if not isinstance(value, dict):
+            raise ValueError("brand discovery must be an object")
+        avoid = value.get("avoid", value.get("brand_avoid", []))
+        if isinstance(avoid, str):
+            avoid = [x.strip() for x in re.split(r"[,;]", avoid) if x.strip()]
+        sources = value.get("sources", value.get("brand_sources", []))
+        if isinstance(sources, str):
+            sources = [sources]
+        return {"avoid": _text_list(avoid, "discovery avoid"), "sources": _text_list(sources, "discovery sources"), "text": str(value.get("brief", value.get("brand_brief", value.get("summary", "")))), "uncertainty": str(value.get("uncertainty", "Inferred brand guidance; source accuracy and applicability require review."))}
+    avoid, collecting = [], False
+    for line in text.splitlines():
+        match = re.match(r"^\s*(?:[-*]\s*)?(?:\*\*)?avoid(?:\*\*)?\s*[:=]\s*(.*)$", line, re.I)
+        if match:
+            raw = match[1].strip()
+            if raw.startswith("["):
+                avoid.extend(_text_list(json.loads(raw), "discovery avoid"))
+            elif raw:
+                avoid.extend(x.strip() for x in re.split(r"[,;]", raw) if x.strip())
+            collecting = not bool(raw)
+        elif collecting:
+            item = re.match(r"^\s*[-*]\s+(.+)$", line)
+            if item:
+                avoid.append(item[1].strip())
+            elif line.strip():
+                collecting = False
+    sources = list(dict.fromkeys(re.findall(r"https?://[^\s)>]+", text)))
+    return {"avoid": _text_list(avoid, "discovery avoid"), "sources": sources, "text": "", "uncertainty": "Inferred from the preserved discovery brief; not a user requirement."}
+
+
+def build_constraints(raw, required, avoided, discovery, brand_brief="", brand_sources=()):
+    if not isinstance(raw, dict):
+        raise ValueError("constraints must be a JSON object")
+    constraints = json.loads(json.dumps(raw))
+    constraints["require"] = _text_list(_text_list(constraints.get("require", []), "require") + list(required), "require")
+    constraints["avoid"] = _text_list(_text_list(constraints.get("avoid", []), "avoid") + list(avoided), "avoid")
+    required_terms = {_constraint_term(x): x for x in constraints["require"]}
+    conflicts = sorted(required_terms.keys() & {_constraint_term(x) for x in constraints["avoid"]})
+    if conflicts:
+        raise ValueError("conflicting explicit require/avoid constraints: " + ", ".join(required_terms[x] for x in conflicts))
+    constraints["brand_avoid"] = _text_list(_text_list(constraints.get("brand_avoid", []), "brand_avoid") + discovery["avoid"], "brand_avoid")
+    guidance = constraints.get("brand_guidance", {})
+    if not isinstance(guidance, dict):
+        raise ValueError("brand_guidance must be an object")
+    guidance = dict(guidance)
+    if brand_brief or discovery["text"]:
+        guidance["text"] = brand_brief or discovery["text"]
+    guidance.setdefault("text", "")
+    guidance["sources"] = _text_list(_text_list(guidance.get("sources", []), "brand_guidance.sources") + list(brand_sources) + discovery["sources"], "brand_guidance.sources")
+    guidance.setdefault("inferred", True)
+    if type(guidance["inferred"]) is not bool:
+        raise ValueError("brand_guidance.inferred must be boolean")
+    guidance.setdefault("uncertainty", discovery["uncertainty"])
+    if not isinstance(guidance["text"], str) or not isinstance(guidance["uncertainty"], str):
+        raise ValueError("brand guidance text and uncertainty must be strings")
+    constraints["brand_guidance"] = guidance
+    overridden = [x for x in constraints["brand_avoid"] if _constraint_term(x) in required_terms]
+    constraints["conflicts"] = [{"requirement": required_terms[_constraint_term(x)], "inferred_avoidance": x, "resolution": "explicit user requirement takes precedence"} for x in overridden]
+    constraints["effective_brand_avoid"] = [x for x in constraints["brand_avoid"] if x not in overridden]
+    return constraints
+
+
+def _settings(args):
+    value = getattr(args, "extraction", {})
+    return value if isinstance(value, dict) else {}
+
+
+def _background_instructions(args):
+    settings = _settings(args)
+    mode = settings.get("background", "auto")
+    if mode in ("alpha", "auto"):
+        return "Return a true transparent alpha background. Preserve intentional holes, permitted detached details, and antialiased character edges. Do not draw a checkerboard or a solid background."
+    key = settings.get("chroma_key", args.chroma_key)
+    key = key.get("hex", args.chroma_key["hex"]) if isinstance(key, dict) else key
+    return f"Use a perfectly flat {key} chroma-key background. Keep that key and nearby colors out of character surfaces, props, and highlights. If this conflicts with required character colors, report the collision for a different key instead of recoloring the character."
+
+
+def _constraint_instructions(args):
+    constraints = getattr(args, "constraints", {})
+    return "Explicit user requirements and avoidances (preserve across retries):\n" + json.dumps({"require": constraints.get("require", []), "avoid": constraints.get("avoid", [])}, ensure_ascii=False) + "\nInferred brand guidance (subordinate to explicit user instructions; preserve sources and uncertainty):\n" + json.dumps({"guidance": constraints.get("brand_guidance", {}), "effective_avoid": constraints.get("effective_brand_avoid", []), "reported_conflicts": constraints.get("conflicts", [])}, ensure_ascii=False) + "\nComplete structured constraints for provenance:\n" + json.dumps(constraints, ensure_ascii=False)
+
+
+def _profile_requirements(args, state=None):
+    profile = args.profile_data
+    records = [profile["generation"]]
+    if state is not None:
+        records.append(state["generation"])
+    items = []
+    for record in records:
+        if record.get("instructions"):
+            items.append(record["instructions"])
+        items.extend(record.get("requirements", []))
+    return "\n".join("- " + value for value in items)
 
 
 def base_pet_prompt(args: argparse.Namespace) -> str:
-    pet_notes = args.pet_notes or "the pet shown in the reference image(s)"
-    style_contract = resolved_style_contract(args.style_preset, args.style_notes)
-    brand_line = brand_inspiration_line(args)
-    brand_block = f"\nBrand inspiration: {brand_line}\n" if brand_line else "\n"
-    chroma_key = args.chroma_key["hex"]
-    chroma_name = args.chroma_key["name"]
-    return f"""Create one clean full-body reference sprite for Codex pet {args.display_name}.
+    width, height = args.profile_data["layout"]["cell_width"], args.profile_data["layout"]["cell_height"]
+    return f"""Create one canonical full-body character reference for `{args.pet_id}` using the installed imagegen skill.
 
-Pet identity: {pet_notes}.
-Style: {style_contract}
-{brand_block}
-Place a single centered pose on a perfectly flat pure {chroma_name} {chroma_key} chroma-key background. Keep the full pet visible, compact, readable at 192x208, and easy to animate. Preserve approved reference identity cues. No scenery, text, borders, checkerboard transparency, shadows, glows, detached effects, or extra props. Keep {chroma_key} and close colors out of the pet, props, highlights, and effects."""
+Identity: {args.pet_notes}.
+Style: {resolved_style_contract(args.style_preset, args.style_notes)}
+Preserve the approved input references. Keep the entire character visible and readable at {width}x{height}.
+{_background_instructions(args)}
 
+Profile requirements:
+{_profile_requirements(args)}
 
-def row_prompt(
-    args: argparse.Namespace, state: str, row: int, frames: int, purpose: str
-) -> str:
-    pet_notes = args.pet_notes or "the same pet from the approved base reference"
-    style_contract = resolved_style_contract(args.style_preset, args.style_notes)
-    chroma_key = args.chroma_key["hex"]
-    chroma_name = args.chroma_key["name"]
-    state_prompt = STATE_PROMPTS[state]
-    state_requirements = "\n".join(f"- {line}" for line in STATE_REQUIREMENTS[state])
-    return f"""Create one horizontal animation strip for Codex pet `{args.pet_id}`, state `{state}`.
-
-Use the attached canonical base for identity. Use the attached layout guide only for slot count, spacing, centering, and padding; do not draw the guide.
-
-Output exactly {frames} full-body frames in one left-to-right row on flat pure {chroma_name} {chroma_key}. Treat the row as {frames} invisible equal-width slots: one centered complete pose per slot, evenly spaced, with no overlap, clipping, empty slots, labels, or borders.
-
-Identity: same pet in every frame: {pet_notes}. Preserve silhouette, face, proportions, markings, palette, material, style, and props.
-Style: {style_contract}
-Animation continuity: keep apparent pet scale and baseline stable within the row unless the state itself intentionally changes vertical position, such as `jumping`. Move the pose within the slot instead of redrawing the pet larger or smaller frame to frame.
-
-State action: {state_prompt}
-
-State requirements:
-{state_requirements}
-
-Clean extraction: crisp opaque edges, safe padding, no scenery, text, guide marks, checkerboard, shadows, glows, motion blur, speed lines, dust, detached effects, stray pixels, or chroma-key colors inside the pet."""
+{_constraint_instructions(args)}
+"""
 
 
-def retry_row_prompt(
-    args: argparse.Namespace, state: str, row: int, frames: int, purpose: str
-) -> str:
-    pet_notes = args.pet_notes or "the canonical base pet"
-    chroma_key = args.chroma_key["hex"]
-    chroma_name = args.chroma_key["name"]
-    state_prompt = STATE_PROMPTS[state]
-    state_requirements = "\n".join(f"- {line}" for line in STATE_REQUIREMENTS[state])
-    return f"""Create Codex pet row `{state}` for `{args.pet_id}`: exactly {frames} full-body frames in one horizontal strip on flat pure {chroma_name} {chroma_key}.
+def row_prompt(args: argparse.Namespace, state: str, row: int, frames: int, purpose: str) -> str:
+    spec = next(s for s in args.profile_data["states"] if s["id"] == state)
+    policy = spec["alignment"]
+    detached = args.profile_data["validation"]["allow_detached_details"]
+    return f"""Create one horizontal animation strip for `{args.pet_id}`, state `{state}`, using the installed imagegen skill.
 
-Use the attached canonical base for identity and the layout guide only for spacing. Same pet in every frame: {pet_notes}. Preserve silhouette, face, palette, material, proportions, markings, and props.
+Attach every identity and layout input listed in this job, including the canonical base and all original references. Use the layout guide for slot geometry only; never draw its lines or labels.
+Output exactly {frames} complete poses in left-to-right playback order, one pose in each equal-width slot, with clear gutters and no overlap or clipping.
+Identity: {args.pet_notes}. Preserve the same face, proportions, markings, palette, material, style, and approved props in every frame.
+Style: {resolved_style_contract(args.style_preset, args.style_notes)}
+Action: {purpose}
+Motion policy: {spec['motion']}. Preserve intentional vertical motion, including jump height. Maintain one consistent source viewport and apparent character scale across the row; a wider or taller pose must not be drawn at a different scale.
+Extraction alignment: {json.dumps(policy, ensure_ascii=False)}. This describes extraction; do not draw anchors or guides.
+Detached character details are {'permitted by this profile when semantically intended' if detached else 'not permitted by this profile'}.
+{_background_instructions(args)}
 
-Keep apparent pet scale and baseline stable within the row unless the state itself intentionally changes vertical position, such as `jumping`.
+Profile requirements:
+{_profile_requirements(args, spec)}
 
-Action: {state_prompt}
-
-State requirements:
-{state_requirements}
-
-One centered complete pose per invisible slot. No text, boxes, guide marks, scenery, shadows, glows, motion blur, speed lines, dust, detached effects, stray pixels, or {chroma_key} colors in the pet."""
+{_constraint_instructions(args)}
+"""
 
 
-def make_jobs(
-    run_dir: Path, copied_refs: list[dict[str, object]]
-) -> list[dict[str, object]]:
-    reference_inputs = [
-        {"path": rel(Path(str(ref["copied_path"])), run_dir), "role": "pet reference"}
-        for ref in copied_refs
-    ]
-    identity_reference_paths = [CANONICAL_BASE_PATH]
-    jobs: list[dict[str, object]] = [
-        {
-            "id": "base",
-            "kind": "base-pet",
-            "status": "pending",
-            "prompt_file": "prompts/base-pet.md",
-            "input_images": reference_inputs,
-            "output_path": "decoded/base.png",
-            "depends_on": [],
-            "generation_skill": "$imagegen",
-            "requires_grounded_generation": bool(reference_inputs),
-            "allow_prompt_only_generation": not reference_inputs,
-        }
-    ]
-    for state, _row, frames, _purpose in ROWS:
-        depends_on = ["base"]
-        extra_inputs: list[dict[str, str]] = []
-        derivation_policy: dict[str, object] = {
-            "may_derive": False,
-            "reason": "state requires its own generated animation semantics",
-        }
-        if state == "running-left":
-            depends_on.append("running-right")
-            extra_inputs.append(
-                {
-                    "path": "decoded/running-right.png",
-                    "role": "rightward gait reference for leftward row decision",
-                }
-            )
-            derivation_policy = {
-                "may_derive": True,
-                "may_derive_from": "running-right",
-                "derivation": "framewise-horizontal-mirror-preserving-order",
-                "requires_explicit_approval": True,
-                "fallback_generation_skill": "$imagegen",
-            }
-        elif state not in NON_DERIVABLE_STATES:
-            derivation_policy["reason"] = "no deterministic derivation is configured for this state"
-        jobs.append(
-            {
-                "id": state,
-                "kind": "row-strip",
-                "status": "pending",
-                "prompt_file": f"prompts/rows/{state}.md",
-                "retry_prompt_file": f"prompts/row-retries/{state}.md",
-                "input_images": [
-                    *reference_inputs,
-                    {
-                        "path": f"{LAYOUT_GUIDE_DIR}/{state}.png",
-                        "role": f"layout guide for {frames} frame slots; use for spacing only, do not copy guide lines",
-                    },
-                    {
-                        "path": CANONICAL_BASE_PATH,
-                        "role": "canonical identity reference",
-                    },
-                    *extra_inputs,
-                ],
-                "output_path": f"decoded/{state}.png",
-                "depends_on": depends_on,
-                "generation_skill": "$imagegen",
-                "requires_grounded_generation": True,
-                "allow_prompt_only_generation": False,
-                "identity_reference_paths": identity_reference_paths,
-                "parallelizable_after": depends_on,
-                "derivation_policy": derivation_policy,
-                "mirror_policy": derivation_policy if state == "running-left" else {},
-            }
-        )
+def retry_row_prompt(args: argparse.Namespace, state: str, row: int, frames: int, purpose: str) -> str:
+    return row_prompt(args, state, row, frames, purpose) + "\nRetry: repair the recorded defect while preserving every original identity, style, layout, and explicit user constraint. Do not reuse an unapproved derivation.\n"
+
+
+def regenerate_prompts(run_dir: Path, request: dict, profile: dict, settings: dict, include_base=False):
+    """Rebuild affected prompts after calibration; retain explicit row repair notes."""
+    args = SimpleNamespace(**request)
+    args.profile_data = load_profile(profile)
+    args.extraction = settings
+    args.constraints = request.get("constraints", {})
+    args.chroma_key = request["chroma_key"]
+    paths = []
+    if include_base:
+        write_text(run_dir / "prompts/base-pet.md", base_pet_prompt(args))
+        paths.append("prompts/base-pet.md")
+    for row, spec in enumerate(args.profile_data["states"]):
+        for relative, generator in ((f"prompts/rows/{spec['id']}.md", row_prompt), (f"prompts/row-retries/{spec['id']}.md", retry_row_prompt)):
+            path = run_dir / relative
+            previous = path.read_text(encoding="utf-8") if path.exists() else ""
+            repair_start = re.search(r"^Repair required:", previous, re.M)
+            notes = previous[repair_start.start():].strip() if repair_start else ""
+            text = generator(args, spec['id'], row, spec['frames'], spec['purpose'])
+            write_text(path, text + ("\n" + notes if notes else ""))
+            paths.append(relative)
+    return paths
+
+
+def make_jobs(run_dir: Path, copied_refs: list[dict[str, object]], profile=None) -> list[dict[str, object]]:
+    profile = load_profile(profile)
+    reference_inputs = [{"path": rel(Path(str(ref["copied_path"])), run_dir), "role": "original identity reference"} for ref in copied_refs]
+    jobs = [{"id": "base", "kind": "base-pet", "status": "pending", "prompt_file": "prompts/base-pet.md", "input_images": reference_inputs, "output_path": "decoded/base.png", "depends_on": [], "generation_skill": "$imagegen", "requires_grounded_generation": bool(reference_inputs), "allow_prompt_only_generation": not reference_inputs}]
+    for spec in profile["states"]:
+        state, frames = spec["id"], spec["frames"]
+        derivations = spec["allowed_derivations"]
+        dependencies = ["base"] + list(dict.fromkeys(item["source"] for item in derivations))
+        source_inputs = [{"path": f"decoded/{source}.png", "role": "source reference for explicitly approved optional derivation; generation still requires all identity inputs"} for source in dependencies if source != "base"]
+        policy = {"may_derive": bool(derivations), "allowed": derivations, "requires_explicit_approval": bool(derivations)}
+        jobs.append({"id": state, "kind": "row-strip", "status": "pending", "prompt_file": f"prompts/rows/{state}.md", "retry_prompt_file": f"prompts/row-retries/{state}.md", "input_images": [*reference_inputs, {"path": f"{LAYOUT_GUIDE_DIR}/{state}.png", "role": f"layout guide for {frames} frame slots; do not copy guide lines"}, {"path": CANONICAL_BASE_PATH, "role": "canonical identity reference"}, *source_inputs], "output_path": f"decoded/{state}.png", "depends_on": dependencies, "generation_skill": "$imagegen", "requires_grounded_generation": True, "allow_prompt_only_generation": False, "identity_reference_paths": [CANONICAL_BASE_PATH], "parallelizable_after": dependencies, "derivation_policy": policy})
     return jobs
 
 
@@ -682,7 +636,18 @@ def main() -> None:
         help="Chroma key as #RRGGBB, or auto to choose a safe key from reference colors.",
     )
     parser.add_argument("--force", action="store_true")
+    parser.add_argument("--background", choices=("auto", "alpha", "chroma"), default="auto")
+    parser.add_argument("--profile")
+    parser.add_argument("--avoid", action="append", default=[])
+    parser.add_argument("--require", action="append", default=[])
+    parser.add_argument("--constraints", help="JSON structured user requirements and inferred guidance")
     args = parser.parse_args()
+    global ATLAS, ROWS
+    profile = load_profile(args.profile)
+    args.profile_data = profile
+    ATLAS = dict(profile["layout"])
+    ROWS = [(s["id"], i, s["frames"], s["purpose"]) for i, s in enumerate(profile["states"])]
+    raw_constraints = json.loads(Path(args.constraints).read_text(encoding="utf-8")) if args.constraints else {}
 
     raw_reference_paths = [
         Path(raw_path).expanduser().resolve() for raw_path in args.reference
@@ -707,16 +672,18 @@ def main() -> None:
     ]
     if not args.pet_id:
         raise SystemExit("pet id must contain at least one letter or digit")
+    constraints = build_constraints(raw_constraints, args.require, args.avoid, discovery_guidance(raw_brand_discovery_path), args.brand_brief, args.brand_source)
+    args.constraints = constraints
 
     run_dir = (
         Path(args.output_dir).expanduser().resolve()
         if args.output_dir
         else default_output_dir(args.pet_id).resolve()
     )
-    if run_dir.exists() and any(run_dir.iterdir()) and not args.force:
-        raise SystemExit(
-            f"{run_dir} already exists and is not empty; pass --force to reuse it"
-        )
+    if (run_dir / "imagegen-jobs.json").exists():
+        raise SystemExit("existing run: use hatch.py resume or prepare --replace-inputs; --force cannot reuse decoded assets")
+    if run_dir.exists() and any(run_dir.iterdir()):
+        raise SystemExit(f"{run_dir} is not empty; use hatch.py prepare --replace-inputs to preserve and replace the previous run; --force cannot reuse stale files")
     run_dir.mkdir(parents=True, exist_ok=True)
 
     ref_dir = run_dir / "references"
@@ -751,14 +718,18 @@ def main() -> None:
     if raw_brand_discovery_path is not None:
         if not raw_brand_discovery_path.is_file():
             raise SystemExit(f"brand discovery file not found: {raw_brand_discovery_path}")
-        copied_discovery = run_dir / BRAND_DISCOVERY_PATH
+        copied_discovery = run_dir / ("references/brand-discovery.json" if raw_brand_discovery_path.suffix.lower() == ".json" else BRAND_DISCOVERY_PATH)
         shutil.copy2(raw_brand_discovery_path, copied_discovery)
         brand_discovery_path = rel(copied_discovery, run_dir)
 
     args.chroma_key = choose_chroma_key(copied_ref_paths, args.chroma_key)
+    args.extraction = {"background": args.background, "chroma_key": args.chroma_key, "key_threshold": 48, "shared_scale": None}
     layout_guides = create_layout_guides(run_dir)
 
     request = {
+        "schema_version": 2,
+        "profile": profile,
+        "constraints": constraints,
         "pet_id": args.pet_id,
         "display_name": args.display_name,
         "description": args.description,
@@ -774,6 +745,7 @@ def main() -> None:
         ],
         "references": copied_refs,
         "chroma_key": args.chroma_key,
+        "extraction": args.extraction,
         "pet_notes": args.pet_notes,
         "style_preset": args.style_preset,
         "style_notes": args.style_notes,
@@ -789,6 +761,7 @@ def main() -> None:
     (run_dir / "pet_request.json").write_text(
         json.dumps(request, indent=2) + "\n", encoding="utf-8"
     )
+    (run_dir / "profile.json").write_text(json.dumps(profile, indent=2) + "\n", encoding="utf-8")
 
     write_text(prompt_dir / "base-pet.md", base_pet_prompt(args))
     for state, row, frames, purpose in ROWS:
@@ -806,7 +779,7 @@ def main() -> None:
         "created_at": datetime.now(timezone.utc).isoformat(),
         "run_dir": str(run_dir),
         "primary_generation_skill": "$imagegen",
-        "jobs": make_jobs(run_dir, copied_refs),
+        "jobs": make_jobs(run_dir, copied_refs, profile),
     }
     (run_dir / "imagegen-jobs.json").write_text(
         json.dumps(jobs, indent=2) + "\n", encoding="utf-8"

@@ -8,26 +8,9 @@ import json
 from collections import defaultdict
 from pathlib import Path
 
+from profile_spec import profile_for_run
+
 from PIL import Image
-
-COLUMNS = 8
-ROWS = 9
-CELL_WIDTH = 192
-CELL_HEIGHT = 208
-ATLAS_WIDTH = COLUMNS * CELL_WIDTH
-ATLAS_HEIGHT = ROWS * CELL_HEIGHT
-ROW_BY_INDEX = {
-    0: ("idle", 6),
-    1: ("running-right", 8),
-    2: ("running-left", 8),
-    3: ("waving", 4),
-    4: ("jumping", 5),
-    5: ("failed", 8),
-    6: ("waiting", 6),
-    7: ("running", 6),
-    8: ("review", 6),
-}
-
 
 def alpha_nonzero_count(image: Image.Image) -> int:
     alpha = image.getchannel("A")
@@ -48,12 +31,21 @@ def transparent_rgb_residue_count(image: Image.Image) -> int:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("atlas")
+    parser.add_argument("--profile")
     parser.add_argument("--json-out")
     parser.add_argument("--min-used-pixels", type=int, default=50)
     parser.add_argument("--near-opaque-threshold", type=float, default=0.95)
     parser.add_argument("--allow-opaque", action="store_true")
     parser.add_argument("--allow-near-opaque-used-cells", action="store_true")
     args = parser.parse_args()
+
+    profile = profile_for_run(Path(args.atlas).resolve().parent, args.profile)
+    COLUMNS, ROWS = profile['layout']['columns'], len(profile['states'])
+    CELL_WIDTH, CELL_HEIGHT = profile['layout']['cell_width'], profile['layout']['cell_height']
+    ATLAS_WIDTH, ATLAS_HEIGHT = profile['layout']['width'], profile['layout']['height']
+    ROW_NAMES = [state['id'] for state in profile['states']]
+    USED_COUNTS = [state['frames'] for state in profile['states']]
+    ROW_BY_INDEX = {i: (state['id'], state['frames']) for i, state in enumerate(profile['states'])}
 
     atlas_path = Path(args.atlas).expanduser().resolve()
     errors: list[str] = []
@@ -96,7 +88,9 @@ def main() -> None:
                 "nontransparent_pixels": nontransparent,
             }
             cells.append(cell_info)
-            if used and nontransparent < args.min_used_pixels:
+            minimum = profile['states'][row_index].get('validation', {}).get('min_used_pixels',
+                      min(args.min_used_pixels, max(1, round(CELL_WIDTH * CELL_HEIGHT * .01))))
+            if used and nontransparent < minimum:
                 errors.append(
                     f"{state} row {row_index} column {column_index} is empty or too sparse ({nontransparent} pixels)"
                 )
@@ -132,6 +126,7 @@ def main() -> None:
         )
 
     result = {
+        "profile_id": profile["id"],
         "ok": not errors,
         "file": str(atlas_path),
         "format": source_format,
@@ -145,6 +140,7 @@ def main() -> None:
     }
 
     if args.json_out:
+        Path(args.json_out).expanduser().resolve().parent.mkdir(parents=True, exist_ok=True)
         Path(args.json_out).expanduser().resolve().write_text(
             json.dumps(result, indent=2) + "\n", encoding="utf-8"
         )

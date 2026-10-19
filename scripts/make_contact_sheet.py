@@ -6,25 +6,11 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
+from profile_spec import profile_for_run
+
 from PIL import Image, ImageDraw, ImageFont
 
-COLUMNS = 8
-ROWS = 9
-CELL_WIDTH = 192
-CELL_HEIGHT = 208
 LABEL_HEIGHT = 22
-ROW_NAMES = [
-    "idle",
-    "running-right",
-    "running-left",
-    "waving",
-    "jumping",
-    "failed",
-    "waiting",
-    "running",
-    "review",
-]
-USED_COUNTS = [6, 8, 8, 4, 5, 8, 6, 6, 6]
 
 
 def checker(size: tuple[int, int], square: int = 16) -> Image.Image:
@@ -40,13 +26,24 @@ def checker(size: tuple[int, int], square: int = 16) -> Image.Image:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("atlas")
+    parser.add_argument("--profile")
     parser.add_argument("--output", required=True)
     parser.add_argument("--scale", type=float, default=0.5)
     args = parser.parse_args()
 
+    profile = profile_for_run(Path(args.atlas).resolve().parent, args.profile)
+    COLUMNS, ROWS = profile['layout']['columns'], len(profile['states'])
+    CELL_WIDTH, CELL_HEIGHT = profile['layout']['cell_width'], profile['layout']['cell_height']
+    ATLAS_WIDTH, ATLAS_HEIGHT = profile['layout']['width'], profile['layout']['height']
+    ROW_NAMES = [state['id'] for state in profile['states']]
+    USED_COUNTS = [state['frames'] for state in profile['states']]
+    ROW_BY_INDEX = {i: (state['id'], state['frames']) for i, state in enumerate(profile['states'])}
+
     with Image.open(Path(args.atlas).expanduser().resolve()) as opened:
         atlas = opened.convert("RGBA")
 
+    if atlas.size != (ATLAS_WIDTH, ATLAS_HEIGHT):
+        raise ValueError("atlas dimensions differ from profile")
     cell_w = max(1, round(CELL_WIDTH * args.scale))
     cell_h = max(1, round(CELL_HEIGHT * args.scale))
     width = COLUMNS * cell_w

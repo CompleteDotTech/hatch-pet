@@ -5,12 +5,12 @@ from __future__ import annotations
 
 import argparse
 import json
-from datetime import datetime, timezone
 from pathlib import Path
 
 from PIL import Image, ImageOps
+from profile_spec import load_profile
 
-RUNNING_FRAME_COUNT = 8
+RUNNING_FRAME_COUNT = next(s['frames'] for s in load_profile()['states'] if s['id'] == 'running-right')
 
 
 def load_manifest(run_dir: Path) -> dict[str, object]:
@@ -88,62 +88,13 @@ def main() -> None:
     if not args.decision_note.strip():
         raise SystemExit("--decision-note must explain why mirroring is appropriate")
 
+    # Compatibility entry point shares the controller's locking and invalidation gates.
+    from hatch import ownership, manifest, derive
     run_dir = Path(args.run_dir).expanduser().resolve()
-    manifest_path = run_dir / "imagegen-jobs.json"
-    manifest = load_manifest(run_dir)
-    right_job = find_job(manifest, "running-right")
-    left_job = find_job(manifest, "running-left")
-
-    if right_job.get("status") != "complete":
-        raise SystemExit("running-right must be complete before deriving running-left")
-    mirror_policy = left_job.get("mirror_policy")
-    if not isinstance(mirror_policy, dict) or mirror_policy.get("may_derive_from") != "running-right":
-        raise SystemExit("running-left is not configured for conditional mirroring")
-
-    source = run_dir / "decoded" / "running-right.png"
-    output = run_dir / "decoded" / "running-left.png"
-    if not source.is_file():
-        raise SystemExit(f"running-right decoded strip not found: {source}")
-    if output.exists() and not args.force:
-        raise SystemExit(f"{output} already exists; pass --force to replace it")
-
-    output.parent.mkdir(parents=True, exist_ok=True)
-    with Image.open(source) as image:
-        mirrored = mirror_strip_preserving_frame_order(image)
-        mirrored.save(output)
-
-    left_job["status"] = "complete"
-    left_job["source_path"] = manifest_relative(source, run_dir)
-    left_job["derived_from"] = "running-right"
-    left_job["completed_at"] = datetime.now(timezone.utc).isoformat()
-    left_job["metadata"] = image_metadata(output)
-    left_job["mirror_decision"] = {
-        "approved": True,
-        "approved_at": left_job["completed_at"],
-        "note": args.decision_note.strip(),
-        "transform": "framewise-horizontal-mirror-preserving-order",
-    }
-    for key in [
-        "last_error",
-        "repair_reason",
-        "queued_at",
-    ]:
-        left_job.pop(key, None)
-
-    manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
-    print(
-        json.dumps(
-            {
-                "ok": True,
-                "job_id": "running-left",
-                "derived_from": "running-right",
-                "output": str(output),
-                "decision_note": args.decision_note.strip(),
-                "transform": "framewise-horizontal-mirror-preserving-order",
-            },
-            indent=2,
-        )
-    )
+    with ownership(run_dir):
+        result = derive(run_dir, manifest(run_dir), "running-left", args.decision_note,
+                        args.confirm_appropriate_mirror)
+    print(json.dumps(result, indent=2))
 
 
 if __name__ == "__main__":

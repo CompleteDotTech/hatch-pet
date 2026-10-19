@@ -1,66 +1,32 @@
-# QA Rubric
+# Acceptance and visual review
 
-Do not accept an atlas until all checks pass.
+Read the selected profile and the exact source assets. Default Codex geometry is 1536×1872, eight columns, nine rows, 192×208 cells; custom profiles use their own contract. Acceptance requires both deterministic validation and a persisted visual review of the exact hashed artifacts. Automated measurements are evidence, not an artistic verdict.
 
-## Geometry
+## Deterministic evidence
 
-- Exact `1536x1872` dimensions.
-- 8 columns x 9 rows.
-- Each frame fits inside its `192x208` cell.
-- Unused cells are transparent.
-- Fully transparent atlas pixels do not retain non-zero RGB residue after export.
-- `qa/review.json` has no errors.
-- `frames/frames-manifest.json` records component extraction for production rows unless `stable-slots` was intentionally chosen to preserve row-level playback stability after visual inspection.
+- `frames/frames-manifest.json` has schema 3, supported extraction algorithm, exact state/frame indices and order, source/frame/request/profile/calibration hashes, and valid segmentation/viewport/masking evidence. Missing or stale provenance blocks acceptance.
+- Each state contains exactly `00.png` through its last index. Extra images, missing poses, cross-slot components, multiple major cores, and suspicious thin connections are rejected. A count of N components alone is not proof of N valid animation frames.
+- Occupied cells fit the profile, unused cells are transparent, and fully transparent pixels have zero RGB.
+- Inspect `qa/review.json` measurements: exact/near duplicates, adjacent and loop differences, area ratios, baseline displacement, palette change, and possible ordering outliers. Thresholds are state-aware and printed with the measurements.
+- Confirm extraction preserved source movement. `slot` alignment shares the source viewport; `center`/`baseline` can intentionally remove displacement. A wider pose must not cause the body to shrink.
+- Inspect chroma collision and edge warnings. Alpha preserves holes and antialiased edges. For chroma, enclosed matching pixels are retained unless `holes=key` was explicitly chosen; neither default can guess whether an enclosed key-colored region is a detail or a hole.
 
-## Character Consistency
+All deterministic checks must pass. Warnings need visual assessment and specific notes, not blanket dismissal.
 
-- Same silhouette and proportions across every row.
-- Same face and expression language.
-- Same style, material, palette, lighting, and prop design.
-- No frame introduces a new unintended character or object.
+## Required visual evidence
 
-## Pet-Safe Style
+View the canonical reference, labeled contact sheet, and timed playback of every state. Set each corresponding evidence field in the review template only after viewing it. Review actual final-cell size as well as enlarged views.
 
-- Art reads as a Codex app pet, not a scene, app icon, logo sheet, or standalone illustration.
-- Silhouette is compact and clear enough to read inside a `192x208` cell.
-- The chosen style is consistent across every row, including edge treatment, material, lighting, and palette.
-- Pixel, plush, clay, sticker, flat vector, 3D toy, painterly mascot, ink, and brand-inspired styles are all acceptable when readable at pet size.
-- No tiny accessories, texture detail, logo detail, or text that disappears or becomes noisy at pet size.
+- Same character, face, proportions, markings, palette, materials, lighting, and approved props throughout.
+- Full poses within cells; no cropped neighbors, guide marks, checkerboards, key residue, fringing, disappearing details, or accidental opaque rectangles.
+- Motion and loop transitions read correctly. Intentional holds may duplicate frames; static profiles may be still. Quiet idle permits low-amplitude breathing/blinking; directional states need a readable facing and gait; jumping needs retained rise/peak/land displacement.
+- State semantics match the profile purpose. In Codex, `running` means active task work, distinct from directional locomotion. `waiting`, `review`, and `failed` must be distinguishable.
+- The selected still frame works for reduced motion. The default uses idle frame zero.
+- Detached effects obey the profile. The Codex profile excludes detached decorations, shadows, text, scenery, dust, glows and trails. Small attached details should survive extraction.
+- A mirrored row preserves identity, asymmetric details, prop side, marks and lighting, and retains temporal order. Only a declared, explicitly approved derivation is valid.
 
-## Animation Completeness
+Record `pass` or `fail` and specific notes per row in `qa/visual-review.json` through `hatch.py review`. A failing row blocks packaging and installation. Repair the smallest affected row; a wrong canonical identity requires base repair. Changed artifacts invalidate the review. Preserve prior evidence in history; never edit a receipt to pretend an old review covered new files.
 
-- Each row uses the exact expected number of frames.
-- The first and last frames can loop without an obvious pop.
-- Directional rows read as the intended direction.
-- Mirrored directional rows preserve temporal frame order rather than reversing the cadence.
-- State-specific actions are recognizable at pet size.
-- Poses are generated animation variants, not repeated copies of the same source image.
-- Preview GIFs do not show unintended size popping, extraction-induced baseline jumps, or wrong directional facing.
+## Reporting boundaries
 
-## App Fitness
-
-- First idle frame works as a static reduced-motion pet.
-- The `idle` row should be calm and low-distraction; reject it if it reads as waving, walking, running, jumping, talking, working, reviewing, reacting dramatically, changing props, or making large pose/silhouette changes.
-- No important detail is too small to read.
-- No frame is clipped by the cell.
-- Failed/review/waiting states are distinct from ordinary idle.
-- Contact sheets must show whole sprite poses inside cells, not cropped tiles from a larger reference image.
-- Contact sheets must not be accepted if every used frame is just the reference image with small geometric transforms.
-- Used cells must not have white or opaque rectangular backgrounds unless the pet intentionally fills the whole cell and the user accepts that tradeoff.
-- The chroma key must be visually absent from the character. If extraction removes character regions, choose a different key and regenerate the affected base/rows.
-- Contact sheets must not show edge slivers or partial neighboring sprites inside cells.
-- Contact sheets must not show darker/lighter versions of the chroma key as shadows, dust, smears, glows, landing marks, or motion effects. These are background extraction failures and should trigger row repair.
-- If `qa/review.json` reports edge pixels, sparse frames, size outliers, or slot-extraction fallback, inspect the row visually and repair it when the issue is visible.
-- If `qa/review.json` reports chroma-adjacent non-transparent pixels, repair the row unless those pixels are an intentional character color and the selected key was manually accepted.
-- If preview GIFs show size popping even though the generated strip itself had stable scale and placement, rerun extraction with `stable-slots` before regenerating the row.
-- If previews show wrong facing direction, reversed cadence, non-alternating gait, or an effectively static idle loop, repair or regenerate the affected row.
-
-## Repair Policy
-
-Repair the smallest failing scope first:
-
-1. Single bad frame.
-2. One row.
-3. Full atlas regeneration only when identity or layout is broadly broken.
-
-The normal production path should regenerate only the affected row and copy the selected replacement into the same decoded output path unless the base character is wrong.
+Fixture reviews test gate behavior only. A fixture receipt cannot establish production artwork quality. Package verification establishes file integrity, not app integration. Do not claim Codex selection, OBS Program output, engine import, device playback, or delivery to a messaging platform unless that integration was actually exercised and separately recorded. Local exports and example event mappings are useful without such a claim.

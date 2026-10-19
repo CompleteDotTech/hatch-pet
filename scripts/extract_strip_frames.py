@@ -1,408 +1,512 @@
 #!/usr/bin/env python3
-"""Extract generated horizontal row strips into 192x208 sprite frames."""
-
+"""Extract conservative equal-slot rows while preserving source coordinates and scale."""
 from __future__ import annotations
 
 import argparse
+from contextlib import contextmanager
+import hashlib
 import json
 import math
-import re
+import os
 from pathlib import Path
+import re
+import uuid
 
 from PIL import Image
+from profile_spec import load_profile
 
-CELL_WIDTH = 192
-CELL_HEIGHT = 208
-ROW_FRAME_COUNTS = {
-    "idle": 6,
-    "running-right": 8,
-    "running-left": 8,
-    "waving": 4,
-    "jumping": 5,
-    "failed": 8,
-    "waiting": 6,
-    "running": 6,
-    "review": 6,
-}
+_DEFAULT = load_profile()
+CELL_WIDTH, CELL_HEIGHT = _DEFAULT['layout']['cell_width'], _DEFAULT['layout']['cell_height']
+ROW_FRAME_COUNTS = {s['id']: s['frames'] for s in _DEFAULT['states']}
+EXTRACTION_SCHEMA = 3
+EXTRACTION_ALGORITHM = 'equal-slots-v3'
+SEGMENTATION_STRATEGY = 'equal-slot-boundaries-8-connected-core-and-bridge-checks'
+CONFIG_DEFAULTS = {'background': 'auto', 'key_threshold': 48.0, 'holes': 'preserve', 'edge_cleanup': True}
 
 
-def parse_states(raw: str) -> list[str]:
-    if raw.strip().lower() == "all":
-        return list(ROW_FRAME_COUNTS)
-    states = [item.strip() for item in raw.split(",") if item.strip()]
-    unknown = sorted(set(states) - set(ROW_FRAME_COUNTS))
-    if unknown:
-        raise SystemExit(f"unknown state(s): {', '.join(unknown)}")
+def digest(path):
+    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+
+def object_hash(value):
+    return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
+
+
+def atomic_json(path, value):
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = path.with_name(path.name + '.' + uuid.uuid4().hex + '.tmp')
+    try:
+        with temporary.open('w', encoding='utf-8') as stream:
+            json.dump(value, stream, indent=2)
+            stream.write('\n')
+            stream.flush()
+            os.fsync(stream.fileno())
+        os.replace(temporary, path)
+    finally:
+        temporary.unlink(missing_ok=True)
+
+
+@contextmanager
+def extraction_ownership(root):
+    """The OS releases this lock after interruption; the lock file is not ownership."""
+    root = Path(root).resolve()
+    lock = root / '.extraction.lock'
+    if lock.resolve() != lock:
+        raise ValueError('extraction lock must not be a symbolic link')
+    with lock.open('a+b') as stream:
+        stream.seek(0, os.SEEK_END)
+        if stream.tell() == 0:
+            stream.write(b'0')
+            stream.flush()
+        stream.seek(0)
+        try:
+            if os.name == 'nt':
+                import msvcrt
+                msvcrt.locking(stream.fileno(), msvcrt.LK_NBLCK, 1)
+            else:
+                import fcntl
+                fcntl.flock(stream, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except OSError as exc:
+            raise ValueError('another extractor owns this frames directory') from exc
+        try:
+            yield
+        finally:
+            stream.seek(0)
+            if os.name == 'nt':
+                msvcrt.locking(stream.fileno(), msvcrt.LK_UNLCK, 1)
+            else:
+                fcntl.flock(stream, fcntl.LOCK_UN)
+
+
+def parse_states(raw):
+    states = list(ROW_FRAME_COUNTS) if raw.strip().lower() == 'all' else [x.strip() for x in raw.split(',') if x.strip()]
+    if not states or len(states) != len(set(states)) or set(states) - set(ROW_FRAME_COUNTS):
+        raise ValueError('states must be distinct supported state identifiers')
     return states
 
 
-def parse_hex_color(value: str) -> tuple[int, int, int]:
-    if not re.fullmatch(r"#[0-9a-fA-F]{6}", value):
-        raise SystemExit(f"invalid chroma key color: {value}; expected #RRGGBB")
-    return tuple(int(value[index : index + 2], 16) for index in (1, 3, 5))
+def parse_hex_color(value):
+    if not isinstance(value, str) or not re.fullmatch(r'#[0-9a-fA-F]{6}', value):
+        raise ValueError('expected #RRGGBB')
+    return tuple(int(value[i:i + 2], 16) for i in (1, 3, 5))
 
 
-def load_chroma_key(decoded_dir: Path, override: str | None) -> tuple[int, int, int]:
-    if override:
-        return parse_hex_color(override)
-    request_path = decoded_dir.parent / "pet_request.json"
-    if request_path.is_file():
-        request = json.loads(request_path.read_text(encoding="utf-8"))
-        chroma_key = request.get("chroma_key")
-        if isinstance(chroma_key, dict) and isinstance(chroma_key.get("hex"), str):
-            return parse_hex_color(chroma_key["hex"])
-    return parse_hex_color("#00FF00")
+def load_extraction_config(run_root):
+    """Resolve immutable request defaults and the separately versioned calibration."""
+    root = Path(run_root)
+    request_path, settings_path = root / 'pet_request.json', root / 'extraction-settings.json'
+    request = json.loads(request_path.read_text(encoding='utf-8')) if request_path.is_file() else {}
+    settings = json.loads(settings_path.read_text(encoding='utf-8')) if settings_path.is_file() else {}
+    if not isinstance(request, dict) or not isinstance(settings, dict) or not isinstance(request.get('extraction', {}), dict):
+        raise ValueError('extraction request/settings must be JSON objects')
+    config = {**CONFIG_DEFAULTS, **request.get('extraction', {}), **settings}
+    if config.get('shared_scale') is None:
+        config.pop('shared_scale', None)
+    key = config.get('chroma_key', request.get('chroma_key', {'hex': '#00FF00'}))
+    if isinstance(key, dict):
+        key = key.get('hex') or ('#' + ''.join(f'{c:02X}' for c in key.get('rgb', [])))
+    config['chroma_key'] = list(parse_hex_color(key))
+    validate_extraction_config(config)
+    return config
 
 
-def color_distance(
-    red: int,
-    green: int,
-    blue: int,
-    key: tuple[int, int, int],
-) -> float:
-    return math.sqrt((red - key[0]) ** 2 + (green - key[1]) ** 2 + (blue - key[2]) ** 2)
+def validate_extraction_config(config):
+    if config.get('background') not in ('auto', 'alpha', 'chroma'):
+        raise ValueError('extraction background must be auto, alpha, or chroma')
+    threshold = config.get('key_threshold')
+    if type(threshold) not in (int, float) or not math.isfinite(threshold) or not 0 <= threshold <= 442:
+        raise ValueError('extraction key_threshold must be a finite number from 0 to 442')
+    if config.get('holes') not in ('preserve', 'key') or type(config.get('edge_cleanup')) is not bool:
+        raise ValueError('extraction holes must be preserve/key and edge_cleanup must be boolean')
+    if config.get('shared_scale') is not None and (type(config['shared_scale']) not in (int, float) or not math.isfinite(config['shared_scale']) or not 0 < config['shared_scale'] <= 100):
+        raise ValueError('extraction shared_scale must be finite, positive, and <=100')
 
 
-def remove_chroma_background(
-    image: Image.Image,
-    chroma_key: tuple[int, int, int],
-    threshold: float,
-) -> Image.Image:
-    rgba = image.convert("RGBA")
-    pixels = rgba.load()
-    for y in range(rgba.height):
-        for x in range(rgba.width):
-            red, green, blue, alpha = pixels[x, y]
-            if color_distance(red, green, blue, chroma_key) <= threshold:
-                pixels[x, y] = (0, 0, 0, 0)
-    return rgba
+def load_chroma_key(decoded_dir, override):
+    return parse_hex_color(override) if override else tuple(load_extraction_config(Path(decoded_dir).parent)['chroma_key'])
 
 
-def fit_to_cell(image: Image.Image) -> Image.Image:
-    bbox = image.getbbox()
-    target = Image.new("RGBA", (CELL_WIDTH, CELL_HEIGHT), (0, 0, 0, 0))
-    if bbox is None:
-        return target
-
-    sprite = image.crop(bbox)
-    max_width = CELL_WIDTH - 10
-    max_height = CELL_HEIGHT - 10
-    scale = min(max_width / sprite.width, max_height / sprite.height, 1.0)
-    if scale != 1.0:
-        sprite = sprite.resize(
-            (max(1, round(sprite.width * scale)), max(1, round(sprite.height * scale))),
-            Image.Resampling.LANCZOS,
-        )
-    left = (CELL_WIDTH - sprite.width) // 2
-    top = (CELL_HEIGHT - sprite.height) // 2
-    target.alpha_composite(sprite, (left, top))
-    return target
+def normalize(image):
+    rgba = image.convert('RGBA')
+    data = bytearray(rgba.tobytes())
+    for i in range(0, len(data), 4):
+        if not data[i + 3]:
+            data[i:i + 3] = b'\x00\x00\x00'
+    return Image.frombytes('RGBA', rgba.size, bytes(data))
 
 
-def fit_viewport_to_cell(image: Image.Image) -> Image.Image:
-    target = Image.new("RGBA", (CELL_WIDTH, CELL_HEIGHT), (0, 0, 0, 0))
-    if image.getbbox() is None:
-        return target
-
-    viewport = image.copy()
-    max_width = CELL_WIDTH - 10
-    max_height = CELL_HEIGHT - 10
-    scale = min(max_width / viewport.width, max_height / viewport.height, 1.0)
-    if scale != 1.0:
-        viewport = viewport.resize(
-            (max(1, round(viewport.width * scale)), max(1, round(viewport.height * scale))),
-            Image.Resampling.LANCZOS,
-        )
-    left = (CELL_WIDTH - viewport.width) // 2
-    top = (CELL_HEIGHT - viewport.height) // 2
-    target.alpha_composite(viewport, (left, top))
-    return target
+def color_distance(r, g, b, key):
+    return math.sqrt(sum((x - y) ** 2 for x, y in zip((r, g, b), key)))
 
 
-def connected_components(image: Image.Image) -> list[dict[str, object]]:
-    alpha = image.getchannel("A")
+def pixels(image):
+    """Pillow 14-compatible pixel access, retaining support for earlier releases."""
+    return image.get_flattened_data() if hasattr(image, 'get_flattened_data') else image.getdata()
+
+
+def _edge_indices(width, height):
+    return set(range(width)) | set(range((height - 1) * width, height * width)) | set(range(0, width * height, width)) | set(range(width - 1, width * height, width))
+
+
+def _neighbors(i, width, height, diagonal=False):
+    x, y = i % width, i // width
+    offsets = ((-1, 0), (1, 0), (0, -1), (0, 1))
+    if diagonal:
+        offsets += ((-1, -1), (-1, 1), (1, -1), (1, 1))
+    for dx, dy in offsets:
+        nx, ny = x + dx, y + dy
+        if 0 <= nx < width and 0 <= ny < height:
+            yield ny * width + nx
+
+
+def mask_background(image, key, threshold=48, mode='auto', holes='preserve', edge_cleanup=True):
+    """Remove connected key background, preserving enclosed colors unless opted in.
+
+    Edge cleanup only unmixes a boundary pixel when a nearby foreground sample and
+    the known key explain its color. It never performs blanket color erosion.
+    """
+    validate_extraction_config({'background': mode, 'key_threshold': threshold, 'holes': holes, 'edge_cleanup': edge_cleanup})
+    rgba = image.convert('RGBA')
+    data = list(pixels(rgba))
+    width, height = rgba.size
+    edges = _edge_indices(width, height)
+    candidate = [color_distance(*p[:3], key) <= threshold for p in data]
+    key_edge_fraction = sum(candidate[i] and data[i][3] > 0 for i in edges) / max(1, len(edges))
+    transparent_edge_fraction = sum(data[i][3] == 0 for i in edges) / max(1, len(edges))
+    has_alpha = any(p[3] < 255 for p in data)
+    has_zero = any(p[3] == 0 for p in data)
+    authoritative_alpha = has_zero and not (key_edge_fraction >= .5 and transparent_edge_fraction < .5)
+    warnings = []
+    if mode == 'alpha' or (mode == 'auto' and authoritative_alpha):
+        if not has_zero:
+            warnings.append('alpha mode has no fully transparent pixels; inspect opaque background')
+        return normalize(rgba), {'mode': 'alpha', 'removed_pixels': 0, 'cleaned_edge_pixels': 0, 'warnings': warnings, 'key_edge_fraction': key_edge_fraction}
+    if mode == 'auto' and has_alpha:
+        warnings.append('incidental alpha did not establish a transparent background; used edge-connected chroma')
+    seen = bytearray(len(data))
+    stack = [i for i in edges if candidate[i] or data[i][3] == 0]
+    for i in stack:
+        seen[i] = 1
+    while stack:
+        i = stack.pop()
+        for j in _neighbors(i, width, height):
+            if not seen[j] and (candidate[j] or data[j][3] == 0):
+                seen[j] = 1
+                stack.append(j)
+    interior = sum(candidate[i] and not seen[i] and data[i][3] > 0 for i in range(len(data)))
+    if holes == 'key':
+        for i, matches in enumerate(candidate):
+            if matches:
+                seen[i] = 1
+        if interior:
+            warnings.append(f'explicit holes=key removed {interior} enclosed key-adjacent pixels; inspect foreground collisions')
+    elif interior:
+        warnings.append(f'{interior} enclosed key-adjacent pixels preserved; use alpha or explicitly classify key-colored holes')
+    output = data[:]
+    for i, removed in enumerate(seen):
+        if removed:
+            output[i] = (0, 0, 0, 0)
+    cleaned = 0
+    if edge_cleanup:
+        for i, pixel in enumerate(data):
+            if seen[i] or not pixel[3] or not any(seen[j] for j in _neighbors(i, width, height, True)):
+                continue
+            x, y = i % width, i // width
+            samples = []
+            for ny in range(max(0, y - 2), min(height, y + 3)):
+                for nx in range(max(0, x - 2), min(width, x + 3)):
+                    j = ny * width + nx
+                    if not seen[j] and data[j][3] >= pixel[3] and not candidate[j]:
+                        samples.append(data[j])
+            if not samples:
+                continue
+            foreground = max(samples, key=lambda p: color_distance(*p[:3], key))
+            vector = [foreground[c] - key[c] for c in range(3)]
+            norm = sum(v * v for v in vector)
+            if not norm:
+                continue
+            coverage = sum((pixel[c] - key[c]) * vector[c] for c in range(3)) / norm
+            residual = math.sqrt(sum((pixel[c] - key[c] - coverage * vector[c]) ** 2 for c in range(3)))
+            if .05 < coverage < .98 and residual <= min(12, max(2, threshold * .2)):
+                output[i] = (*foreground[:3], max(1, round(pixel[3] * coverage)))
+                cleaned += 1
+    removed = sum(seen)
+    if not removed:
+        warnings.append('no edge-connected key background found; alpha or source repair may be required')
+    out = Image.new('RGBA', rgba.size)
+    out.putdata(output)
+    return normalize(out), {'mode': 'edge-connected-chroma', 'removed_pixels': removed, 'cleaned_edge_pixels': cleaned, 'enclosed_key_pixels': interior, 'holes': holes, 'warnings': warnings, 'key_edge_fraction': key_edge_fraction}
+
+
+def remove_chroma_background(image, chroma_key, threshold):
+    return mask_background(image, chroma_key, threshold)[0]
+
+
+def connected_components(image, alpha_threshold=0):
     width, height = image.size
-    data = alpha.tobytes()
-    visited = bytearray(width * height)
-    components: list[dict[str, object]] = []
-
-    for start, alpha_value in enumerate(data):
-        if alpha_value <= 16 or visited[start]:
+    data = image.getchannel('A').tobytes()
+    visited = bytearray(len(data))
+    result = []
+    for start, alpha in enumerate(data):
+        if alpha <= alpha_threshold or visited[start]:
             continue
-
-        stack = [start]
+        stack, pixels = [start], []
         visited[start] = 1
-        pixels: list[int] = []
-        min_x = width
-        min_y = height
-        max_x = 0
-        max_y = 0
-
+        left, top, right, bottom = width, height, 0, 0
         while stack:
-            current = stack.pop()
-            pixels.append(current)
-            x = current % width
-            y = current // width
-            min_x = min(min_x, x)
-            min_y = min(min_y, y)
-            max_x = max(max_x, x)
-            max_y = max(max_y, y)
-
-            if x > 0:
-                neighbor = current - 1
-                if not visited[neighbor] and data[neighbor] > 16:
-                    visited[neighbor] = 1
-                    stack.append(neighbor)
-            if x + 1 < width:
-                neighbor = current + 1
-                if not visited[neighbor] and data[neighbor] > 16:
-                    visited[neighbor] = 1
-                    stack.append(neighbor)
-            if y > 0:
-                neighbor = current - width
-                if not visited[neighbor] and data[neighbor] > 16:
-                    visited[neighbor] = 1
-                    stack.append(neighbor)
-            if y + 1 < height:
-                neighbor = current + width
-                if not visited[neighbor] and data[neighbor] > 16:
-                    visited[neighbor] = 1
-                    stack.append(neighbor)
-
-        components.append(
-            {
-                "pixels": pixels,
-                "area": len(pixels),
-                "bbox": (min_x, min_y, max_x + 1, max_y + 1),
-                "center_x": (min_x + max_x + 1) / 2,
-            }
-        )
-
-    return components
+            i = stack.pop()
+            pixels.append(i)
+            x, y = i % width, i // width
+            left, top, right, bottom = min(left, x), min(top, y), max(right, x + 1), max(bottom, y + 1)
+            for j in _neighbors(i, width, height, True):
+                if not visited[j] and data[j] > alpha_threshold:
+                    visited[j] = 1
+                    stack.append(j)
+        bbox = (left, top, right, bottom)
+        result.append({'pixels': pixels, 'area': len(pixels), 'bbox': bbox, 'center_x': (left + right) / 2})
+    return result
 
 
-def component_group_image(
-    source: Image.Image,
-    components: list[dict[str, object]],
-    padding: int = 4,
-) -> Image.Image:
-    width, height = source.size
-    min_x = max(0, min(component["bbox"][0] for component in components) - padding)
-    min_y = max(0, min(component["bbox"][1] for component in components) - padding)
-    max_x = min(width, max(component["bbox"][2] for component in components) + padding)
-    max_y = min(height, max(component["bbox"][3] for component in components) + padding)
-
-    output = Image.new("RGBA", (max_x - min_x, max_y - min_y), (0, 0, 0, 0))
-    source_pixels = source.load()
-    output_pixels = output.load()
-    for component in components:
-        for pixel_index in component["pixels"]:
-            x = pixel_index % width
-            y = pixel_index // width
-            output_pixels[x - min_x, y - min_y] = source_pixels[x, y]
-    return output
+def component_bounds(group):
+    return (min(c['bbox'][0] for c in group), min(c['bbox'][1] for c in group), max(c['bbox'][2] for c in group), max(c['bbox'][3] for c in group))
 
 
-def component_frame_groups(
-    strip: Image.Image,
-    frame_count: int,
-) -> list[list[dict[str, object]]] | None:
-    components = connected_components(strip)
-    if not components:
+def _bridge_evidence(component, width):
+    """Detect broad silhouettes connected only through a long, thin horizontal neck."""
+    left, top, right, bottom = component['bbox']
+    if right - left < 12 or bottom - top < 8:
         return None
-
-    largest_area = max(component["area"] for component in components)
-    seed_threshold = max(120, largest_area * 0.20)
-    seeds = [component for component in components if component["area"] >= seed_threshold]
-    if len(seeds) < frame_count:
-        seeds = sorted(components, key=lambda component: component["area"], reverse=True)[
-            :frame_count
-        ]
-    if len(seeds) < frame_count:
-        return None
-
-    seeds = sorted(
-        sorted(seeds, key=lambda component: component["area"], reverse=True)[:frame_count],
-        key=lambda component: component["center_x"],
-    )
-    seed_ids = {id(seed) for seed in seeds}
-    groups: list[list[dict[str, object]]] = [[seed] for seed in seeds]
-    noise_threshold = max(12, largest_area * 0.002)
-
-    for component in components:
-        if id(component) in seed_ids or component["area"] < noise_threshold:
+    columns = [0] * (right - left)
+    for i in component['pixels']:
+        columns[i % width - left] += 1
+    threshold = max(1, int(max(columns) * .08))
+    minimum_gap = max(3, math.ceil((right - left) * .06))
+    start = None
+    for offset, count in enumerate(columns + [max(columns)]):
+        if count <= threshold:
+            start = offset if start is None else start
             continue
-        nearest_index = min(
-            range(len(seeds)),
-            key=lambda index: abs(seeds[index]["center_x"] - component["center_x"]),
-        )
-        groups[nearest_index].append(component)
-
-    return groups
-
-
-def extract_component_frames(strip: Image.Image, frame_count: int) -> list[Image.Image] | None:
-    groups = component_frame_groups(strip, frame_count)
-    if groups is None:
-        return None
-    return [fit_to_cell(component_group_image(strip, group)) for group in groups]
+        if start is not None and offset - start >= minimum_gap:
+            before, after = sum(columns[:start]), sum(columns[offset:])
+            if min(before, after) >= component['area'] * .25:
+                return {'columns': [left + start, left + offset], 'maximum_neck_pixels': threshold, 'side_areas': [before, after]}
+        start = None
+    return None
 
 
-def component_bounds(components: list[dict[str, object]]) -> tuple[int, int, int, int]:
-    return (
-        min(component["bbox"][0] for component in components),
-        min(component["bbox"][1] for component in components),
-        max(component["bbox"][2] for component in components),
-        max(component["bbox"][3] for component in components),
-    )
-
-
-def extract_slot_frames(strip: Image.Image, frame_count: int) -> list[Image.Image]:
+def analyze_slots(strip, frame_count, allow_detached=False):
+    if strip.width < frame_count:
+        raise ValueError('source narrower than frame count')
+    groups, core_groups = [[] for _ in range(frame_count)], [[] for _ in range(frame_count)]
     slot_width = strip.width / frame_count
-    frames = []
-    for index in range(frame_count):
-        left = round(index * slot_width)
-        right = round((index + 1) * slot_width)
-        crop = strip.crop((left, 0, right, strip.height))
-        frames.append(fit_to_cell(crop))
-    return frames
+    maximum_alpha = strip.getchannel('A').getextrema()[1]
+    if maximum_alpha < 16:
+        raise ValueError('no sufficiently visible pose; alpha is below 16')
+    core_threshold = min(127, max(1, maximum_alpha // 2))
+    for destination, components in ((groups, connected_components(strip)), (core_groups, connected_components(strip, core_threshold))):
+        for component in components:
+            left, top, right, bottom = component['bbox']
+            slot = min(frame_count - 1, int(component['center_x'] / slot_width))
+            if left < round(slot * slot_width) or right > round((slot + 1) * slot_width):
+                raise ValueError(f'merged or boundary-crossing pose at {component["bbox"]}; regenerate with clear slot gutters')
+            destination[slot].append(component)
+    evidence = []
+    for index, group in enumerate(groups):
+        if not group or not core_groups[index]:
+            raise ValueError(f'missing pose in slot {index}')
+        ordered = sorted(group, key=lambda c: c['area'], reverse=True)
+        cores = sorted(core_groups[index], key=lambda c: c['area'], reverse=True)
+        major = [c for c in cores if c['area'] >= max(4, cores[0]['area'] * .20)]
+        if len(major) > 1:
+            raise ValueError(f'ambiguous extra complete pose or disconnected major part in slot {index}: {len(major)} opaque-core components; inspect faint connections and regenerate')
+        bridge = _bridge_evidence(cores[0], strip.width)
+        if bridge:
+            raise ValueError(f'ambiguous merged poses in slot {index}: broad silhouettes connected through a narrow bridge at columns {bridge["columns"]}; inspect source')
+        if ordered[1:] and not allow_detached:
+            main = ordered[0]['bbox']
+            limit = max(3, min(main[2] - main[0], main[3] - main[1]) * .2)
+            for component in ordered[1:]:
+                box = component['bbox']
+                gap = max(main[0] - box[2], box[0] - main[2], main[1] - box[3], box[1] - main[3], 0)
+                if gap > limit:
+                    raise ValueError(f'uncertain detached detail in slot {index} at {box}; profile must permit detached details or source needs repair')
+        evidence.append({'slot': index, 'bounds': list(component_bounds(group)), 'components': len(group), 'core_components': len(cores), 'major_components': len(major), 'pixels': sum(c['area'] for c in group), 'core_pixels': sum(c['area'] for c in cores), 'narrow_bridge': None})
+    return groups, {'strategy': SEGMENTATION_STRATEGY, 'confidence': 'geometry-consistent-semantic-review-required', 'slots': evidence, 'alpha_connectivity': 8, 'alpha_threshold': 0, 'core_alpha_threshold': core_threshold, 'source_size': list(strip.size)}
 
 
-def extract_stable_slot_frames(strip: Image.Image, frame_count: int) -> list[Image.Image]:
-    groups = component_frame_groups(strip, frame_count)
-    padding = 4
-    if groups is not None:
-        bboxes = [component_bounds(group) for group in groups]
-        shared_top = max(0, min(bbox[1] for bbox in bboxes) - padding)
-        shared_bottom = min(strip.height, max(bbox[3] for bbox in bboxes) + padding)
-        viewport_width = max(bbox[2] - bbox[0] for bbox in bboxes) + padding * 2
-        viewport_height = max(1, shared_bottom - shared_top)
-        frames = []
-        for group, bbox in zip(groups, bboxes):
-            grouped = component_group_image(strip, group, padding=padding)
-            grouped_top = max(0, bbox[1] - padding)
-            viewport = Image.new(
-                "RGBA",
-                (viewport_width, viewport_height),
-                (0, 0, 0, 0),
-            )
-            left = (viewport_width - grouped.width) // 2
-            viewport.alpha_composite(grouped, (left, grouped_top - shared_top))
-            frames.append(fit_viewport_to_cell(viewport))
-        return frames
-
-    bbox = strip.getbbox()
-    if bbox is None:
-        return [
-            Image.new("RGBA", (CELL_WIDTH, CELL_HEIGHT), (0, 0, 0, 0))
-            for _ in range(frame_count)
-        ]
-
-    shared_top = max(0, bbox[1] - padding)
-    shared_bottom = min(strip.height, bbox[3] + padding)
-    slot_width = strip.width / frame_count
-    frames = []
-    for index in range(frame_count):
-        left = round(index * slot_width)
-        right = round((index + 1) * slot_width)
-        crop = strip.crop((left, shared_top, right, shared_bottom))
-        frames.append(fit_viewport_to_cell(crop))
-    return frames
+def component_frame_groups(strip, frame_count):
+    return analyze_slots(strip, frame_count)[0]
 
 
-def extract_state(
-    strip_path: Path,
-    state: str,
-    output_root: Path,
-    chroma_key: tuple[int, int, int],
-    threshold: float,
-    method: str,
-) -> dict[str, object]:
-    frame_count = ROW_FRAME_COUNTS[state]
-    with Image.open(strip_path) as opened:
-        strip = remove_chroma_background(opened, chroma_key, threshold)
+def render_slots(strip, frame_count, cell_size=(192, 208), alignment='source', scale=None, padding=5, anchor=(.5, .5)):
+    """Use one viewport and one scale for the row; slot coordinates preserve jumping."""
+    slot_width, viewport_height = strip.width / frame_count, strip.height
+    if alignment not in ('source', 'row', 'center', 'bottom'):
+        raise ValueError(f'unsupported alignment {alignment}')
+    if type(padding) is not int or not 0 <= padding < min(cell_size) / 2:
+        raise ValueError('padding must leave a positive cell viewport')
+    if len(anchor) != 2 or any(type(x) not in (int, float) or not math.isfinite(x) or not 0 <= x <= 1 for x in anchor):
+        raise ValueError('anchor must contain two finite normalized coordinates')
+    boxes = [strip.crop((round(i * slot_width), 0, round((i + 1) * slot_width), viewport_height)).getbbox() for i in range(frame_count)]
+    if any(box is None for box in boxes):
+        raise ValueError('cannot render a missing pose')
+    top, bottom = 0, viewport_height
+    if alignment == 'row':
+        top, bottom = min(b[1] for b in boxes), max(b[3] for b in boxes)
+    view_height = bottom - top
+    available = (cell_size[0] - padding * 2, cell_size[1] - padding * 2)
+    chosen = min(available[0] / math.ceil(slot_width), available[1] / view_height, 1.0) if scale is None else scale
+    if type(chosen) not in (int, float) or not math.isfinite(chosen) or not 0 < chosen <= 100:
+        raise ValueError('scale must be finite, positive, and <=100')
+    if math.ceil(slot_width) * chosen > available[0] + 1e-9 or view_height * chosen > available[1] + 1e-9:
+        raise ValueError('shared scale clips padded source viewport; use a smaller calibration scale')
+    result = []
+    for i in range(frame_count):
+        view = strip.crop((round(i * slot_width), top, round((i + 1) * slot_width), bottom))
+        if alignment in ('center', 'bottom'):
+            box = view.getbbox()
+            sprite = view.crop(box)
+            view = Image.new('RGBA', view.size)
+            view.alpha_composite(sprite, ((view.width - sprite.width) // 2, (view.height - sprite.height) // 2 if alignment == 'center' else view.height - sprite.height))
+        view = view.resize((max(1, round(view.width * chosen)), max(1, round(view.height * chosen))), Image.Resampling.LANCZOS)
+        offset = (padding + round((available[0] - view.width) * anchor[0]), padding + round((available[1] - view.height) * anchor[1]))
+        canvas = Image.new('RGBA', cell_size)
+        canvas.alpha_composite(view, offset)
+        result.append(normalize(canvas))
+    return result, {'alignment': alignment, 'source_viewport': [slot_width, top, view_height], 'source_size': list(strip.size), 'scale': chosen, 'cell_size': list(cell_size), 'padding': padding, 'anchor': list(anchor)}
 
+
+def extract_component_frames(strip, frame_count):
+    analyze_slots(strip, frame_count)
+    return render_slots(strip, frame_count)[0]
+
+
+def extract_slot_frames(strip, frame_count):
+    return extract_component_frames(strip, frame_count)
+
+
+def extract_stable_slot_frames(strip, frame_count):
+    return extract_component_frames(strip, frame_count)
+
+
+def fit_to_cell(image):
+    return render_slots(image, 1)[0][0]
+
+
+def fit_viewport_to_cell(image):
+    return fit_to_cell(image)
+
+
+def extraction_configuration(profile, state, config, method='auto', alignment=None, scale=None):
+    spec = next((s for s in (profile or {}).get('states', []) if s['id'] == state), {})
+    policy = spec.get('alignment', {'coordinate_policy': 'slot', 'scale_policy': 'row', 'padding': 5})
+    coordinate = policy.get('coordinate_policy', 'slot')
+    chosen_alignment = alignment or {'slot': 'source', 'center': 'center', 'baseline': 'bottom'}[coordinate]
+    scale_policy = policy.get('scale_policy', 'row')
+    chosen_scale = scale
+    if chosen_scale is None and scale_policy == 'none':
+        chosen_scale = 1.0
+    if chosen_scale is None and scale_policy == 'shared':
+        chosen_scale = config.get('shared_scale') or policy.get('scale')
+        if chosen_scale is None:
+            raise ValueError('shared scale policy requires extraction-settings.json shared_scale calibration')
+    return {'chroma_key': list(config['chroma_key']), 'key_threshold': float(config['key_threshold']), 'background': config['background'], 'holes': config['holes'], 'edge_cleanup': config['edge_cleanup'], 'requested_method': method, 'alignment': chosen_alignment, 'scale_policy': scale_policy, 'requested_scale': chosen_scale, 'padding': policy.get('padding', 5), 'anchor': list(policy.get('anchor', [.5, .5]))}
+
+
+def extract_state(strip_path, state, output_root, chroma_key, threshold, method, profile=None, alpha_mode='auto', alignment=None, scale=None, extraction_config=None):
+    if not re.fullmatch(r'[a-z0-9][a-z0-9-]*', state):
+        raise ValueError('state must be a safe lowercase identifier')
+    config = {**CONFIG_DEFAULTS, 'chroma_key': list(chroma_key), 'key_threshold': threshold, 'background': alpha_mode, **(extraction_config or {})}
+    validate_extraction_config(config)
+    spec = next((s for s in (profile or {}).get('states', []) if s['id'] == state), {})
+    count = spec.get('frames', ROW_FRAME_COUNTS.get(state))
+    if not count:
+        raise ValueError(f'unknown state {state}')
+    policy = extraction_configuration(profile, state, config, method, alignment, scale)
+    with Image.open(strip_path) as source:
+        strip, mask = mask_background(source, tuple(config['chroma_key']), config['key_threshold'], config['background'], config['holes'], config['edge_cleanup'])
+    _, evidence = analyze_slots(strip, count, (profile or {}).get('validation', {}).get('allow_detached_details', False))
+    layout = (profile or {}).get('layout', {})
+    frames, viewport = render_slots(strip, count, (layout.get('cell_width', 192), layout.get('cell_height', 208)), policy['alignment'], policy['requested_scale'], policy['padding'], policy['anchor'])
+    output_root = Path(output_root).resolve()
     state_dir = output_root / state
+    if state_dir.resolve() != state_dir:
+        raise ValueError(f'{state}: frame directory is a symbolic link or junction; refusing to overwrite another asset tree')
     state_dir.mkdir(parents=True, exist_ok=True)
-
-    frames = None
-    used_method = method
-    if method in {"auto", "components"}:
-        frames = extract_component_frames(strip, frame_count)
-        if frames is None and method == "components":
-            raise SystemExit(f"could not find {frame_count} sprite components in {strip_path}")
-        if frames is not None:
-            used_method = "components"
-
-    if frames is None:
-        if method == "stable-slots":
-            frames = extract_stable_slot_frames(strip, frame_count)
-            used_method = "stable-slots"
-        else:
-            frames = extract_slot_frames(strip, frame_count)
-            used_method = "slots"
-
-    outputs = []
-    for index, frame in enumerate(frames):
-        output = state_dir / f"{index:02d}.png"
-        frame.save(output)
-        outputs.append(str(output))
-    return {"state": state, "frames": outputs, "method": used_method}
+    expected = {f'{i:02d}.png' for i in range(count)}
+    extras = [p.name for p in state_dir.iterdir() if p.suffix.lower() in ('.png', '.webp', '.jpg', '.jpeg') and p.name not in expected]
+    if extras:
+        raise ValueError(f'ambiguous extra files in {state}: {extras}')
+    for name in expected:
+        if (state_dir / name).resolve() != state_dir / name:
+            raise ValueError(f'{state}: frame {name} is a symbolic link; refusing to overwrite another asset')
+    paths = []
+    for i, frame in enumerate(frames):
+        path = (state_dir / f'{i:02d}.png').resolve()
+        temporary = path.with_name(path.name + '.' + uuid.uuid4().hex + '.tmp')
+        try:
+            frame.save(temporary, format='PNG')
+            os.replace(temporary, path)
+        finally:
+            temporary.unlink(missing_ok=True)
+        paths.append(path)
+    settings = {'configuration': policy, **viewport}
+    run_root = Path(output_root).parent
+    provenance = {field: digest(path) if path.is_file() else None for field, path in (('request_sha256', run_root / 'pet_request.json'), ('extraction_settings_sha256', run_root / 'extraction-settings.json'))}
+    return {'state': state, 'schema_version': EXTRACTION_SCHEMA, 'algorithm': EXTRACTION_ALGORITHM, 'frames': [str(p) for p in paths], 'frame_indices': list(range(count)), 'frame_hashes': [digest(p) for p in paths], 'method': 'stable-slots', 'source_path': str(Path(strip_path).resolve()), 'source_sha256': digest(strip_path), 'settings': settings, 'settings_sha256': object_hash(settings), 'profile_sha256': object_hash(profile) if profile else None, 'evidence': evidence, 'mask': mask, **provenance}
 
 
-def main() -> None:
+def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--decoded-dir", required=True)
-    parser.add_argument("--output-dir", required=True)
-    parser.add_argument("--states", default="all")
-    parser.add_argument("--chroma-key", help="Override chroma key as #RRGGBB.")
-    parser.add_argument("--key-threshold", type=float, default=96.0)
-    parser.add_argument(
-        "--method",
-        choices=("auto", "components", "slots", "stable-slots"),
-        default="auto",
-        help="Use connected sprite components when possible, raw equal slots, or row-stable slot viewports.",
-    )
+    parser.add_argument('--decoded-dir', required=True)
+    parser.add_argument('--output-dir', required=True)
+    parser.add_argument('--states', default='all')
+    parser.add_argument('--profile')
+    parser.add_argument('--chroma-key')
+    parser.add_argument('--key-threshold', type=float)
+    parser.add_argument('--method', choices=('auto', 'components', 'slots', 'stable-slots'), default='auto')
+    parser.add_argument('--alpha-mode', choices=('auto', 'alpha', 'chroma'))
+    parser.add_argument('--alignment', choices=('source', 'row', 'center', 'bottom'))
+    parser.add_argument('--scale', type=float)
     args = parser.parse_args()
-
-    decoded_dir = Path(args.decoded_dir).expanduser().resolve()
-    output_dir = Path(args.output_dir).expanduser().resolve()
-    chroma_key = load_chroma_key(decoded_dir, args.chroma_key)
+    decoded, out = Path(args.decoded_dir).resolve(), Path(args.output_dir).resolve()
+    out.mkdir(parents=True, exist_ok=True)
+    profile = load_profile(args.profile or (decoded.parent / 'profile.json' if (decoded.parent / 'profile.json').exists() else None))
+    global ROW_FRAME_COUNTS
+    ROW_FRAME_COUNTS = {s['id']: s['frames'] for s in profile['states']}
     states = parse_states(args.states)
-    manifest = []
-    for state in states:
-        strip_path = decoded_dir / f"{state}.png"
-        if not strip_path.is_file():
-            raise SystemExit(f"missing generated strip for {state}: {strip_path}")
-        manifest.append(
-            extract_state(
-                strip_path,
-                state,
-                output_dir,
-                chroma_key,
-                args.key_threshold,
-                args.method,
-            )
-        )
-
-    (output_dir / "frames-manifest.json").write_text(
-        json.dumps(
-            {
-                "ok": True,
-                "chroma_key": {
-                    "hex": f"#{chroma_key[0]:02X}{chroma_key[1]:02X}{chroma_key[2]:02X}",
-                    "rgb": list(chroma_key),
-                    "threshold": args.key_threshold,
-                },
-                "rows": manifest,
-            },
-            indent=2,
-        )
-        + "\n",
-        encoding="utf-8",
-    )
-    print(json.dumps({"ok": True, "frames_root": str(output_dir), "states": states}, indent=2))
+    config = load_extraction_config(decoded.parent)
+    overrides = {'chroma_key': list(parse_hex_color(args.chroma_key)) if args.chroma_key else None, 'key_threshold': args.key_threshold, 'background': args.alpha_mode}
+    for key, value in overrides.items():
+        if value is not None:
+            if (decoded.parent / 'pet_request.json').exists() and config[key] != value:
+                raise ValueError(f'{key} differs from prepared settings; recalibrate through the controller so affected prompts and outputs are invalidated')
+            config[key] = value
+    if (args.alignment is not None or args.scale is not None) and (decoded.parent / 'pet_request.json').exists():
+        raise ValueError('prepared runs take alignment/scale from profile and extraction-settings.json; update those settings before regeneration')
+    validate_extraction_config(config)
+    with extraction_ownership(out):
+        manifest_path = out / 'frames-manifest.json'
+        manifest = json.loads(manifest_path.read_text(encoding='utf-8')) if manifest_path.exists() else {'schema_version': EXTRACTION_SCHEMA, 'rows': []}
+        if manifest.get('schema_version') != EXTRACTION_SCHEMA and set(states) != set(ROW_FRAME_COUNTS):
+            raise ValueError('old extraction schema requires one full extraction before partial repairs')
+        old_rows = manifest.get('rows', []) if manifest.get('schema_version') == EXTRACTION_SCHEMA else []
+        if not isinstance(old_rows, list) or any(not isinstance(r, dict) or r.get('state') not in ROW_FRAME_COUNTS for r in old_rows) or len({r['state'] for r in old_rows}) != len(old_rows):
+            raise ValueError('malformed extraction manifest; preserve it and regenerate all rows into a clean frames directory')
+        rows = {row['state']: row for row in old_rows}
+        for state in states:
+            source = decoded / f'{state}.png'
+            if not source.is_file():
+                raise ValueError(f'missing generated strip: {source}')
+            row = extract_state(source, state, out, tuple(config['chroma_key']), config['key_threshold'], args.method, profile, config['background'], args.alignment, args.scale, config)
+            for field, path in (('request_sha256', decoded.parent / 'pet_request.json'), ('extraction_settings_sha256', decoded.parent / 'extraction-settings.json')):
+                row[field] = digest(path) if path.is_file() else None
+            rows[state] = row
+            manifest.update({'schema_version': EXTRACTION_SCHEMA, 'algorithm': EXTRACTION_ALGORITHM, 'ok': True, 'chroma_key': {'rgb': list(config['chroma_key']), 'threshold': config['key_threshold']}, 'rows': [rows[s] for s in ROW_FRAME_COUNTS if s in rows]})
+            atomic_json(manifest_path, manifest)
+    print(json.dumps({'ok': True, 'states': states, 'frames_root': str(out)}))
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

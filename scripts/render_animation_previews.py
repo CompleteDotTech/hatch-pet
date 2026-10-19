@@ -9,17 +9,9 @@ from pathlib import Path
 
 from PIL import Image
 
-ROW_DURATIONS = {
-    "idle": [280, 110, 110, 140, 140, 320],
-    "running-right": [120, 120, 120, 120, 120, 120, 120, 220],
-    "running-left": [120, 120, 120, 120, 120, 120, 120, 220],
-    "waving": [140, 140, 140, 280],
-    "jumping": [140, 140, 140, 140, 280],
-    "failed": [140, 140, 140, 140, 140, 140, 140, 240],
-    "waiting": [150, 150, 150, 150, 150, 260],
-    "running": [120, 120, 120, 120, 120, 220],
-    "review": [150, 150, 150, 150, 150, 280],
-}
+from profile_spec import load_profile, profile_for_run, indexed_frames
+
+ROW_DURATIONS = {state['id']: state['durations'] for state in load_profile()['states']}
 IMAGE_SUFFIXES = {".png", ".webp", ".jpg", ".jpeg"}
 
 
@@ -30,7 +22,7 @@ def frame_files(state_dir: Path) -> list[Path]:
 
 
 def load_frames(frames_root: Path, state: str, expected_count: int) -> list[Image.Image]:
-    files = frame_files(frames_root / state)
+    files = indexed_frames(frames_root, state, expected_count)
     if len(files) != expected_count:
         raise SystemExit(
             f"{state} preview needs {expected_count} frames, found {len(files)} under {frames_root / state}"
@@ -58,13 +50,16 @@ def save_preview(frames: list[Image.Image], durations: list[int], output: Path) 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--frames-root", required=True)
+    parser.add_argument("--profile")
     parser.add_argument("--output-dir", required=True)
     args = parser.parse_args()
 
     frames_root = Path(args.frames_root).expanduser().resolve()
     output_dir = Path(args.output_dir).expanduser().resolve()
+    profile = profile_for_run(frames_root, args.profile)
+    durations_by_state = {state["id"]: state["durations"] for state in profile["states"]}
     previews = []
-    for state, durations in ROW_DURATIONS.items():
+    for state, durations in durations_by_state.items():
         frames = load_frames(frames_root, state, len(durations))
         output = output_dir / f"{state}.gif"
         save_preview(frames, durations, output)
