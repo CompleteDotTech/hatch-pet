@@ -440,9 +440,7 @@ DIALOGUE = [
 def make_audio(root):
     """Local Flite TTS; retained originals, explicit frame padding, editable cues."""
     ffmpeg = shutil.which('ffmpeg')
-    if ffmpeg is None:
-        raise ValueError('production recipe needs local FFmpeg with Flite or the retained supplied audio files')
-    version = subprocess.check_output([ffmpeg, '-version'], text=True).splitlines()[0]
+    version = None
     result = []
     for index, (speaker, text, voice) in enumerate(DIALOGUE, 1):
         prefix = 'line-' + str(index).zfill(2)
@@ -454,6 +452,10 @@ def make_audio(root):
             raise ValueError('dialogue source changed; retain this audio version and author a new line version')
         text_path.write_text(text)
         if not original.exists():
+            if ffmpeg is None:
+                raise ValueError('missing retained dialogue: restore audio-source-bundle or supply local FFmpeg with Flite')
+            if version is None:
+                version = subprocess.check_output([ffmpeg, '-version'], text=True).splitlines()[0]
             subprocess.run([ffmpeg, '-v', 'error', '-f', 'lavfi', '-i',
                 'flite=textfile='+str(text_path)+':voice='+voice, '-ar', '48000', '-ac', '1',
                 '-c:a', 'pcm_s16le', '-flags', '+bitexact', str(original)], check=True, timeout=30)
@@ -480,7 +482,8 @@ def make_audio(root):
         provenance = {'kind': 'import', 'fixture': False, 'origin': 'Original short dialogue synthesized locally by FFmpeg Flite, voice '+voice+'.',
             'attribution': 'Original script authored for the Milo/Luma pilot; local Flite voice '+voice,
             'permissions': 'No supplied third-party recording. TTS engine and bundled voice remain subject to their distributed licences.',
-            'source': file_ref(root, original), 'operation': {'kind': 'pcm-frame-padding',
+            'source': file_ref(root, original), 'references': [file_ref(root, receipt_path), file_ref(root, text_path)],
+            'operation': {'kind': 'pcm-frame-padding',
                 'note': json.dumps({'engine': tts_record['engine'], 'tts_receipt': file_ref(root, receipt_path), 'voice': voice, 'source_samples': len(samples)//2,
                     'output_samples': len(padded)//2, 'sample_rate': 48000, 'channels': 1,
                     'text': file_ref(root, text_path), 'mouth_timing': 'Editable amplitude-gated rhythmic approximation; not phoneme alignment or acting acceptance.'})}}

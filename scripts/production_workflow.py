@@ -161,6 +161,7 @@ def _character_dependencies(root, character, component_id=None, selected_drawing
     key = f'{character["id"]}@{character["version"]}'
     identity = {name: character[name] for name in ('id', 'version', 'dimensions', 'relative_scale', 'identity', 'provenance')}
     result = {'character:' + key: hash_object(identity)}
+    _add_files(result, root, character['provenance'], 'provenance_file')
     _add_files(result, root, character.get('references', []), 'reference')
     components = character['components']
     if component_id is not None:
@@ -285,7 +286,8 @@ def _target_dependencies(root, bundle, target):
         result = _character_dependencies(root, character, target.get('component_id'))
         if target['kind'] == 'character':
             result[f'coverage:{target["character_id"]}@{target["version"]}'] = hash_object({
-                key: character[key] for key in ('views', 'capabilities', 'restrictions')})
+                'views': character['views'], 'capabilities': character['capabilities'],
+                'restrictions': character.get('restrictions', [])})
         return result
     key = f'{target["clip_id"]}@{target["version"]}'
     if key not in bundle['clips']:
@@ -355,6 +357,21 @@ def _render_artifacts(root, relative, target, dependencies=None, bundle=None):
     return result
 
 
+def _has_final_visual_evidence(root, relative, evidence, reviewer_kind):
+    """A WAV or a manifest cannot establish final visual inspection by itself."""
+    manifest_path = safe_path(root, relative)
+    manifest = hatch.read(manifest_path)
+    visual_paths = set()
+    for frame in manifest['frames']:
+        for item in [frame, *frame.get('layers', [])]:
+            source = safe_path(manifest_path.parent, item['path'])
+            visual_paths.add(source.relative_to(Path(root).resolve()).as_posix())
+    methods = {'visual_inspection', 'timed_playback'}
+    if reviewer_kind == 'synthetic':
+        methods.add('automated_check')
+    return any(item['path'] in visual_paths and item['method'] in methods for item in evidence)
+
+
 def review_template(root, target, dimensions=None, render_manifest=None, project=None):
     bundle = _bundle(root, project)
     _target_key(target)
@@ -418,10 +435,8 @@ def record_review(root, receipt):
             if name == 'final_artifacts' and not value.get('render_manifest'):
                 raise ValueError('final artifact review needs the completed exact render manifest')
             if name == 'final_artifacts':
-                final_paths = {key.split(':', 1)[1] for key in dimension['dependencies'] if key.startswith('render_artifact:')}
-                if not any(item['path'] in final_paths and (item['method'] in ('visual_inspection', 'timed_playback') or
-                        (reviewer['kind'] == 'synthetic' and item['method'] == 'automated_check')) for item in evidence):
-                    raise ValueError('final artwork review must inspect an actual bound rendered artifact')
+                if not _has_final_visual_evidence(root, value['render_manifest'], evidence, reviewer['kind']):
+                    raise ValueError('final artwork review must inspect a bound rendered visual frame or layer; audio and movies are supplemental evidence')
         state = _state(root, bundle)
         passed = all(item['verdict'] == 'pass' for item in value['dimensions'].values())
         record = {'receipt': value, 'recorded_at': time.time(), 'passes': passed,
@@ -454,6 +469,9 @@ def review_status(root, target, project=None):
         if dimension in ('final_artifacts', 'timing_av_sync') and receipt.get('render_manifest'):
             try:
                 expected.update(_render_artifacts(root, receipt['render_manifest'], target, current, bundle))
+                if dimension == 'final_artifacts' and not _has_final_visual_evidence(
+                        root, receipt['render_manifest'], receipt['dimensions'][dimension]['evidence'], receipt['reviewer']['kind']):
+                    error = 'Final artwork review has no inspected bound visual frame or layer; repeat visual review.'
             except (ValueError, OSError, KeyError) as exc:
                 error = str(exc)
         prior = receipt['dimensions'][dimension]['dependencies']
@@ -464,11 +482,13 @@ def review_status(root, target, project=None):
                 changed.append('evidence:' + evidence['path'])
         stale = bool(changed or error)
         verdict = receipt['dimensions'][dimension]['verdict']
+        production_review = (not bundle['project']['fixture'] and receipt.get('fixture') is False
+                             and receipt['reviewer']['kind'] in ('human', 'assistant'))
         result[dimension] = {'status': 'stale' if stale else verdict,
             'reviewer': receipt['reviewer'], 'receipt_sha256': record['sha256'],
             'changed_dependencies': changed, 'stale_reason': error,
             'human_review': record['human_review'],
-            'production_art_acceptance': not stale and verdict == 'pass' and record['production_art_acceptance'],
+            'production_art_acceptance': not stale and verdict == 'pass' and production_review,
             'synthetic_gate_only': record['synthetic_gate_only']}
     return {'target': copy.deepcopy(target), 'dimensions': result,
             'current_pass': all(item['status'] == 'pass' for item in result.values()),
@@ -1213,6 +1233,7 @@ def _available_values(character, dimension):
 def coverage_report(root, scene_id=None):
     """Plan independent requirements and bounded missing work, never a Cartesian asset explosion."""
     from production_contracts import planned_requirements
+    from production_performance import incompatible_requirements
     root = Path(root).resolve()
     try:
         bundle = _bundle(root, verify_hashes=False)
@@ -1266,25 +1287,16 @@ def coverage_report(root, scene_id=None):
                                        'dimension': 'clip_review', 'value': key, 'target': target, 'review': status,
                                        'reason': 'Reusable motion, contact and timing dimensions require current clip review.'})
             scoped = [item for item in requirements if item['shot'] == shot_id and item['instance'] == instance['id']]
-            boundaries = sorted({frame for item in scoped for frame in (item['start_frame'], item['end_frame'])})
             character = bundle['characters'][instance['character']]
-            for restriction in character['restrictions']:
-                matched = None
-                for frame in boundaries:
-                    active = [item for item in scoped if item['start_frame'] <= frame < item['end_frame']]
-                    if all(any(item['dimension'] == dimension and item['value'] in values for item in active)
-                           for dimension, values in restriction['when'].items()):
-                        matched = active
-                        break
-                if matched is not None:
-                    incompatible.append({'scene': scene, 'shot': shot_id, 'instance': instance['id'],
-                        'requirements': [item['id'] for item in matched], 'reason': restriction['reason'],
-                        'required_action': 'Revise the overlapping performance or author and review compatible assets.'})
+            for restriction in incompatible_requirements(character, scoped):
+                incompatible.append({'scene': scene, 'shot': shot_id, 'instance': instance['id'],
+                    'requirements': [item['id'] for item in scoped], **restriction,
+                    'required_action': 'Revise the overlapping performance or author and review compatible assets.'})
         dependencies = shot_dependencies(root, scene, shot_id, project=bundle)
         for key, digest in dependencies.items():
             if digest == 'missing':
                 missing.append({'scene': scene, 'shot': shot_id, 'dimension': 'asset', 'value': key,
-                                'work_key': key, 'reason': 'Recover the exact referenced source; generation is not a substitute for missing provenance or audio.'})
+                                'work_key': 'recover:' + key.split(':', 1)[-1], 'reason': 'Recover the exact referenced source; generation is not a substitute for missing provenance or audio.'})
     work = {item['work_key']: item for item in missing}
     recovery = [item for item in work.values() if item['dimension'] == 'asset']
     authoring_dimensions = {'action', 'pose', 'gaze', 'intensity', 'contact'}

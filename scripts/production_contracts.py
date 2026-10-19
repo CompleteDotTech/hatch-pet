@@ -97,6 +97,7 @@ def schema_definitions():
         ('id', 'model', 'parameters'))
     definitions['provenance'] = obj({'kind': enum('fixture', 'import', 'imagegen', 'derived'),
         'origin': TEXT, 'fixture': BOOL, 'attribution': TEXT, 'permissions': TEXT, 'source': ref('file'),
+        'references': arr(ref('file'), maximum=256, uniqueItems=True),
         'source_sha256': SHA, 'note': TEXT,
         'operation': obj({'kind': TEXT, 'rect': arr(integer(0, 8192), 4, 4), 'note': TEXT}, ('kind',)),
         'model_call': ref('model_call'),
