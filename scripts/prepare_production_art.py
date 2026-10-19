@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 from pathlib import Path
 
 import hatch
@@ -52,8 +53,35 @@ PARTS = ('Create ONE animation construction sheet in an exact 4-column by 4-row 
     'The second attachment is the required overall layout safety guide: keep all artwork inside the square; use the explicit 4x4 arrangement described here, and do not copy visible guide marks.')
 
 
+def _require_unused(path: Path):
+    # exists() alone misses dangling symlinks. Never resolve a leaf before this
+    # check: that would silently turn a linked destination into a different run.
+    if path.exists() or path.is_symlink():
+        raise ValueError('acquisition path already exists; choose unused paths: ' + str(path))
+
+
+def _write_new_input(path: Path, value: dict, created: list):
+    # Exclusive creation also refuses a file/link created after the preflight.
+    with path.open('x', encoding='utf-8') as output:
+        created.append((path, os.fstat(output.fileno())))
+        json.dump(value, output, indent=2, ensure_ascii=False)
+        output.write('\n')
+        output.flush()
+        os.fsync(output.fileno())
+
+
 def prepare(root: Path, character: str):
+    root = Path(root)
+    _require_unused(root)
     root = root.resolve()
+    profile_path = root.parent / (character + '-profile.json')
+    identity_path = root.parent / (character + '-identity.json')
+    transaction_path = root.parent / ('.' + root.name + '.prepare.json')
+    paths = (root, profile_path, identity_path, transaction_path)
+    if len(set(paths)) != len(paths):
+        raise ValueError('acquisition destination and input paths must be distinct')
+    for path in paths:
+        _require_unused(path)
     spec = CHARACTERS[character]
     profile = load_profile({
         'schema_version': 1, 'id': character + '-construction-v3',
@@ -64,26 +92,41 @@ def prepare(root: Path, character: str):
         'validation': {'require_provenance': True, 'allow_detached_details': True},
         'export': {'formats': ['frames'], 'static_state': 'parts', 'static_frame': 0},
     })
-    root.parent.mkdir(parents=True, exist_ok=True)
-    profile_path = root.parent / (character + '-profile.json')
-    identity_path = root.parent / (character + '-identity.json')
-    hatch.atomic(profile_path, profile)
-    hatch.atomic(identity_path, {'schema_version': 1, 'markings': spec['markings'],
+    identity = {'schema_version': 1, 'markings': spec['markings'],
         'palette': spec['palette'], 'materials': ['softly painted fur', 'matte woven costume'],
         'proportions': {'head_to_body_height': 0.6}, 'approved_props': spec['props'],
         'asymmetries': spec['asymmetries'], 'directions': {'parts': 'front'},
-        'forbid_mirror': True, 'unresolved_conflicts': []})
+        'forbid_mirror': True, 'unresolved_conflicts': []}
     args = argparse.Namespace(replace_inputs=False, fixture_mode=False, profile=str(profile_path),
         identity=str(identity_path), pet_name=spec['name'],
         pet_notes=spec['description'] + '. Base image: a design turnaround with four full-body views arranged left to right: front, three-quarter, side, back. Consistent relative scale. No text.',
         reference=[], avoid=['text', 'background', 'unrelated props'],
         require=['original non-fixture production artwork', 'retain asymmetry and costume', 'true transparency'],
         brand_source=[], background='alpha', style_preset='painterly', style_notes=STYLE)
-    result = hatch.prepare(root, args)
-    data = hatch.manifest(root)
-    data['limits'].update(attempts_per_job=1, concurrency=1, generation_calls=2)
-    hatch.save(root, data)
-    return result
+    root.parent.mkdir(parents=True, exist_ok=True)
+    created = []
+    try:
+        _write_new_input(profile_path, profile, created)
+        _write_new_input(identity_path, identity, created)
+        # A destination or recovery journal may have appeared while reserving
+        # the inputs. Keep it untouched and let the caller choose another run.
+        _require_unused(root)
+        _require_unused(transaction_path)
+        result = hatch.prepare(root, args)
+        data = hatch.manifest(root)
+        data['limits'].update(attempts_per_job=1, concurrency=1, generation_calls=2)
+        hatch.save(root, data)
+        return result
+    except BaseException:
+        # Only remove inputs exclusively created here, and leave any replacement
+        # alone. hatch.prepare owns recovery of its separate run transaction.
+        for path, owned in reversed(created):
+            try:
+                if os.path.samestat(path.lstat(), owned):
+                    path.unlink()
+            except FileNotFoundError:
+                pass
+        raise
 
 
 if __name__ == '__main__':
