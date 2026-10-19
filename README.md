@@ -4,8 +4,8 @@
 
 <img src="assets/title.svg" alt="hatch-pet" width="720">
 
-**A Codex skill for animated pets and reusable character assets.**<br>
-Start with a concept, brand, or sketch. Generate through the installed imagegen skill, validate and review the result, then export or create a local package.
+**A Codex skill for animated pets and reusable visual asset production.**<br>
+Start with a concept, brand, sketch, or existing artwork. Generate through the installed imagegen skill or import explicitly, validate and visually review, then export or create a local package.
 
 <br>
 
@@ -151,7 +151,19 @@ chosen-package-directory/
 
 Packages also retain profile, review, metrics, and export metadata. [Cross-platform commands](references/workflow.md) cover preparation, generation handoffs, resume, repair, review, export, packaging, optional installation, rollback, and cleanup.
 
-For other applications, see [profiles and exports](references/profiles-and-exports.md). Ten complete example profiles cover game NPCs, web status characters, OBS local browser sources, tutor/support avatars, IoT displays, stickers, storyboards, evaluation, and UI assets. They share PNG/atlas/animated exports and an event-driven browser preview; they do not claim external production integrations.
+For other applications, see [profiles and exports](references/profiles-and-exports.md). The ten existing character examples remain supported. Ten new [purpose-specific presets and recipes](references/additional-uses.md) cover assembly cards, educational processes, product variants, flipbooks/zoetropes, communication boards, perception stimuli, graphics regression fixtures, animated cursors, protocols and craft grids. They reuse shared print, data, browser, cursor and grid exporters.
+
+The revised pipeline adds [explicit imports and structured identity](references/sources-and-identity.md), [source-bound extraction annotations and a local review desk](references/extraction-and-review.md), [portable archives and operational budgets](references/portability-and-operations.md), and [bounded state-machine playback](references/playback-and-extensions.md). Exported files, local adapter tests and external integrations are reported separately; these examples do not establish live integrations.
+
+```powershell
+python scripts/doctor.py
+python scripts/demonstrate.py --all --output-dir output/capability-demos
+python -m unittest discover -s tests -v
+```
+
+Each demonstration produces real inspectable files, a review desk and `acceptance.json`. All demonstrations are explicitly synthetic fixtures, with no model calls or live installation. [Traceability and validation](references/traceability.md) maps every requirement to evidence.
+
+See [the local delivery validation report](references/validation-results.md) for the current regression results, compatibility notes and remaining operating limits.
 
 <br>
 
@@ -176,7 +188,7 @@ flowchart LR
 
 | Script | Job |
 | --- | --- |
-| `scripts/hatch.py` | Locked, atomic lifecycle, generation handoffs, review receipts, packaging, install/rollback and retention |
+| `scripts/hatch.py` | Locked lifecycle, imagegen/import handoffs, identity, review, archives, budgets, packaging and optional install/rollback |
 | `scripts/profile_spec.py` | Validates the single versioned animation contract |
 | `scripts/prepare_pet_run.py` | Prepares profile-driven prompts, constraints, layout guides and jobs |
 | `scripts/derive_running_left_from_running_right.py` | Compatibility wrapper for approved controller mirroring |
@@ -186,18 +198,22 @@ flowchart LR
 | `scripts/validate_atlas.py` | Checks geometry, used and unused cells, and transparency |
 | `scripts/make_contact_sheet.py` | Lays out every frame on one sheet for a human-eye check |
 | `scripts/render_animation_previews.py` | Renders one GIF per row so motion can be judged |
-| `scripts/export_assets.py` | Frames, atlas, static alternatives, GIF/WebP and local browser playback |
+| `scripts/export_assets.py` | Frames, atlas, stills, GIF/WebP and bounded browser state-machine playback |
+| `scripts/asset_exporters.py` | Printable cards, flipbooks, boards, stimuli, Xcursor and craft grids |
+| `scripts/demonstrate.py` | Ten labeled deterministic demonstrations and acceptance checks |
 
 **Design principles**
 
 - 🧠 **Models paint, scripts measure.** Image models never decide atlas geometry. Deterministic code does.
 - 🪶 **One claim per generated image** prevents duplicate generation. A reviewer sees all states and actual timed playback.
-- 🔒 **Identity lock.** Every row is grounded in the canonical base. Drift blocks the hatch even when all automated checks pass.
+- 🔒 **Identity evidence.** Every row retains canonical references and structured requirements. Visual review must reject drift even when automated checks pass.
 - 🩹 **Repair the row, not the sheet.** A failure regenerates only the smallest scope that broke.
 
 More detail lives in [`SKILL.md`](SKILL.md), [`references/animation-rows.md`](references/animation-rows.md), [`references/codex-pet-contract.md`](references/codex-pet-contract.md) and [`references/qa-rubric.md`](references/qa-rubric.md).
 
 Run `python -m unittest discover -s tests -v` for fixture-only regression tests. `python tests/fixture_workflow.py --output-dir C:/work/hatch-fixture-demo --profile examples/web-status.json` creates a clearly labeled complete local demonstration without calling imagegen or installing a pet.
+
+The complete development suite uses `requirements-test.txt` and a local Playwright Chromium binary. Install them if missing with `python -m pip install -r requirements-test.txt` and `python -m playwright install chromium`. The standalone `scripts/doctor.py` reports local capabilities without requiring browser tools.
 
 <br>
 

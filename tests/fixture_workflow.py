@@ -79,6 +79,9 @@ def record_fixture_review(root, data, verdict='pass'):
                            'playback_states': list(receipt['rows'])}
     for row in receipt['rows'].values():
         row.update(verdict=verdict, notes='Fixture receipt exercises the gate only; makes no production artwork claim.')
+        for dimension in row['dimensions'].values():
+            dimension.update(verdict=verdict, notes='Synthetic gate exercise only; not a visual or semantic certification.')
+        row['warning_notes'] = {key: 'Synthetic warning handling exercise; no production judgment.' for key in row['warning_notes']}
     path = root.parent / 'fixture-visual-review.json'
     hatch.atomic(path, receipt)
     return hatch.review(root, data, path)

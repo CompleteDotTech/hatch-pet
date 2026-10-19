@@ -1,0 +1,120 @@
+{
+  "schema_version": 2,
+  "id": "communication-v2",
+  "layout": {
+    "columns": 2,
+    "cell_width": 96,
+    "cell_height": 96
+  },
+  "states": [
+    {
+      "id": "drink",
+      "frames": 2,
+      "durations": [
+        120,
+        120
+      ],
+      "purpose": "Readable cup, bed and raised-hand pictograms, with matching descriptions and still alternatives. No clinical validation is implied. Stage/condition: drink.",
+      "motion": "gesture",
+      "alignment": {
+        "coordinate_policy": "slot",
+        "scale_policy": "shared",
+        "scale": 1,
+        "padding": 0,
+        "resampling": "nearest",
+        "anchor": [
+          0.5,
+          0.5
+        ]
+      },
+      "playback": {
+        "mode": "loop"
+      }
+    },
+    {
+      "id": "rest",
+      "frames": 2,
+      "durations": [
+        120,
+        120
+      ],
+      "purpose": "Readable cup, bed and raised-hand pictograms, with matching descriptions and still alternatives. No clinical validation is implied. Stage/condition: rest.",
+      "motion": "gesture",
+      "alignment": {
+        "coordinate_policy": "slot",
+        "scale_policy": "shared",
+        "scale": 1,
+        "padding": 0,
+        "resampling": "nearest",
+        "anchor": [
+          0.5,
+          0.5
+        ]
+      },
+      "playback": {
+        "mode": "loop"
+      }
+    },
+    {
+      "id": "help",
+      "frames": 2,
+      "durations": [
+        120,
+        120
+      ],
+      "purpose": "Readable cup, bed and raised-hand pictograms, with matching descriptions and still alternatives. No clinical validation is implied. Stage/condition: help.",
+      "motion": "gesture",
+      "alignment": {
+        "coordinate_policy": "slot",
+        "scale_policy": "shared",
+        "scale": 1,
+        "padding": 0,
+        "resampling": "nearest",
+        "anchor": [
+          0.5,
+          0.5
+        ]
+      },
+      "playback": {
+        "mode": "loop"
+      }
+    }
+  ],
+  "generation": {
+    "instructions": "Readable cup, bed and raised-hand pictograms, with matching descriptions and still alternatives. No clinical validation is implied.",
+    "requirements": [
+      "Check recognition, descriptions, contrast and personal/cultural suitability with intended users.",
+      "Keep frames within the source viewport and retain approved references."
+    ]
+  },
+  "validation": {
+    "require_provenance": true,
+    "allow_detached_details": true
+  },
+  "events": {
+    "drink": "drink",
+    "rest": "rest",
+    "help": "help"
+  },
+  "export": {
+    "formats": [
+      "frames",
+      "atlas",
+      "board",
+      "browser",
+      "cards"
+    ],
+    "static_state": "drink",
+    "static_frame": 0,
+    "options": {
+      "labels": {
+        "drink": "drink",
+        "rest": "rest",
+        "help": "help"
+      },
+      "content_review": "Check recognition, descriptions, contrast and personal/cultural suitability with intended users.",
+      "cell_mm": 40,
+      "dpi": 150
+    }
+  }
+}

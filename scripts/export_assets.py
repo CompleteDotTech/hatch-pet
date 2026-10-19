@@ -30,34 +30,9 @@ def write_export_receipt(output_dir, profile):
 
 
 def browser_document(metadata):
-    # Embedding the exported metadata supports both file:// and OBS local-file sources.
-    encoded=json.dumps(metadata, separators=(',',':')).replace('<','\\u003c')
-    return '''<!doctype html>
-<html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width">
-<title>Animation preview</title>
-<style>body{font:16px system-ui;background:transparent;color:#444}main{display:grid;justify-items:center;gap:1rem}img{object-fit:contain;image-rendering:auto}label,button{margin:.25rem}body.overlay .controls{display:none}</style>
-<main><img id="character" alt="Animated character"><div class="controls"><label>State <select id="state"></select></label><label><input id="still" type="checkbox"> Reduced motion</label><button id="event">Send local event</button><output id="status" aria-live="polite"></output><p id="origin"></p></div></main>
-<script>
-const metadata = METADATA;
-const character=document.querySelector('#character'), selector=document.querySelector('#state'), still=document.querySelector('#still');
-let selected=metadata.states[0], frameIndex=0, timer;
-character.width=metadata.layout.cell_width; character.height=metadata.layout.cell_height;
-document.querySelector('#origin').textContent=metadata.fixture?'Deterministic test fixture. Not production artwork.':'';
-const preloaded=metadata.states.flatMap(state=>state.frames.map(frame=>{const img=new Image();img.src=frame.path;return img}));
-const reduced=matchMedia('(prefers-reduced-motion: reduce)');still.checked=reduced.matches;
-for(const state of metadata.states){const option=document.createElement('option');option.value=state.id;option.textContent=state.id;selector.append(option)}
-function render(){clearTimeout(timer); const frame=selected.frames[frameIndex];character.src=still.checked?selected.static:frame.path;character.alt=selected.purpose;character.dataset.state=selected.id;character.dataset.frameIndex=String(frame.index);character.dataset.durationMs=String(frame.duration_ms);document.querySelector('#status').textContent=selected.id+' / '+frame.index;if(!still.checked)timer=setTimeout(()=>{frameIndex=(frameIndex+1)%selected.frames.length;render()},frame.duration_ms)}
-function selectState(id){const state=metadata.states.find(s=>s.id===id);if(!state)return false;selected=state;selector.value=id;frameIndex=still.checked?state.static_frame:0;render();return true}
-function dispatchLocalEvent(name){const id=metadata.events[name];return id?selectState(id):false}
-selector.onchange=()=>selectState(selector.value);still.onchange=()=>selectState(selected.id);
-reduced.addEventListener('change',event=>{still.checked=event.matches;selectState(selected.id)});
-window.hatchPet={selectState,dispatchLocalEvent,metadata,get playback(){return {state:selected.id,index:frameIndex,reducedMotion:still.checked}}};
-window.addEventListener('hatch-pet-event',event=>dispatchLocalEvent(event.detail));
-// Local example: window.dispatchEvent(new CustomEvent('hatch-pet-event',{detail:'working'}));
-let eventIndex=0;document.querySelector('#event').onclick=()=>{const names=Object.keys(metadata.events);if(names.length)dispatchLocalEvent(names[eventIndex++%names.length])};
-const params=new URLSearchParams(location.search);if(params.get('overlay')==='1')document.body.classList.add('overlay');
-selectState(params.get('state')||metadata.static_state);
-</script></html>'''.replace('METADATA',encoded)
+    assets = Path(__file__).parents[1] / 'assets'
+    encoded = json.dumps(metadata, separators=(',', ':')).replace('<', '\\u003c')
+    return (assets / 'playback.html').read_text(encoding='utf-8').replace('__METADATA__', encoded).replace('__PLAYBACK__', (assets / 'playback.js').read_text(encoding='utf-8'))
 
 
 def export_assets(frames_root, output_dir, profile=None):
@@ -78,8 +53,8 @@ def export_assets(frames_root, output_dir, profile=None):
     out.mkdir(parents=True,exist_ok=True)
     run_manifest=root.parent/'imagegen-jobs.json'
     fixture=json.loads(run_manifest.read_text(encoding='utf-8')).get('fixture_mode',False) if run_manifest.is_file() else False
-    metadata={'schema_version':1,'profile_id':p['id'],'profile_sha256':profile_hash(p),'layout':p['layout'],'events':p['events'],'static_state':p['export']['static_state'],'states':[],'fixture':fixture,'integration_verified':False,'source':'deterministic export; artwork origin is recorded in extraction provenance'}
-    write_frames='frames' in formats or 'browser' in formats
+    metadata={'schema_version':2,'profile_id':p['id'],'profile_sha256':profile_hash(p),'layout':p['layout'],'events':p['events'],'playback':p.get('playback', {}),'static_state':p['export']['static_state'],'states':[],'fixture':fixture,'integration_verified':False,'source':'Deterministic export; artwork origin is recorded in provenance. Browser timings are best effort.'}
+    write_frames=True
     for state in p['states']:
         frames=[]; records=[]
         for index,path in enumerate(inputs[state['id']]):
@@ -90,7 +65,7 @@ def export_assets(frames_root, output_dir, profile=None):
                     target=out/relative;target.parent.mkdir(parents=True,exist_ok=True);frame.save(target)
                 records.append({'index':index,'path':relative if write_frames else None,'duration_ms':state['durations'][index],'source_sha256':sha256(path),'column':index})
         static_frame=p['export']['static_frame'] if state['id']==p['export']['static_state'] else 0
-        records_state={'id':state['id'],'purpose':state['purpose'],'row':len(metadata['states']),'frames':records,'static_frame':static_frame,'alignment':state['alignment']}
+        records_state={'id':state['id'],'purpose':state['purpose'],'row':len(metadata['states']),'frames':records,'static_frame':static_frame,'alignment':state['alignment'],'playback':state.get('playback', {})}
         if 'gif' in formats:
             relative=f'animations/{state["id"]}.gif';save_preview(frames,state['durations'],out/relative);records_state['gif']=relative
         if 'webp' in formats:
@@ -107,6 +82,8 @@ def export_assets(frames_root, output_dir, profile=None):
     (out/'animation.json').write_text(json.dumps(metadata,indent=2)+'\n',encoding='utf-8')
     if 'browser' in formats:
         (out/'preview.html').write_text(browser_document(metadata),encoding='utf-8')
+    from asset_exporters import export_extensions
+    export_extensions(out, p, metadata)
     write_export_receipt(out,p)
     return metadata
 

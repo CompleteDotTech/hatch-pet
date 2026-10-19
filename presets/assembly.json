@@ -1,0 +1,140 @@
+{
+  "schema_version": 2,
+  "id": "assembly-v2",
+  "layout": {
+    "columns": 1,
+    "cell_width": 96,
+    "cell_height": 96
+  },
+  "states": [
+    {
+      "id": "exploded",
+      "frames": 1,
+      "durations": [
+        120
+      ],
+      "purpose": "A bracket, post and screw progress from separated parts to an assembled fixture. Keep one orthographic view and constant component dimensions. Stage/condition: exploded.",
+      "motion": "static",
+      "alignment": {
+        "coordinate_policy": "slot",
+        "scale_policy": "shared",
+        "scale": 1,
+        "padding": 0,
+        "resampling": "nearest",
+        "anchor": [
+          0.5,
+          0.5
+        ]
+      },
+      "playback": {
+        "mode": "hold"
+      }
+    },
+    {
+      "id": "insert",
+      "frames": 1,
+      "durations": [
+        120
+      ],
+      "purpose": "A bracket, post and screw progress from separated parts to an assembled fixture. Keep one orthographic view and constant component dimensions. Stage/condition: insert.",
+      "motion": "static",
+      "alignment": {
+        "coordinate_policy": "slot",
+        "scale_policy": "shared",
+        "scale": 1,
+        "padding": 0,
+        "resampling": "nearest",
+        "anchor": [
+          0.5,
+          0.5
+        ]
+      },
+      "playback": {
+        "mode": "hold"
+      }
+    },
+    {
+      "id": "tighten",
+      "frames": 1,
+      "durations": [
+        120
+      ],
+      "purpose": "A bracket, post and screw progress from separated parts to an assembled fixture. Keep one orthographic view and constant component dimensions. Stage/condition: tighten.",
+      "motion": "static",
+      "alignment": {
+        "coordinate_policy": "slot",
+        "scale_policy": "shared",
+        "scale": 1,
+        "padding": 0,
+        "resampling": "nearest",
+        "anchor": [
+          0.5,
+          0.5
+        ]
+      },
+      "playback": {
+        "mode": "hold"
+      }
+    },
+    {
+      "id": "test",
+      "frames": 1,
+      "durations": [
+        120
+      ],
+      "purpose": "A bracket, post and screw progress from separated parts to an assembled fixture. Keep one orthographic view and constant component dimensions. Stage/condition: test.",
+      "motion": "static",
+      "alignment": {
+        "coordinate_policy": "slot",
+        "scale_policy": "shared",
+        "scale": 1,
+        "padding": 0,
+        "resampling": "nearest",
+        "anchor": [
+          0.5,
+          0.5
+        ]
+      },
+      "playback": {
+        "mode": "hold"
+      }
+    }
+  ],
+  "generation": {
+    "instructions": "A bracket, post and screw progress from separated parts to an assembled fixture. Keep one orthographic view and constant component dimensions.",
+    "requirements": [
+      "Mechanical owner checks order, mating surfaces, tools and safety instructions before real assembly.",
+      "Keep frames within the source viewport and retain approved references."
+    ]
+  },
+  "validation": {
+    "require_provenance": true,
+    "allow_detached_details": true
+  },
+  "events": {
+    "exploded": "exploded",
+    "insert": "insert",
+    "tighten": "tighten",
+    "test": "test"
+  },
+  "export": {
+    "formats": [
+      "frames",
+      "atlas",
+      "cards"
+    ],
+    "static_state": "exploded",
+    "static_frame": 0,
+    "options": {
+      "labels": {
+        "exploded": "exploded",
+        "insert": "insert",
+        "tighten": "tighten",
+        "test": "test"
+      },
+      "content_review": "Mechanical owner checks order, mating surfaces, tools and safety instructions before real assembly.",
+      "cell_mm": 40,
+      "dpi": 150
+    }
+  }
+}

@@ -1,0 +1,206 @@
+{
+  "schema_version": 2,
+  "id": "protocol-v2",
+  "layout": {
+    "columns": 3,
+    "cell_width": 96,
+    "cell_height": 96
+  },
+  "states": [
+    {
+      "id": "idle",
+      "frames": 1,
+      "durations": [
+        120
+      ],
+      "purpose": "A sender/receiver protocol progresses from idle through request, acknowledgment and done; timeout leads to fault. Events must follow legal transitions. Stage/condition: idle.",
+      "motion": "static",
+      "alignment": {
+        "coordinate_policy": "slot",
+        "scale_policy": "shared",
+        "scale": 1,
+        "padding": 0,
+        "resampling": "nearest",
+        "anchor": [
+          0.5,
+          0.5
+        ]
+      },
+      "playback": {
+        "mode": "hold"
+      }
+    },
+    {
+      "id": "request",
+      "frames": 3,
+      "durations": [
+        120,
+        120,
+        120
+      ],
+      "purpose": "A sender/receiver protocol progresses from idle through request, acknowledgment and done; timeout leads to fault. Events must follow legal transitions. Stage/condition: request.",
+      "motion": "gesture",
+      "alignment": {
+        "coordinate_policy": "slot",
+        "scale_policy": "shared",
+        "scale": 1,
+        "padding": 0,
+        "resampling": "nearest",
+        "anchor": [
+          0.5,
+          0.5
+        ]
+      },
+      "playback": {
+        "mode": "once",
+        "interruptible": false
+      }
+    },
+    {
+      "id": "ack",
+      "frames": 2,
+      "durations": [
+        120,
+        120
+      ],
+      "purpose": "A sender/receiver protocol progresses from idle through request, acknowledgment and done; timeout leads to fault. Events must follow legal transitions. Stage/condition: ack.",
+      "motion": "gesture",
+      "alignment": {
+        "coordinate_policy": "slot",
+        "scale_policy": "shared",
+        "scale": 1,
+        "padding": 0,
+        "resampling": "nearest",
+        "anchor": [
+          0.5,
+          0.5
+        ]
+      },
+      "playback": {
+        "mode": "once",
+        "completion": "done"
+      }
+    },
+    {
+      "id": "done",
+      "frames": 1,
+      "durations": [
+        120
+      ],
+      "purpose": "A sender/receiver protocol progresses from idle through request, acknowledgment and done; timeout leads to fault. Events must follow legal transitions. Stage/condition: done.",
+      "motion": "static",
+      "alignment": {
+        "coordinate_policy": "slot",
+        "scale_policy": "shared",
+        "scale": 1,
+        "padding": 0,
+        "resampling": "nearest",
+        "anchor": [
+          0.5,
+          0.5
+        ]
+      },
+      "playback": {
+        "mode": "hold"
+      }
+    },
+    {
+      "id": "fault",
+      "frames": 1,
+      "durations": [
+        120
+      ],
+      "purpose": "A sender/receiver protocol progresses from idle through request, acknowledgment and done; timeout leads to fault. Events must follow legal transitions. Stage/condition: fault.",
+      "motion": "static",
+      "alignment": {
+        "coordinate_policy": "slot",
+        "scale_policy": "shared",
+        "scale": 1,
+        "padding": 0,
+        "resampling": "nearest",
+        "anchor": [
+          0.5,
+          0.5
+        ]
+      },
+      "playback": {
+        "mode": "hold"
+      }
+    }
+  ],
+  "generation": {
+    "instructions": "A sender/receiver protocol progresses from idle through request, acknowledgment and done; timeout leads to fault. Events must follow legal transitions.",
+    "requirements": [
+      "Protocol owner checks event legality, priority, interruption and completion behavior against the actual algorithm.",
+      "Keep frames within the source viewport and retain approved references."
+    ]
+  },
+  "validation": {
+    "require_provenance": true,
+    "allow_detached_details": true
+  },
+  "events": {
+    "send": "request",
+    "receive-ack": "ack",
+    "timeout": "fault",
+    "reset": "idle"
+  },
+  "export": {
+    "formats": [
+      "frames",
+      "atlas",
+      "browser",
+      "cards"
+    ],
+    "static_state": "idle",
+    "static_frame": 0,
+    "options": {
+      "labels": {
+        "idle": "idle",
+        "request": "request",
+        "ack": "ack",
+        "done": "done",
+        "fault": "fault"
+      },
+      "content_review": "Protocol owner checks event legality, priority, interruption and completion behavior against the actual algorithm.",
+      "cell_mm": 40,
+      "dpi": 150
+    }
+  },
+  "playback": {
+    "initial": "idle",
+    "cancel_state": "idle",
+    "queue_limit": 4,
+    "events": {
+      "send": {
+        "target": "request",
+        "from": [
+          "idle"
+        ],
+        "priority": 1,
+        "restart": false
+      },
+      "receive-ack": {
+        "target": "ack",
+        "from": [
+          "request"
+        ],
+        "priority": 2,
+        "interrupt": "never"
+      },
+      "timeout": {
+        "target": "fault",
+        "from": [
+          "request",
+          "ack"
+        ],
+        "priority": 3,
+        "interrupt": "higher"
+      },
+      "reset": {
+        "target": "idle",
+        "priority": 4
+      }
+    }
+  }
+}

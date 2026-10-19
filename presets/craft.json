@@ -1,0 +1,96 @@
+{
+  "schema_version": 2,
+  "id": "craft-v2",
+  "layout": {
+    "columns": 1,
+    "cell_width": 24,
+    "cell_height": 24
+  },
+  "states": [
+    {
+      "id": "rosette",
+      "frames": 1,
+      "durations": [
+        120
+      ],
+      "purpose": "Grid-aligned rosette and diamond motifs in a named four-color palette for bead or embroidery planning. Stage/condition: rosette.",
+      "motion": "static",
+      "alignment": {
+        "coordinate_policy": "slot",
+        "scale_policy": "shared",
+        "scale": 1,
+        "padding": 0,
+        "resampling": "nearest",
+        "anchor": [
+          0.5,
+          0.5
+        ]
+      },
+      "playback": {
+        "mode": "hold"
+      }
+    },
+    {
+      "id": "diamond",
+      "frames": 1,
+      "durations": [
+        120
+      ],
+      "purpose": "Grid-aligned rosette and diamond motifs in a named four-color palette for bead or embroidery planning. Stage/condition: diamond.",
+      "motion": "static",
+      "alignment": {
+        "coordinate_policy": "slot",
+        "scale_policy": "shared",
+        "scale": 1,
+        "padding": 0,
+        "resampling": "nearest",
+        "anchor": [
+          0.5,
+          0.5
+        ]
+      },
+      "playback": {
+        "mode": "hold"
+      }
+    }
+  ],
+  "generation": {
+    "instructions": "Grid-aligned rosette and diamond motifs in a named four-color palette for bead or embroidery planning.",
+    "requirements": [
+      "Check grid dimensions, palette mapping, symbol readability and practical construction with a swatch.",
+      "Keep frames within the source viewport and retain approved references."
+    ]
+  },
+  "validation": {
+    "require_provenance": true,
+    "allow_detached_details": true
+  },
+  "events": {
+    "rosette": "rosette",
+    "diamond": "diamond"
+  },
+  "export": {
+    "formats": [
+      "frames",
+      "atlas",
+      "craft"
+    ],
+    "static_state": "rosette",
+    "static_frame": 0,
+    "options": {
+      "labels": {
+        "rosette": "rosette",
+        "diamond": "diamond"
+      },
+      "content_review": "Check grid dimensions, palette mapping, symbol readability and practical construction with a swatch.",
+      "cell_mm": 40,
+      "dpi": 150,
+      "palette": {
+        "ink": "#203830",
+        "leaf": "#408060",
+        "flower": "#D05040",
+        "gold": "#E0B050"
+      }
+    }
+  }
+}

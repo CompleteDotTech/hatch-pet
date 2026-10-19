@@ -1,0 +1,92 @@
+{
+  "assembly": {
+    "use": "U01",
+    "profile": "assembly.json",
+    "inputs": "Approved component drawings, dimensions and assembly sequence.",
+    "semantics": "A bracket, post and screw progress from separated parts to an assembled fixture. Keep one orthographic view and constant component dimensions.",
+    "review_requirements": "Mechanical owner checks order, mating surfaces, tools and safety instructions before real assembly.",
+    "external_consumer": "Provide product-specific tolerances, fastener torque and safety instructions; verify printed scale.",
+    "output_constraints": "96x96 transparent cells; explicit ordered frames; cards"
+  },
+  "process": {
+    "use": "U02",
+    "profile": "process.json",
+    "inputs": "Approved process model, stage descriptions and scientific references.",
+    "semantics": "A simplified water cycle: reservoir, upward vapor, cloud condensation, falling rain. Illustrations are symbolic, not a fluid simulation.",
+    "review_requirements": "Subject-matter educator must check causal order, labels, omissions and audience suitability.",
+    "external_consumer": "Supply curricular sources and expert content review; embed the exported page in the lesson.",
+    "output_constraints": "96x96 transparent cells; explicit ordered frames; cards, browser"
+  },
+  "configurator": {
+    "use": "U03",
+    "profile": "configurator.json",
+    "inputs": "Product front view, palette swatches and approved variant differences.",
+    "semantics": "The same front orthographic mug with only the approved glaze color changing. Preserve viewpoint, handle geometry and body dimensions.",
+    "review_requirements": "Check identical silhouette/viewpoint and ensure only glaze differs; match physical color separately.",
+    "external_consumer": "Wire selections to real SKU data and approved product imagery; browser selection alone is not commerce integration.",
+    "output_constraints": "96x96 transparent cells; explicit ordered frames; browser, cards"
+  },
+  "flipbook": {
+    "use": "U04",
+    "profile": "flipbook.json",
+    "inputs": "Ordered motion frames, target print size and intended viewing direction.",
+    "semantics": "A single ball bounces vertically through twelve ordered drawings with a fixed diameter and ground baseline.",
+    "review_requirements": "Check frame order, constant ball diameter, retained vertical displacement and physical test assembly.",
+    "external_consumer": "Print at 100%, cut, bind in order or assemble slit cylinder; physically test rotation speed.",
+    "output_constraints": "64x64 transparent cells; explicit ordered frames; flipbook, browser"
+  },
+  "communication": {
+    "use": "U05",
+    "profile": "communication.json",
+    "inputs": "User-approved vocabulary, accessible descriptions and pictograms.",
+    "semantics": "Readable cup, bed and raised-hand pictograms, with matching descriptions and still alternatives. No clinical validation is implied.",
+    "review_requirements": "Check recognition, descriptions, contrast and personal/cultural suitability with intended users.",
+    "external_consumer": "Fit vocabulary and access method to the user; external assistive app integration and clinical assessment are separate.",
+    "output_constraints": "96x96 transparent cells; explicit ordered frames; board, browser, cards"
+  },
+  "perception": {
+    "use": "U06",
+    "profile": "perception.json",
+    "inputs": "Condition definitions, source images, trial design and intended frame durations.",
+    "semantics": "Equal-diameter disks translate through the same positions; the controlled difference is luminance contrast.",
+    "review_requirements": "Check size/position equality and intended condition differences; review study design and ethics where applicable.",
+    "external_consumer": "Use a calibrated display and measured onset timing, randomization and experiment software. Ordinary browser timing is not laboratory precision.",
+    "output_constraints": "64x64 transparent cells; explicit ordered frames; stimuli, browser"
+  },
+  "regression": {
+    "use": "U07",
+    "profile": "regression.json",
+    "inputs": "Fixture geometry and expected pixels, codec-specific reconstruction tolerances.",
+    "semantics": "Deterministic graphics fixtures: partial alpha edges, transparent holes, detached details and color-coded frame order. Fixtures only.",
+    "review_requirements": "Inspect compositor backgrounds and compare decoded pixels; GIF binary alpha is intentionally lossy.",
+    "external_consumer": "Import these labeled fixtures into the target compositor and record renderer/codec versions; no live compositor is exercised here.",
+    "output_constraints": "64x64 transparent cells; explicit ordered frames; browser, gif, webp, stimuli"
+  },
+  "cursor": {
+    "use": "U08",
+    "profile": "cursor.json",
+    "inputs": "Ordered cursor frames, integer hotspot and per-frame durations.",
+    "semantics": "A pixel pointer with fixed hotspot at (4,4) and a six-frame activity marker. Keep pointer geometry stable.",
+    "review_requirements": "Check hotspot alignment, pointer legibility and animation at actual size on light/dark backgrounds.",
+    "external_consumer": "Load the Xcursor file in an Xcursor-capable consumer or adapt the local page; OS cursor settings are never changed.",
+    "output_constraints": "32x32 transparent cells; explicit ordered frames; cursor, browser"
+  },
+  "protocol": {
+    "use": "U09",
+    "profile": "protocol.json",
+    "inputs": "State/event table, legal transitions, cancellation and timeout policy.",
+    "semantics": "A sender/receiver protocol progresses from idle through request, acknowledgment and done; timeout leads to fault. Events must follow legal transitions.",
+    "review_requirements": "Protocol owner checks event legality, priority, interruption and completion behavior against the actual algorithm.",
+    "external_consumer": "Connect real protocol events after reviewing concurrency and failure semantics; this is an illustrative local consumer.",
+    "output_constraints": "96x96 transparent cells; explicit ordered frames; browser, cards"
+  },
+  "craft": {
+    "use": "U10",
+    "profile": "craft.json",
+    "inputs": "Palette, grid dimensions, motif source and physical material pitch.",
+    "semantics": "Grid-aligned rosette and diamond motifs in a named four-color palette for bead or embroidery planning.",
+    "review_requirements": "Check grid dimensions, palette mapping, symbol readability and practical construction with a swatch.",
+    "external_consumer": "Choose actual bead/thread colors, pitch and technique; the pack is a planning source, not a validated stitch instruction.",
+    "output_constraints": "24x24 transparent cells; explicit ordered frames; craft"
+  }
+}

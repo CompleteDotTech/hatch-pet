@@ -1,0 +1,149 @@
+{
+  "schema_version": 2,
+  "id": "process-v2",
+  "layout": {
+    "columns": 3,
+    "cell_width": 96,
+    "cell_height": 96
+  },
+  "states": [
+    {
+      "id": "reservoir",
+      "frames": 3,
+      "durations": [
+        120,
+        120,
+        120
+      ],
+      "purpose": "A simplified water cycle: reservoir, upward vapor, cloud condensation, falling rain. Illustrations are symbolic, not a fluid simulation. Stage/condition: reservoir.",
+      "motion": "gesture",
+      "alignment": {
+        "coordinate_policy": "slot",
+        "scale_policy": "shared",
+        "scale": 1,
+        "padding": 0,
+        "resampling": "nearest",
+        "anchor": [
+          0.5,
+          0.5
+        ]
+      },
+      "playback": {
+        "mode": "loop"
+      }
+    },
+    {
+      "id": "evaporation",
+      "frames": 3,
+      "durations": [
+        120,
+        120,
+        120
+      ],
+      "purpose": "A simplified water cycle: reservoir, upward vapor, cloud condensation, falling rain. Illustrations are symbolic, not a fluid simulation. Stage/condition: evaporation.",
+      "motion": "gesture",
+      "alignment": {
+        "coordinate_policy": "slot",
+        "scale_policy": "shared",
+        "scale": 1,
+        "padding": 0,
+        "resampling": "nearest",
+        "anchor": [
+          0.5,
+          0.5
+        ]
+      },
+      "playback": {
+        "mode": "loop"
+      }
+    },
+    {
+      "id": "condensation",
+      "frames": 3,
+      "durations": [
+        120,
+        120,
+        120
+      ],
+      "purpose": "A simplified water cycle: reservoir, upward vapor, cloud condensation, falling rain. Illustrations are symbolic, not a fluid simulation. Stage/condition: condensation.",
+      "motion": "gesture",
+      "alignment": {
+        "coordinate_policy": "slot",
+        "scale_policy": "shared",
+        "scale": 1,
+        "padding": 0,
+        "resampling": "nearest",
+        "anchor": [
+          0.5,
+          0.5
+        ]
+      },
+      "playback": {
+        "mode": "loop"
+      }
+    },
+    {
+      "id": "rain",
+      "frames": 3,
+      "durations": [
+        120,
+        120,
+        120
+      ],
+      "purpose": "A simplified water cycle: reservoir, upward vapor, cloud condensation, falling rain. Illustrations are symbolic, not a fluid simulation. Stage/condition: rain.",
+      "motion": "gesture",
+      "alignment": {
+        "coordinate_policy": "slot",
+        "scale_policy": "shared",
+        "scale": 1,
+        "padding": 0,
+        "resampling": "nearest",
+        "anchor": [
+          0.5,
+          0.5
+        ]
+      },
+      "playback": {
+        "mode": "loop"
+      }
+    }
+  ],
+  "generation": {
+    "instructions": "A simplified water cycle: reservoir, upward vapor, cloud condensation, falling rain. Illustrations are symbolic, not a fluid simulation.",
+    "requirements": [
+      "Subject-matter educator must check causal order, labels, omissions and audience suitability.",
+      "Keep frames within the source viewport and retain approved references."
+    ]
+  },
+  "validation": {
+    "require_provenance": true,
+    "allow_detached_details": true
+  },
+  "events": {
+    "reservoir": "reservoir",
+    "evaporation": "evaporation",
+    "condensation": "condensation",
+    "rain": "rain"
+  },
+  "export": {
+    "formats": [
+      "frames",
+      "atlas",
+      "cards",
+      "browser"
+    ],
+    "static_state": "reservoir",
+    "static_frame": 0,
+    "options": {
+      "labels": {
+        "reservoir": "reservoir",
+        "evaporation": "evaporation",
+        "condensation": "condensation",
+        "rain": "rain"
+      },
+      "content_review": "Subject-matter educator must check causal order, labels, omissions and audience suitability.",
+      "cell_mm": 40,
+      "dpi": 150
+    }
+  }
+}

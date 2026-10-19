@@ -7,9 +7,10 @@ import json
 import math
 import re
 from pathlib import Path
+from asset_contracts import RESAMPLING, check_resources, strict_keys
 
 DEFAULT_PROFILE = Path(__file__).resolve().parents[1] / 'profiles' / 'codex-v1.json'
-FORMATS = {'frames', 'atlas', 'gif', 'webp', 'browser'}
+FORMATS = {'frames', 'atlas', 'gif', 'webp', 'browser', 'cards', 'flipbook', 'board', 'stimuli', 'cursor', 'craft'}
 VALIDATION_KEYS = {
     'min_motion', 'max_size_ratio', 'max_baseline_shift', 'loop_warning_ratio',
     'near_duplicate_delta', 'palette_distance_warning', 'min_used_pixels',
@@ -48,8 +49,8 @@ def _generation(value, context):
 def validate_profile(profile: dict) -> dict:
     """Validate and normalize; reject silent typos and unsupported combinations."""
     p = copy.deepcopy(profile)
-    _object(p, {'schema_version', 'id', 'layout', 'states', 'generation', 'validation', 'events', 'export'}, 'profile')
-    _require(type(p.get('schema_version')) is int and p['schema_version'] == 1, 'schema_version must be 1')
+    _object(p, {'schema_version', 'id', 'layout', 'states', 'generation', 'validation', 'events', 'export', 'playback'}, 'profile')
+    _require(type(p.get('schema_version')) is int and p['schema_version'] in (1, 2), 'schema_version must be 1 or 2')
     _require(isinstance(p.get('id'), str) and re.fullmatch(r'[a-z0-9][a-z0-9-]*', p['id']), 'id must be a stable lowercase slug')
     layout = p.get('layout')
     _object(layout, {'columns', 'cell_width', 'cell_height', 'rows', 'width', 'height'}, 'layout')
@@ -61,7 +62,7 @@ def validate_profile(profile: dict) -> dict:
     _generation(p['generation'], 'generation')
     seen = {}
     for state in states:
-        _object(state, {'id', 'frames', 'durations', 'purpose', 'alignment', 'motion', 'generation', 'allowed_derivations', 'validation'}, 'state')
+        _object(state, {'id', 'frames', 'durations', 'purpose', 'alignment', 'motion', 'generation', 'allowed_derivations', 'validation', 'playback'}, 'state')
         name = state.get('id')
         _require(isinstance(name, str) and re.fullmatch(r'[a-z0-9][a-z0-9-]*', name) and name not in seen, 'state ids must be unique safe slugs')
         _require(name not in RESERVED_STATES, name + ': reserved state id is not portable or conflicts with the base job')
@@ -72,7 +73,8 @@ def validate_profile(profile: dict) -> dict:
         _require(isinstance(timing, list) and len(timing) == state['frames'] and all(type(x) is int and 10 <= x <= 60000 for x in timing), name + ': one duration (10..60000 ms) is required per frame')
         state.setdefault('alignment', {})
         alignment = state['alignment']
-        _object(alignment, {'coordinate_policy', 'scale_policy', 'padding', 'anchor', 'pivot', 'scale'}, name + '.alignment')
+        _object(alignment, {'coordinate_policy', 'scale_policy', 'padding', 'anchor', 'pivot', 'scale', 'resampling'}, name + '.alignment')
+        _require(isinstance(alignment.get('resampling', 'lanczos'), str) and alignment.get('resampling', 'lanczos') in RESAMPLING, name + ': unsupported resampling')
         alignment.setdefault('coordinate_policy', 'slot')
         alignment.setdefault('scale_policy', 'row')
         alignment.setdefault('padding', min(5, (min(layout['cell_width'], layout['cell_height']) - 1) // 2))
@@ -146,7 +148,7 @@ def validate_profile(profile: dict) -> dict:
     _require(isinstance(p['events'], dict) and all(isinstance(k, str) and k.strip() and isinstance(v, str) and v in seen for k, v in p['events'].items()), 'events must map nonempty event names to existing state ids')
     p.setdefault('export', {'formats': ['frames', 'atlas', 'browser'], 'static_state': states[0]['id'], 'static_frame': 0})
     export = p['export']
-    _object(export, {'formats', 'static_state', 'static_frame', 'codex_compatible'}, 'export')
+    _object(export, {'formats', 'static_state', 'static_frame', 'codex_compatible', 'options'}, 'export')
     formats = export.get('formats')
     _require(isinstance(formats, list) and bool(formats) and all(isinstance(x, str) and x in FORMATS for x in formats) and len(set(formats)) == len(formats), 'unsupported or repeated export formats')
     static_name = export.get('static_state')
@@ -160,10 +162,84 @@ def validate_profile(profile: dict) -> dict:
         _require(key not in layout or (type(layout[key]) is int and layout[key] == value), 'layout.' + key + ' disagrees with states and cells')
         layout[key] = value
     _require(layout['width'] * layout['height'] <= 64000000, 'atlas exceeds 64 million pixels')
+    try:
+        check_resources(p)
+        validate_playback(p, seen)
+        validate_export_options(p)
+    except ValueError as exc:
+        _require(False, str(exc))
     if export.get('codex_compatible'):
         default = json.loads(DEFAULT_PROFILE.read_text(encoding='utf-8'))
         _require([(x['id'], x['frames'], x['durations']) for x in states] == [(x['id'], x['frames'], x['durations']) for x in default['states']] and all(layout[k] == default['layout'][k] for k in ('columns', 'cell_width', 'cell_height')), 'codex_compatible requires the exact default contract')
     return p
+
+
+def validate_playback(p, seen):
+    playback = p.get('playback', {})
+    strict_keys(playback, {'initial', 'cancel_state', 'queue_limit', 'events'}, 'playback')
+    for key in ('initial', 'cancel_state'):
+        if key in playback and playback[key] not in seen:
+            raise ValueError('playback.' + key + ' must identify a state')
+    limit = playback.get('queue_limit', 8)
+    if type(limit) is not int or not 0 <= limit <= 32:
+        raise ValueError('playback queue_limit must be 0..32')
+    rules = playback.get('events', {})
+    if not isinstance(rules, dict):
+        raise ValueError('playback.events must be an object')
+    for event, rule in rules.items():
+        strict_keys(rule, {'target', 'priority', 'interrupt', 'from', 'restart'}, 'event ' + event)
+        if rule.get('target') not in seen or event not in p['events'] or p['events'][event] != rule['target']:
+            raise ValueError('playback event must agree with events mapping: ' + event)
+        if type(rule.get('priority', 0)) is not int or not 0 <= rule.get('priority', 0) <= 100:
+            raise ValueError('event priority must be 0..100')
+        if rule.get('interrupt', 'always') not in ('always', 'higher', 'never'):
+            raise ValueError('event interrupt must be always, higher or never')
+        if 'from' in rule and (not isinstance(rule['from'], list) or not rule['from'] or any(x not in seen for x in rule['from'])):
+            raise ValueError('event from must list legal source states')
+        if type(rule.get('restart', False)) is not bool:
+            raise ValueError('event restart must be boolean')
+    for name, state in seen.items():
+        rule = state.get('playback', {})
+        strict_keys(rule, {'mode', 'completion', 'hold_frame', 'interruptible'}, name + '.playback')
+        mode = rule.get('mode', 'loop')
+        if mode not in ('loop', 'once', 'hold'):
+            raise ValueError('unsupported playback mode')
+        if 'completion' in rule and (mode != 'once' or rule['completion'] not in seen or rule['completion'] == name):
+            raise ValueError('completion requires once mode and another existing state')
+        if type(rule.get('hold_frame', 0)) is not int or not 0 <= rule.get('hold_frame', 0) < state['frames']:
+            raise ValueError('hold_frame must identify a frame')
+        if type(rule.get('interruptible', True)) is not bool:
+            raise ValueError('interruptible must be boolean')
+
+
+def validate_export_options(p):
+    options = p['export'].get('options', {})
+    strict_keys(options, {'labels', 'conditions', 'palette', 'hotspot', 'cell_mm', 'dpi', 'content_review'}, 'export.options')
+    states = {s['id'] for s in p['states']}
+    if 'board' in p['export']['formats'] and 'browser' not in p['export']['formats']:
+        raise ValueError('board consumer requires browser export; add browser to export.formats')
+    for key in ('labels', 'conditions'):
+        value = options.get(key, {})
+        if not isinstance(value, dict) or set(value) - states or any(not isinstance(x, str) or not x.strip() for x in value.values()):
+            raise ValueError('export.options.' + key + ' must map existing states to text')
+    if 'content_review' in options and (not isinstance(options['content_review'], str) or not options['content_review'].strip()):
+        raise ValueError('content_review must be text')
+    for key, low, high in (('cell_mm', 5, 100), ('dpi', 72, 300)):
+        value = options.get(key, 40 if key == 'cell_mm' else 150)
+        if type(value) not in (int, float) or not math.isfinite(value) or not low <= value <= high:
+            raise ValueError(f'{key} must be {low}..{high}')
+    if 'hotspot' in options:
+        value = options['hotspot']
+        if not isinstance(value, list) or len(value) != 2 or any(type(v) is not int or v < 0 or v >= p['layout'][key] for v, key in zip(value, ('cell_width', 'cell_height'))):
+            raise ValueError('cursor hotspot must lie within the cell')
+    if 'cursor' in p['export']['formats'] and (max(p['layout']['cell_width'], p['layout']['cell_height']) > 256 or 'hotspot' not in options):
+        raise ValueError('cursor requires a hotspot and cells <=256 pixels')
+    if 'craft' in p['export']['formats']:
+        palette = options.get('palette')
+        if not isinstance(palette, dict) or not 1 <= len(palette) <= 32 or any(not re.fullmatch(r'#[0-9a-fA-F]{6}', str(v)) for v in palette.values()):
+            raise ValueError('craft requires 1..32 named #RRGGBB colors')
+        if max(p['layout']['cell_width'], p['layout']['cell_height']) > 128:
+            raise ValueError('craft grids are limited to 128 cells per side')
 
 
 def load_profile(path=None) -> dict:
