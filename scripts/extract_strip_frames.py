@@ -126,6 +126,8 @@ def validate_extraction_config(config):
         raise ValueError('extraction key_threshold must be a finite number from 0 to 442')
     if config.get('holes') not in ('preserve', 'key') or type(config.get('edge_cleanup')) is not bool:
         raise ValueError('extraction holes must be preserve/key and edge_cleanup must be boolean')
+    if 'resampling' in config and (not isinstance(config['resampling'], str) or config['resampling'] not in RESAMPLING):
+        raise ValueError('unsupported extraction resampling filter')
     if config.get('shared_scale') is not None and (type(config['shared_scale']) not in (int, float) or not math.isfinite(config['shared_scale']) or not 0 < config['shared_scale'] <= 100):
         raise ValueError('extraction shared_scale must be finite, positive, and <=100')
 
@@ -426,7 +428,7 @@ def extraction_configuration(profile, state, config, method='auto', alignment=No
         chosen_scale = config.get('shared_scale') or policy.get('scale')
         if chosen_scale is None:
             raise ValueError('shared scale policy requires extraction-settings.json shared_scale calibration')
-    return {'chroma_key': list(config['chroma_key']), 'key_threshold': float(config['key_threshold']), 'background': config['background'], 'holes': config['holes'], 'edge_cleanup': config['edge_cleanup'], 'requested_method': method, 'alignment': chosen_alignment, 'scale_policy': scale_policy, 'requested_scale': chosen_scale, 'padding': policy.get('padding', 5), 'anchor': list(policy.get('anchor', [.5, .5])), 'resampling': policy.get('resampling', 'lanczos')}
+    return {'chroma_key': list(config['chroma_key']), 'key_threshold': float(config['key_threshold']), 'background': config['background'], 'holes': config['holes'], 'edge_cleanup': config['edge_cleanup'], 'requested_method': method, 'alignment': chosen_alignment, 'scale_policy': scale_policy, 'requested_scale': chosen_scale, 'padding': policy.get('padding', 5), 'anchor': list(policy.get('anchor', [.5, .5])), 'resampling': policy.get('resampling', config.get('resampling', 'lanczos'))}
 
 
 def extract_state(strip_path, state, output_root, chroma_key, threshold, method, profile=None, alpha_mode='auto', alignment=None, scale=None, extraction_config=None):
