@@ -1,0 +1,802 @@
+{
+  "schema_version": 1,
+  "category": "anime-comics",
+  "styles": [
+    {
+      "id": "anime",
+      "name": "Anime",
+      "category": "anime-comics",
+      "kind": "technique",
+      "description": "Clean character illustration with expressive shaped eyes, tapered linework and carefully grouped cel shadows.",
+      "tags": [
+        "anime",
+        "cel-color",
+        "expressive-eyes",
+        "tapered-line"
+      ],
+      "aliases": [
+        "anime-style"
+      ],
+      "instructions": {
+        "materials": "Use opaque digital cel paint with simplified hair, fabric and skin or creature materials.",
+        "forms": "Build a compact expressive character with clear head construction and grouped hair or fur masses.",
+        "linework": "Draw clean tapered contours, lighter facial lines and precise overlap accents.",
+        "shading": "Apply graphic cel shadows with a few controlled highlights on large material groups.",
+        "palette": "Preserve distinct local colors with coordinated warm-light and cool-shadow accents.",
+        "texture": "Keep surfaces smooth and group strands or folds into a few repeatable shapes.",
+        "rendering": "Render an isolated anime-style mascot with the same eye design and facial construction in every state."
+      },
+      "negative_constraints": [
+        "Avoid elaborate scenic lighting, floating expression symbols or decorative speed lines.",
+        "Do not add intricate hair strands that change shape and count between frames."
+      ],
+      "use_cases": [
+        "Expressive illustrated pets",
+        "Anime-influenced character casts"
+      ],
+      "limitations": [
+        "Detailed eye designs must be simplified enough that gaze and expression remain clear at the profile size."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "recommended",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Record approved eye highlights and hair masses as stable design features, distinct from temporary expression changes.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "retro-anime",
+      "name": "Retro Anime",
+      "category": "anime-comics",
+      "kind": "technique",
+      "description": "Analog-cel-inspired character with slightly variable ink, broad painted shadow shapes and restrained interior color texture.",
+      "tags": [
+        "anime",
+        "analog-cel",
+        "painted-fill",
+        "variable-ink"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Suggest opaque hand-painted cel color with subtle unevenness inside large fill regions.",
+        "forms": "Use compact sculptural head shapes, broad hair locks and deliberately simplified body proportions.",
+        "linework": "Draw slightly irregular but confident ink with blunt tapered ends and strong upper-eye contours.",
+        "shading": "Use broad hard-edged cel-shadow shapes with very little digital gradient modeling.",
+        "palette": "Favor clearly separated painted color families while retaining all required identity hues.",
+        "texture": "Allow a restrained interior paint-grain impression without film scratches or full-frame noise.",
+        "rendering": "Render the isolated character as a clean preserved cel drawing, keeping any analog texture body-bound."
+      },
+      "negative_constraints": [
+        "Avoid VHS distortion, scanlines across the canvas or a colored cel background.",
+        "Do not add misregistered contour fringes that compromise clean extraction."
+      ],
+      "use_cases": [
+        "Nostalgic animated mascots",
+        "Character sets with a hand-painted cel finish"
+      ],
+      "limitations": [
+        "Analog texture must stay subtle so it does not look like damaged source artwork at small scale."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Prefer alpha around variable ink edges; the analog treatment applies inside the artwork rather than to the entire raster.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "manga-ink",
+      "name": "Manga Ink",
+      "category": "anime-comics",
+      "kind": "technique",
+      "description": "High-contrast character drawn in black ink, open white form areas and selective hatch or screentone shading.",
+      "tags": [
+        "manga",
+        "black-ink",
+        "screentone",
+        "line-art"
+      ],
+      "aliases": [
+        "manga"
+      ],
+      "instructions": {
+        "materials": "Use dense black pen ink, opaque light body areas and a few controlled tone patches.",
+        "forms": "Keep expressive facial construction and compact anatomy with large readable hair or fur groups.",
+        "linework": "Vary contour weight decisively and use finer tapered strokes for eyes and small features.",
+        "shading": "Build volume with large black shadow shapes, sparse hatching and limited interior screentone.",
+        "palette": "Use ink-and-light value contrast, retaining explicit color identifiers as deliberate adapted accents.",
+        "texture": "Confine regular tone patterns and hatch groups to broad body regions.",
+        "rendering": "Render an isolated manga drawing with clean alpha outside the contour and no page or panel border."
+      },
+      "negative_constraints": [
+        "Avoid speech bubbles, sound-effect lettering, panel frames or detached action lines.",
+        "Do not let dense tone screens obscure eyes or small approved markings."
+      ],
+      "use_cases": [
+        "Inked expressive pets",
+        "High-contrast character illustrations"
+      ],
+      "limitations": [
+        "Color-dependent identity requires explicit retained accents or an approved value translation."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Separate intentional white artwork from transparent outside pixels; chroma backgrounds must not replace the ink drawing’s light body fills.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "webtoon",
+      "name": "Webtoon",
+      "category": "anime-comics",
+      "kind": "technique",
+      "description": "Polished digital serial-comic character with thin precise ink, soft planar gradients and readable expressive features.",
+      "tags": [
+        "digital-comic",
+        "webtoon",
+        "clean-lines",
+        "soft-cel"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use smooth digital paint with clean opaque local-color areas.",
+        "forms": "Favor appealing compact proportions, clearly staged hands and expressive but uncluttered eyes.",
+        "linework": "Draw thin precise colored or dark contours with stronger weight only at key overlaps.",
+        "shading": "Combine a flat cel-shadow base with broad gentle gradients inside large illuminated planes.",
+        "palette": "Keep a coordinated character palette with luminous but stable facial and hair accents.",
+        "texture": "Leave surfaces largely smooth; use a few deliberate highlight strokes instead of detailed grain.",
+        "rendering": "Render an isolated serial-comic character with consistent light direction and model-sheet facial proportions."
+      },
+      "negative_constraints": [
+        "Avoid speech balloons, decorative bokeh, panel backgrounds or floating romantic effects.",
+        "Do not let fine eye lines or translucent hair strands disappear at pet size."
+      ],
+      "use_cases": [
+        "Polished comic mascots",
+        "Expressive digital character avatars"
+      ],
+      "limitations": [
+        "Thin webcomic linework usually needs thicker adaptation for small animated cells."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Inspect the final line weight after downsampling; source-scale elegance does not guarantee actual-size legibility.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "comic-book",
+      "name": "Comic Book",
+      "category": "anime-comics",
+      "kind": "technique",
+      "description": "Bold inked character with strong spot blacks, muscular graphic volumes and saturated flat color organization.",
+      "tags": [
+        "comic",
+        "spot-blacks",
+        "strong-ink",
+        "graphic-volume"
+      ],
+      "aliases": [
+        "comic"
+      ],
+      "instructions": {
+        "materials": "Use opaque comic ink over clearly separated color fills.",
+        "forms": "Model the mascot with emphatic body masses, expressive brows and distinctly staged hands or paws.",
+        "linework": "Vary heavy outer contours and fine interior form lines, with confident tapered endpoints.",
+        "shading": "Use large spot-black shadows and a few sharp color-shadow planes.",
+        "palette": "Choose strong local colors with a stable dark ink family and restrained highlight accents.",
+        "texture": "Keep texture to sparse directional hatch groups, leaving the face and silhouette clean.",
+        "rendering": "Render a standalone inked comic character with every pose readable without captions or action effects."
+      },
+      "negative_constraints": [
+        "Avoid panel borders, text, motion streaks or detached impact bursts.",
+        "Do not add arbitrary anatomy detail that changes the approved character design."
+      ],
+      "use_cases": [
+        "Bold expressive pets",
+        "Action-oriented illustrated casts"
+      ],
+      "limitations": [
+        "Spot-black areas can merge small limbs with the torso; maintain clear internal value separations."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "recommended",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Review the dark ink on dark backgrounds and distinguish fixed black markings from changing shadow shapes.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "newspaper-comic",
+      "name": "Newspaper Comic",
+      "category": "anime-comics",
+      "kind": "technique",
+      "description": "Economical strip-cartoon drawing with rounded pen strokes, simple repeated features and concise spot color.",
+      "tags": [
+        "comic-strip",
+        "newspaper",
+        "economical-line",
+        "spot-color"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use opaque pen ink with a few flat printed color or light fill regions.",
+        "forms": "Reduce the character to repeatable bean, oval and simple limb shapes with clear expressions.",
+        "linework": "Draw rounded modest-weight contour strokes and only essential interior facial marks.",
+        "shading": "Suggest overlap using a small black patch or a couple of short hatch strokes.",
+        "palette": "Keep a small flat spot-color palette with strong ink-to-fill contrast.",
+        "texture": "Allow a tiny amount of line irregularity while omitting visible newspaper background texture.",
+        "rendering": "Render an isolated daily-strip-style character designed to read clearly in a small single pose."
+      },
+      "negative_constraints": [
+        "Avoid comic panels, captions, speech balloons or a newspaper page.",
+        "Do not turn economical drawing into faint unfinished construction scribbles."
+      ],
+      "use_cases": [
+        "Everyday expressive pets",
+        "Simple recurring comic mascot casts"
+      ],
+      "limitations": [
+        "Sparse expression marks need careful spacing because one changed line can alter the character’s mood or identity."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "recommended",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Preserve intentional white areas inside the body; the absence of ink is not automatically outside background.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "indie-comic",
+      "name": "Indie Comic",
+      "category": "anime-comics",
+      "kind": "technique",
+      "description": "Personal hand-drawn comic language using idiosyncratic proportions, uneven brush ink and restrained expressive color blocks.",
+      "tags": [
+        "independent-comic",
+        "brush-ink",
+        "imperfect-line",
+        "idiosyncratic"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Combine opaque brush ink with modest flat hand-colored regions.",
+        "forms": "Establish deliberately unusual but repeatable proportions such as a long torso or offset ears.",
+        "linework": "Use uneven expressive contour weight with a few dry-brush breaks kept inside robust boundaries.",
+        "shading": "Place irregular but clearly grouped shadow blocks rather than smooth dimensional gradients.",
+        "palette": "Choose a concise illustration palette with a distinct main color and a small accent family.",
+        "texture": "Retain controlled brush drag and fill unevenness anchored to the same body regions.",
+        "rendering": "Render an isolated independent-comic mascot with consistent personal drawing quirks across every pose."
+      },
+      "negative_constraints": [
+        "Avoid random anatomical inconsistency disguised as a handmade style.",
+        "Do not include zine pages, lettering, collage debris or surrounding sketch marks."
+      ],
+      "use_cases": [
+        "Distinctive creator mascots",
+        "Character sets with a personal drawn voice"
+      ],
+      "limitations": [
+        "Intentional asymmetry and roughness must be specified in the base to distinguish design from generation errors."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Keep dry-brush breaks broad enough to survive reduction and attached to the intended ink contour.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "graphic-novel",
+      "name": "Graphic Novel",
+      "category": "anime-comics",
+      "kind": "technique",
+      "description": "Dramatically modeled illustration combining controlled pen shapes, broad painterly value masses and restrained material detail.",
+      "tags": [
+        "narrative-illustration",
+        "dramatic-values",
+        "ink-paint",
+        "graphic-novel"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Combine opaque ink accents with broad matte painted color planes.",
+        "forms": "Shape a compact but dimensional character with expressive posture and sculpted facial planes.",
+        "linework": "Use selective sharp contour strokes where planes overlap, leaving lit contours quieter.",
+        "shading": "Group light and dark into large dramatic masses with a small number of transitional strokes.",
+        "palette": "Use a cohesive limited character palette with intentional warm-cool contrast inside approved hues.",
+        "texture": "Add a few purposeful brush or hatch marks on large surfaces, keeping eyes and markings clean.",
+        "rendering": "Render an isolated narrative character under a single controlled light without relying on environmental scenery."
+      },
+      "negative_constraints": [
+        "Avoid environmental fog, cinematic backgrounds or a detached cast shadow.",
+        "Do not sacrifice silhouette and expression to uniformly dark dramatic lighting."
+      ],
+      "use_cases": [
+        "Atmospheric illustrated mascots",
+        "Story-driven character casts"
+      ],
+      "limitations": [
+        "Dramatic lighting must leave the full silhouette and approved identity markers readable on multiple backgrounds."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Treat the light design as part of the frozen base specification; do not relight each state independently.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "halftone-comic",
+      "name": "Halftone Comic",
+      "category": "anime-comics",
+      "kind": "technique",
+      "description": "Inked comic character with clearly visible bounded dot fields integrated into selected color-shadow regions.",
+      "tags": [
+        "comic",
+        "dots",
+        "halftone",
+        "inked-color"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use opaque comic ink and flat print-like color with deliberately visible halftone dots.",
+        "forms": "Construct bold rounded or angular character masses large enough to hold readable dot patches.",
+        "linework": "Keep a strong clean outer contour and sparse tapered interior ink lines.",
+        "shading": "Use dot density to supplement a few flat cel-shadow areas inside broad forms.",
+        "palette": "Choose stable spot-color families with dot colors that remain distinct from the base fills.",
+        "texture": "Use one consistent circular-dot size and spacing in each approved tone region.",
+        "rendering": "Render an isolated comic mascot with fixed body-relative dot patterns and a dot-free readable face."
+      },
+      "negative_constraints": [
+        "Avoid canvas-wide dot overlays, misregistration outside the silhouette or action-burst backgrounds.",
+        "Do not use subpixel dots or change the screen angle randomly between frames."
+      ],
+      "use_cases": [
+        "Pop-print comic mascots",
+        "Textured but bold character illustration"
+      ],
+      "limitations": [
+        "Halftone dots can moiré or disappear after resizing; final-size dot spacing needs explicit visual review."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Use alpha and downsample once; inspect dot texture in timed playback for shimmer before approving a row.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "inked-illustration",
+      "name": "Inked Illustration",
+      "category": "anime-comics",
+      "kind": "technique",
+      "description": "Calligraphic pen-and-brush character whose tapered curves, dense blacks and open light regions describe the form.",
+      "tags": [
+        "brush-ink",
+        "calligraphic",
+        "line-variation",
+        "spot-black"
+      ],
+      "aliases": [
+        "ink-illustration"
+      ],
+      "instructions": {
+        "materials": "Use dense opaque black or deeply colored brush ink over intentional light body regions.",
+        "forms": "Describe compact sculptural forms with sweeping curves and a few decisive angular accents.",
+        "linework": "Vary pressure from broad brush contours to tapered fine expression strokes.",
+        "shading": "Model volume through placed black shapes and a small number of directional hatch strokes.",
+        "palette": "Favor strong ink-to-light contrast with only essential approved color accents.",
+        "texture": "Preserve a little brush bristle texture inside broad marks while keeping the outer boundary coherent.",
+        "rendering": "Render a standalone ink illustration with deliberate negative spaces and a clean isolated silhouette."
+      },
+      "negative_constraints": [
+        "Avoid loose ink droplets, splatter outside the body or a paper rectangle.",
+        "Do not crowd the face with dense crosshatching or hairline ornament."
+      ],
+      "use_cases": [
+        "Calligraphic character portraits",
+        "Expressive black-ink mascot animation"
+      ],
+      "limitations": [
+        "Large black shapes must be separated carefully so limbs and facial features do not merge at small scale."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Keep body-white regions opaque where they carry form; transparent negative gaps need clear review intent.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "childrens-storybook",
+      "name": "Children’s Storybook",
+      "category": "anime-comics",
+      "kind": "technique",
+      "description": "Warm narrative character with softly rounded anatomy, gentle painted modeling and selective pencil-like definition.",
+      "tags": [
+        "storybook",
+        "soft-paint",
+        "rounded-anatomy",
+        "narrative"
+      ],
+      "aliases": [
+        "children-storybook",
+        "childrens-story-book"
+      ],
+      "instructions": {
+        "materials": "Use matte painted color with a gentle paper-tooth impression confined to the character.",
+        "forms": "Build soft rounded body masses, inviting expressions and simple storybook clothing or props if approved.",
+        "linework": "Add selective warm pencil-like contour strokes around eyes, paws and important overlaps.",
+        "shading": "Model forms with broad soft paint transitions and small opaque highlights.",
+        "palette": "Choose harmonious character colors with gentle warm-cool shifts and clear facial contrast.",
+        "texture": "Retain restrained brush grain on large body planes while keeping edge texture controlled.",
+        "rendering": "Paint an isolated storybook mascot as a complete character illustration without a narrative scene."
+      },
+      "negative_constraints": [
+        "Avoid scenery, floating story objects, paper backdrops or decorative page frames.",
+        "Do not soften the silhouette until fur or brush grain becomes extraction haze."
+      ],
+      "use_cases": [
+        "Gentle narrative pets",
+        "Illustrated educational characters"
+      ],
+      "limitations": [
+        "Delicate pencil and paint texture may need stronger edges and simpler clothing folds at the profile size."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Prefer alpha for gentle painted edges and preserve only brush texture that is attached to the approved silhouette.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "picture-book-illustration",
+      "name": "Picture-Book Illustration",
+      "category": "anime-comics",
+      "kind": "technique",
+      "description": "Bold illustrated character made from shaped opaque color masses, playful proportion and restrained hand-painted pattern.",
+      "tags": [
+        "picture-book",
+        "shaped-color",
+        "playful-proportion",
+        "graphic-paint"
+      ],
+      "aliases": [
+        "picture-book"
+      ],
+      "instructions": {
+        "materials": "Use opaque matte paint arranged like carefully shaped colored pieces.",
+        "forms": "Favor playful asymmetry, exaggerated simple body masses and clearly shaped negative gaps.",
+        "linework": "Define most contours through color boundaries with a few blunt painted facial marks.",
+        "shading": "Keep volume mostly flat, using one contrasting paint plane at major overlaps.",
+        "palette": "Use a small confident color ensemble with broad distinct blocks and approved identity accents.",
+        "texture": "Place a few large hand-painted stripes, dots or brush tracks inside existing material regions.",
+        "rendering": "Render an isolated graphic picture-book character whose silhouette reads before its decorative interior marks."
+      },
+      "negative_constraints": [
+        "Avoid page composition, decorative scenery or extra story objects around the character.",
+        "Do not invent new surface patterns where they would contradict approved markings."
+      ],
+      "use_cases": [
+        "Graphic educational mascots",
+        "Playful printed character families"
+      ],
+      "limitations": [
+        "Decorative pattern is subordinate to identity and must not crowd a compact face or change across poses."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "recommended",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Use larger body-bound pattern marks instead of miniature illustration detail; keep their anatomical placement fixed.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "european-comic",
+      "name": "European Comic",
+      "category": "anime-comics",
+      "kind": "technique",
+      "description": "Clear-line comic character with even contour weight, unambiguous silhouette and precise flat color separations.",
+      "tags": [
+        "clear-line",
+        "comic",
+        "flat-color",
+        "precise-contour"
+      ],
+      "aliases": [
+        "clear-line-comic",
+        "ligne-claire"
+      ],
+      "instructions": {
+        "materials": "Use smooth opaque printed color bounded by clean pen ink.",
+        "forms": "Construct compact believable cartoon forms with clearly separated hands, face and approved props.",
+        "linework": "Maintain an even dark line weight and carefully closed contours around major color regions.",
+        "shading": "Keep shading extremely sparse, relying on contour and overlap to describe volume.",
+        "palette": "Use distinct stable local colors with balanced saturation and crisp boundaries.",
+        "texture": "Leave fills clean without gradients, painterly grain or dense hatch texture.",
+        "rendering": "Render an isolated clear-line comic mascot with precise readable construction and restrained facial detail."
+      },
+      "negative_constraints": [
+        "Avoid elaborate comic scenery, panel frames or text labels.",
+        "Do not add heavy spot blacks or variable brush texture that overwhelms the even-line construction."
+      ],
+      "use_cases": [
+        "Clear readable comic pets",
+        "Consistent narrative character systems"
+      ],
+      "limitations": [
+        "Uniform line weight still needs small-size adaptation so narrow details do not collapse together."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "recommended",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Choose the contour weight from an actual-size proof and retain it consistently through all generated poses.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "superhero-cartoon",
+      "name": "Superhero Cartoon",
+      "category": "anime-comics",
+      "kind": "technique",
+      "description": "Dynamic character design using heroic proportion cues, angular contour accents and strong simplified cel-shadow blocks.",
+      "tags": [
+        "heroic",
+        "dynamic",
+        "angular-ink",
+        "cel-shadow"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use opaque polished cartoon paint with simple costume or body materials.",
+        "forms": "Emphasize a confident chest, clear limb gestures and a powerful but compact stance.",
+        "linework": "Draw bold contours with purposeful angular corners at brows, elbows and major overlaps.",
+        "shading": "Use decisive graphic shadow wedges to emphasize form without detailed anatomy rendering.",
+        "palette": "Choose strong separated character colors with a dark shared ink and restrained bright accents.",
+        "texture": "Keep material texture minimal; use only broad repeated costume seams or approved markings.",
+        "rendering": "Render isolated heroic key poses that preserve the mascot’s existing face, species and prop identity."
+      },
+      "negative_constraints": [
+        "Avoid unapproved capes, chest emblems or costumes that replace the requested identity.",
+        "Do not add flying debris, speed effects, skyline scenery or energy auras."
+      ],
+      "use_cases": [
+        "Confident action mascots",
+        "Heroic character performance strips"
+      ],
+      "limitations": [
+        "Powerful gestures and any approved cape must fit the existing viewport without clipping or per-frame scale changes."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "recommended",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Heroic anatomy is optional guidance; explicit user proportions and approved clothing take precedence.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "cinematic-animation",
+      "name": "Cinematic Animation",
+      "category": "anime-comics",
+      "kind": "technique",
+      "description": "Feature-animation-like character rendering with sculpted appeal, expressive facial planes and broad controlled soft lighting.",
+      "tags": [
+        "stylized-volume",
+        "expressive-face",
+        "soft-light",
+        "animation"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use simplified rendered materials such as matte skin, grouped fur or softly shaded fabric.",
+        "forms": "Sculpt appealing compact volumes with expressive brows, broad cheeks and clean articulated limbs.",
+        "linework": "Let lit form boundaries define the contour, using sparse colored creases only at key facial landmarks.",
+        "shading": "Apply broad studio-like key and fill illumination with restrained contact shading inside the body.",
+        "palette": "Keep local colors stable with gentle warm highlights and cooler shade shifts.",
+        "texture": "Group texture into broad material cues instead of individual hairs or photoreal microdetail.",
+        "rendering": "Render the isolated animation character from one fixed camera with a clear alpha silhouette and stable light rig."
+      },
+      "negative_constraints": [
+        "Avoid environment reflections, floor shadows, atmospheric glow or scenic depth of field.",
+        "Do not simulate shallow focus that blurs parts of the mascot or approved props."
+      ],
+      "use_cases": [
+        "Dimensional expressive pets",
+        "Polished animated character concepts"
+      ],
+      "limitations": [
+        "Complex rendering can cause frame-to-frame light or texture drift; broad material treatment is safer at small size."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Inspect semi-soft contours on light and dark backgrounds; cinematic finish never authorizes a background plate.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    }
+  ]
+}

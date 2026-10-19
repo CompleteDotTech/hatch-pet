@@ -1,0 +1,803 @@
+{
+  "schema_version": 1,
+  "category": "graphic-design",
+  "styles": [
+    {
+      "id": "bauhaus",
+      "name": "Bauhaus",
+      "category": "graphic-design",
+      "kind": "technique",
+      "description": "A mascot constructed from disciplined primary geometric shapes, clear spatial hierarchy, and flat graphic color.",
+      "tags": [
+        "primary-geometry",
+        "modernist",
+        "flat-graphic"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use opaque matte graphic fills with clean geometric boundaries and no simulated natural material.",
+        "forms": "Build compact anatomy from circles, rectangles, triangles, and arcs, assigning a clear role to each shape.",
+        "linework": "Use minimal uniform linework only where shape boundaries cannot distinguish facial or limb details.",
+        "shading": "Keep surfaces flat and define overlaps through clear shape occlusion rather than gradients or drop shadows.",
+        "palette": "Choose a small disciplined palette with strong value contrast, allowing approved identity colors to replace conventional primaries.",
+        "texture": "Keep color fields smooth and untextured, with no distress, grain, or decorative pattern.",
+        "rendering": "Render a readable geometric character whose shape system stays consistent across every required animation pose."
+      },
+      "negative_constraints": [
+        "Do not add poster typography, diagrams, background grids, or unrelated floating geometry.",
+        "Avoid mechanically perfect symmetry when the approved character requires asymmetric features.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Clear geometric mascots, pictograms, and simplified character systems."
+      ],
+      "limitations": [
+        "Geometric reduction must retain enough facial and anatomical landmarks to preserve character identity."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "recommended",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Use antialiased geometric borders with opaque fills; keep narrow inter-shape gaps visible at actual size.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "futuristic"
+      ]
+    },
+    {
+      "id": "memphis-design",
+      "name": "Memphis Design",
+      "category": "graphic-design",
+      "kind": "technique",
+      "description": "A playful graphic mascot combining blocky geometry, bold pattern panels, and deliberate visual asymmetry.",
+      "tags": [
+        "graphic-pattern",
+        "playful-geometry",
+        "memphis"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use opaque flat graphic color with large patterned surface panels and crisp printed-looking edges.",
+        "forms": "Construct a compact character from rounded blocks, wedges, and playful asymmetrical shape combinations.",
+        "linework": "Use bold contour strokes and a few oversized squiggle or zigzag markings contained within the body.",
+        "shading": "Keep shading flat or use a single offset interior color plane without a detached drop shadow.",
+        "palette": "Choose a coordinated high-contrast palette with limited accent colors and a clearly separated facial region.",
+        "texture": "Assign one or two broad dot, stripe, or squiggle patterns to fixed body regions with stable registration.",
+        "rendering": "Render the patterned mascot alone with attached limbs and no confetti, surrounding shapes, or poster composition."
+      },
+      "negative_constraints": [
+        "Do not surround the character with unrelated floating patterns or geometric decorations.",
+        "Avoid tiny all-over patterns, unreadable patterned faces, and random motif placement between frames.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Playful patterned mascots and expressive geometric character branding."
+      ],
+      "limitations": [
+        "Patterns need large stable motifs; complex all-over decoration can overpower expression at cell size."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Preserve antialiased outlines and opaque pattern fills; verify key colors against every pattern accent.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "whimsical"
+      ]
+    },
+    {
+      "id": "geometric-minimalism",
+      "name": "Geometric Minimalism",
+      "category": "graphic-design",
+      "kind": "technique",
+      "description": "A sparse mascot distilled into a few purposeful geometric masses and maximally legible facial marks.",
+      "tags": [
+        "minimal-geometry",
+        "few-shapes",
+        "reduced-detail"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use flat opaque digital shapes with uniform untextured surfaces and no simulated material effects.",
+        "forms": "Reduce the character to a small number of circles, capsules, and wedges that retain signature anatomy.",
+        "linework": "Use either no outline or one consistent thin-but-readable contour; keep the face to a few deliberate marks.",
+        "shading": "Avoid modeling except for one clearly defined overlap value where needed for pose readability.",
+        "palette": "Use very few colors with strong value hierarchy and preserve distinct identity markings as simple regions.",
+        "texture": "Keep surfaces completely smooth and free from grain, hatching, or decorative detail.",
+        "rendering": "Render a compact minimal character with generous facial spacing and the same shape vocabulary in every state."
+      },
+      "negative_constraints": [
+        "Do not remove identity-critical markings, props, or facial features to achieve minimalism.",
+        "Avoid vanishingly thin limbs, ambiguous merged body parts, and decorative background geometry.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Small icons, compact companion pets, and accessibility-oriented visual systems."
+      ],
+      "limitations": [
+        "Minimalism cannot override explicit identity requirements; highly detailed references may need an adaptation warning."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "recommended",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Use antialiased simple shapes with stable opaque fills; inspect negative gaps between limbs after scaling.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      }
+    },
+    {
+      "id": "monochrome",
+      "name": "Monochrome",
+      "category": "graphic-design",
+      "kind": "treatment",
+      "description": "A value-only color treatment that preserves the approved construction while replacing hue differences with readable lightness steps.",
+      "tags": [
+        "single-hue",
+        "value-hierarchy",
+        "color-treatment"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use clean opaque flat illustration by default, or retain an explicitly requested underlying medium, and apply a single-hue tonal treatment.",
+        "forms": "Preserve the approved silhouette and body proportions while separating adjacent parts through clear value regions.",
+        "linework": "Keep the underlying contour system and strengthen facial lines only when required for value separation.",
+        "shading": "Use a small stable ladder of lightness values to preserve volume, material cues, and readable markings.",
+        "palette": "Choose one hue family or neutral grayscale with clearly spaced light, midtone, and dark values.",
+        "texture": "Retain the original medium texture at restrained contrast so it does not compete with the face.",
+        "rendering": "Render the same approved character in a controlled monochrome value system across all frames."
+      },
+      "negative_constraints": [
+        "Do not merge identity-critical markings that were previously separated only by color.",
+        "Avoid arbitrary hue changes, crushed black facial features, and pale silhouettes disappearing on white.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "A restrained single-hue treatment for an existing character style."
+      ],
+      "limitations": [
+        "This is a palette treatment and is not counted as a distinct base artistic technique."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Preserve existing alpha and edge behavior; check the single hue against the chroma key and test both light and dark backgrounds.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      }
+    },
+    {
+      "id": "duotone",
+      "name": "Duotone",
+      "category": "graphic-design",
+      "kind": "treatment",
+      "description": "A two-ink color treatment with stable tonal mapping and clear separation of facial landmarks.",
+      "tags": [
+        "two-ink",
+        "tonal-mapping",
+        "color-treatment"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use clean flat printed illustration by default, or retain an explicitly requested medium, remapped to two opaque inks and controlled overlap tones.",
+        "forms": "Keep approved character geometry and allocate distinct tonal regions to the face, limbs, and signature markings.",
+        "linework": "Use the darker ink for essential contours and facial features while preserving the existing line rhythm.",
+        "shading": "Map highlights and shadows through a stable two-ink tonal curve without unrelated gradients or extra accent colors.",
+        "palette": "Choose two inks with sufficient value contrast and define how their overlap represents the darkest regions.",
+        "texture": "Keep existing texture subordinate to the two-ink mapping and prevent fine grain from breaking facial shapes.",
+        "rendering": "Render a consistent duotone treatment with identical ink roles and tonal mapping in every animation frame."
+      },
+      "negative_constraints": [
+        "Do not substitute arbitrary two-color recoloring that destroys marking or material distinctions.",
+        "Avoid a third accent color, unreadable midtone faces, and frame-dependent tonal remapping.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "A two-color print-like treatment for existing mascot artwork."
+      ],
+      "limitations": [
+        "This is a palette treatment and is not counted as a distinct base artistic technique."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Retain source alpha; chroma must differ from both inks and their mixed tones, and opaque highlight regions must stay opaque.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      }
+    },
+    {
+      "id": "pastel-flat",
+      "name": "Pastel Flat",
+      "category": "graphic-design",
+      "kind": "treatment",
+      "description": "A restrained light-color treatment using opaque flat pastel regions with deliberately reinforced value contrast.",
+      "tags": [
+        "pastel-colors",
+        "flat-fills",
+        "color-treatment"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use clean flat cartoon illustration by default, or the approved flat construction, with opaque matte pastel regions and no glossy material effect.",
+        "forms": "Preserve the approved compact shapes and keep adjoining body regions separated through outline or value contrast.",
+        "linework": "Use a stable darker contour or facial ink tone to keep pale fills legible at small size.",
+        "shading": "Use flat fills with at most one broad slightly darker region for anatomical overlap.",
+        "palette": "Choose a limited pastel palette with enough value difference to preserve face, limbs, and identity markings.",
+        "texture": "Keep surfaces smooth and untextured so the light-color treatment does not introduce noisy shading.",
+        "rendering": "Render the same flat character with consistent pastel assignments and clear opacity on every background."
+      },
+      "negative_constraints": [
+        "Do not make pale regions translucent or remove contrasting facial features.",
+        "Avoid equally light neighboring colors that merge the silhouette and internal anatomy.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "A gentle flat-color treatment for existing cartoon or geometric mascots."
+      ],
+      "limitations": [
+        "This is a palette treatment and is not counted as a distinct base artistic technique."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Preserve full body opacity and antialiased borders; avoid pastel chroma keys and inspect on white as well as dark surfaces.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "cozy"
+      ]
+    },
+    {
+      "id": "neon-outline",
+      "name": "Neon Outline",
+      "category": "graphic-design",
+      "kind": "technique",
+      "description": "A graphic mascot defined by thick luminous-looking contour bands around a dark readable core.",
+      "tags": [
+        "luminous-line",
+        "outline-graphic",
+        "dark-core"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use opaque digital color with bright neon-like contour bands and a stable dark interior body fill.",
+        "forms": "Simplify anatomy into broad compact masses and short rounded line-supported limbs.",
+        "linework": "Draw a thick bright outer contour and a few readable luminous facial marks with consistent line width.",
+        "shading": "Use a restrained lighter center within each contour band to suggest emission without external glow.",
+        "palette": "Choose one or two neon accent colors over a stable dark core and keep face colors clearly distinguished.",
+        "texture": "Keep lines smooth and solid with no flickering noise, particle sparks, or uneven electrical filaments.",
+        "rendering": "Render an isolated neon-outline mascot whose entire luminous effect stays inside its owned silhouette."
+      },
+      "negative_constraints": [
+        "Do not add neon signs, cables, text, or detached halos around the figure.",
+        "Avoid hair-thin lines, transparent body interiors, and glow that floods neighboring cells.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "High-contrast digital companions and compact luminous graphic mascots."
+      ],
+      "limitations": [
+        "Actual light emission is simulated with color bands; clean sprite edges take priority over atmospheric glow."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Keep the core opaque and antialias only the owned contour; inspect bright bands for chroma collisions and fringes.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "cyberpunk",
+        "futuristic"
+      ]
+    },
+    {
+      "id": "gradient-illustration",
+      "name": "Gradient Illustration",
+      "category": "graphic-design",
+      "kind": "technique",
+      "description": "A clean digital character modeled with a small number of broad directional gradient shapes.",
+      "tags": [
+        "gradient-shapes",
+        "smooth-digital",
+        "color-volume"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use opaque digital illustration shapes with smooth controlled gradient fills and no physical surface texture.",
+        "forms": "Build rounded geometric body masses with distinct overlapping planes and an uncluttered facial area.",
+        "linework": "Define forms primarily through color boundaries, adding only minimal opaque facial or separation lines.",
+        "shading": "Use one broad directional gradient per major body shape with consistent light direction and restrained contrast.",
+        "palette": "Choose coordinated gradient endpoints from the approved palette without introducing unrelated rainbow transitions.",
+        "texture": "Keep fills smooth and band-free, with no grain, stippling, or noisy mesh patterns.",
+        "rendering": "Render an isolated gradient-modeled character with the same endpoint colors and gradient orientation across all poses."
+      },
+      "negative_constraints": [
+        "Do not replace shape construction with a full-frame gradient background.",
+        "Avoid uncontrolled mesh gradients, translucent faces, and gradient directions that change every frame.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Polished digital mascots and soft geometric companion illustrations."
+      ],
+      "limitations": [
+        "Gradients need stable anatomical anchoring and enough contrast to distinguish limbs at cell size."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "recommended",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Preserve antialiased opaque shapes; inspect endpoint colors before keying and avoid repeated downsampling that introduces bands.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "futuristic",
+        "cozy"
+      ]
+    },
+    {
+      "id": "silhouette",
+      "name": "Silhouette",
+      "category": "graphic-design",
+      "kind": "technique",
+      "description": "A character expressed through one solid shape and a few deliberate internal apertures.",
+      "tags": [
+        "solid-shape",
+        "contour-first",
+        "cut-silhouette"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use a single opaque graphic fill with no simulated material or visible surface texture.",
+        "forms": "Encode identity in a compact unmistakable outer contour with separated limbs and a few broad intentional gaps.",
+        "linework": "Use the silhouette boundary as the primary line; facial cues may be limited to a few robust negative-space cutouts.",
+        "shading": "Keep the figure completely flat without interior tonal modeling, gradients, or cast shadows.",
+        "palette": "Choose one solid high-contrast fill color and preserve any explicitly required identity colors only through an approved adaptation.",
+        "texture": "Keep the interior smooth and uniform with no grain or decorative pattern.",
+        "rendering": "Render clear contour-led poses with stable cutouts and enough separation to recognize each required action."
+      },
+      "negative_constraints": [
+        "Do not add a landscape, spotlight, projected shadow, or backlit scene.",
+        "Avoid merged limbs, tiny apertures, and silently dropping identity requirements dependent on color or markings.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Contour-led pictograms and simplified character movement studies."
+      ],
+      "limitations": [
+        "Color- or marking-dependent identity may be incompatible and requires an actionable warning before generation."
+      ],
+      "applicability": {
+        "character": "adapted",
+        "sequence": "adapted",
+        "icon": "recommended",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Keep opaque fills and intentional alpha apertures; inspect contour recognition on both light and dark backgrounds.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      }
+    },
+    {
+      "id": "negative-space-illustration",
+      "name": "Negative-Space Illustration",
+      "category": "graphic-design",
+      "kind": "technique",
+      "description": "A bold character whose broad interior cutouts create secondary forms and readable facial structure.",
+      "tags": [
+        "cutout-logic",
+        "figure-ground",
+        "negative-space"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use opaque flat graphic shapes with deliberately transparent interior cutouts and no simulated physical surface.",
+        "forms": "Build a compact outer mascot silhouette with broad internal openings that clarify anatomy or encode a simple secondary motif.",
+        "linework": "Define boundaries through positive and negative shape contrast, using few or no drawn strokes.",
+        "shading": "Keep fills flat and let figure-ground relationships supply depth cues without gradients or drop shadows.",
+        "palette": "Choose one or two opaque body colors with clear contrast around facial and identity-critical openings.",
+        "texture": "Keep surfaces smooth and pattern-free so internal cutouts remain the main visual feature.",
+        "rendering": "Render a stable positive-negative shape system with robust connecting bridges in every animation pose."
+      },
+      "negative_constraints": [
+        "Do not rely on a specific background color to complete the character identity.",
+        "Avoid thin connecting bridges, ambiguous facial cutouts, and decorative holes that fragment the body.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Graphic mascots, visual puzzles, and compact figure-ground character designs."
+      ],
+      "limitations": [
+        "Cutout semantics can change with pose; each state requires review for intact identity and connectivity."
+      ],
+      "applicability": {
+        "character": "adapted",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "required",
+        "chroma": "unsupported",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Require true alpha for intentional negative space; chroma keying cannot safely distinguish designed openings from surface colors.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      }
+    },
+    {
+      "id": "stencil-graphics",
+      "name": "Stencil Graphics",
+      "category": "graphic-design",
+      "kind": "technique",
+      "description": "A clean vector-like stencil mascot with deliberate structural bridges and bold connected cut shapes.",
+      "tags": [
+        "connected-stencil",
+        "graphic-cutouts",
+        "bridged-shapes"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use flat opaque digital shapes that suggest a clean cut stencil without spray-paint texture.",
+        "forms": "Construct compact body regions with visible connecting bridges preserving eyes, markings, and interior islands.",
+        "linework": "Use crisp cut boundaries and a few broad bridge interruptions as the defining graphic line language.",
+        "shading": "Keep the figure flat or use one additional flat tone for large internal divisions.",
+        "palette": "Choose a restrained high-contrast color set with stable roles for filled areas and cutout gaps.",
+        "texture": "Keep surfaces smooth and undistressed so structural bridge design remains clearly visible.",
+        "rendering": "Render an isolated stencil-designed character with consistent bridge positions and no surrounding stencil sheet."
+      },
+      "negative_constraints": [
+        "Do not add overspray, a wall surface, stencil tools, or manufacturing registration marks.",
+        "Avoid disconnected interior islands and narrow bridges that vanish during scaling.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Bold cut-shape mascots and fabrication-inspired graphic icons."
+      ],
+      "limitations": [
+        "The visual stencil language does not guarantee a mechanically usable cutting template."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "recommended",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Preserve antialiased cut borders and intentional openings; keep bridges visibly thick after downsampling.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      }
+    },
+    {
+      "id": "editorial-minimalism",
+      "name": "Editorial Minimalism",
+      "category": "graphic-design",
+      "kind": "technique",
+      "description": "A restrained character illustration using a few asymmetric shapes and economical expressive lines.",
+      "tags": [
+        "editorial-graphic",
+        "economical-line",
+        "minimal-illustration"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use opaque flat illustration color with sparse hand-drawn ink details and a matte editorial finish.",
+        "forms": "Construct simplified asymmetrical body masses with clear gestural posture and generous empty space within the pose.",
+        "linework": "Use a few expressive variable-width lines for face and limbs, keeping every essential stroke thick enough to read.",
+        "shading": "Avoid full modeling; use one simple interior shadow shape only when needed to separate overlapping parts.",
+        "palette": "Choose a very small coordinated palette with one clear focal color and a consistent dark line tone.",
+        "texture": "Keep fills mostly smooth with at most slight stable dry-ink texture on selected strokes.",
+        "rendering": "Render an isolated economical character whose personality comes from pose and facial spacing rather than decorative detail."
+      },
+      "negative_constraints": [
+        "Do not turn the artwork into an editorial page with captions or conceptual props outside the identity.",
+        "Avoid missing limbs, unreadably thin features, and over-simplification of required markings.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Quiet companion mascots and expressive low-detail character illustrations."
+      ],
+      "limitations": [
+        "Economy of detail must preserve the identity and clear differences between all required animation states."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "recommended",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Use antialiased expressive strokes; inspect thin facial lines and ensure negative gaps survive reduction.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "cozy"
+      ]
+    },
+    {
+      "id": "bold-geometric-illustration",
+      "name": "Bold Geometric Illustration",
+      "category": "graphic-design",
+      "kind": "technique",
+      "description": "A high-impact mascot assembled from large interlocking shapes, chunky contours, and emphatic pose geometry.",
+      "tags": [
+        "chunky-geometry",
+        "interlocking-shapes",
+        "bold-graphic"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use opaque matte digital color with thick graphic borders and solid untextured shape interiors.",
+        "forms": "Build substantial interlocking geometric masses with oversized clear features and short powerful limb shapes.",
+        "linework": "Use heavy consistent contours and a few broad interior divisions that reinforce pose direction.",
+        "shading": "Apply one or two hard-edged geometric shadow blocks aligned to the body form.",
+        "palette": "Choose a small high-contrast palette with distinct fill, outline, shadow, and accent roles.",
+        "texture": "Keep surfaces smooth and solid without grain, tiny patterns, or subtle material effects.",
+        "rendering": "Render a strongly readable character with the same bold shape ratios and contour weight across every state."
+      },
+      "negative_constraints": [
+        "Do not merge thick outlines into black masses around the face.",
+        "Avoid decorative background shapes and geometric simplification that removes approved anatomy.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Highly legible mascot systems and bold small-format animated characters."
+      ],
+      "limitations": [
+        "Very thick outlines need enough interior space to preserve eye and mouth separation."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "recommended",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Preserve antialiased chunky contours and inspect enclosed facial spaces after scaling.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "whimsical"
+      ]
+    },
+    {
+      "id": "organic-abstract",
+      "name": "Organic Abstract",
+      "category": "graphic-design",
+      "kind": "technique",
+      "description": "A character suggested by overlapping biomorphic shapes, flowing color boundaries, and a few anchored facial landmarks.",
+      "tags": [
+        "biomorphic",
+        "flowing-shapes",
+        "abstract-character"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use opaque flat or softly graded digital color fields with smooth biomorphic boundaries and no literal material texture.",
+        "forms": "Build a compact character from a few connected flowing blobs while preserving approved anatomy and silhouette landmarks.",
+        "linework": "Use clean organic color boundaries and minimal opaque facial marks rather than a dense drawn outline.",
+        "shading": "Use broad overlapping value shapes or one gentle gradient per mass to separate limbs and body regions.",
+        "palette": "Choose coordinated body colors with stable value contrasts and a clearly differentiated facial area.",
+        "texture": "Keep surfaces smooth with at most a few broad internal flowing motifs anchored to anatomy.",
+        "rendering": "Render a recognizable abstracted mascot with stable blob proportions and no floating abstract forms outside the character."
+      },
+      "negative_constraints": [
+        "Do not dissolve the character into an unrecognizable abstract composition.",
+        "Avoid disconnected blobs, random shape morphing, and hidden facial features.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Expressive soft-shape mascots and biomorphic character identities."
+      ],
+      "limitations": [
+        "Abstract form changes must be bounded by the approved identity; unusual anatomy needs profile-appropriate review."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Preserve antialiased opaque blob edges and check that overlapping color boundaries are not mistaken for transparency.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "whimsical",
+        "botanical"
+      ]
+    },
+    {
+      "id": "decorative-pattern-illustration",
+      "name": "Decorative Pattern Illustration",
+      "category": "graphic-design",
+      "kind": "technique",
+      "description": "A clean character with a deliberately designed repeating surface motif that follows anatomy and preserves facial clarity.",
+      "tags": [
+        "surface-pattern",
+        "ornamental-illustration",
+        "repeat-motif"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use opaque illustrated surfaces carrying a few broad repeated motifs with a matte printed finish.",
+        "forms": "Keep a simple compact body silhouette and reserve large unpatterned areas for the face and small extremities.",
+        "linework": "Use clear outer contours and simple motif outlines with a consistent hierarchy between anatomy and decoration.",
+        "shading": "Keep the pattern mostly flat with limited broad form shading that does not distort motif colors.",
+        "palette": "Choose a limited palette shared by body and pattern, with strong facial contrast and stable motif color roles.",
+        "texture": "Repeat a few large floral, geometric, or abstract motifs in a fixed map anchored to body regions.",
+        "rendering": "Render an isolated patterned character with consistent motif scale, placement, and orientation through all animation poses."
+      },
+      "negative_constraints": [
+        "Do not replace the image with a seamless pattern tile or add decorative motifs around the silhouette.",
+        "Avoid dense micro-patterns, patterned eyes, and motif crawling between frames.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Distinctive patterned mascots and decorative character collections."
+      ],
+      "limitations": [
+        "Pattern placement is identity evidence; changes to motif mapping must be reviewed like changes to markings."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Preserve antialiased contours and opaque pattern regions; chroma selection must examine every motif color.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "botanical",
+        "nautical",
+        "seasonal"
+      ]
+    }
+  ]
+}
