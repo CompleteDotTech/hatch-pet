@@ -283,7 +283,8 @@ def _bundle(value):
 def _settings(bundle, shot):
     settings = bundle["project"]["render"]
     width, height = settings["width"], settings["height"]
-    if type(width) is not int or type(height) is not int or min(width, height) < 1 or width*height > MAX_FRAME_PIXELS:
+    if (type(width) is not int or type(height) is not int or min(width, height) < 1
+            or max(width, height) > 4096 or width*height > MAX_FRAME_PIXELS):
         raise ValueError("render resolution exceeds bounded positive raster dimensions")
     fps_fraction(settings["fps"])
     if settings.get("color_space") != "srgb" or settings.get("alpha") != "straight":
