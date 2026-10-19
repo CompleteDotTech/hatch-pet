@@ -56,7 +56,7 @@ def prepare(root: Path, character: str):
     root = root.resolve()
     spec = CHARACTERS[character]
     profile = load_profile({
-        'schema_version': 1, 'id': character + '-construction-v2',
+        'schema_version': 1, 'id': character + '-construction-v3',
         'layout': {'columns': 1, 'cell_width': 1024, 'cell_height': 1024},
         'states': [{'id': 'parts', 'frames': 1, 'durations': [1000], 'purpose': 'One layered construction sheet for manual hash-bound part extraction',
                     'motion': 'static', 'generation': {'instructions': PARTS}}],
