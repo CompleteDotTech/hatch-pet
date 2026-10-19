@@ -210,12 +210,15 @@ def make_character(root, name):
     spec = CHARACTERS[name]
     base = root / 'art/originals' / (name + '-turnaround-v3.png')
     design_views = ['front', 'three-quarter-left', 'side-left', 'back'] if name == 'milo' else ['front', 'three-quarter-right', 'side-right', 'back']
+    view_reviews = {view: {'status': 'approved', 'kind': 'assistant_visual', 'reviewer': 'assistant:/root',
+        'evidence': [file_ref(root, base)], 'note': 'Actual original design reference inspected. This decision covers this design view only; component construction and animation need separate dependency-bound reviews. Front is the only authored animation rig.'} for view in design_views}
+    if name == 'milo':
+        view_reviews['back'].update(status='rejected', note='Final source inspection found the scarf knot on viewer-right in both front and back panels. Reconcile the rear knot with the fixed front asymmetry before approving or animating a back view. Retain this original as provenance; the frontal pilot does not use the rear drawing.')
     return {'id': name, 'version': VERSION, 'name': spec['name'], 'dimensions': dimensions, 'relative_scale': relative,
         'identity': {'proportions': {'head_to_body_height': .6, 'cast_relative_scale': relative},
             'palette': spec['palette'], 'materials': ['softly painted fur', 'matte woven costume'],
             'markings': spec['markings'], 'asymmetries': spec['asymmetries'], 'allowed_facings': ['front'], 'forbid_mirror': True},
-        'views': design_views, 'view_reviews': {view: {'status': 'approved', 'kind': 'assistant_visual', 'reviewer': 'assistant:/root',
-            'evidence': [file_ref(root, base)], 'note': 'Actual original four-view design was inspected before the construction claim. This decision covers this design reference view only; component construction and animation need separate dependency-bound reviews. Front is the only authored animation rig.'} for view in design_views},
+        'views': design_views, 'view_reviews': view_reviews,
         'components': parts, 'costumes': [{'id': 'everyday', 'differences': ['Original coral scarf' if name == 'milo' else 'Original two-button ochre waistcoat'], 'drawings': {}}],
         'capabilities': {'action': ['idle', 'walk', 'stop', 'reaction', 'reach', 'grasp', 'hold', 'release'],
             'pose': ['stand', 'walk', 'reach', 'hold'], 'viewpoint': ['front'], 'facing': ['front'],

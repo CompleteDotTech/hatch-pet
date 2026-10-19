@@ -75,6 +75,47 @@ class ProductionAdapterTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "missing or changed"):
             validate_handoff(destination)
 
+    def test_nested_reserved_names_cannot_escape_exact_file_inventory(self):
+        destination = self.home/"handoff"
+        export_editor_handoff(self.render, destination)
+        for relative in ("animation/handoff.json", "drawings/consumer-integration.json",
+                         "animation/consumer-evidence/unlisted.txt"):
+            path = destination/relative
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(b"preserve this unlisted nested evidence")
+            with self.subTest(path=relative):
+                with self.assertRaisesRegex(ValueError, "inventory differs"):
+                    validate_handoff(destination)
+                self.assertEqual(path.read_bytes(), b"preserve this unlisted nested evidence")
+            path.unlink()
+        self.assertTrue(validate_handoff(destination)["ok"])
+
+    def test_consumer_evidence_symlinks_fail_before_external_calls_or_writes(self):
+        destination = self.home/"handoff"
+        export_editor_handoff(self.render, destination)
+        external = self.home/"outside-evidence"
+        external.mkdir()
+        sentinel = external/"preserve.png"
+        sentinel.write_bytes(b"outside this handoff")
+        expected = (sentinel.read_bytes(), sentinel.stat().st_mtime_ns)
+        for relative, target in (("consumer-evidence", external),
+                                 ("consumer-evidence/krita-roundtrip.png", sentinel),
+                                 ("consumer-integration.json", sentinel)):
+            path = destination/relative
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.symlink_to(target, target_is_directory=target.is_dir())
+            with self.subTest(path=relative):
+                with self.assertRaisesRegex(ValueError, "symlink"):
+                    validate_handoff(destination)
+                with patch("production_adapter.subprocess.run") as run:
+                    with self.assertRaisesRegex(ValueError, "symlink"):
+                        exercise_krita(destination, executable="must-not-run")
+                    run.assert_not_called()
+                self.assertEqual((sentinel.read_bytes(), sentinel.stat().st_mtime_ns), expected)
+                self.assertEqual(list(external.iterdir()), [sentinel])
+            path.unlink()
+        self.assertTrue(validate_handoff(destination)["ok"])
+
     def test_handoff_metadata_is_bound_to_retained_render_and_audio(self):
         destination = self.home/"handoff"
         original = export_editor_handoff(self.render, destination)

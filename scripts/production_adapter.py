@@ -326,9 +326,20 @@ def validate_handoff(destination):
     manifest = json.loads(safe_path(destination, "handoff.json").read_text("utf-8"))
     if manifest.get("schema_version") != 1 or manifest.get("kind") != "krita-portable-handoff":
         raise ValueError("unsupported editor handoff")
-    actual = {path.relative_to(destination).as_posix() for path in destination.rglob("*") if path.is_file()
-              and path.name not in ("handoff.json", "consumer-integration.json")
-              and "consumer-evidence" not in path.relative_to(destination).parts}
+    actual = set()
+    for path in destination.rglob("*"):
+        relative = path.relative_to(destination)
+        # Consumer evidence is auxiliary only at its designated root path.
+        # Check even excluded paths so a forged evidence symlink cannot redirect
+        # a later real consumer export outside this handoff.
+        safe_path(destination, relative.as_posix())
+        if not path.is_file():
+            if not path.is_dir():
+                raise ValueError("handoff contains an unsupported special file")
+            continue
+        if relative.as_posix() in ("handoff.json", "consumer-integration.json") or relative.parts[0] == "consumer-evidence":
+            continue
+        actual.add(relative.as_posix())
     if actual != set(manifest["files"]):
         raise ValueError("handoff file inventory differs; record edited assets as new versions")
     total = 0
@@ -420,11 +431,14 @@ def exercise_krita(destination, *, executable=None, timeout=60):
     report = {"schema_version": 1, "consumer": "Krita", "exported_assets": True,
               "adapter_roundtrip_tested": True, "application_integration": "not-performed",
               "timeline_integration": "not-performed", "handoff_sha256": file_hash(destination/"handoff.json")}
+    report_path = safe_path(destination, "consumer-integration.json")
+    evidence = safe_path(destination, "consumer-evidence")
+    output_paths = {suffix: safe_path(destination, "consumer-evidence/krita-roundtrip."+suffix)
+                    for suffix in ("png", "ora")}
     if not executable:
         report["reason"] = "Krita executable is unavailable in this environment. No application was installed."
-        atomic_json(destination/"consumer-integration.json", report)
+        atomic_json(report_path, report)
         return report
-    evidence = destination/"consumer-evidence"
     evidence.mkdir(exist_ok=True)
     source = safe_path(destination, manifest["drawings"][0]["path"])
     commands = []
@@ -437,7 +451,7 @@ def exercise_krita(destination, *, executable=None, timeout=60):
                                      text=True, timeout=timeout)
             report["version"] = (version.stdout+version.stderr).strip()[:1000]
             for suffix in ("png", "ora"):
-                output = evidence/("krita-roundtrip."+suffix)
+                output = output_paths[suffix]
                 command = [str(executable), str(source), "--export", "--export-filename", str(output)]
                 run = subprocess.run(command, env=environment, capture_output=True, text=True, timeout=timeout)
                 commands.append({"arguments": ["krita", source.name, "--export", "--export-filename", output.name],
@@ -461,5 +475,5 @@ def exercise_krita(destination, *, executable=None, timeout=60):
                           maximum_ora_channel_difference=restored_delta, layers_preserved=layers_preserved)
     except (OSError, subprocess.TimeoutExpired, ValueError) as exc:
         report.update(application_integration="failed", commands=commands, reason=str(exc))
-    atomic_json(destination/"consumer-integration.json", report)
+    atomic_json(report_path, report)
     return report

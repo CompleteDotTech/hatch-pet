@@ -1,0 +1,18 @@
+test_actual_alpha_proves_entrances_exits_and_layer_visibility (test_production_pilot.ProductionPilotTests.test_actual_alpha_proves_entrances_exits_and_layer_visibility) ... ok
+test_actual_authored_foot_stances_stay_planted_in_world_pixels (test_production_pilot.ProductionPilotTests.test_actual_authored_foot_stances_stay_planted_in_world_pixels) ... ok
+test_actual_speech_sources_padding_and_mouth_cues_are_hash_bound (test_production_pilot.ProductionPilotTests.test_actual_speech_sources_padding_and_mouth_cues_are_hash_bound) ... ok
+test_body_face_gaze_and_mouth_are_independently_evaluated (test_production_pilot.ProductionPilotTests.test_body_face_gaze_and_mouth_are_independently_evaluated) ... ok
+test_dialogue_revision_changes_its_exact_scope_without_new_art (test_production_pilot.ProductionPilotTests.test_dialogue_revision_changes_its_exact_scope_without_new_art) ... ok
+test_fixture_relabel_and_original_tamper_cannot_reuse_acquisition (test_production_pilot.ProductionPilotTests.test_fixture_relabel_and_original_tamper_cannot_reuse_acquisition) ... ok
+test_rebuilding_retained_sources_makes_no_new_generation_or_tts_call (test_production_pilot.ProductionPilotTests.test_rebuilding_retained_sources_makes_no_new_generation_or_tts_call) ... ok
+test_registered_drawing_variants_have_real_alpha_and_fixed_scale (test_production_pilot.ProductionPilotTests.test_registered_drawing_variants_have_real_alpha_and_fixed_scale) ... ok
+test_representative_real_frames_are_deterministic_and_visually_distinct (test_production_pilot.ProductionPilotTests.test_representative_real_frames_are_deterministic_and_visually_distinct) ... ok
+test_retained_imagegen_history_and_exact_originals_are_nonfixture (test_production_pilot.ProductionPilotTests.test_retained_imagegen_history_and_exact_originals_are_nonfixture) ... ok
+test_shared_handoff_is_exact_and_discontinuous_tampering_fails (test_production_pilot.ProductionPilotTests.test_shared_handoff_is_exact_and_discontinuous_tampering_fails) ... ok
+test_stops_and_declared_scene_continuity_preserve_world_state (test_production_pilot.ProductionPilotTests.test_stops_and_declared_scene_continuity_preserve_world_state) ... ok
+test_two_scenes_reuse_one_versioned_cast_and_twenty_clips (test_production_pilot.ProductionPilotTests.test_two_scenes_reuse_one_versioned_cast_and_twenty_clips) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 7.076s
+
+OK

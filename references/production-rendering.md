@@ -2,6 +2,16 @@
 
 The reference renderer turns a validated production project into indexed RGBA PNG frames and a sample-counted PCM WAV master. Those files, their exact dependency manifest, and the authored integer-frame edit are the timing authority. The browser preview and optional movie support review; the editor handoff supplies editable raster drawings and an animation sequence. None of these operations submits a visual approval. Implementation: [`production_render.py`](../scripts/production_render.py), [`production_adapter.py`](../scripts/production_adapter.py), and [`production-preview.js`](../assets/production-preview.js).
 
+## Contents
+
+- [Render a shot or scene](#render-a-shot-or-scene)
+- [Coordinate, layer, and color contract](#coordinate-layer-and-color-contract)
+- [Exact timing, audio, and optional movies](#exact-timing-audio-and-optional-movies)
+- [Resume, dependency reuse, and resource bounds](#resume-dependency-reuse-and-resource-bounds)
+- [Review actual output locally](#review-actual-output-locally)
+- [Portable editor handoff](#portable-editor-handoff)
+- [Reproduce focused checks](#reproduce-focused-checks)
+
 ## Render a shot or scene
 
 Run commands from the repository root with the Python environment described in [`requirements.txt`](../requirements.txt). Pillow is required. FFmpeg and ffprobe are optional local executables for movie creation; rendering PNG/WAV masters does not require them or a network service.
@@ -148,6 +158,8 @@ python scripts/production.py export-editor \
 
 The export contains the complete flattened numbered PNG sequence, `audio.wav`, an exact retained source render manifest, selected layered `.ora` drawings, `EDITING.md`, and `handoff.json`. Every file is listed and hash-bound. Validation compares handoff identity, dimensions, frame rate/count, numbered frame hashes, source manifest hash, actual PCM length, and snapshot source hashes; updating only an inventory hash cannot conceal a changed retained source or different timing.
 
+Only the designated root `consumer-integration.json` and root `consumer-evidence/` hold auxiliary consumer results outside that core export inventory. Similarly named nested files do not evade the inventory. All encountered paths, including auxiliary evidence, reject symlinks, and consumer output paths are checked before an external application is called.
+
 OpenRaster snapshots preserve raster layers and draw order after transforms, masks and camera have been baked into pixels. Their deterministic ZIP contains the mandatory first uncompressed mimetype, layer-stack XML, PNG layers, merged image, and thumbnail, following the official [file layout](https://www.openraster.org/baseline/file-layout-spec.html). The uppermost layer comes first in the XML, as defined by the official [layer-stack specification](https://www.openraster.org/baseline/layer-stack-spec.html). The supported reader handles source-over layers, offsets, opacity, visibility, and isolated groups; unsupported blending, nonisolated groups, unsafe paths, links, duplicate members, XML entities, and excessive allocations fail explicitly.
 
 In Krita, open a selected `.ora`, edit its paint layers, and save a working `.kra`. For animation, create a document at the manifest's resolution and frame rate, set the end frame to N−1, then use **File → Import Animation Frames** with ascending numerical order, start 0, and step 1. Krita documents these [frame import controls](https://docs.krita.org/en/reference_manual/import_animation.html). Add `audio.wav` through the Timeline Docker's audio menu. Krita retains the audio path, so keep that WAV with the working document or reload it after relocation; see [Audio for Animation](https://docs.krita.org/en/reference_manual/audio_for_animation.html). If an editor cannot represent a particular rational rate, preserve the exact masters and use an editor that can conform it.
@@ -174,3 +186,5 @@ python -m unittest discover -s tests -p 'test_production_pilot.py' -v
 ```
 
 The preview suite uses Playwright against a local server and checks actual canvas pixels, frame stepping, stalled-thread catch-up, layer visibility, pinned comparison, audio seeking, and reduced-motion behavior. Configure `PLAYWRIGHT_BROWSERS_PATH` or `HATCH_BROWSER_EXECUTABLE` to an installed supported browser. A missing optional browser can be reported as unavailable; once a binary is found, launch or behavior failures are test failures. Current focused logs are in [`tests/results`](../tests/results). The adapter's optional real Krita exercise is reported separately from its format tests; synthetic fixtures exercise software behavior and do not substitute for production-art acceptance.
+
+Set `HATCH_PRODUCTION_PILOT` to an already materialized pilot root to test it directly. Without that override, the pilot suite restores the checked source bundle and separate original-audio bundle into a temporary project, including the original speech WAVs, text, receipts, and Flite copyright. It then rebuilds components, cues and scenes while forbidding all subprocesses and reporting external executables unavailable. This proves that rebuilding retained speech needs no new TTS or FFmpeg invocation; optional movie encoding remains separate. A missing or corrupt retained source/audio bundle is a build failure when the bundle is expected, rather than permission to invent replacement evidence. The older `HATCH_PRODUCTION_PILOT_ROOT` alias and complete-project bundle remain supported.

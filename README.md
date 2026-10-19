@@ -4,7 +4,7 @@
 
 <img src="assets/title.svg" alt="hatch-pet" width="720">
 
-**A Codex skill for animated pets and reusable visual asset production.**<br>
+**A Codex skill for animated pets, reusable visual assets and layered 2D cast production.**<br>
 Start with a concept, brand, sketch, or existing artwork. Generate through the installed imagegen skill or import explicitly, validate and visually review, then export or create a local package.
 
 <br>
@@ -167,6 +167,28 @@ See [the local delivery validation report](references/validation-results.md) for
 
 <br>
 
+## 🎬 Reuse a cast across scenes
+
+![Milo and Luma share a seed packet in the production pilot](assets/production-pilot.jpg)
+
+The production workflow adds versioned projects and casts, layered character construction, independent performance tracks, reusable motion clips, coordinated props, scenes and cameras, deterministic PNG/PCM rendering, and scoped review history. It builds on the existing imagegen claim, identity, source and repair contracts.
+
+**Milo and Luma** demonstrate the workflow with original, non-fixture artwork: a **36-second seed exchange** with entrances, walking and stopping, dialogue, reactions, a shared prop handoff, camera cuts and exits; then a **22-second garden scene** reusing the same cast and existing clips. Their 20 authored clips and editable dialogue use one shared character version per identity. The production rig is frontal; the four-view design references do not imply that side or back animation rigs exist.
+
+Start with the [production recipe](references/production-pilot.md) to restore the exact artwork and original speech, reconstruct the editable project, render both scenes, inspect them, review changes and export the editor handoff. The [demonstration index](examples/production-pilot/README.md) separates source provenance, actual artwork inspection, offline timing, adapter verification and application integration. [Production validation](references/production-validation.md) records the current results and limitations; [P01–P15 traceability](references/production-traceability.md) maps the requirements to code, tests and evidence.
+
+For a complete model-free regression demonstration:
+
+```bash
+python scripts/production_regression_demo.py --output-dir output/production-fixture --movie
+python scripts/production.py --help
+python -m unittest discover -s tests -v
+```
+
+The synthetic demonstration covers three scenes and individually drawn full-frame overrides as well as layered acting. Its generated acceptance records are explicitly synthetic. The local preview supports scrubbing, stepping, audio seeking, track visibility and pinned comparisons; exact final timing comes from offline frames and PCM. The supported editor handoff exports PNG/WAV and layered OpenRaster snapshots for Krita. An adapter roundtrip is reported separately from actually running an available Krita installation.
+
+The fixed Codex atlas, millisecond timing, example profiles and package/install behavior remain unchanged. Scene production does not install anything into a live application.
+
 ## ⚙️ Under the shell
 
 ```mermaid
@@ -201,6 +223,11 @@ flowchart LR
 | `scripts/export_assets.py` | Frames, atlas, stills, GIF/WebP and bounded browser state-machine playback |
 | `scripts/asset_exporters.py` | Printable cards, flipbooks, boards, stimuli, Xcursor and craft grids |
 | `scripts/demonstrate.py` | Ten labeled deterministic demonstrations and acceptance checks |
+| `scripts/production.py` | Project/cast validation, coverage, generation bindings, versioned imports, scoped reviews, impact, rendering and archive CLI |
+| `scripts/production_contracts.py` / `production_performance.py` | Portable cast/clip/scene contracts, independent tracks, motion, dialogue, interaction and continuity evaluation |
+| `scripts/production_render.py` / `production_adapter.py` | Deterministic PNG/PCM masters, resumable rendering, local preview and tested PNG/WAV/OpenRaster handoff |
+| `scripts/production_demo.py` / `production_regression_demo.py` | Retained production-art pilot and separate model-free regression scenes |
+| `scripts/production_sources.py` / `production_bundle.py` | Exact source transport and verified complete-project bundle transport |
 
 **Design principles**
 
@@ -211,7 +238,7 @@ flowchart LR
 
 More detail lives in [`SKILL.md`](SKILL.md), [`references/animation-rows.md`](references/animation-rows.md), [`references/codex-pet-contract.md`](references/codex-pet-contract.md) and [`references/qa-rubric.md`](references/qa-rubric.md).
 
-Run `python -m unittest discover -s tests -v` for fixture-only regression tests. `python tests/fixture_workflow.py --output-dir C:/work/hatch-fixture-demo --profile examples/web-status.json` creates a clearly labeled complete local demonstration without calling imagegen or installing a pet.
+Run `python -m unittest discover -s tests -v` for the complete local regression suite, including model-free reconstruction checks against retained non-fixture pilot sources. These tests do not call imagegen or confer artwork approval. `python tests/fixture_workflow.py --output-dir C:/work/hatch-fixture-demo --profile examples/web-status.json` creates a clearly labeled legacy demonstration without calling imagegen or installing a pet.
 
 The complete development suite uses `requirements-test.txt` and a local Playwright Chromium binary. Install them if missing with `python -m pip install -r requirements-test.txt` and `python -m playwright install chromium`. The standalone `scripts/doctor.py` reports local capabilities without requiring browser tools.
 

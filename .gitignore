@@ -1,3 +1,20 @@
 __pycache__/
 *.py[cod]
 /output/
+
+# Reconstruct these exact production assets from the tracked source transports.
+/examples/production-pilot/art/
+/examples/production-pilot/audio/*.wav
+/examples/production-pilot/audio/original/*.wav
+/examples/production-pilot/renders/
+/examples/production-pilot/editor-handoff/
+/examples/production-pilot/evidence/*.png
+/examples/.production-pilot.hatch.lock
+/examples/production-pilot/acquisition/.*.hatch.lock
+
+# Model-free demonstration output; retain its small acceptance evidence.
+/examples/production-fixture/*
+!/examples/production-fixture/README.md
+!/examples/production-fixture/acceptance.json
+!/examples/production-fixture/performance-evidence.json
+/examples/.production-fixture.hatch.lock
