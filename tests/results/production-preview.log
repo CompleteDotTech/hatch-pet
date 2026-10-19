@@ -1,6 +1,10 @@
-setUpClass (test_production_preview.ProductionPreviewTests) ... skipped 'Chromium executable unavailable; install the documented browser test dependency'
+test_audio_seek_is_stable_and_reduced_motion_does_not_autoplay (test_production_preview.ProductionPreviewTests.test_audio_seek_is_stable_and_reduced_motion_does_not_autoplay) ... ok
+test_playback_catches_up_after_main_thread_stall_and_stops_at_boundary (test_production_preview.ProductionPreviewTests.test_playback_catches_up_after_main_thread_stall_and_stops_at_boundary) ... ok
+test_scrub_step_clamps_timing_and_actual_source_inspection (test_production_preview.ProductionPreviewTests.test_scrub_step_clamps_timing_and_actual_source_inspection) ... ok
+test_track_visibility_and_pinned_comparison_change_real_pixels (test_production_preview.ProductionPreviewTests.test_track_visibility_and_pinned_comparison_change_real_pixels) ... ok
 
 ----------------------------------------------------------------------
-Ran 0 tests in 0.437s
+Ran 4 tests in 4.765s
 
-OK (skipped=1)
+OK
+Production preview actual browser: 155.0.8059.84

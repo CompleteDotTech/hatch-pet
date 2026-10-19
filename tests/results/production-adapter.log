@@ -1,0 +1,16 @@
+test_actual_local_krita_import_export_and_layer_roundtrip (test_production_adapter.ProductionAdapterTests.test_actual_local_krita_import_export_and_layer_roundtrip) ... skipped 'Krita not available; adapter tests remain separate from integration'
+test_actual_pcm_duration_rejects_internally_rebound_frame_rate (test_production_adapter.ProductionAdapterTests.test_actual_pcm_duration_rejects_internally_rebound_frame_rate) ... ok
+test_actual_pcm_truncation_fails_even_if_all_metadata_hashes_are_rebound (test_production_adapter.ProductionAdapterTests.test_actual_pcm_truncation_fails_even_if_all_metadata_hashes_are_rebound) ... ok
+test_handoff_metadata_is_bound_to_retained_render_and_audio (test_production_adapter.ProductionAdapterTests.test_handoff_metadata_is_bound_to_retained_render_and_audio) ... ok
+test_layered_edit_roundtrip_preserves_edit_and_requires_new_approval (test_production_adapter.ProductionAdapterTests.test_layered_edit_roundtrip_preserves_edit_and_requires_new_approval) ... ok
+test_malicious_ora_paths_duplicates_and_pixel_bound (test_production_adapter.ProductionAdapterTests.test_malicious_ora_paths_duplicates_and_pixel_bound) ... ok
+test_openraster_structure_layer_order_and_exact_pixel_roundtrip (test_production_adapter.ProductionAdapterTests.test_openraster_structure_layer_order_and_exact_pixel_roundtrip) ... ok
+test_portable_handoff_sequence_audio_and_relocation (test_production_adapter.ProductionAdapterTests.test_portable_handoff_sequence_audio_and_relocation) ... ok
+test_rebinding_file_inventory_cannot_hide_wrong_source_frame_or_manifest (test_production_adapter.ProductionAdapterTests.test_rebinding_file_inventory_cannot_hide_wrong_source_frame_or_manifest) ... ok
+test_tampered_sequence_and_unlisted_files_fail_without_deletion (test_production_adapter.ProductionAdapterTests.test_tampered_sequence_and_unlisted_files_fail_without_deletion) ... ok
+test_unavailable_consumer_is_separate_from_adapter_success (test_production_adapter.ProductionAdapterTests.test_unavailable_consumer_is_separate_from_adapter_success) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 1.061s
+
+OK (skipped=1)

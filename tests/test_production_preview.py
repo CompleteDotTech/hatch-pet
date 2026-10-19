@@ -27,6 +27,12 @@ class ProductionPreviewTests(unittest.TestCase):
         cls.addClassCleanup(cls.playwright.stop)
         executable = os.environ.get("HATCH_BROWSER_EXECUTABLE")
         available = Path(executable or cls.playwright.chromium.executable_path)
+        if not available.is_file() and not executable and os.environ.get("PLAYWRIGHT_BROWSERS_PATH"):
+            cache = Path(os.environ["PLAYWRIGHT_BROWSERS_PATH"])
+            shells = sorted(path for path in cache.glob("chromium_headless_shell-*/**/chrome-headless-shell") if path.is_file())
+            if shells:
+                executable = str(shells[-1])
+                available = Path(executable)
         if not available.is_file():
             raise unittest.SkipTest("Chromium executable unavailable; install the documented browser test dependency")
         # Once a binary exists, launch errors are failures, never availability skips.
@@ -92,6 +98,7 @@ class ProductionPreviewTests(unittest.TestCase):
         self.page.locator("#scrubber").evaluate("node => {node.value='7';node.dispatchEvent(new Event('input',{bubbles:true}));}")
         self.page.wait_for_function("hatchPreview.renderedFrame === 7")
         self.assertIn("[7/12, 8/12)", self.page.locator("#interval").inner_text())
+        self.page.locator("summary").click()
         self.assertIn(self.manifest["frames"][7]["sha256"], self.page.locator("#evidence").inner_text())
         self.page.locator("#title").click()
         self.page.keyboard.press("ArrowRight")

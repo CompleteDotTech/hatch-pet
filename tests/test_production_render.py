@@ -310,6 +310,59 @@ class ProductionRenderTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "truncated audio PCM"):
             validate_render(destination)
 
+    def test_oversized_pcm_preflight_preserves_output_and_partial_files(self):
+        output = self.home/"retained-audio"/"mix.wav"
+        mix_audio(self.home, [], output, 6, {"numerator": 12, "denominator": 1})
+        output.with_name("mix.wav.partial").write_bytes(b"retained interrupted audio")
+        expected = snapshot(output.parent)
+        # This is within the frame, rate and sample-count caps, but stereo PCM
+        # would exceed the reader's 512 MiB file cap. Do not start writing it.
+        for target in (output, self.home/"new-audio"/"mix.wav"):
+            with self.assertRaisesRegex(ValueError, "512 MiB offline-reader"):
+                mix_audio(self.home, [], target, 18000,
+                          {"numerator": 12, "denominator": 1}, sample_rate=192000)
+            self.assertEqual(snapshot(output.parent), expected)
+            self.assertFalse((self.home/"new-audio").exists())
+
+    def test_scene_manifest_budget_is_combined_and_rejected_before_writes(self):
+        complete = self.home/"budget-complete"
+        partial = self.home/"budget-partial"
+        render_scene(self.bundle, "scene-one", complete)
+        def stop(progress):
+            if progress["completed"] == 2:
+                raise RuntimeError("keep this partial shot")
+        with self.assertRaisesRegex(RuntimeError, "keep this partial"):
+            render_scene(self.bundle, "scene-one", partial, progress=stop)
+        expected = {root: snapshot(root) for root in (complete, partial)}
+
+        # A real loader-valid scene with two individually affordable shots.
+        # Only one frame is rendered to prove the per-shot budget admits it.
+        scene = self.bundle["scenes"][0]
+        scene["shots"].append(self.bundle["shots"]["second"])
+        for shot in scene["shots"]:
+            shot["duration_frames"] = 6000
+        path = self.bundle["root"]/"scene-one.json"
+        path.write_bytes(canonical(scene)+b"\n")
+        project = self.bundle["project"]
+        project["limits"]["max_frames"] = 12000
+        project["scenes"] = [{"path": path.name, "sha256": file_hash(path)}]
+        project_path = self.bundle["root"]/"project.json"
+        project_path.write_bytes(canonical(project)+b"\n")
+        large = load_project(project_path)
+        one = render_shot(large, "first", self.home/"affordable-shot", max_frames=1)
+        self.assertEqual(one["completed_frames"], 1)
+        self.assertEqual(one["frame_count"], 6000)
+        fresh = self.home/"budget-fresh"
+        for destination in (complete, partial, fresh):
+            for resume in (True, False):
+                with self.subTest(destination=destination.name, resume=resume):
+                    with self.assertRaisesRegex(ValueError, "combined scene/shot manifest"):
+                        render_scene(large, "scene-one", destination, resume=resume)
+                    if destination in expected:
+                        self.assertEqual(snapshot(destination), expected[destination])
+                    else:
+                        self.assertFalse(destination.exists())
+
     def test_camera_resource_bounds_missing_attachment_and_path_escape(self):
         shot = self.bundle["shots"]["first"]
         shot["camera"]["position"] = track((0, [0, 0]), (1, [30, 0]))

@@ -31,6 +31,7 @@ MAX_SOURCE_BYTES = 64 * 1024 * 1024
 MAX_CACHE_BYTES = 64 * 1024 * 1024
 MAX_AUDIO_TRACKS = 32
 MAX_AUDIO_SAMPLES = 192000 * 60 * 30
+MAX_AUDIO_BYTES = 512 * 1024 * 1024
 MAX_AUDIO_BLOCK = 4096
 MAX_RENDER_FRAMES = 18000
 MAX_LAYERS = 256
@@ -307,7 +308,7 @@ def _settings(bundle, shot):
 
 def _wave_info(root, reference, expected_rate=None):
     path = safe_path(root, reference["path"])
-    if not path.is_file() or path.stat().st_size > 512 * 1024 * 1024:
+    if not path.is_file() or path.stat().st_size > MAX_AUDIO_BYTES:
         raise ValueError("audio file missing or larger than 512 MiB: " + reference["path"])
     digest = file_hash(path)
     if reference.get("sha256") and reference["sha256"] != digest:
@@ -459,14 +460,18 @@ def render_shot(bundle, shot_id, output_dir, *, resume=True, max_frames=None,
                                    resume, max_frames, track_layers, progress)
 
 
+def _frame_manifest_estimate(bundle, shot):
+    layer_bound = len(shot.get("layers", []))+len(shot.get("props", []))
+    layer_bound += sum(len(bundle["characters"][instance["character"]]["components"])
+                       for instance in shot.get("instances", []))
+    return shot["duration_frames"]*(1024*layer_bound+2048)
+
+
 def _render_shot_locked(bundle, shot_id, output_dir, settings, cache_bytes, estimate,
                         resume, max_frames, track_layers, progress):
     shot = bundle["shots"][shot_id]
     duration = shot["duration_frames"]
-    layer_bound = len(shot.get("layers", []))+len(shot.get("props", []))
-    layer_bound += sum(len(bundle["characters"][instance["character"]]["components"])
-                       for instance in shot.get("instances", []))
-    metadata_estimate = duration*(1024*layer_bound+2048)
+    metadata_estimate = _frame_manifest_estimate(bundle, shot)
     if estimate+metadata_estimate > bundle["project"].get("limits", {}).get("max_work_bytes", 256*1024*1024):
         raise ValueError("render frame/layer manifest estimate exceeds max_work_bytes; split the shot or reduce layers")
     manifest_path = output_dir/"render-manifest.json"
@@ -721,17 +726,31 @@ def render_scene(bundle, scene_id, output_dir, *, resume=True, track_layers=True
     count = sum(shot["duration_frames"] for shot in scene["shots"])
     if count > min(MAX_RENDER_FRAMES, bundle["project"].get("limits", {}).get("max_frames", MAX_RENDER_FRAMES)):
         raise ValueError("scene frame count exceeds configured render budget; split into scenes")
+    raster_work, shot_metadata = [], []
     for shot in scene["shots"]:
-        if _settings(bundle, shot)[0] != settings:
+        shot_settings, _, work = _settings(bundle, shot)
+        if shot_settings != settings:
             raise ValueError("all shots in a scene must share explicit raster/color/FPS settings")
+        raster_work.append(work)
+        shot_metadata.append(_frame_manifest_estimate(bundle, shot))
+    # The assembled scene remains in memory while the current shot is rendered.
+    # Preflight that combined estimate before creating locks or checkpoints.
+    resources = {"raster_work_bytes": max(raster_work, default=0),
+                 "frame_manifest_work_bytes": sum(shot_metadata),
+                 "largest_shot_manifest_work_bytes": max(shot_metadata, default=0),
+                 "frame_buffer_count": "bounded independent of scene duration"}
+    resources["combined_work_bytes"] = (resources["raster_work_bytes"]+
+        resources["frame_manifest_work_bytes"]+resources["largest_shot_manifest_work_bytes"])
+    if resources["combined_work_bytes"] > bundle["project"].get("limits", {}).get("max_work_bytes", 256*1024*1024):
+        raise ValueError("combined scene/shot manifest work estimate exceeds max_work_bytes; split the scene or reduce layers")
     output_dir.mkdir(parents=True, exist_ok=True)
     with _lock_output(safe_path(output_dir, ".scene.lock")):
         has_checkpoint = _check_scene_destination(output_dir, bundle["project"]["id"], scene_id)
-        return _render_scene_locked(bundle, scene, output_dir, settings, count, has_checkpoint,
+        return _render_scene_locked(bundle, scene, output_dir, settings, count, resources, has_checkpoint,
                                     resume, track_layers, progress)
 
 
-def _render_scene_locked(bundle, scene, output_dir, settings, count, has_checkpoint,
+def _render_scene_locked(bundle, scene, output_dir, settings, count, resources, has_checkpoint,
                          resume, track_layers, progress):
     manifest = {"schema_version": 1, "kind": "scene-render", "renderer": renderer_identity(),
                 "project_id": bundle["project"]["id"], "scene_id": scene["id"],
@@ -739,6 +758,7 @@ def _render_scene_locked(bundle, scene, output_dir, settings, count, has_checkpo
                 "settings": settings, "fps": settings["fps"],
                 "resolution": [settings["width"], settings["height"]], "frame_count": count,
                 "dependencies": {}, "frames": [], "shots": [], "dialogue": [], "audio": None,
+                "resource_estimate": resources,
                 "completed_frames": 0, "preview_is_timing_authority": False}
     if not has_checkpoint:
         atomic_json(output_dir/"render-manifest.json", manifest)
@@ -776,6 +796,7 @@ def _render_scene_locked(bundle, scene, output_dir, settings, count, has_checkpo
         timeline_start += shot["duration_frames"]
         manifest["completed_frames"] = len(manifest["frames"])
         atomic_json(output_dir/"render-manifest.json", manifest)
+        del rendered
     rate = _wave_info(bundle["root"], mixed_tracks[0]["file"])[2]["sample_rate"] if mixed_tracks else 48000
     manifest["audio"] = mix_audio(bundle["root"], mixed_tracks, output_dir/"audio.wav", count,
                                    settings["fps"], sample_rate=rate)
@@ -891,6 +912,8 @@ def mix_audio(root, tracks, output, frame_count, fps, sample_rate=48000, channel
     count = sample_at_frame(frame_count, sample_rate, fps)
     if count > MAX_AUDIO_SAMPLES:
         raise ValueError("mixed audio duration exceeds resource limit")
+    if 44+count*channels*2 > MAX_AUDIO_BYTES:
+        raise ValueError("mixed PCM WAV would exceed the 512 MiB offline-reader bound; split the scene or use an explicit lower sample rate")
     prepared = []
     for track in tracks:
         reference = track.get("file", track.get("audio", track.get("source")))

@@ -107,8 +107,11 @@
   }
   function setFrame(value) { state.frame = clamp(value); requestPaint(); }
 
-  async function seekAudio(seconds) {
+  async function seekAudio(seconds, epoch) {
     if (!manifest.audio) return;
+    // Metadata-only loading may advertise an empty seekable interval even when
+    // the WAV is buffered. Request audio data after the user enables sound.
+    if (audio.preload !== "auto") { audio.preload = "auto"; audio.load(); }
     if (audio.readyState === 0) {
       await new Promise((resolve, reject) => {
         const finish = () => { audio.removeEventListener("loadedmetadata", ready); audio.removeEventListener("error", failed); clearTimeout(timer); };
@@ -119,6 +122,20 @@
         audio.load();
       });
     }
+    if (epoch !== state.epoch) return;
+    const seekable = () => seconds === 0 || Array.from({length: audio.seekable.length}, (_, index) =>
+      audio.seekable.start(index) <= seconds && audio.seekable.end(index) >= seconds).some(Boolean);
+    if (!seekable()) {
+      await new Promise((resolve, reject) => {
+        const events = ["progress", "canplay", "canplaythrough", "durationchange", "loadeddata"];
+        const finish = () => { for (const name of events) audio.removeEventListener(name, ready); clearTimeout(timer); };
+        const ready = () => { if (epoch !== state.epoch || seekable()) { finish(); resolve(); } };
+        const timer = setTimeout(() => { finish(); reject(new Error("Local audio is not seekable yet; try again after it loads.")); }, 5000);
+        for (const name of events) audio.addEventListener(name, ready);
+        ready();
+      });
+    }
+    if (epoch !== state.epoch) return;
     if (Math.abs(audio.currentTime - seconds) < 0.000001 && !audio.seeking) return;
     await new Promise((resolve, reject) => {
       const finish = () => { audio.removeEventListener("seeked", ready); clearTimeout(timer); };
@@ -127,11 +144,17 @@
       audio.addEventListener("seeked", ready);
       audio.currentTime = seconds;
     });
+    if (epoch === state.epoch && Math.abs(audio.currentTime - seconds) > .002) {
+      throw new Error("The browser could not seek to the requested audio time.");
+    }
   }
 
   function seek(value) {
     pause(); setFrame(value);
-    if ($("audio-enabled").checked) void seekAudio(state.frame / fps).catch(error => { $("error").textContent = error.message; });
+    const epoch = state.epoch;
+    if ($("audio-enabled").checked) void seekAudio(state.frame / fps, epoch).catch(error => {
+      if (epoch === state.epoch) $("error").textContent = error.message;
+    });
   }
   function tick(now) {
     if (!state.playing) return;
@@ -150,14 +173,14 @@
     const epoch = ++state.epoch;
     try {
       if ($("audio-enabled").checked) {
-        await seekAudio(state.frame / fps);
+        await seekAudio(state.frame / fps, epoch);
         if (epoch !== state.epoch) return;
         await audio.play();
         if (epoch !== state.epoch) { audio.pause(); return; }
       }
       state.playing = true; state.startFrame = state.frame; state.startTime = performance.now();
       $("play").textContent = "Pause"; state.animation = requestAnimationFrame(tick);
-    } catch (error) { pause(); $("error").textContent = error.message; }
+    } catch (error) { if (epoch === state.epoch) { pause(); $("error").textContent = error.message; } }
   }
   function pin() {
     state.pinned = state.frame;
