@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "fixture": true,
+  "human_review": false,
+  "production_art_acceptance": false,
+  "external_integration": false,
+  "scene_renders": [
+    {
+      "scene_id": "first-scene",
+      "frame_count": 12,
+      "render_manifest": "renders/first-scene/render-manifest.json",
+      "preview": "renders/first-scene/index.html",
+      "storyboard": "first-scene-storyboard.png",
+      "movie": "renders/first-scene/review.mp4",
+      "validated": true,
+      "complete": true,
+      "resume_operation": {
+        "rendered_frames": 0,
+        "reused_frames": 12
+      }
+    },
+    {
+      "scene_id": "second-scene",
+      "frame_count": 12,
+      "render_manifest": "renders/second-scene/render-manifest.json",
+      "preview": "renders/second-scene/index.html",
+      "storyboard": "second-scene-storyboard.png",
+      "movie": "renders/second-scene/review.mp4",
+      "validated": true,
+      "complete": true,
+      "resume_operation": {
+        "rendered_frames": 0,
+        "reused_frames": 12
+      }
+    },
+    {
+      "scene_id": "regression-performances",
+      "frame_count": 276,
+      "render_manifest": "renders/regression-performances/render-manifest.json",
+      "preview": "renders/regression-performances/index.html",
+      "storyboard": "regression-performances-storyboard.png",
+      "movie": "renders/regression-performances/review.mp4",
+      "validated": true,
+      "complete": true,
+      "resume_operation": {
+        "rendered_frames": 0,
+        "reused_frames": 276
+      }
+    }
+  ],
+  "coverage_ready": true,
+  "performance_evidence": "performance-evidence.json",
+  "note": "All receipts are explicitly synthetic automated regression gates."
+}

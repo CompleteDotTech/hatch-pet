@@ -1,0 +1,17 @@
+{
+  "audio": {
+    "path": "audio/original/line-05.wav",
+    "sha256": "dabca8103d29ce60d1ee9986b199ce328bc35aa1c954972da1890dd99002c8fe"
+  },
+  "engine": "ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers",
+  "kind": "local-tts-record",
+  "method": "Actual FFmpeg Flite command executed locally during this v3 production acquisition; source WAV retained unchanged.",
+  "provider_id": null,
+  "provider_id_unavailable_reason": "Local TTS has no remote provider call.",
+  "schema_version": 1,
+  "text": {
+    "path": "audio/original/line-05.txt",
+    "sha256": "06e0c98c9c60b4830d11653c4762cb66e0b9fdf8408e16db72a9ddfa1d927945"
+  },
+  "voice": "slt"
+}

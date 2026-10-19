@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "markings": [
+    "cream muzzle and belly",
+    "small dark brown nose"
+  ],
+  "palette": {
+    "fur": "#C88B47",
+    "cream": "#F3DCB4",
+    "scarf": "#D96654",
+    "eyes": "#392B26"
+  },
+  "materials": [
+    "softly painted fur",
+    "matte woven costume"
+  ],
+  "proportions": {
+    "head_to_body_height": 0.6
+  },
+  "approved_props": [
+    "coral neckerchief"
+  ],
+  "asymmetries": [
+    "coral scarf knot on viewer-right in the front view"
+  ],
+  "directions": {
+    "parts": "front"
+  },
+  "forbid_mirror": true,
+  "unresolved_conflicts": []
+}
