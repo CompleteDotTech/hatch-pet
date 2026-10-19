@@ -4,6 +4,20 @@ The production workflow stores a portable project, a shared cast, reusable clips
 
 The executable definitions live in [`production_contracts.py`](../scripts/production_contracts.py). The five checked-in JSON Schema documents are generated from those same definitions. [`test_production_contracts.py`](../tests/test_production_contracts.py) verifies schema equality and validates a real fixture against both JSON Schema and the runtime loader. Semantic checks supplement JSON Schema: a structurally valid file can still have a broken hierarchy, incompatible drawing, discontinuous ownership change, or illegal interruption.
 
+## Contents
+
+- [Files, identity, and portability](#files-identity-and-portability)
+- [Public Python interfaces](#public-python-interfaces)
+- [Coordinate system and layered construction](#coordinate-system-and-layered-construction)
+- [Viewpoints, facing, materials, and costumes](#viewpoints-facing-materials-and-costumes)
+- [Independent coverage dimensions](#independent-coverage-dimensions)
+- [Integer-frame clips and tracks](#integer-frame-clips-and-tracks)
+- [Transitions and interruption](#transitions-and-interruption)
+- [Contacts, props, and synchronization](#contacts-props-and-synchronization)
+- [Audio, facial performance, and full-frame overrides](#audio-facial-performance-and-full-frame-overrides)
+- [Resource bounds](#resource-bounds)
+- [Reproduce the checked examples](#reproduce-the-checked-examples)
+
 ## Files, identity, and portability
 
 | Artifact | Required identity and relationship | Checked-in schema |
@@ -17,6 +31,8 @@ The executable definitions live in [`production_contracts.py`](../scripts/produc
 IDs start with a lowercase letter and contain at most 64 lowercase letters, digits, underscores, or hyphens. Versions use three nonnegative integers, such as `1.0.0`, without leading zeros. A character reference such as `milo@3.0.0` selects that exact version. Multiple versions may coexist in a cast; duplicate `id@version` entries fail validation. All shot IDs and scene IDs are unique within a project.
 
 File references contain `path` and lowercase hexadecimal `sha256`. Image references also contain `size: [width, height]` and `provenance`. Every referenced path is relative to the project directory, including paths found inside the cast, clips, scene files, source provenance, and acquisition receipts. Paths cannot be absolute, contain a drive prefix or backslash, traverse `.` or `..`, contain empty segments, or traverse a symlink. Moving the complete directory preserves those references.
+
+Provenance may include `references`, an optional list of at most 256 distinct file references for supporting records such as source text, TTS receipts, attribution, or permission documents. These files receive the same path, size, inventory, and hash checks as a primary `source`. Put evidence that must be verified in these references; a path or digest embedded inside an explanatory `note` is plain text. Current source and supporting-reference bytes also contribute to the character or shot dependencies that consume them.
 
 A project can therefore have the following layout without copying character assets between scenes:
 

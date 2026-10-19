@@ -2,6 +2,21 @@
 
 The production layer stores a persistent cast, versioned clips and scene documents beside source images, audio, acquisition history and review receipts. The legacy pet controller remains the authority for imagegen claims and ingestion. Planning, rendering, import, review, archive and transport commands do not call an image provider.
 
+## Contents
+
+- [Commands and JSON reports](#commands-and-json-reports)
+- [Create and inspect a development fixture](#create-and-inspect-a-development-fixture)
+- [Plan coverage before generation](#plan-coverage-before-generation)
+- [Selective dependencies and local repair](#selective-dependencies-and-local-repair)
+- [Record explicit review evidence](#record-explicit-review-evidence)
+- [Import with immutable construction and provenance](#import-with-immutable-construction-and-provenance)
+- [Bound acquisition, claims and recovery](#bound-acquisition-claims-and-recovery)
+- [Render recovery and editor handoff](#render-recovery-and-editor-handoff)
+- [Complete archive, safe restore and migration](#complete-archive-safe-restore-and-migration)
+- [Complete project transport in ZIP parts](#complete-project-transport-in-zip-parts)
+- [Small source and artifact transfer](#small-source-and-artifact-transfer)
+- [Focused verification](#focused-verification)
+
 ## Commands and JSON reports
 
 Use `python scripts/production.py --help` and append `--help` to any command for its arguments. `--project` accepts a directory containing `project.json` or that file. Source references are canonical relative paths; absolute paths, traversal, aliases and symlink escapes are rejected.
@@ -84,6 +99,8 @@ python scripts/production.py impact --project PROJECT --receipt /tmp/before.json
 
 Shot hashes bind identity, render settings and renderer, shot settings, camera, tracks, audio, used construction, selected drawings, placed clips, props and requested continuity endpoints. They avoid global cast/scene-manifest hashes that would invalidate every shot when unrelated assets are added.
 
+Character-level provenance binds the current bytes of its primary source, acquisition receipt and optional `provenance.references`. Audio uses the same explicit supporting references for TTS receipts or original text. Put each record in a `{path, sha256}` reference; hashes written inside a note are not independently verified. Changing a referenced record expires the reviews and shot dependencies that consume it.
+
 A camera-only change affects that shot's camera/final evidence and rerendering. An unchanged construction review can remain current. A new unused character or drawing does not alter existing shot dependencies. Component reviews include parent attachment construction; sibling changes alone do not stale them.
 
 Continuity intentionally connects shots. Changing a requested endpoint position, scale, costume or prop owner can affect both ends of that declared link.
@@ -120,7 +137,7 @@ The reviewer requires `kind`, `id` and `name`. Allowed kinds are `human`, `assis
 
 Evidence binds a project-relative path, SHA-256, note and method: `visual_inspection`, `audio_inspection`, `timed_playback` or `automated_check`. Optional frame indices must fit the target shot. Record what was actually inspected; file existence does not establish visual inspection.
 
-Final artifact review requires the persisted complete shot `render-manifest.json`. The controller checks target identity, fixture label, current dependencies and renderer, settings, ordered frames, artifact hashes and audio frame/sample consistency. Include actual rendered frame evidence; movies or contact sheets can be additional evidence. A stale camera render cannot support fresh final review.
+Final artifact review requires the persisted complete shot `render-manifest.json`. The controller checks target identity, fixture label, current dependencies and renderer, settings, ordered frames, artifact hashes and audio frame/sample consistency. Include an actual rendered frame or layer from that manifest as visual evidence. Audio, movies and contact sheets can be additional evidence; they cannot satisfy the final visual gate alone. A stale camera render cannot support fresh final review. Earlier receipts lacking a bound visual frame or layer are reported stale and retain their history.
 
 ~~~sh
 python scripts/production.py review --project PROJECT --receipt /tmp/completed-shot-review.json
@@ -128,6 +145,8 @@ python scripts/production.py reviews --project PROJECT --scene opening --shot ex
 ~~~
 
 Reviews append to a local hash-linked history. The latest decision for each dimension is checked against current dependencies and evidence; older decisions remain. The chain detects modified receipts but is not an externally signed identity service.
+
+A receipt containing both passing and failing dimensions remains failed overall. Its eligible passing dimensions retain their acceptance while their dependencies remain current; reviewing a repaired failing dimension does not require repeating an unrelated passing decision.
 
 Passing synthetic reviews remain software gates. Fixture reviews never become production art acceptance. Production acceptance applies only to explicitly inspected passing dimensions recorded by an identified human or assistant.
 
