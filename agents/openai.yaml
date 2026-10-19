@@ -1,4 +1,4 @@
 interface:
   display_name: "Hatch Pet"
-  short_description: "Hatch style-flexible Codex pets"
-  default_prompt: "Use $hatch-pet to create a Codex-compatible animated pet in any pet-safe style from a concept, company brand, or reference image."
+  short_description: "Create reviewed pets and animated character assets"
+  default_prompt: "Use $hatch-pet to create and review a Codex pet or profile-driven animated character assets from a concept, brand, or reference image."

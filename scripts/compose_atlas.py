@@ -8,24 +8,17 @@ from pathlib import Path
 
 from PIL import Image
 
-COLUMNS = 8
-ROWS = 9
-CELL_WIDTH = 192
-CELL_HEIGHT = 208
+from profile_spec import load_profile, profile_for_run, indexed_frames, row_specs
+
+PROFILE = load_profile()
+COLUMNS = PROFILE['layout']['columns']
+ROWS = len(PROFILE['states'])
+CELL_WIDTH = PROFILE['layout']['cell_width']
+CELL_HEIGHT = PROFILE['layout']['cell_height']
 ATLAS_WIDTH = COLUMNS * CELL_WIDTH
 ATLAS_HEIGHT = ROWS * CELL_HEIGHT
 ATLAS_ASPECT_RATIO = ATLAS_WIDTH / ATLAS_HEIGHT
-ROW_SPECS = [
-    ("idle", 0, 6),
-    ("running-right", 1, 8),
-    ("running-left", 2, 8),
-    ("waving", 3, 4),
-    ("jumping", 4, 5),
-    ("failed", 5, 8),
-    ("waiting", 6, 6),
-    ("running", 7, 6),
-    ("review", 8, 6),
-]
+ROW_SPECS = row_specs(PROFILE)
 IMAGE_SUFFIXES = {".png", ".webp", ".jpg", ".jpeg"}
 
 
@@ -33,40 +26,29 @@ def image_files(path: Path) -> list[Path]:
     return sorted(p for p in path.iterdir() if p.suffix.lower() in IMAGE_SUFFIXES)
 
 
-def find_row_frames(root: Path, state: str, row_index: int) -> list[Path]:
-    candidates = [
-        root / state,
-        root / f"row-{row_index}",
-        root / f"row{row_index}",
-        root / f"{row_index}-{state}",
-    ]
-    for candidate in candidates:
-        if candidate.is_dir():
-            files = image_files(candidate)
-            if files:
-                return files
-    globs = [
-        f"{state}_*",
-        f"{state}-*",
-        f"row{row_index}_*",
-        f"row-{row_index}-*",
-    ]
-    files: list[Path] = []
-    for pattern in globs:
-        files.extend(p for p in root.glob(pattern) if p.suffix.lower() in IMAGE_SUFFIXES)
-    return sorted(set(files))
+def find_row_frames(root: Path, state: str, row_index: int, count=None) -> list[Path]:
+    if count is None:
+        count = next(n for name, _, n in ROW_SPECS if name == state)
+    return indexed_frames(root, state, count)
 
 
-def paste_centered(atlas: Image.Image, source: Image.Image, row: int, column: int) -> None:
+def paste_centered(atlas: Image.Image, source: Image.Image, row: int, column: int, profile=None) -> None:
+    p = load_profile(profile)
+    CELL_WIDTH, CELL_HEIGHT = p["layout"]["cell_width"], p["layout"]["cell_height"]
     frame = source.convert("RGBA")
     if frame.size != (CELL_WIDTH, CELL_HEIGHT):
-        frame.thumbnail((CELL_WIDTH, CELL_HEIGHT), Image.Resampling.LANCZOS)
+        raise ValueError(f"frame must already match profile cell {CELL_WIDTH}x{CELL_HEIGHT}; got {frame.size}")
     left = column * CELL_WIDTH + (CELL_WIDTH - frame.width) // 2
     top = row * CELL_HEIGHT + (CELL_HEIGHT - frame.height) // 2
     atlas.alpha_composite(frame, (left, top))
 
 
-def compose_from_source_atlas(path: Path, resize_source: bool) -> Image.Image:
+def compose_from_source_atlas(path: Path, resize_source: bool, profile=None) -> Image.Image:
+    p = load_profile(profile)
+    CELL_WIDTH, CELL_HEIGHT = p["layout"]["cell_width"], p["layout"]["cell_height"]
+    ATLAS_WIDTH, ATLAS_HEIGHT = p["layout"]["width"], p["layout"]["height"]
+    ATLAS_ASPECT_RATIO = ATLAS_WIDTH / ATLAS_HEIGHT
+    ROW_SPECS = row_specs(p)
     with Image.open(path) as opened:
         source = opened.convert("RGBA")
     if source.size != (ATLAS_WIDTH, ATLAS_HEIGHT):
@@ -93,17 +75,14 @@ def compose_from_source_atlas(path: Path, resize_source: bool) -> Image.Image:
     return atlas
 
 
-def compose_from_frames(root: Path) -> Image.Image:
-    atlas = Image.new("RGBA", (ATLAS_WIDTH, ATLAS_HEIGHT), (0, 0, 0, 0))
-    for state, row, frame_count in ROW_SPECS:
-        files = find_row_frames(root, state, row)
-        if len(files) < frame_count:
-            raise SystemExit(
-                f"{state} row needs {frame_count} frames, found {len(files)} under {root}"
-            )
-        for column, frame_path in enumerate(files[:frame_count]):
+def compose_from_frames(root: Path, profile=None) -> Image.Image:
+    p = profile_for_run(root, profile)
+    atlas = Image.new('RGBA', (p['layout']['width'], p['layout']['height']), (0,0,0,0))
+    for state, row, frame_count in row_specs(p):
+        files = indexed_frames(root, state, frame_count)
+        for column, frame_path in enumerate(files):
             with Image.open(frame_path) as frame:
-                paste_centered(atlas, frame, row, column)
+                paste_centered(atlas, frame, row, column, p)
     return atlas
 
 
@@ -140,6 +119,7 @@ def main() -> None:
     source.add_argument("--source-atlas")
     source.add_argument("--frames-root")
     parser.add_argument("--output", required=True)
+    parser.add_argument("--profile")
     parser.add_argument("--webp-output")
     parser.add_argument(
         "--resize-source",
@@ -150,10 +130,10 @@ def main() -> None:
 
     if args.source_atlas:
         atlas = compose_from_source_atlas(
-            Path(args.source_atlas).expanduser().resolve(), args.resize_source
+            Path(args.source_atlas).expanduser().resolve(), args.resize_source, args.profile
         )
     else:
-        atlas = compose_from_frames(Path(args.frames_root).expanduser().resolve())
+        atlas = compose_from_frames(Path(args.frames_root).expanduser().resolve(), args.profile)
 
     save_outputs(
         atlas,

@@ -1,0 +1,151 @@
+{
+  "schema_version": 1,
+  "id": "ui-animation-v1",
+  "layout": {
+    "columns": 4,
+    "cell_width": 128,
+    "cell_height": 128
+  },
+  "states": [
+    {
+      "id": "available",
+      "purpose": "A calm ready state with a small breathing loop and blink.",
+      "frames": 4,
+      "durations": [
+        180,
+        160,
+        160,
+        240
+      ],
+      "alignment": {
+        "coordinate_policy": "slot",
+        "scale_policy": "row",
+        "padding": 5,
+        "anchor": [
+          0.5,
+          0.9
+        ],
+        "pivot": [
+          0.5,
+          0.9
+        ]
+      },
+      "motion": "quiet",
+      "generation": {
+        "skill": "imagegen",
+        "requires_identity_reference": true,
+        "instructions": "A calm ready state with a small breathing loop and blink."
+      },
+      "allowed_derivations": [],
+      "validation": {
+        "min_motion": 0.0001,
+        "max_size_ratio": 1.8,
+        "max_baseline_shift": 0.2,
+        "loop_warning_ratio": 3.0
+      }
+    },
+    {
+      "id": "loading",
+      "purpose": "An active loading loop with a restrained repeating hand gesture; do not depict running feet.",
+      "frames": 4,
+      "durations": [
+        180,
+        160,
+        160,
+        240
+      ],
+      "alignment": {
+        "coordinate_policy": "slot",
+        "scale_policy": "row",
+        "padding": 5,
+        "anchor": [
+          0.5,
+          0.9
+        ],
+        "pivot": [
+          0.5,
+          0.9
+        ]
+      },
+      "motion": "gesture",
+      "generation": {
+        "skill": "imagegen",
+        "requires_identity_reference": true,
+        "instructions": "An active loading loop with a restrained repeating hand gesture; do not depict running feet."
+      },
+      "allowed_derivations": [],
+      "validation": {
+        "min_motion": 0.0001,
+        "max_size_ratio": 1.8,
+        "max_baseline_shift": 0.2,
+        "loop_warning_ratio": 3.0
+      }
+    },
+    {
+      "id": "complete",
+      "purpose": "Signal task completion with a clear approving nod and small smile.",
+      "frames": 4,
+      "durations": [
+        180,
+        160,
+        160,
+        240
+      ],
+      "alignment": {
+        "coordinate_policy": "slot",
+        "scale_policy": "row",
+        "padding": 5,
+        "anchor": [
+          0.5,
+          0.9
+        ],
+        "pivot": [
+          0.5,
+          0.9
+        ]
+      },
+      "motion": "gesture",
+      "generation": {
+        "skill": "imagegen",
+        "requires_identity_reference": true,
+        "instructions": "Signal task completion with a clear approving nod and small smile."
+      },
+      "allowed_derivations": [],
+      "validation": {
+        "min_motion": 0.0001,
+        "max_size_ratio": 1.8,
+        "max_baseline_shift": 0.2,
+        "loop_warning_ratio": 3.0
+      }
+    }
+  ],
+  "generation": {
+    "skill": "imagegen",
+    "requires_identity_reference": true,
+    "instructions": "Create a consistent full-body recurring character for ui animation. The output is a local asset family; do not imply integration with an external service or device.",
+    "requirements": [
+      "Preserve the approved identity, proportions, palette, material and props across all states.",
+      "Keep the background transparent and all character motion within its slot. Do not draw text, guides, scenery or unapproved props."
+    ]
+  },
+  "validation": {
+    "require_provenance": true,
+    "allow_detached_details": false
+  },
+  "export": {
+    "formats": [
+      "frames",
+      "atlas",
+      "gif",
+      "webp",
+      "browser"
+    ],
+    "static_state": "available",
+    "static_frame": 0
+  },
+  "events": {
+    "ready": "available",
+    "submit": "loading",
+    "done": "complete"
+  }
+}

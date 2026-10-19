@@ -1,0 +1,151 @@
+{
+  "schema_version": 1,
+  "id": "iot-display-v1",
+  "layout": {
+    "columns": 4,
+    "cell_width": 128,
+    "cell_height": 128
+  },
+  "states": [
+    {
+      "id": "online",
+      "purpose": "Show healthy connectivity with a calm, readable still posture and subtle blink.",
+      "frames": 4,
+      "durations": [
+        180,
+        160,
+        160,
+        240
+      ],
+      "alignment": {
+        "coordinate_policy": "slot",
+        "scale_policy": "row",
+        "padding": 5,
+        "anchor": [
+          0.5,
+          0.9
+        ],
+        "pivot": [
+          0.5,
+          0.9
+        ]
+      },
+      "motion": "quiet",
+      "generation": {
+        "skill": "imagegen",
+        "requires_identity_reference": true,
+        "instructions": "Show healthy connectivity with a calm, readable still posture and subtle blink."
+      },
+      "allowed_derivations": [],
+      "validation": {
+        "min_motion": 0.0001,
+        "max_size_ratio": 1.8,
+        "max_baseline_shift": 0.2,
+        "loop_warning_ratio": 3.0
+      }
+    },
+    {
+      "id": "busy",
+      "purpose": "Show active processing through a short rhythmic body gesture, returning to its starting posture.",
+      "frames": 4,
+      "durations": [
+        180,
+        160,
+        160,
+        240
+      ],
+      "alignment": {
+        "coordinate_policy": "slot",
+        "scale_policy": "row",
+        "padding": 5,
+        "anchor": [
+          0.5,
+          0.9
+        ],
+        "pivot": [
+          0.5,
+          0.9
+        ]
+      },
+      "motion": "gesture",
+      "generation": {
+        "skill": "imagegen",
+        "requires_identity_reference": true,
+        "instructions": "Show active processing through a short rhythmic body gesture, returning to its starting posture."
+      },
+      "allowed_derivations": [],
+      "validation": {
+        "min_motion": 0.0001,
+        "max_size_ratio": 1.8,
+        "max_baseline_shift": 0.2,
+        "loop_warning_ratio": 3.0
+      }
+    },
+    {
+      "id": "alert",
+      "purpose": "Show an actionable alert through a visible concerned pose without text, flashing lights, or rapid motion.",
+      "frames": 4,
+      "durations": [
+        180,
+        160,
+        160,
+        240
+      ],
+      "alignment": {
+        "coordinate_policy": "slot",
+        "scale_policy": "row",
+        "padding": 5,
+        "anchor": [
+          0.5,
+          0.9
+        ],
+        "pivot": [
+          0.5,
+          0.9
+        ]
+      },
+      "motion": "gesture",
+      "generation": {
+        "skill": "imagegen",
+        "requires_identity_reference": true,
+        "instructions": "Show an actionable alert through a visible concerned pose without text, flashing lights, or rapid motion."
+      },
+      "allowed_derivations": [],
+      "validation": {
+        "min_motion": 0.0001,
+        "max_size_ratio": 1.8,
+        "max_baseline_shift": 0.2,
+        "loop_warning_ratio": 3.0
+      }
+    }
+  ],
+  "generation": {
+    "skill": "imagegen",
+    "requires_identity_reference": true,
+    "instructions": "Create a consistent full-body recurring character for iot display. The output is a local asset family; do not imply integration with an external service or device.",
+    "requirements": [
+      "Preserve the approved identity, proportions, palette, material and props across all states.",
+      "Keep the background transparent and all character motion within its slot. Do not draw text, guides, scenery or unapproved props."
+    ]
+  },
+  "validation": {
+    "require_provenance": true,
+    "allow_detached_details": false
+  },
+  "export": {
+    "formats": [
+      "frames",
+      "atlas",
+      "gif",
+      "webp",
+      "browser"
+    ],
+    "static_state": "online",
+    "static_frame": 0
+  },
+  "events": {
+    "connected": "online",
+    "processing": "busy",
+    "fault": "alert"
+  }
+}
