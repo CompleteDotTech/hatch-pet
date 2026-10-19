@@ -14,7 +14,7 @@ The reference renderer turns a validated production project into indexed RGBA PN
 
 ## Render a shot or scene
 
-Run commands from the repository root with the Python environment described in [`requirements.txt`](../requirements.txt). Pillow is required. FFmpeg and ffprobe are optional local executables for movie creation; rendering PNG/WAV masters does not require them or a network service.
+Run commands from the repository root with the Python environment described in [`requirements-test.txt`](../requirements-test.txt). Pillow is required. FFmpeg and ffprobe are optional local executables for movie creation; rendering PNG/WAV masters does not require them or a network service.
 
 ```bash
 python scripts/production.py validate --project examples/production-pilot/project.json

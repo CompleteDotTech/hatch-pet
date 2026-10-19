@@ -61,7 +61,7 @@ class ProductionBundleTests(unittest.TestCase):
         self.assertEqual(verified['archive_sha256'], workflow.file_hash(self.archive))
         destination = self.home / 'elsewhere' / 'restored'
         result = bundle.restore_bundle(self.index, destination)
-        self.assertEqual(result['project_id'], 'production-fixture')
+        self.assertEqual(result['project_id'], 'fixture-project')
         self.assertEqual(workflow.dependency_snapshot(destination), workflow.dependency_snapshot(self.project))
         self.assertTrue(workflow.review_status(destination, self.target)['current_pass'])
         self.assertFalse(workflow.review_status(destination, self.target)['production_art_acceptance'])
@@ -125,7 +125,7 @@ class ProductionBundleTests(unittest.TestCase):
         with zipfile.ZipFile(archive, 'w') as output:
             output.writestr('../escape', content)
             output.writestr('archive-receipt.json', json.dumps({'schema_version': 2,
-                'kind': 'hatch-production-project', 'project_schema': 1, 'project_id': 'production-fixture',
+                'kind': 'hatch-production-project', 'project_schema': 1, 'project_id': 'fixture-project',
                 'fixture': True, 'files': {'../escape': hashlib.sha256(content).hexdigest()}}))
         self.wrap_archive(archive)
         with self.assertRaisesRegex(ValueError, 'unsafe archive member'):
@@ -147,7 +147,7 @@ class ProductionBundleTests(unittest.TestCase):
             archive = self.home / f'alias-{index}.zip'
             content = b'canonical identity must not depend on extraction aliases'
             receipt = {'schema_version': 2, 'kind': 'hatch-production-project', 'project_schema': 1,
-                       'workflow_schema': 2, 'project_id': 'production-fixture', 'fixture': True,
+                       'workflow_schema': 2, 'project_id': 'fixture-project', 'fixture': True,
                        'files': {name: hashlib.sha256(content).hexdigest()}}
             with zipfile.ZipFile(archive, 'w') as output:
                 output.writestr(name, content)

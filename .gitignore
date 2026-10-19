@@ -18,3 +18,5 @@ __pycache__/
 !/examples/production-fixture/acceptance.json
 !/examples/production-fixture/performance-evidence.json
 /examples/.production-fixture.hatch.lock
+
+examples/production-pilot/production-workflow.json

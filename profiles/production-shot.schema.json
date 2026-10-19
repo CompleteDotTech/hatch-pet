@@ -393,6 +393,15 @@
         "source": {
           "$ref": "#/$defs/file"
         },
+        "references": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/file"
+          },
+          "minItems": 0,
+          "maxItems": 256,
+          "uniqueItems": true
+        },
         "source_sha256": {
           "type": "string",
           "pattern": "^[0-9a-f]{64}$"
