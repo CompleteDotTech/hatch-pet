@@ -299,5 +299,97 @@ class ProductionPerformanceTests(unittest.TestCase):
             validate_clip(self.clip, self.bundle['characters'])
 
 
+class ProductionRegressionDemoTests(unittest.TestCase):
+    def setUp(self):
+        from production_regression_demo import build_regression_project
+        self.directory = tempfile.TemporaryDirectory()
+        self.addCleanup(self.directory.cleanup)
+        self.root = Path(self.directory.name)
+        self.bundle = load_project(build_regression_project(self.root))
+
+    def test_regression_factory_is_reproducible_and_measures_real_authored_intervals(self):
+        from production_regression_demo import build_regression_project, inspect_regression_behaviour
+        with tempfile.TemporaryDirectory() as other:
+            second = load_project(build_regression_project(other))
+            self.assertEqual(self.bundle['project'], second['project'])
+            self.assertEqual(self.bundle['inventory'], second['inventory'])
+        self.assertEqual(['first-scene', 'second-scene', 'regression-performances'], [s['id'] for s in self.bundle['scenes']])
+        self.assertEqual(300, self.bundle['resources']['total_frames'])
+        self.assertEqual(0, self.bundle['project']['limits']['max_generation_calls'])
+        evidence = inspect_regression_behaviour(self.bundle)
+        self.assertTrue(evidence['fixture'])
+        self.assertFalse(evidence['production_art_acceptance'])
+        self.assertEqual([[80, 170], [104, 170], [134, 170], [134, 170]], evidence['locomotion']['positions'])
+        self.assertEqual([0, 0, 0, 0], [item['max_drift_pixels'] for item in evidence['locomotion']['planted_contacts']])
+        self.assertEqual([[0, 0], [0, 12], [0, 0]], evidence['sit_stand']['body_offsets'])
+        self.assertEqual([None, 'a', 'a', None], evidence['grasp_release']['owners'])
+        self.assertEqual(['default', 'happy', 'default'], evidence['expression']['brow_drawings'])
+        self.assertEqual({'gaze_offset': [1, 0], 'mouth': 'open', 'head_rotation': -1.25}, evidence['expression']['frame_21'])
+        self.assertEqual([9, 1, 1, 9], evidence['full_frame_override']['character_layer_counts'])
+        self.assertFalse(evidence['audio']['spoken_dialogue'])
+
+    def test_each_authored_sequence_changes_actual_composited_rgba_pixels(self):
+        from production_render import render_frame
+        for shot, a, b in [('locomotion', 0, 30), ('sit-stand', 0, 24), ('reach-grasp-release', 0, 30),
+                           ('facial-dialogue', 0, 21), ('full-frame-override', 0, 15)]:
+            with self.subTest(shot=shot):
+                first, _ = render_frame(self.bundle, shot, a)
+                second, _ = render_frame(self.bundle, shot, b)
+                try:
+                    self.assertEqual(('RGBA', (320, 200)), (first.mode, first.size))
+                    self.assertEqual(('RGBA', (320, 200)), (second.mode, second.size))
+                    self.assertNotEqual(first.tobytes(), second.tobytes())
+                finally:
+                    first.close()
+                    second.close()
+
+    def test_planted_foot_check_catches_a_real_stance_compensation_error(self):
+        from production_regression_demo import inspect_regression_behaviour
+        clip = self.bundle['clips']['reg-walk@1.0.0']
+        clip['tracks']['body']['left-leg']['offset']['keys'][1]['value'] = [-10, 0]
+        with self.assertRaisesRegex(ValueError, 'planted foot slips'):
+            inspect_regression_behaviour(self.bundle)
+
+    def test_grasp_render_fails_when_the_hand_does_not_reach_the_owned_prop(self):
+        from production_render import evaluate_frame
+        clip = self.bundle['clips']['reg-grasp@1.0.0']
+        clip['tracks']['body']['hand']['offset'] = track([20, 0])
+        with self.assertRaisesRegex(ValueError, 'discontinuous ownership change'):
+            evaluate_frame(self.bundle, 'reach-grasp-release', 24)
+
+    def test_full_frame_override_replaces_only_character_layers_on_exact_boundaries(self):
+        from production_render import evaluate_frame
+        for frame, count in [(11, 9), (12, 1), (17, 1), (18, 1), (23, 1), (24, 9)]:
+            state = evaluate_frame(self.bundle, 'full-frame-override', frame)
+            layers = [layer for layer in state['layers'] if layer['track'] == 'a']
+            with self.subTest(frame=frame):
+                self.assertEqual(count, len(layers))
+                self.assertEqual([160, 150], state['instances']['a']['position'])
+                self.assertEqual(1.5, state['instances']['a']['relative_scale'])
+                self.assertEqual(9, len(state['instances']['a']['components']))
+                if count == 1:
+                    self.assertTrue(layers[0]['image']['path'].endswith('full-pose-' + ('a' if frame < 18 else 'b') + '.png'))
+
+    def test_offline_pcm_matches_cue_start_end_samples_and_exact_total_duration(self):
+        import array
+        import wave
+        from production_render import mix_audio
+        shot = self.bundle['shots']['facial-dialogue']
+        path = self.root / 'mixed-fixture.wav'
+        result = mix_audio(self.root, shot['audio'], path, 48, self.bundle['project']['render']['fps'], sample_rate=24000, channels=2)
+        self.assertEqual((96000, 24000, 2, 0), (result['sample_count'], result['sample_rate'], result['channels'], result['clipped_samples']))
+        self.assertEqual([(16000, 52000), (60000, 84000)], [(s['start_sample'], s['end_sample']) for s in result['sources']])
+        with wave.open(str(path), 'rb') as stream:
+            self.assertEqual((2, 2, 24000, 96000), (stream.getnchannels(), stream.getsampwidth(), stream.getframerate(), stream.getnframes()))
+            samples = array.array('h', stream.readframes(stream.getnframes()))
+        if sys.byteorder != 'little':
+            samples.byteswap()
+        for index, audible in [(0, False), (15999, False), (16000, True), (51999, True), (52000, False),
+                                (60000, True), (83999, True), (84000, False), (95999, False)]:
+            with self.subTest(sample=index):
+                self.assertEqual(audible, bool(samples[index * 2]))
+                self.assertEqual(samples[index * 2], samples[index * 2 + 1])
+
+
 if __name__ == '__main__':
     unittest.main()

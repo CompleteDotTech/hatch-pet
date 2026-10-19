@@ -321,7 +321,8 @@ def render_regression_demo(root, *, movie=False):
         storyboard = contact_sheet(destination, root / (scene['id'] + '-storyboard.png'), cell_width=240)
         resumed = render_scene(bundle, scene['id'], destination)
         # Per-shot checkpoint statistics are recorded by the renderer and tested separately.
-        if not resumed['complete'] or len(resumed['frames']) != len(manifest['frames']):
+        if (resumed['status'] != 'complete' or len(resumed['frames']) != len(manifest['frames']) or
+                resumed['operation']['rendered_frames'] != 0 or resumed['operation']['reused_frames'] != manifest['frame_count']):
             raise ValueError('synthetic scene resume did not preserve the complete frame inventory')
         film = mux_video(destination) if movie else None
         paths[scene['id']] = relative
@@ -329,7 +330,7 @@ def render_regression_demo(root, *, movie=False):
             'render_manifest': relative + '/render-manifest.json', 'preview': relative + '/index.html',
             'storyboard': Path(storyboard['path']).relative_to(root).as_posix(),
             'movie': relative + '/' + film['path'] if film else None, 'validated': bool(validation.get('valid', True)),
-            'complete': manifest['complete']})
+            'complete': manifest['status'] == 'complete', 'resume_operation': resumed['operation']})
     _record_synthetic_reviews(root, bundle, paths)
     coverage = coverage_report(root)
     write_json(root / 'coverage-report.json', coverage)
