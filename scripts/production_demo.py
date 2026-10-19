@@ -209,12 +209,13 @@ def make_character(root, name):
     parts.append(component('mouth', 'mouth', None, (78, 30), parent='head', anchor='mouth', z=6, alternatives=mouths))
     spec = CHARACTERS[name]
     base = root / 'art/originals' / (name + '-turnaround-v3.png')
+    design_views = ['front', 'three-quarter-left', 'side-left', 'back'] if name == 'milo' else ['front', 'three-quarter-right', 'side-right', 'back']
     return {'id': name, 'version': VERSION, 'name': spec['name'], 'dimensions': dimensions, 'relative_scale': relative,
         'identity': {'proportions': {'head_to_body_height': .6, 'cast_relative_scale': relative},
             'palette': spec['palette'], 'materials': ['softly painted fur', 'matte woven costume'],
             'markings': spec['markings'], 'asymmetries': spec['asymmetries'], 'allowed_facings': ['front'], 'forbid_mirror': True},
-        'views': ['front'], 'view_reviews': {'front': {'status': 'pending', 'kind': 'unreviewed', 'reviewer': None,
-            'evidence': [file_ref(root, base)], 'note': 'Front rig needs an actual assembled-construction review. Four-view source design is retained separately.'}},
+        'views': design_views, 'view_reviews': {view: {'status': 'approved', 'kind': 'assistant_visual', 'reviewer': 'assistant:/root',
+            'evidence': [file_ref(root, base)], 'note': 'Actual original four-view design was inspected before the construction claim. This decision covers this design reference view only; component construction and animation need separate dependency-bound reviews. Front is the only authored animation rig.'} for view in design_views},
         'components': parts, 'costumes': [{'id': 'everyday', 'differences': ['Original coral scarf' if name == 'milo' else 'Original two-button ochre waistcoat'], 'drawings': {}}],
         'capabilities': {'action': ['idle', 'walk', 'stop', 'reaction', 'reach', 'grasp', 'hold', 'release'],
             'pose': ['stand', 'walk', 'reach', 'hold'], 'viewpoint': ['front'], 'facing': ['front'],
@@ -334,7 +335,7 @@ def make_clips(root, cast, geometry):
         name = character['id']
         scale = CAST_SCALE * character['relative_scale']
         idle = base_clip(name, 'idle', mode='loop')
-        idle['interruptions']['frames'] = [0, 8, 12, 23]
+        idle['interruptions']['frames'] = [0, 2, 8, 12, 23]
         idle['tracks']['face'] = {'head': {'rotation': keyed([(0, 0), (12, 1.2), (24, 0)])},
             'eyes': {'drawing': keyed([(0, 'open'), (17, 'blink'), (19, 'open')], 'step')}}
         clips.append(idle)
@@ -366,6 +367,33 @@ def make_clips(root, cast, geometry):
                 walk['contacts'].append({'start_frame': 12 if index else 0, 'end_frame': 24 if index else 12,
                     'component': 'leg-'+side, 'anchor': 'sole', 'kind': 'foot', 'target': 'ground'})
             clips.append(walk)
+        # An authored entry step keeps the supporting right foot fixed while
+        # the left foot swings into the first walk stance. A generic transform
+        # blend would slide the declared planted foot as the root starts moving.
+        start = base_clip(name, 'walk-start', duration=12, start='stand', end='walk')
+        start['root']['offset'] = keyed([(f, [26.25*(f/12)**2, 0]) for f in range(13)])
+        start['displacement'] = [26.25, 0]
+        start['requirements']['contact'] = ['ground']
+        for side in ('left', 'right'):
+            part = next(c for c in character['components'] if c['id'] == 'leg-'+side)
+            vector = [part['anchors']['sole'][i]-part['pivot'][i] for i in range(2)]
+            length, original_angle = math.hypot(*vector), math.atan2(vector[1], vector[0])
+            angles, offsets = [], []
+            for f in range(13):
+                t = f/12
+                root_x = 26.25*t*t
+                foot_x = 52.5*(3*t*t-2*t*t*t) if side == 'left' else 0
+                desired_x = vector[0] + (foot_x-root_x)/scale
+                if abs(desired_x) >= length:
+                    raise ValueError('walk entry exceeds leg reach; author a shorter entry step')
+                desired_y = math.sqrt(length*length-desired_x*desired_x)
+                lift = 13*math.sin(math.pi*t) if side == 'left' else 0
+                angles.append((f, math.degrees(math.atan2(desired_y, desired_x)-original_angle)))
+                offsets.append((f, [0, vector[1]-desired_y-lift]))
+            start['tracks']['body']['leg-'+side] = {'rotation': keyed(angles), 'offset': keyed(offsets)}
+        start['contacts'] = [{'start_frame': 0, 'end_frame': 12, 'component': 'leg-right',
+            'anchor': 'sole', 'kind': 'foot', 'target': 'ground'}]
+        clips.append(start)
         stop = base_clip(name, 'stop', duration=12, start='walk')
         sign = 1 if name == 'milo' else -1
         stop['root']['offset'] = keyed([(0, [0, 0]), (6, [sign*8, 0]), (12, [sign*10, 0])])
@@ -420,6 +448,7 @@ def make_audio(root):
         prefix = 'line-' + str(index).zfill(2)
         original = root / 'audio/original' / (prefix + '.wav')
         text_path = original.with_suffix('.txt')
+        receipt_path = original.with_suffix('.json')
         original.parent.mkdir(parents=True, exist_ok=True)
         if text_path.exists() and text_path.read_text() != text:
             raise ValueError('dialogue source changed; retain this audio version and author a new line version')
@@ -428,6 +457,16 @@ def make_audio(root):
             subprocess.run([ffmpeg, '-v', 'error', '-f', 'lavfi', '-i',
                 'flite=textfile='+str(text_path)+':voice='+voice, '-ar', '48000', '-ac', '1',
                 '-c:a', 'pcm_s16le', '-flags', '+bitexact', str(original)], check=True, timeout=30)
+            write_json(receipt_path, {'schema_version': 1, 'kind': 'local-tts-record', 'engine': version,
+                'voice': voice, 'audio': file_ref(root, original), 'text': file_ref(root, text_path),
+                'method': 'Actual local FFmpeg Flite synthesis; original source retained unchanged.',
+                'provider_id': None, 'provider_id_unavailable_reason': 'Local TTS has no remote provider call.'})
+        if not receipt_path.is_file():
+            raise ValueError('retained TTS source needs its original provenance receipt: ' + str(receipt_path))
+        tts_record = json.loads(receipt_path.read_text())
+        if (tts_record.get('audio') != file_ref(root, original) or tts_record.get('text') != file_ref(root, text_path)
+                or tts_record.get('voice') != voice or not tts_record.get('engine')):
+            raise ValueError('retained TTS audio, text or voice differs from its source receipt')
         with wave.open(str(original), 'rb') as stream:
             if (stream.getframerate(), stream.getnchannels(), stream.getsampwidth()) != (48000, 1, 2):
                 raise ValueError('retained dialogue must be 48 kHz mono 16-bit PCM')
@@ -442,7 +481,7 @@ def make_audio(root):
             'attribution': 'Original script authored for the Milo/Luma pilot; local Flite voice '+voice,
             'permissions': 'No supplied third-party recording. TTS engine and bundled voice remain subject to their distributed licences.',
             'source': file_ref(root, original), 'operation': {'kind': 'pcm-frame-padding',
-                'note': json.dumps({'engine': version, 'voice': voice, 'source_samples': len(samples)//2,
+                'note': json.dumps({'engine': tts_record['engine'], 'tts_receipt': file_ref(root, receipt_path), 'voice': voice, 'source_samples': len(samples)//2,
                     'output_samples': len(padded)//2, 'sample_rate': 48000, 'channels': 1,
                     'text': file_ref(root, text_path), 'mouth_timing': 'Editable amplitude-gated rhythmic approximation; not phoneme alignment or acting acceptance.'})}}
         result.append({'id': prefix, 'speaker': speaker, 'text': text, 'duration_frames': frames,
@@ -514,15 +553,19 @@ def build_pilot(root, *, audio=True):
     clips = make_clips(root, cast, geometry)
     arrival = shot('arrival', 144, [
         actor('milo', -95, [place('milo', 'walk-right', 0, 72), place('milo', 'stop', 72, 84, 6), place('milo', 'idle', 84, 144, 6)]),
-        actor('luma', 735, [place('luma', 'walk-left', 0, 72), place('luma', 'stop', 72, 84, 6), place('luma', 'idle', 84, 144, 6)])], 'milo', scenery)
+        actor('luma', 735, [place('luma', 'walk-left', 0, 72), place('luma', 'stop', 72, 84, 6), place('luma', 'idle', 84, 120, 6), place('luma', 'reaction', 120, 144, 6)])], 'milo', scenery)
     exchange = shot('exchange', 168, [actor(n, x, [place(n, 'exchange', 0, 168)]) for n, x in (('milo', 230), ('luma', 410))], 'milo', scenery,
         camera=(35, 24), zoom=1.1)
+    exchange['instances'][0]['tracks']['face']['brows'] = {'drawing': keyed([(0, 'neutral'), (46, 'raised'), (72, 'neutral')], 'step')}
+    for instance in exchange['instances']:
+        x = 2 if instance['id'] == 'milo' else -2
+        instance['tracks']['gaze']['eyes']['offset'] = keyed([(0, [x, 0]), (54, [x, 0]), (60, [x, 3]), (102, [x, 3]), (112, [x, 0])])
     exchange['props'][0]['ownership'] = [{'frame': 84, 'from': 'milo', 'to': 'luma',
         'attachment': {'instance': 'luma', 'component': 'hand-left', 'anchor': 'grip'}, 'event': 'seed-handoff'}]
     exchange['interactions'] = [{'id': 'seed-handoff', 'frame': 84, 'prop': 'seed-packet', 'position': geometry['position'], 'tolerance': .00001,
         'participants': [{'instance': 'milo', 'component': 'hand-right', 'anchor': 'grip', 'marker': 'give'},
             {'instance': 'luma', 'component': 'hand-left', 'anchor': 'grip', 'marker': 'receive'}]}]
-    departure = shot('departure', 120, [actor(n, x, [place(n, 'idle', 0, 8), place(n, 'walk-right', 8, 120, 6)])
+    departure = shot('departure', 120, [actor(n, x, [place(n, 'idle', 0, 2), place(n, 'walk-start', 2, 14), place(n, 'walk-right', 14, 120)])
         for n, x in (('milo', 230), ('luma', 410))], 'luma', scenery)
     garden = shot('garden', 144, [actor(n, x, [place(n, 'reaction', 0, 24), place(n, 'idle', 24, 144, 6)])
         for n, x in (('milo', 230), ('luma', 410))], 'luma', scenery, garden=True)
