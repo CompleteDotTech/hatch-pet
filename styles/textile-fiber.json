@@ -1,0 +1,954 @@
+{
+  "schema_version": 1,
+  "category": "textile-fiber",
+  "styles": [
+    {
+      "id": "plush",
+      "name": "Plush",
+      "category": "textile-fiber",
+      "kind": "technique",
+      "description": "Soft plush toy mascot with rounded stitched forms, fuzzy fabric feel, simple sewn details, and readable toy-like proportions.",
+      "tags": [
+        "stuffed-toy",
+        "soft-fabric",
+        "stitched"
+      ],
+      "aliases": [
+        "stuffed-toy"
+      ],
+      "instructions": {
+        "materials": "Use short-pile plush fabric over soft stuffing, with embroidered eyes and small sewn felt features.",
+        "forms": "Build a rounded head, cushioned torso, and stubby stuffed limbs with a compact toy silhouette.",
+        "linework": "Define edges through the fabric silhouette and a few curved seams, without a hard cartoon outline.",
+        "shading": "Use broad diffuse cloth shading and shallow seam occlusion; keep eyes darker than nearby fabric.",
+        "palette": "Choose a small set of dyed fabric colors with one restrained contrasting accessory or marking.",
+        "texture": "Show a restrained fuzzy nap and two or three visible stitch runs; avoid individual flying hairs.",
+        "rendering": "Render an isolated sewn toy with a readable face and stable seam placement in every pose."
+      },
+      "negative_constraints": [
+        "Do not replace fuzzy cloth with shiny plastic or wet fur.",
+        "Avoid sprawling stuffing, long loose threads, and dense photoreal pile.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Friendly companion pets and rounded character animations."
+      ],
+      "limitations": [
+        "Fine pile disappears at cell size; convey softness through broad volumes and short edge fuzz."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Preserve soft edge alpha; inspect light fabric on dark backgrounds and avoid aggressive key removal.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "cozy",
+        "whimsical"
+      ]
+    },
+    {
+      "id": "felt",
+      "name": "Felt",
+      "category": "textile-fiber",
+      "kind": "technique",
+      "description": "A compact mascot made from thick matte felt sheets with softly compressed edges.",
+      "tags": [
+        "felt-sheet",
+        "matte",
+        "craft"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use dense colored wool felt sheets with visible thickness and a subdued pressed-fiber surface.",
+        "forms": "Assemble broad padded cut shapes with rounded corners and simple overlapping body parts.",
+        "linework": "Let cut felt borders define the contour; add only a few dark stitched facial marks.",
+        "shading": "Place shallow occlusion where felt pieces overlap, with almost flat lighting over each sheet.",
+        "palette": "Use coordinated solid felt colors with clear value differences between face, limbs, and accessories.",
+        "texture": "Suggest matted wool with a quiet mottled grain inside shapes, never a fuzzy exterior cloud.",
+        "rendering": "Render a front-readable felt construction with all layered parts attached to the character silhouette."
+      },
+      "negative_constraints": [
+        "Do not turn felt sheets into knitted loops or glossy foam.",
+        "Avoid raw needle holes, loose fibers, and tiny cut pieces that detach visually.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Gentle educational mascots and craft-themed icons."
+      ],
+      "limitations": [
+        "Layer depth and fiber grain must be exaggerated slightly to remain readable in small frames."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Use antialiased sheet edges and preserve overlap boundaries; select a chroma key absent from all felt colors.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "cozy",
+        "botanical"
+      ]
+    },
+    {
+      "id": "needle-felt",
+      "name": "Needle Felt",
+      "category": "textile-fiber",
+      "kind": "technique",
+      "description": "A dense wool sculpture shaped by needle felting, with compact volumes and softly blended color patches.",
+      "tags": [
+        "needle-felting",
+        "wool-sculpture",
+        "fiber"
+      ],
+      "aliases": [
+        "needle-felting"
+      ],
+      "instructions": {
+        "materials": "Use compacted wool roving with a dry, dense surface and subtly interlocked colored fibers.",
+        "forms": "Sculpt simple egg-shaped body masses and rounded limbs directly from wool, without fabric seams.",
+        "linework": "Define facial features using inset dark wool and a clean silhouette softened by very short fibers.",
+        "shading": "Apply broad matte shading that describes compressed wool volumes without specular highlights.",
+        "palette": "Blend a few natural or dyed wool colors gently at marking boundaries while preserving identity contrast.",
+        "texture": "Show slight needle-pocked density and short felted fuzz, keeping the same color patches between frames.",
+        "rendering": "Render a palm-sized wool sculpture with compact proportions and no loose roving outside its contour."
+      },
+      "negative_constraints": [
+        "Do not add sewn cloth seams or repetitive knitted stitches.",
+        "Avoid long wisps, porous holes, and wool haze obscuring the eyes.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Soft animal companions and handcrafted woodland characters."
+      ],
+      "limitations": [
+        "Fuzzy contours need conservative extraction; facial embroidery-like marks must be larger than individual fibers."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Alpha is preferred for wool edges; keying must retain dense fiber borders without a bright fringe.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "cottagecore",
+        "cozy"
+      ]
+    },
+    {
+      "id": "felt-applique",
+      "name": "Felt Appliqué",
+      "category": "textile-fiber",
+      "kind": "technique",
+      "description": "Flat felt patches stitched onto a character-shaped textile backing with visible blanket-stitch borders.",
+      "tags": [
+        "applique",
+        "blanket-stitch",
+        "layered-felt"
+      ],
+      "aliases": [
+        "applique"
+      ],
+      "instructions": {
+        "materials": "Use contrasting felt patches attached to a single character-shaped fabric backing with embroidery thread.",
+        "forms": "Construct the face, belly, and accessories as broad flat appliqué pieces within a unified outer shape.",
+        "linework": "Trace patch edges with widely spaced blanket stitches and use thicker sewn lines for the face.",
+        "shading": "Use only shallow patch-overlap shadows and gentle backing curvature, preserving the flat craft reading.",
+        "palette": "Assign a distinct solid felt color to each major patch with a limited coordinated thread palette.",
+        "texture": "Include sparse felt grain and regular stitched loops large enough to survive the target cell size.",
+        "rendering": "Render a cut-out sewn emblem, keeping every stitch border and patch layout fixed through animation."
+      },
+      "negative_constraints": [
+        "Do not attach the mascot to a rectangular fabric background.",
+        "Avoid miniature stitches, floating patches, and dimensional stuffed-toy anatomy.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Fabric badges, communication-board mascots, and gentle looping animations."
+      ],
+      "limitations": [
+        "Stitch patterns can flicker if too fine; use fewer larger stitches and stable landmark spacing."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "recommended",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Preserve antialiased thread edges; key backgrounds must not share the stitch or backing colors.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "cozy"
+      ]
+    },
+    {
+      "id": "embroidery",
+      "name": "Embroidery",
+      "category": "textile-fiber",
+      "kind": "technique",
+      "description": "A stitched mascot built from directional satin fills, running stitches, and raised thread contours.",
+      "tags": [
+        "thread",
+        "satin-stitch",
+        "needlework"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use lustrous embroidery floss stitched into a mascot-shaped backing with no visible hoop or canvas rectangle.",
+        "forms": "Fill broad character regions with dense satin stitches whose direction follows each body volume.",
+        "linework": "Use raised stem-stitch borders and compact stitched facial marks with deliberate spacing.",
+        "shading": "Create subtle light shifts through thread direction and small ridge shadows rather than smooth gradients.",
+        "palette": "Limit floss colors to distinct body, marking, and accent groups with stable highlight thread tones.",
+        "texture": "Show a few readable parallel thread ridges per region and occasional tightly controlled stitch joins.",
+        "rendering": "Render a clean embroidered patch with attached limbs and the same stitch map across poses."
+      },
+      "negative_constraints": [
+        "Do not show sewing hoops, needles, or loose thread tails.",
+        "Avoid hair-thin stitches that become noisy moiré or photoreal textile clutter.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Textile emblems and tactile companion characters."
+      ],
+      "limitations": [
+        "Large stitch bundles work better than literal thread density at small sprite sizes."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Use alpha around thread contours; inspect downsampling for colored fringes and merged facial stitches.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "botanical",
+        "nautical"
+      ]
+    },
+    {
+      "id": "cross-stitch",
+      "name": "Cross-Stitch",
+      "category": "textile-fiber",
+      "kind": "technique",
+      "description": "A counted-thread mascot composed of a stable grid of colored X stitches.",
+      "tags": [
+        "counted-thread",
+        "x-stitch",
+        "grid"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use chunky embroidery floss arranged as clearly separated X stitches on an implied transparent count grid.",
+        "forms": "Build the entire silhouette from whole stitch cells with stepped limbs and generous facial spacing.",
+        "linework": "Use darker X-stitch clusters for contours and features; avoid continuous vector outlines between cells.",
+        "shading": "Shade with discrete darker stitch colors arranged in compact blocks, never soft airbrushed gradients.",
+        "palette": "Choose a small floss chart with strong value separation and no isolated one-stitch color speckles.",
+        "texture": "Make the diagonal crossing of each stitch readable with one stable thread highlight per stitch.",
+        "rendering": "Render aligned stitch cells with identical pitch across all frames and transparent gaps outside the figure."
+      },
+      "negative_constraints": [
+        "Do not warp stitch spacing or create fractional cross stitches between frames.",
+        "Avoid visible fabric sheets, floating thread tails, and smooth vector fills.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Craft grids, stitch-inspired game sprites, and counted-thread mascots."
+      ],
+      "limitations": [
+        "Artwork is visual guidance rather than a manufacturing-ready stitch chart; very small facial marks need larger clusters.",
+        "Separated X stitches form many disconnected opaque components. Sprite extraction may require source-bound frame annotations explicitly permitting those components; inspect the original and retain all existing validation gates."
+      ],
+      "applicability": {
+        "character": "adapted",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "recommended"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "hard",
+        "resampling": "nearest",
+        "scaling": "Keep the fixed target cell geometry; prefer integer artwork scaling with nearest-neighbor resampling and inspect every pixel cluster at actual size.",
+        "notes": [
+          "Nearest resampling preserves stitch pitch; retain transparent gaps and verify that extraction does not merge X-shaped cells.",
+          "If conservative slot extraction rejects multiple stitch components, supply reviewed source-bound frame rectangles and disconnected-component annotations instead of lowering segmentation thresholds.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "cozy",
+        "seasonal"
+      ]
+    },
+    {
+      "id": "crochet",
+      "name": "Crochet",
+      "category": "textile-fiber",
+      "kind": "technique",
+      "description": "A mascot made from broad crocheted fabric with visibly hooked loops and compact scalloped contours.",
+      "tags": [
+        "hooked-yarn",
+        "looped-fabric",
+        "crochet-stitch"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use medium-gauge spun yarn worked into visible crochet loops and slightly ridged stitch rows.",
+        "forms": "Shape the character from thick crochet fabric panels with simple folded or gently stuffed body masses.",
+        "linework": "Let looped panel edges define the outline and use stitched yarn bars for readable facial details.",
+        "shading": "Darken the recesses between stitch rows with broad soft shading while keeping the body volume clear.",
+        "palette": "Use a few solid yarn colors with broad color-block boundaries instead of rapid multicolor variegation.",
+        "texture": "Show chunky interlocking hooked loops, with repeat scale consistent over each anatomical region.",
+        "rendering": "Render an attached yarn character with stable loop direction and scalloping that stays within its silhouette."
+      },
+      "negative_constraints": [
+        "Do not substitute knitted V rows or a smooth plush surface.",
+        "Avoid dangling yarn, open lace holes, and dense stitches smaller than facial features.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Textile mascots and handcrafted companion illustrations."
+      ],
+      "limitations": [
+        "Deep crochet cavities need simplified shading so they do not read as holes during extraction."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Preserve antialiased yarn loops; inspect internal dark recesses separately from transparent background holes.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "cozy",
+        "cottagecore"
+      ]
+    },
+    {
+      "id": "amigurumi",
+      "name": "Amigurumi",
+      "category": "textile-fiber",
+      "kind": "technique",
+      "description": "A small stuffed crochet doll with spiral stitch rounds, oversized head, and short sewn-on limbs.",
+      "tags": [
+        "crochet-doll",
+        "spiral-rounds",
+        "stuffed-yarn"
+      ],
+      "aliases": [
+        "crochet-doll"
+      ],
+      "instructions": {
+        "materials": "Use tightly crocheted yarn stuffed into a tiny doll with inset bead-like eyes and sewn joints.",
+        "forms": "Favor a large spherical head, pear-shaped body, and very short rounded limbs with obvious doll proportions.",
+        "linework": "Define the silhouette with dense loop edges and draw the mouth as one simple stitched yarn curve.",
+        "shading": "Use soft volume shading with compact occlusion at limb attachments and around inset eyes.",
+        "palette": "Choose two or three solid yarn colors and preserve distinct rounds where body markings change color.",
+        "texture": "Show concentric spiral stitch courses around rounded forms, with stable stitch density and no loose ends.",
+        "rendering": "Render a tightly stuffed crochet collectible with readable eyes and spiral construction consistent in every state."
+      },
+      "negative_constraints": [
+        "Do not flatten the figure into a crochet swatch or add long ragdoll limbs.",
+        "Avoid hair-like fibers, exposed stuffing, and tiny mismatched buttons.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Cute collectible-style pets and welcoming assistant mascots."
+      ],
+      "limitations": [
+        "Round-to-round stitch continuity is an artistic review concern; use large stable courses rather than literal stitch counts."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Use alpha around the rounded yarn edge and prevent chroma removal from eroding eye highlights.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "cozy",
+        "whimsical"
+      ]
+    },
+    {
+      "id": "knitted",
+      "name": "Knitted",
+      "category": "textile-fiber",
+      "kind": "technique",
+      "description": "A soft yarn mascot distinguished by aligned V stitches and ribbed knitted details.",
+      "tags": [
+        "knitwear",
+        "v-stitch",
+        "yarn"
+      ],
+      "aliases": [
+        "knit"
+      ],
+      "instructions": {
+        "materials": "Use knitted wool fabric with recognizable V-shaped stitch columns and small ribbed cuffs or seams.",
+        "forms": "Construct broad stretchy knitted volumes with rounded shoulders and compact mitten-like extremities.",
+        "linework": "Use the garment silhouette and a few seam lines for structure, with embroidered facial features.",
+        "shading": "Apply gentle cloth volume shading and darker channels between only the largest ribbed details.",
+        "palette": "Use restrained yarn color blocks with one broad knitted stripe or marking when identity requires it.",
+        "texture": "Keep V stitches aligned to each body part and consistent in gauge as the character bends.",
+        "rendering": "Render a knitted character with a stable stitch field and no detached scarf fringe or yarn tails."
+      },
+      "negative_constraints": [
+        "Do not replace aligned V stitches with crochet knots or woven crosshatching.",
+        "Avoid busy cable patterns, tiny ribbing, and flickering stitch orientation.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Warm seasonal companions and soft wearable-inspired mascots."
+      ],
+      "limitations": [
+        "Knit texture can alias; show a few larger columns and keep facial features free of competing stitches."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Downsample once with alpha; inspect stitch rows for moiré and preserve the broad outer contour.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "cozy",
+        "seasonal"
+      ]
+    },
+    {
+      "id": "patchwork",
+      "name": "Patchwork",
+      "category": "textile-fiber",
+      "kind": "technique",
+      "description": "A sewn mascot assembled from mismatched but coordinated fabric panels with a stable seam map.",
+      "tags": [
+        "fabric-panels",
+        "seams",
+        "scrap-cloth"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use cotton and linen fabric scraps joined by visible seams, with a few large printed fabric motifs.",
+        "forms": "Divide rounded body masses into broad irregular panels whose boundaries follow a deliberate identity map.",
+        "linework": "Draw panel seams as clear stitched paths and reserve simple dark embroidery for facial features.",
+        "shading": "Shade the assembled body softly while keeping individual panels mostly flat and easy to distinguish.",
+        "palette": "Choose a coordinated set of fabric colors and reserve strong contrast for the face and signature patch.",
+        "texture": "Use sparse checks, dots, or stripes on selected panels, with the same pattern placement in every frame.",
+        "rendering": "Render a stitched patchwork character with panel joins registered to anatomy across all animation states."
+      },
+      "negative_constraints": [
+        "Do not randomize fabric patterns or panel placement from frame to frame.",
+        "Avoid dozens of tiny scraps, detached tassels, and upholstery backgrounds.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Distinctive handmade pets and characters whose identity uses asymmetric markings."
+      ],
+      "limitations": [
+        "Panel layouts are identity-critical; mirrored motion needs explicit approval when patches are asymmetric."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Use antialiased fabric edges; choose a key absent from every panel and printed motif.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "cozy",
+        "cottagecore"
+      ]
+    },
+    {
+      "id": "quilted",
+      "name": "Quilted",
+      "category": "textile-fiber",
+      "kind": "technique",
+      "description": "A padded textile mascot with broad stitched channels and softly puffed quilt compartments.",
+      "tags": [
+        "padded-cloth",
+        "quilting",
+        "stitched-channels"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use fabric over thin batting, with stitched channels compressing the surface into soft padded compartments.",
+        "forms": "Keep rounded body shapes and a small number of broad diamond or curved quilt sections.",
+        "linework": "Trace shallow quilting seams without outlining every fabric fiber; make facial stitches distinctly heavier.",
+        "shading": "Model gentle puffs between seams and narrow occlusion within channels, without hard specular lighting.",
+        "palette": "Use a quiet fabric base with one or two coordinated panel colors and readable dark facial thread.",
+        "texture": "Show sparse fabric grain and continuous quilting paths whose spacing follows the character anatomy.",
+        "rendering": "Render a padded quilt character with a stable seam topology and softly inflated yet compact limbs."
+      },
+      "negative_constraints": [
+        "Do not confuse quilt channels with hard armor plates or balloons.",
+        "Avoid densely packed diamonds and deep black seam grooves.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Comforting textile companions and padded accessory mascots."
+      ],
+      "limitations": [
+        "Too many channels obscure expression; limit the quilt pattern to a few large anatomical areas."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Retain soft alpha at fabric edges and ensure seam shadows remain opaque surface detail.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "cozy"
+      ]
+    },
+    {
+      "id": "woven-tapestry",
+      "name": "Woven Tapestry",
+      "category": "textile-fiber",
+      "kind": "technique",
+      "description": "A flat woven mascot with interlocked colored weft regions and visible warp-weft structure.",
+      "tags": [
+        "weaving",
+        "warp-weft",
+        "tapestry"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use tightly woven colored yarn with horizontal weft bands crossing a subtle vertical warp.",
+        "forms": "Simplify the mascot into broad woven color regions on a character-shaped textile cutout.",
+        "linework": "Define contours with stepped woven boundaries and heavier dark yarn bands for facial marks.",
+        "shading": "Build form through a few interleaved yarn-value bands rather than smooth volumetric gradients.",
+        "palette": "Choose a small tapestry yarn palette with strong neighboring value differences and no tiny speckles.",
+        "texture": "Expose a coarse but regular warp-weft rhythm within fills, keeping weave direction fixed to the cloth.",
+        "rendering": "Render a compact woven emblem without a loom, wall hanging, fringe, or rectangular background."
+      },
+      "negative_constraints": [
+        "Do not substitute embroidery laid on top of fabric for interwoven color regions.",
+        "Avoid decorative fringe and dense weave patterns that produce moiré.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Folkloric mascots and woven badge illustrations."
+      ],
+      "limitations": [
+        "The implied weave needs larger spacing than real cloth to remain recognizable in a small cell."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Use antialiased cutout edges and check the weave after downsampling; background transparency must not enter yarn recesses.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "botanical",
+        "nautical"
+      ]
+    },
+    {
+      "id": "yarn-art",
+      "name": "Yarn Art",
+      "category": "textile-fiber",
+      "kind": "technique",
+      "description": "A flat mascot drawn from glued yarn paths and broad coiled yarn fills.",
+      "tags": [
+        "yarn-drawing",
+        "coiled-yarn",
+        "fiber-collage"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use thick yarn strands laid and glued into continuous paths on a mascot-shaped hidden backing.",
+        "forms": "Fill broad body regions with nested yarn coils while keeping limbs and facial areas simply shaped.",
+        "linework": "Use single dark yarn cords for outlines and features, with clearly separated curves and endpoints.",
+        "shading": "Show slight strand relief and narrow contact shadows between neighboring coils without a floor shadow.",
+        "palette": "Assign solid yarn colors to major regions and maintain clear contrast between outlines and coiled fills.",
+        "texture": "Emphasize the twisted strand surface and orderly coiling instead of knitted or crocheted stitch patterns.",
+        "rendering": "Render a yarn-path collage with stable coil centers and attached cord ends inside the character contour."
+      },
+      "negative_constraints": [
+        "Do not change the surface into looped crochet fabric or straight woven rows.",
+        "Avoid loose trailing strings and coils so fine that they merge into noise.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Craft illustrations and tactile line-based mascots."
+      ],
+      "limitations": [
+        "Coil layouts must be anchored to body regions so animation does not create crawling surface patterns."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Preserve alpha between external cord turns; keep internal contact shadows opaque for extraction.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "whimsical",
+        "cozy"
+      ]
+    },
+    {
+      "id": "tufted-rug",
+      "name": "Tufted Rug",
+      "category": "textile-fiber",
+      "kind": "technique",
+      "description": "A compact cut-pile rug mascot with clipped yarn tufts and broad carved color boundaries.",
+      "tags": [
+        "cut-pile",
+        "rug-tufting",
+        "carved-yarn"
+      ],
+      "aliases": [
+        "rug-tufting"
+      ],
+      "instructions": {
+        "materials": "Use dense cut-pile yarn tufted into a thick character-shaped rug backing with trimmed edges.",
+        "forms": "Build a flat chunky silhouette with broad color fields and gently raised pile thickness.",
+        "linework": "Separate markings with shallow carved pile grooves and bold dark tufted facial shapes.",
+        "shading": "Use soft pile shading and slight relief at carved boundaries, keeping the face graphically clear.",
+        "palette": "Choose a small set of saturated yarn colors with a strong contrasting border where needed.",
+        "texture": "Show short upright tuft clusters inside broad regions, with clipped pile rather than long fur.",
+        "rendering": "Render an isolated miniature rug cutout with a stable carved pattern and all tufts contained near the contour."
+      },
+      "negative_constraints": [
+        "Do not add a room, floor surface, or rug fringe.",
+        "Avoid shaggy hairs, patchy bald spots, and tuft detail that obscures eyes.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Bold tactile mascots and decorative textile icons."
+      ],
+      "limitations": [
+        "Pile should read as a material accent; a flat rug silhouette limits extreme perspective poses."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Alpha is preferred for clipped yarn edges; inspect extraction around dark carved grooves and bright yarn.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "cozy"
+      ]
+    },
+    {
+      "id": "fabric-collage",
+      "name": "Fabric Collage",
+      "category": "textile-fiber",
+      "kind": "technique",
+      "description": "A mascot assembled from overlapping cut cloth with frayed but restrained edges and visibly different fabric weights.",
+      "tags": [
+        "cloth-collage",
+        "layered-fabric",
+        "cut-textile"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use a few cotton, linen, and gauze-like fabric scraps with distinct weave weights and opaque body backing.",
+        "forms": "Overlap broad cut cloth shapes to construct the mascot without requiring sewn patchwork joints.",
+        "linework": "Let cut and lightly frayed fabric boundaries define forms, with a simple painted or stitched face.",
+        "shading": "Use shallow overlap shadows and subtle translucent overlays confined within an opaque character core.",
+        "palette": "Coordinate fabric colors and use one larger printed motif as a stable identity feature.",
+        "texture": "Show selective fraying and weave contrast on large areas while keeping face and outer silhouette clean.",
+        "rendering": "Render a layered cloth collage with fixed overlap order and no scraps separated from the character."
+      },
+      "negative_constraints": [
+        "Do not turn every panel into a neatly sewn patchwork seam.",
+        "Avoid transparent gauze over the eyes and loose fibers projecting far outside the silhouette.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Expressive craft mascots and mixed-textile story characters."
+      ],
+      "limitations": [
+        "Different fabric weights can imply inconsistent anatomy unless layer order and shape are locked."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Prefer alpha for restrained fraying and gauze edges; keep the main body opaque and inspect on multiple backgrounds.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "botanical",
+        "cottagecore"
+      ]
+    },
+    {
+      "id": "sock-puppet",
+      "name": "Sock Puppet",
+      "category": "textile-fiber",
+      "kind": "technique",
+      "description": "A soft tubular puppet with a folded mouth, stitched eyes, and recognizable knitted sock construction.",
+      "tags": [
+        "hand-puppet",
+        "sock-knit",
+        "folded-mouth"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use a knitted cotton sock shaped over an implied hand, with stitched eyes and a felt mouth interior.",
+        "forms": "Build a curved tubular body and expressive folded snout, keeping attached ears or arms short and simple.",
+        "linework": "Define the mouth fold boldly and use visible heel or toe seams sparingly as construction clues.",
+        "shading": "Use soft cloth folds and a dark mouth cavity, with broad shading that keeps the tube shape clear.",
+        "palette": "Use one sock color or a few broad stripes with a contrasting felt mouth and stable eye colors.",
+        "texture": "Show a restrained knit surface and occasional ribbed cuff detail without tiny fabric noise.",
+        "rendering": "Render only the complete puppet character, keeping its support hand and puppeteer outside the image."
+      },
+      "negative_constraints": [
+        "Do not expose a human hand, arm, or puppeteer.",
+        "Avoid long floppy accessories and unrelated sock patterns changing across states.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Expressive talking mascots and theatrical communication characters."
+      ],
+      "limitations": [
+        "Profiles requiring running legs need an explicitly approved puppet anatomy adaptation; the default is tubular."
+      ],
+      "applicability": {
+        "character": "adapted",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Keep the mouth cavity opaque and distinguish it from background alpha; preserve antialiased fabric edges.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "whimsical",
+        "cozy"
+      ]
+    },
+    {
+      "id": "hand-sewn-doll",
+      "name": "Hand-Sewn Doll",
+      "category": "textile-fiber",
+      "kind": "technique",
+      "description": "A small cloth doll with visible hand stitches, simple joint seams, and deliberately handmade proportions.",
+      "tags": [
+        "rag-doll",
+        "hand-stitching",
+        "cloth-doll"
+      ],
+      "aliases": [
+        "cloth-doll"
+      ],
+      "instructions": {
+        "materials": "Use plain cotton or linen stuffed into a cloth doll with visible hand-sewn seams and embroidered features.",
+        "forms": "Shape a compact head and body with lightly flattened limbs and simple sewn joint attachments.",
+        "linework": "Use uneven but deliberate running stitches along selected seams and clear thread marks for the face.",
+        "shading": "Shade broad stuffed cloth volumes softly and emphasize only shallow seam compression at joints.",
+        "palette": "Choose a few fabric and thread colors with a distinct stable outfit or body marking pattern.",
+        "texture": "Show a modest woven cloth grain and a small number of visibly handmade stitches.",
+        "rendering": "Render a crafted cloth character with consistent seam placement and short attached clothing details."
+      },
+      "negative_constraints": [
+        "Do not replace woven cloth with plush fur or porcelain doll skin.",
+        "Avoid exposed pins, loose buttons, long hair strands, and ragged stuffing.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Handmade story companions and small cloth character casts."
+      ],
+      "limitations": [
+        "Long ragdoll proportions must be shortened for cell readability without changing the approved identity."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Use alpha at cloth edges; preserve facial thread and seam contrast during a single controlled downsample.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "cottagecore",
+        "cozy"
+      ]
+    }
+  ]
+}

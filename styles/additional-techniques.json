@@ -1,0 +1,454 @@
+{
+  "schema_version": 1,
+  "category": "additional-techniques",
+  "styles": [
+    {
+      "id": "scratchboard",
+      "name": "Scratchboard",
+      "category": "additional-techniques",
+      "kind": "technique",
+      "description": "A dark ink-coated character shape revealed through bold scratched highlights and directional hatch groups.",
+      "tags": [
+        "scratched-ink",
+        "subtractive-drawing",
+        "light-on-dark"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use a dark ink-coated surface with pale underlying clay-board color revealed by deliberate scratched marks.",
+        "forms": "Build a compact opaque dark silhouette and describe large body volumes through broad revealed highlight regions.",
+        "linework": "Use scratched light contours and a few larger dark or pale facial shapes instead of fine etched filigree.",
+        "shading": "Model volume with sparse groups of parallel scratched strokes that follow anatomy and leave stable dark masses.",
+        "palette": "Choose a dark ground and one pale scratch color with an optional restrained tinted highlight region.",
+        "texture": "Show slightly irregular scraped strokes with grouped spacing, keeping fine scratch dust out of the image.",
+        "rendering": "Render the scratchboard character alone on transparency with highlights inside the body and no board rectangle."
+      },
+      "negative_constraints": [
+        "Do not make every pale scratch transparent or add a dark rectangular background.",
+        "Avoid dense hairline hatching, random scratch damage, and facial features lost in black fill.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "High-contrast illustrated mascots and expressive subtractive-drawing characters."
+      ],
+      "limitations": [
+        "Scratch width and spacing must be enlarged beyond traditional fine detail for reliable sprite readability."
+      ],
+      "applicability": {
+        "character": "adapted",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Preserve opaque pale scratches within the body and alpha only outside the contour; inspect light marks against dark backgrounds.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "spooky",
+        "nautical"
+      ]
+    },
+    {
+      "id": "silverpoint",
+      "name": "Silverpoint",
+      "category": "additional-techniques",
+      "kind": "technique",
+      "description": "A restrained metalpoint-drawing mascot with delicate enlarged strokes, careful crosshatching, and a faint warm-gray tonal range.",
+      "tags": [
+        "metalpoint",
+        "fine-hatching",
+        "tonal-drawing"
+      ],
+      "aliases": [
+        "metalpoint"
+      ],
+      "instructions": {
+        "materials": "Use a silverpoint-like metal mark over an opaque subtly warm prepared-ground character fill, without a paper rectangle.",
+        "forms": "Simplify gently modeled anatomy into compact readable forms with a few distinct facial landmarks.",
+        "linework": "Use fine but enlarged uniform metalpoint strokes and deliberate contour reinforcement at identity-critical edges.",
+        "shading": "Build tone through sparse layered hatch groups and controlled line density rather than smudged graphite gradients.",
+        "palette": "Choose a restrained warm-gray metalpoint range with darker reinforced facial marks and a stable light body ground.",
+        "texture": "Show slight prepared-ground tooth and precise overlapping strokes, avoiding loose charcoal dust or heavy ink blotches.",
+        "rendering": "Render a clean metalpoint-inspired character with stable hatch direction and sufficient contrast at actual sprite size."
+      },
+      "negative_constraints": [
+        "Do not rely on barely visible pale lines or leave the main body transparent.",
+        "Avoid charcoal smudging, erasure debris, and dense hatching that overwhelms the face.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Restrained drawn mascots and delicate traditional-technique character studies."
+      ],
+      "limitations": [
+        "Authentically faint metalpoint is adapted with stronger contours so the character remains readable at small sizes."
+      ],
+      "applicability": {
+        "character": "adapted",
+        "sequence": "adapted",
+        "icon": "unsuitable",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Preserve an opaque prepared-ground core and antialiased strokes; inspect actual-size contrast before accepting any chroma result.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "botanical"
+      ]
+    },
+    {
+      "id": "encaustic",
+      "name": "Encaustic",
+      "category": "additional-techniques",
+      "kind": "technique",
+      "description": "A painted mascot built from fused pigment-and-wax layers, broad scraped planes, and softly translucent internal color.",
+      "tags": [
+        "wax-painting",
+        "fused-pigment",
+        "scraped-paint"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use layered colored wax paint with fused opaque pigment masses and a few translucent-looking internal glaze layers.",
+        "forms": "Build broad painted body shapes with softened internal planes and a clear bounded outer character silhouette.",
+        "linework": "Define anatomy through firm painted edges and a few scratched or incised lines, keeping facial marks opaque.",
+        "shading": "Use layered wax-value fields and broad scraped highlights rather than sculpted three-dimensional wax anatomy.",
+        "palette": "Choose a compact pigment palette with deep stable color layers and clearly contrasted facial features.",
+        "texture": "Show broad fused brush ridges and selectively scraped wax planes inside the character without tiny crackle.",
+        "rendering": "Render an isolated encaustic-painted character whose wax layers remain stable in position and texture across poses."
+      },
+      "negative_constraints": [
+        "Do not turn the artwork into a wax figurine, burning candle, or melting object.",
+        "Avoid transparent facial regions, uncontrolled thick drips, and random scraped patterns between frames.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Textured painted mascots and pigment-rich traditional-art character variants."
+      ],
+      "limitations": [
+        "Wax-layer depth is simulated inside opaque paint regions; actual physical encaustic texture is not produced."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Use antialiased painted borders and preserve opaque pigment layers; translucency should be an internal color effect for reliable extraction.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "botanical",
+        "cozy"
+      ]
+    },
+    {
+      "id": "sgraffito",
+      "name": "Sgraffito",
+      "category": "additional-techniques",
+      "kind": "technique",
+      "description": "A character revealed by broad scratches through a colored surface coat into a contrasting underlying layer.",
+      "tags": [
+        "scratched-coating",
+        "two-layer-surface",
+        "incised-pattern"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use two contrasting opaque plaster-like or colored-slip surface layers, with the upper coat deliberately scratched away.",
+        "forms": "Construct a compact flat-to-shallow character form with broad areas of intact coating and readable revealed markings.",
+        "linework": "Use confident carved channels and scraped edges to define facial features and large decorative regions.",
+        "shading": "Keep shading shallow and emphasize the slight depth difference between top coat and exposed underlayer.",
+        "palette": "Choose two clearly contrasting layer colors with stable assignments and no extra speckled accent palette.",
+        "texture": "Show a few broad tool-groove textures inside removed areas, keeping surface roughness restrained.",
+        "rendering": "Render an isolated sgraffito character with a fixed scratched pattern and no wall, tile panel, or surrounding debris."
+      },
+      "negative_constraints": [
+        "Do not replace the scratched layer structure with ordinary painted outlines.",
+        "Avoid tiny graffiti-like inscriptions, loose coating flakes, and scratches that change every frame.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Graphic craft mascots and characters with bold subtractive surface markings."
+      ],
+      "limitations": [
+        "Carved pattern positions are identity landmarks and must be locked before state generation."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Keep both exposed layers opaque; alpha belongs only outside the character or in explicitly approved cutouts.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "botanical"
+      ]
+    },
+    {
+      "id": "marquetry",
+      "name": "Marquetry",
+      "category": "additional-techniques",
+      "kind": "technique",
+      "description": "A flat inlaid-wood mascot formed from fitted veneer pieces with deliberate grain orientation.",
+      "tags": [
+        "wood-inlay",
+        "veneer",
+        "fitted-pattern"
+      ],
+      "aliases": [
+        "wood-inlay"
+      ],
+      "instructions": {
+        "materials": "Use thin contrasting wood veneers fitted into a smooth character-shaped inlay with no surrounding furniture panel.",
+        "forms": "Divide a compact flat silhouette into broad fitted veneer regions that follow anatomy and stable body markings.",
+        "linework": "Let tight veneer joins define internal boundaries and use dark inlaid pieces for readable facial details.",
+        "shading": "Use subtle wood-value variation and a restrained satin finish without deep carved volume or floor shadows.",
+        "palette": "Choose a small range of natural or explicitly dyed veneer tones with clear light-dark separation.",
+        "texture": "Show broad wood grain following a deliberate direction in each veneer piece, with fixed knots and bands.",
+        "rendering": "Render an isolated marquetry character with a consistent veneer map and smooth fitted edges through every pose."
+      },
+      "negative_constraints": [
+        "Do not add furniture, wooden boards, carving chips, or deep sculptural gouges.",
+        "Avoid miniature veneer fragments and wood grain that crosses joints or changes between frames.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Wood-inlay mascots and decorative natural-material character emblems."
+      ],
+      "limitations": [
+        "The illustration does not guarantee physically cuttable veneer patterns; grain mapping requires visual consistency review."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Preserve antialiased veneer edges with opaque wood fills; keep dark join lines distinct from transparency.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "botanical",
+        "cozy"
+      ]
+    },
+    {
+      "id": "bas-relief",
+      "name": "Bas-Relief",
+      "category": "additional-techniques",
+      "kind": "technique",
+      "description": "A shallow sculptural character whose volumes rise gently from a character-shaped backing with no surrounding plaque.",
+      "tags": [
+        "low-relief",
+        "shallow-sculpture",
+        "relief-modeling"
+      ],
+      "aliases": [
+        "low-relief"
+      ],
+      "instructions": {
+        "materials": "Use matte carved or cast relief material with one consistent opaque surface and a hidden character-shaped backing.",
+        "forms": "Express anatomy as shallow raised planes with overlapping limbs and a compact front-readable silhouette.",
+        "linework": "Define facial details and body boundaries through broad incised grooves and rounded relief edges.",
+        "shading": "Use shallow directional relief shadows and broad soft highlights without a free-standing sculpture lighting setup.",
+        "palette": "Choose one coherent material tone with enough value range in carved recesses to preserve expression.",
+        "texture": "Show restrained tool smoothing and a few broad surface marks rather than rough granular stone detail.",
+        "rendering": "Render a cut-to-character low relief with consistent shallow depth, no rectangular plaque, and no pedestal or wall."
+      },
+      "negative_constraints": [
+        "Do not add a surrounding stone slab, wall-mounted medallion, or full sculptural turntable scene.",
+        "Avoid deep undercuts, detached raised pieces, and minute incisions that hide the face.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Shallow sculptural mascots and tactile relief character emblems."
+      ],
+      "limitations": [
+        "Strong perspective turns need adaptation because the construction is a low relief rather than full round sculpture."
+      ],
+      "applicability": {
+        "character": "adapted",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Use antialiased carved borders and keep relief grooves opaque; inspect dark recesses for false background removal.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "fantasy",
+        "nautical"
+      ]
+    },
+    {
+      "id": "repousse",
+      "name": "Repoussé",
+      "category": "additional-techniques",
+      "kind": "technique",
+      "description": "A thin metal-sheet mascot shaped by raised hammer work and a few deliberate chased detail lines.",
+      "tags": [
+        "hammered-metal",
+        "raised-sheet",
+        "chasing"
+      ],
+      "aliases": [
+        "repousse-metal"
+      ],
+      "instructions": {
+        "materials": "Use a single thin metal sheet raised from behind into shallow forms, with a restrained satin or burnished finish.",
+        "forms": "Build compact rounded relief volumes with broad raised facial planes and short integrated extremities.",
+        "linework": "Use a few chased grooves and raised metal ridges for features instead of ink outlines or dense engraving.",
+        "shading": "Apply broad metal highlights over raised planes and shallow shadows in chased grooves with stable lighting.",
+        "palette": "Choose one consistent metal tone such as copper, brass, or silver with darker recesses and limited patina.",
+        "texture": "Show sparse broad hammer facets and polished ridges, avoiding a uniformly pebbled surface.",
+        "rendering": "Render an isolated raised-metal character with fixed hammer landmarks and no surrounding sheet, tools, or display mount."
+      },
+      "negative_constraints": [
+        "Do not replace shallow raised sheet work with a fully cast metal figurine or crumpled foil.",
+        "Avoid sharp torn metal edges, dense engraving, and reflections that erase the facial grooves.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Hammered-metal mascots and shallow decorative character emblems."
+      ],
+      "limitations": [
+        "The visual design is not a fabrication pattern and uses simplified hammer texture for small-frame consistency."
+      ],
+      "applicability": {
+        "character": "adapted",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Keep the sheet opaque and antialias the silhouette; inspect bright ridges and dark chased grooves during key extraction.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "nautical",
+        "steampunk"
+      ]
+    },
+    {
+      "id": "sand-art",
+      "name": "Sand Art",
+      "category": "additional-techniques",
+      "kind": "technique",
+      "description": "A flat colored-sand mascot with broad bounded pigment regions and restrained granular texture.",
+      "tags": [
+        "colored-sand",
+        "granular-fill",
+        "sand-painting"
+      ],
+      "aliases": [
+        "sand-painting"
+      ],
+      "instructions": {
+        "materials": "Use opaque colored sand bonded into broad character-shaped regions with no glass vessel or surrounding sand bed.",
+        "forms": "Build a simple compact silhouette from clearly bounded sand-color masses and large uncomplicated facial shapes.",
+        "linework": "Define contours through clean region boundaries and use dense dark sand bands for the face.",
+        "shading": "Model only with broad color-value regions and slight granular relief, avoiding smooth digital gloss.",
+        "palette": "Choose a small set of colored sands with strong value differences and stable region assignments.",
+        "texture": "Show uniform fine granularity within large fills, keeping grains visually grouped and fixed rather than individually animated.",
+        "rendering": "Render an isolated bonded-sand character with clean contained edges and no loose falling grains or decorative sand trails."
+      },
+      "negative_constraints": [
+        "Do not add sand bottles, beaches, mandala backgrounds, or loose particles outside the figure.",
+        "Avoid shifting dunes of texture, glitter-like grains, and low-contrast sandy faces.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Granular craft mascots and flat tactile character illustrations."
+      ],
+      "limitations": [
+        "Individual grain motion is suppressed to preserve identity; the texture must read as a bonded material surface."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Use antialiased bounded edges and keep grains opaque inside the silhouette; do not treat bright grains as background speckles.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "nautical",
+        "botanical"
+      ]
+    }
+  ]
+}

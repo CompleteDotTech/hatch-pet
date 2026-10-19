@@ -1,0 +1,731 @@
+{
+  "schema_version": 1,
+  "category": "paper-craft",
+  "styles": [
+    {
+      "id": "paper-cutout",
+      "name": "Paper Cutout",
+      "category": "paper-craft",
+      "kind": "technique",
+      "description": "A mascot made from clean scissor-cut paper shapes with a single visible material layer.",
+      "tags": [
+        "cut-paper",
+        "scissor-cut",
+        "flat-craft"
+      ],
+      "aliases": [
+        "cut-paper"
+      ],
+      "instructions": {
+        "materials": "Use opaque matte colored paper with a slight paper thickness visible at selected cut edges.",
+        "forms": "Construct broad rounded paper shapes with simple joined limbs and generous facial spacing.",
+        "linework": "Define contours through clean scissor-cut borders and use a few dark paper pieces for features.",
+        "shading": "Keep fills nearly flat with minimal edge thickness shading and no cast shadow outside the figure.",
+        "palette": "Choose a small set of solid paper colors with strong separation between face and body shapes.",
+        "texture": "Suggest a fine paper tooth inside large fills while keeping cut borders smooth and deliberate.",
+        "rendering": "Render an isolated flat paper mascot with consistent cut shapes and no supporting sheet or tabletop."
+      },
+      "negative_constraints": [
+        "Do not add deep stacked layers or fold the character into origami.",
+        "Avoid scissors, glue marks, isolated confetti, and paper backgrounds.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Clean craft mascots, educational cutouts, and simple animation poses."
+      ],
+      "limitations": [
+        "A flat construction needs silhouette-led poses; foreshortening should not invent new paper layers."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "recommended",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Use antialiased paper borders and keep any white paper pieces opaque during keying.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "whimsical",
+        "seasonal"
+      ]
+    },
+    {
+      "id": "layered-paper",
+      "name": "Layered Paper",
+      "category": "paper-craft",
+      "kind": "technique",
+      "description": "A shallow paper relief whose stepped layers construct the character volume without an surrounding scene.",
+      "tags": [
+        "paper-relief",
+        "stacked-paper",
+        "layered-cutout"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use stacked matte paper sheets with visible thickness and a few nested cut shapes per body part.",
+        "forms": "Build shallow relief volumes from broad inset layers, keeping limbs attached and the outer contour simple.",
+        "linework": "Let crisp stacked sheet boundaries define facial planes and markings without a drawn outline.",
+        "shading": "Use narrow contact shadows only between layers, with consistent shallow depth and fixed light direction.",
+        "palette": "Choose related paper shades for depth and one clear accent color for identity-critical markings.",
+        "texture": "Keep surfaces mostly smooth with restrained paper fibers; emphasize the stepped edge structure.",
+        "rendering": "Render an isolated layered paper character in a consistent shallow view with no shadow-box background."
+      },
+      "negative_constraints": [
+        "Do not generate a scenic layered-paper landscape or enclosing frame.",
+        "Avoid dozens of thin layers, dramatic cast shadows, and detached paper clouds.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Dimensional craft mascots and character relief illustrations."
+      ],
+      "limitations": [
+        "Layer count should stay low so relief depth remains readable at sprite size."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Retain alpha outside the outer layer; interior contact shadows must remain part of the opaque artwork.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "botanical",
+        "whimsical"
+      ]
+    },
+    {
+      "id": "papercraft",
+      "name": "Papercraft",
+      "category": "paper-craft",
+      "kind": "technique",
+      "description": "A three-dimensional folded-and-glued paper model with broad planar facets and visible assembly seams.",
+      "tags": [
+        "paper-model",
+        "folded-card",
+        "faceted"
+      ],
+      "aliases": [
+        "paper-model"
+      ],
+      "instructions": {
+        "materials": "Use thick printed paper or cardstock folded and glued into a simple hollow model.",
+        "forms": "Construct the head and body from broad planar facets with compact folded limbs and a stable low-detail silhouette.",
+        "linework": "Show a few fold creases and edge joins; print facial features cleanly onto large front-facing planes.",
+        "shading": "Shade planar faces in discrete values and use only shallow seam occlusion at folds.",
+        "palette": "Use solid printed color regions with a few darker facet tones and stable marking placement.",
+        "texture": "Suggest smooth cardstock and subtle crease wear without photographic paper wrinkles.",
+        "rendering": "Render an assembled paper model with consistent fold topology and no unfolded template beside it."
+      },
+      "negative_constraints": [
+        "Do not show glue tabs, cutting diagrams, or flat assembly nets.",
+        "Avoid excessive triangulation, fragile paper spikes, and large floor shadows.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Craft-model mascots and low-detail dimensional character assets."
+      ],
+      "limitations": [
+        "The image is an illustration of a paper model, not a validated fabrication net."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Use antialiased facet edges and preserve opaque pale paper; key colors must be absent from printed faces.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "futuristic",
+        "whimsical"
+      ]
+    },
+    {
+      "id": "origami",
+      "name": "Origami",
+      "category": "paper-craft",
+      "kind": "technique",
+      "description": "A mascot expressed through a restrained single-sheet folding language with clean creases and large readable planes.",
+      "tags": [
+        "paper-folding",
+        "creased-paper",
+        "single-sheet"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use one or two coordinated sheets of matte folding paper with a visible contrasting reverse when folded.",
+        "forms": "Express anatomy through a few purposeful folds, broad planar heads, and short triangular or folded limbs.",
+        "linework": "Use crease lines and folded borders sparingly; keep facial details as minimal approved surface marks.",
+        "shading": "Shade adjoining planes with simple value steps and tight crease shadows without broad environmental lighting.",
+        "palette": "Preserve the chosen paper face and reverse colors across all folds and animation states.",
+        "texture": "Keep the paper surface smooth with subtle crease compression and no cloth or clay grain.",
+        "rendering": "Render a plausible folded-paper character with consistent major folds and a compact self-supporting silhouette."
+      },
+      "negative_constraints": [
+        "Do not add cut-and-glued fragments that contradict the folded-sheet appearance.",
+        "Avoid needle-thin folded points, unfolding diagrams, and disconnected paper pieces.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Elegant geometric pets and paper-folding-inspired mascots."
+      ],
+      "limitations": [
+        "Animated poses are stylized illustrations rather than mechanically proven origami fold sequences."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Preserve antialiased fold tips without smoothing away creases; inspect pale reverse-paper regions during keying.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "botanical",
+        "nautical"
+      ]
+    },
+    {
+      "id": "paper-quilling",
+      "name": "Paper Quilling",
+      "category": "paper-craft",
+      "kind": "technique",
+      "description": "A mascot built from broad rolled paper coils and upright curved paper strips.",
+      "tags": [
+        "quilling",
+        "rolled-paper",
+        "paper-coils"
+      ],
+      "aliases": [
+        "quilling"
+      ],
+      "instructions": {
+        "materials": "Use narrow but visibly thick colored paper strips rolled into open coils and curved upright borders.",
+        "forms": "Construct large body regions from a few nested coils contained by an attached outer paper contour.",
+        "linework": "Use upright strip edges as deliberate curved linework and broader filled shapes for eyes and mouth.",
+        "shading": "Apply shallow relief shading inside coils and narrow strip-contact shadows with one stable light direction.",
+        "palette": "Choose a coordinated strip palette with strong contrast between outer contour, inner coils, and facial features.",
+        "texture": "Show smooth paper edges and broad concentric winding; avoid tiny densely packed spirals.",
+        "rendering": "Render a quilled character on transparency with opaque core regions behind the face and major limbs."
+      },
+      "negative_constraints": [
+        "Do not add a card backing or decorative swirls outside the character.",
+        "Avoid hair-thin strips, countless tiny coils, and transparent facial features.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Decorative paper mascots and rounded craft emblems."
+      ],
+      "limitations": [
+        "Open coils need sufficiently broad strips; dense quilling can become unreadable at small size."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Prefer alpha for intentional coil apertures; visual review must distinguish designed holes from extraction damage.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "botanical",
+        "whimsical"
+      ]
+    },
+    {
+      "id": "torn-paper-collage",
+      "name": "Torn-Paper Collage",
+      "category": "paper-craft",
+      "kind": "technique",
+      "description": "A character assembled from broad torn paper shapes with controlled fibrous borders.",
+      "tags": [
+        "torn-paper",
+        "collage",
+        "fibrous-edge"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use matte colored paper torn into broad shapes, showing occasional lighter paper fibers along tears.",
+        "forms": "Build a bold character silhouette from overlapping irregular pieces with larger uncomplicated face shapes.",
+        "linework": "Let the torn contours define anatomy and use a few deliberate dark paper fragments for the face.",
+        "shading": "Keep color pieces mostly flat with subtle overlap depth and no independent floor shadow.",
+        "palette": "Use a limited collage palette with clear contrasts and stable individual paper-piece colors.",
+        "texture": "Show uneven torn edges and restrained paper grain, concentrating roughness away from the eyes.",
+        "rendering": "Render attached torn-paper components with fixed piece placement and no scattered scraps outside the figure."
+      },
+      "negative_constraints": [
+        "Do not smooth every tear into machine-cut vector curves.",
+        "Avoid confetti, long paper fibers, and changing tear patterns between animation frames.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Expressive storybook-style craft characters and playful companions."
+      ],
+      "limitations": [
+        "Large tear rhythm survives reduction better than realistic micro-fibers."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Use alpha for fibrous borders and inspect white tear edges on both light and dark backgrounds.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "whimsical",
+        "seasonal"
+      ]
+    },
+    {
+      "id": "mixed-media-collage",
+      "name": "Mixed-Media Collage",
+      "category": "paper-craft",
+      "kind": "technique",
+      "description": "A coordinated mascot combining a few visibly different paper, paint, and pencil techniques.",
+      "tags": [
+        "mixed-media",
+        "paper-and-paint",
+        "collage"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Combine cut paper body pieces, opaque painted markings, and a few colored-pencil feature lines.",
+        "forms": "Use broad collage shapes to establish anatomy and reserve material changes for clearly defined character regions.",
+        "linework": "Pair cut-paper contours with deliberate pencil or ink facial lines, keeping each tool role consistent.",
+        "shading": "Use flat paper planes with selective painted shading rather than unrelated lighting effects on each piece.",
+        "palette": "Unify the different media through a small repeated palette and one stable high-contrast facial treatment.",
+        "texture": "Show paper tooth, restrained brush marks, and sparse pencil grain in separate readable areas.",
+        "rendering": "Render one coherent isolated character, retaining the approved medium assignment for every body part across frames."
+      },
+      "negative_constraints": [
+        "Do not turn the image into a mood board with photos, captions, or background scraps.",
+        "Avoid arbitrary medium switching and texture overload on the face.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Expressive art-room mascots and distinctive editorial characters."
+      ],
+      "limitations": [
+        "Use at most a few complementary media so the identity remains stable and visually coherent."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Prefer alpha for mixed contours; chroma checks must consider all paper, pigment, and pencil colors.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "whimsical",
+        "botanical"
+      ]
+    },
+    {
+      "id": "scrapbook",
+      "name": "Scrapbook",
+      "category": "paper-craft",
+      "kind": "technique",
+      "description": "A layered decorative paper mascot using restrained patterned cardstock and attached paper embellishments.",
+      "tags": [
+        "patterned-paper",
+        "scrapbooking",
+        "paper-embellishment"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use patterned scrapbook paper, matte cardstock, and one or two attached paper tabs or stitched embellishments.",
+        "forms": "Construct the character from broad layered paper shapes with simple rounded limbs and a clear central face.",
+        "linework": "Use clean cut edges, occasional dashed faux-stitch borders, and bold paper facial marks.",
+        "shading": "Apply shallow layer-overlap shadows while keeping printed patterns flat and subordinate to character volume.",
+        "palette": "Coordinate two or three paper colors and one restrained repeated pattern with strong facial contrast.",
+        "texture": "Show a few visible printed motifs and subtle paper tooth, keeping pattern registration stable.",
+        "rendering": "Render a character-shaped scrapbook assembly without a page, journal, photograph, or surrounding decorative layout."
+      },
+      "negative_constraints": [
+        "Do not generate captions, dates, readable labels, or scrapbook pages.",
+        "Avoid detached stickers, tiny embellishments, and patterns that compete with the face.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Personalized craft mascots and celebratory character badges."
+      ],
+      "limitations": [
+        "Decorative elements must remain attached and sparse; patterned papers need stable landmarks across frames."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Preserve alpha around tabs and paper edges; key selection must account for every pattern color.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "seasonal",
+        "cozy"
+      ]
+    },
+    {
+      "id": "cardboard-cutout",
+      "name": "Cardboard Cutout",
+      "category": "paper-craft",
+      "kind": "technique",
+      "description": "A thick corrugated-card mascot with visible layered edges and simple painted or printed details.",
+      "tags": [
+        "corrugated-cardboard",
+        "thick-cutout",
+        "recycled-craft"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use brown corrugated cardboard with exposed fluted edges and a few opaque painted color areas.",
+        "forms": "Build a sturdy flat cutout silhouette from broad pieces with rounded corners and short attached limbs.",
+        "linework": "Define anatomy through cut edges and thick painted facial lines; retain a few large fold or joint marks.",
+        "shading": "Use shallow edge-thickness shading and gentle corrugation relief without a standing base shadow.",
+        "palette": "Let warm cardboard brown serve as one material color with a small contrasting paint palette.",
+        "texture": "Show sparse kraft fibers and a few readable corrugation channels only along thick exposed edges.",
+        "rendering": "Render an isolated cardboard character with stable cut boundaries and no support stand, box, or workshop scene."
+      },
+      "negative_constraints": [
+        "Do not replace cardboard with smooth wood or glossy plastic.",
+        "Avoid fragile torn corners, printed shipping labels, and tiny exposed fluting.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Resourceful craft mascots and recycled-material characters."
+      ],
+      "limitations": [
+        "Corrugation should remain an edge cue rather than dominate the character surface."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Use antialiased cardboard edges and preserve pale painted areas as opaque material when keying.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "solarpunk",
+        "whimsical"
+      ]
+    },
+    {
+      "id": "shadow-puppet",
+      "name": "Shadow Puppet",
+      "category": "paper-craft",
+      "kind": "technique",
+      "description": "A flat articulated cut silhouette with a few broad ornamental apertures and clear joint shapes.",
+      "tags": [
+        "cut-silhouette",
+        "puppetry",
+        "articulated"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use opaque black cut leather or stiff paper suggested through a clean flat silhouette.",
+        "forms": "Build expressive profile or three-quarter shapes with broad hinged limbs and a small number of readable apertures.",
+        "linework": "Use the outer cut contour and intentional internal cutouts as the only principal linework.",
+        "shading": "Keep the figure flat and opaque; use no modeled gradients or simulated cast shadow on a screen.",
+        "palette": "Use one dark body color with optional restrained translucent color inserts confined to approved apertures.",
+        "texture": "Keep surfaces nearly solid with only a few large cut-leather motifs that reinforce identity.",
+        "rendering": "Render the puppet itself on transparency, with rods removed and joint placement stable across poses."
+      },
+      "negative_constraints": [
+        "Do not generate a lit theater screen, projected shadow, or puppeteer rods.",
+        "Avoid lace-like perforation, fragile contour bridges, and illegible dark facial markings.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Silhouette-led performance sprites and theatrical characters."
+      ],
+      "limitations": [
+        "Expression relies on contour and aperture shapes; detailed full-color facial identity needs adaptation."
+      ],
+      "applicability": {
+        "character": "adapted",
+        "sequence": "adapted",
+        "icon": "recommended",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "required",
+        "chroma": "unsupported",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Alpha is required for deliberate apertures; retain sturdy connecting bridges and inspect every pose on contrasting backgrounds.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "gothic",
+        "fantasy"
+      ]
+    },
+    {
+      "id": "pop-up-book",
+      "name": "Pop-Up Book",
+      "category": "paper-craft",
+      "kind": "technique",
+      "description": "A dimensional paper character suggested by simple V folds, layered tabs, and a readable frontal pop-up construction.",
+      "tags": [
+        "paper-engineering",
+        "v-fold",
+        "pop-up"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use printed cardstock folded into simple pop-up planes with hidden paper tabs and visible central creases.",
+        "forms": "Build the body from a few V-fold volumes and attached layered face or limb pieces.",
+        "linework": "Use crisp printed feature lines and visible fold boundaries, keeping assembly joins sparse and orderly.",
+        "shading": "Apply shallow paper-plane shading and narrow overlap shadows without a book or ground shadow.",
+        "palette": "Use a coordinated printed-paper palette with clear color separation across adjoining folded planes.",
+        "texture": "Keep cardstock mostly smooth with slight crease wear and no fabric or sculpted-material texture.",
+        "rendering": "Render the freestanding pop-up character as an isolated asset with a consistent frontal fold structure."
+      },
+      "negative_constraints": [
+        "Do not include an open book, printed story text, or wide paper scenery.",
+        "Avoid exposed mechanics, many tiny tabs, and impossible detached folded limbs.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Dimensional storybook mascots and simple paper performance sequences."
+      ],
+      "limitations": [
+        "The illustrated fold structure does not certify a physically buildable pop-up mechanism."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Use alpha outside attached paper parts; keep fold shadows opaque and inspect thin tabs for clipping.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "whimsical",
+        "fantasy"
+      ]
+    },
+    {
+      "id": "construction-paper",
+      "name": "Construction-Paper Art",
+      "category": "paper-craft",
+      "kind": "technique",
+      "description": "A bold classroom craft mascot assembled from thick, slightly rough colored construction paper.",
+      "tags": [
+        "classroom-craft",
+        "construction-paper",
+        "cut-shapes"
+      ],
+      "aliases": [
+        "construction-paper-art"
+      ],
+      "instructions": {
+        "materials": "Use thick fibrous construction paper in matte solid colors with a slightly softened cut edge.",
+        "forms": "Build large simple circles, ovals, and rectangles into a playful compact character with attached limbs.",
+        "linework": "Use broad cut-paper shapes for the face and optional chunky crayon-like feature marks.",
+        "shading": "Keep colors flat and use only tiny overlap shadows where one paper piece sits above another.",
+        "palette": "Choose a small set of strong classroom-paper colors with clear value contrast and no complex gradients.",
+        "texture": "Show coarse paper tooth gently inside large areas while leaving eyes and mouth uncomplicated.",
+        "rendering": "Render a deliberately simple handmade paper mascot with consistent shape proportions and no craft-table background."
+      },
+      "negative_constraints": [
+        "Do not introduce photoreal scissors, glue sticks, or a classroom scene.",
+        "Avoid intricate die cuts, glossy cardstock, and decorative scraps around the character.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Early-learning pictograms and cheerful educational mascots."
+      ],
+      "limitations": [
+        "This direction intentionally favors simple cut shapes over detailed anatomy or fine material realism."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "recommended",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Use antialiased cut edges and preserve coarse paper tooth inside the opaque silhouette.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "whimsical",
+        "seasonal"
+      ]
+    },
+    {
+      "id": "handmade-greeting-card",
+      "name": "Handmade Greeting-Card Art",
+      "category": "paper-craft",
+      "kind": "technique",
+      "description": "A character-shaped paper embellishment combining embossed cardstock, neat stamped features, and an attached decorative accent.",
+      "tags": [
+        "greeting-card-craft",
+        "embossed-paper",
+        "stamped-detail"
+      ],
+      "aliases": [
+        "handmade-greeting-card-art"
+      ],
+      "instructions": {
+        "materials": "Use matte cardstock with shallow embossed details and one attached paper or ribbon-like accent.",
+        "forms": "Construct a compact die-cut-style character with broad rounded pieces and generous space around the face.",
+        "linework": "Use tidy stamped facial lines and shallow embossed borders rather than a busy handwritten outline.",
+        "shading": "Show slight embossing relief and narrow paper-overlap shadows, keeping overall lighting even.",
+        "palette": "Choose a coordinated small cardstock palette with one restrained metallic or contrasting accent region.",
+        "texture": "Show smooth paper with a few broad embossed motifs and sparse stamped ink irregularities.",
+        "rendering": "Render only the assembled character embellishment on transparency, without the card, envelope, or message."
+      },
+      "negative_constraints": [
+        "Do not generate greeting text, logos, a card layout, or an envelope.",
+        "Avoid detached ribbon tails, glitter scatter, and tiny stamped motifs.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Celebratory mascots and paper-craft character badges."
+      ],
+      "limitations": [
+        "Any occasion is a separate thematic modifier; the style itself specifies paper and stamping technique."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Preserve alpha around attached accents; inspect metallic embossing highlights for false transparency during keying.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "seasonal",
+        "botanical"
+      ]
+    }
+  ]
+}

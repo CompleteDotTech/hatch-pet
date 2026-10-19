@@ -1,0 +1,885 @@
+{
+  "schema_version": 1,
+  "category": "historical-retro",
+  "styles": [
+    {
+      "id": "art-deco",
+      "name": "Art Deco",
+      "category": "historical-retro",
+      "kind": "technique",
+      "description": "A streamlined ornamental mascot built from symmetrical masses, stepped geometry, and restrained metallic accents.",
+      "tags": [
+        "streamlined",
+        "stepped-geometry",
+        "decorative"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use polished flat illustration with lacquer-like color fields and a few controlled metallic inlay accents.",
+        "forms": "Build a compact character from streamlined curves, stepped planes, and balanced geometric body masses.",
+        "linework": "Use clean tapered contours and a few parallel decorative lines aligned to the character anatomy.",
+        "shading": "Shade with broad planar value bands and restrained metallic highlights rather than soft photographic modeling.",
+        "palette": "Choose deep contrasting body colors with one metallic accent and stable high-value facial features.",
+        "texture": "Keep surfaces sleek with limited geometric inlay or fan-shaped markings confined to the body.",
+        "rendering": "Render an isolated ornamental character with no architectural backdrop, border frame, lettering, or external sunburst."
+      },
+      "negative_constraints": [
+        "Do not replace the mascot with a poster, skyscraper, or decorative title treatment.",
+        "Avoid needle-thin ornament, detached rays, and symmetry changes to approved asymmetric markings.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Elegant geometric mascots and streamlined collectible character illustrations."
+      ],
+      "limitations": [
+        "Decorative symmetry must remain subordinate to established identity and required asymmetric features."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Use antialiased tapered contours; preserve thin metallic accents at actual size and verify key-color separation.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "nautical",
+        "futuristic"
+      ]
+    },
+    {
+      "id": "art-nouveau",
+      "name": "Art Nouveau",
+      "category": "historical-retro",
+      "kind": "technique",
+      "description": "A flowing illustrated mascot with organic contours and restrained plant-like ornamental markings.",
+      "tags": [
+        "whiplash-curves",
+        "organic-ornament",
+        "flowing-line"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use opaque ink-and-color illustration with a few softly luminous enamel-like surface areas.",
+        "forms": "Shape the character through flowing organic curves and elongated but compact connected forms.",
+        "linework": "Use smooth varied-width contour lines and a few whiplash curves contained within the body or attached accessories.",
+        "shading": "Apply flat or gently graded color planes with sparse curved hatching that follows anatomy.",
+        "palette": "Choose a coordinated botanical palette with clear dark contours and a restrained warm accent.",
+        "texture": "Use limited leaf, petal, or tendril motifs as fixed body markings, avoiding all-over fine patterning.",
+        "rendering": "Render a self-contained character whose decorative curves reinforce its silhouette without a poster frame or scenery."
+      },
+      "negative_constraints": [
+        "Do not add surrounding floral borders, ornamental typography, or detached vines.",
+        "Avoid excessively elongated limbs and hairline curls that fail at sprite size.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Organic decorative mascots and botanical character identities."
+      ],
+      "limitations": [
+        "Flowing ornament needs shortening and thickening to preserve a readable compact silhouette."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Preserve antialiased curved linework; inspect narrow attached ornaments for clipping and partial-alpha erosion.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "botanical",
+        "fantasy"
+      ]
+    },
+    {
+      "id": "mid-century-modern",
+      "name": "Mid-Century Modern",
+      "category": "historical-retro",
+      "kind": "technique",
+      "description": "A character reduced to offset geometric shapes, playful asymmetry, and sparse printed texture.",
+      "tags": [
+        "abstract-shapes",
+        "mid-century",
+        "printed-illustration"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use matte printed-illustration fills with occasional dry-ink texture and simple flat color overlays.",
+        "forms": "Construct a compact mascot from offset ovals, tapered wedges, and asymmetric geometric masses.",
+        "linework": "Use a few loose but deliberate contour strokes and simple line limbs only when they remain thick enough.",
+        "shading": "Use flat overlapping color shapes and one offset shadow shape contained within the character silhouette.",
+        "palette": "Choose a limited coordinated palette with one dominant warm or cool field and a contrasting accent.",
+        "texture": "Apply sparse dry-brush flecks inside larger regions with stable placement and no distressed outer noise.",
+        "rendering": "Render an isolated abstracted character with clear facial hierarchy and no surrounding atomic shapes or poster layout."
+      },
+      "negative_constraints": [
+        "Do not add decorative starbursts, furniture, typography, or background color blocks.",
+        "Avoid hair-thin limbs and asymmetry that changes approved identity markings.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Editorial-style mascots and playful geometric character animation."
+      ],
+      "limitations": [
+        "Abstract anatomy still needs distinct limbs and facial features for all required animation actions."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Use antialiased geometry and preserve deliberate dry texture inside opaque fills; chroma must not match overlay colors.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "whimsical"
+      ]
+    },
+    {
+      "id": "1960s-television-animation",
+      "name": "1960s Television Animation",
+      "category": "historical-retro",
+      "kind": "technique",
+      "description": "An economical cel-animation mascot with bold shape design, simple ink contours, and limited painted shading.",
+      "tags": [
+        "limited-animation",
+        "flat-cels",
+        "retro-television"
+      ],
+      "aliases": [
+        "1960s-tv-animation"
+      ],
+      "instructions": {
+        "materials": "Use opaque painted animation-cel color with simple inked contours and no simulated television screen surface.",
+        "forms": "Favor distinctive head shapes, simplified torsos, and broad gestural limbs designed for clear held poses.",
+        "linework": "Use clean dark contour lines of consistent moderate weight with a few economical facial strokes.",
+        "shading": "Keep shading mostly flat, adding only one broad cel shadow where needed for limb separation.",
+        "palette": "Choose a small muted-but-clear cel palette with a consistent outline color and strong face contrast.",
+        "texture": "Keep fills smooth with only slight hand-painted irregularity and no film grain across transparent edges.",
+        "rendering": "Render compact expressive cels with stable model-sheet proportions and the profile-defined frame timing unchanged."
+      },
+      "negative_constraints": [
+        "Do not add a television bezel, broadcast artifacts, studio backgrounds, or title cards.",
+        "Avoid reducing required frame counts or replacing approved motion with repeated static poses.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Readable retro cartoon companions and limited-cel character designs."
+      ],
+      "limitations": [
+        "The economical visual style does not authorize changing animation counts, durations, or motion requirements."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Use antialiased ink contours with opaque cel fills; keep consistent stroke weight after reduction.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "whimsical"
+      ]
+    },
+    {
+      "id": "1970s-storybook",
+      "name": "1970s Storybook",
+      "category": "historical-retro",
+      "kind": "technique",
+      "description": "A folk-inflected illustrated mascot with rounded forms, dry-brush fills, and restrained decorative pattern.",
+      "tags": [
+        "folk-illustration",
+        "dry-brush",
+        "retro-storybook"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use opaque gouache-like printed color with pencil or soft-ink details and lightly visible paper tooth.",
+        "forms": "Build rounded doll-like body forms and broad simplified features with a warm handmade asymmetry.",
+        "linework": "Use soft broken contours and a few dark pencil-like facial strokes, keeping outer edges clearly bounded.",
+        "shading": "Shade with broad dry-brush value patches and sparse curved hatching rather than smooth digital gradients.",
+        "palette": "Choose a coordinated earthy palette with one clear bright accent and sufficient value contrast for expression.",
+        "texture": "Add a few large folk-floral or dotted motifs as stable markings and keep paper grain within the figure.",
+        "rendering": "Render an isolated story character with controlled printed texture and no book page, scenery, or written text."
+      },
+      "negative_constraints": [
+        "Do not create a full storybook spread or surround the character with woodland objects.",
+        "Avoid uniformly brown low contrast, dense floral patterning, and drifting print texture.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Gentle story companions and folk-art-inspired character illustrations."
+      ],
+      "limitations": [
+        "Historical flavor is a broad art direction; it does not reproduce any named illustrator or existing character."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Preserve antialiased dry-brush borders with an opaque central silhouette; avoid keying colors present in the paper-like highlights.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "cottagecore",
+        "botanical"
+      ]
+    },
+    {
+      "id": "1980s-retro",
+      "name": "1980s Retro",
+      "category": "historical-retro",
+      "kind": "technique",
+      "description": "A bold commercial-airbrush mascot with angular accent shapes and broad glossy highlight bands.",
+      "tags": [
+        "retro-airbrush",
+        "angular-accents",
+        "commercial-illustration"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use opaque airbrushed illustration over clean graphic shapes with a restrained glossy printed finish.",
+        "forms": "Build a compact dynamic mascot from rounded body masses contrasted with a few angular attached design accents.",
+        "linework": "Use crisp dark contours and a few sharp internal graphic divisions around face and accessories.",
+        "shading": "Apply broad airbrush ramps and hard-edged highlight bands with no ambient glow extending outside the figure.",
+        "palette": "Choose a controlled high-contrast palette with limited bright accents and stable neutral facial features.",
+        "texture": "Keep surfaces smooth with a hint of printed grain, avoiding dense scanlines or speckled distress.",
+        "rendering": "Render one energetic retro commercial character without geometric background grids, typography, or surrounding light streaks."
+      },
+      "negative_constraints": [
+        "Do not make palette alone carry the style or turn the figure into a neon landscape.",
+        "Avoid detached lightning bolts, chrome glare covering the face, and random color cycling.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Energetic retro brand mascots and glossy graphic character variants."
+      ],
+      "limitations": [
+        "Bright accents and airbrush ramps need restraint so adjacent poses do not appear to change material."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Preserve antialiased airbrush edges and keep highlight effects inside the opaque contour; chroma colors need careful inspection.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "futuristic",
+        "whimsical"
+      ]
+    },
+    {
+      "id": "1990s-animation",
+      "name": "1990s Animation",
+      "category": "historical-retro",
+      "kind": "technique",
+      "description": "An expressive hand-drawn cartoon direction with angular exaggeration, thick-to-thin ink, and clear cel shadows.",
+      "tags": [
+        "expressive-cels",
+        "angular-cartoon",
+        "thick-thin-line"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use clean painted cel colors beneath expressive hand-inked contours and graphic interior details.",
+        "forms": "Favor angular cheeks, oversized expressive features, and compact elastic body masses with strong pose silhouettes.",
+        "linework": "Use deliberate thick-to-thin ink contours with sharp directional corners and simple open facial lines.",
+        "shading": "Apply one or two hard-edged cel shadow shapes following body planes without realistic material rendering.",
+        "palette": "Choose bold differentiated character colors with a restrained outline tone and consistent shadow hues.",
+        "texture": "Keep cel fills clean and texture minimal so energy comes from shapes and line rhythm.",
+        "rendering": "Render model-consistent expressive poses with controlled exaggeration and no show title, background scene, or borrowed character design."
+      },
+      "negative_constraints": [
+        "Do not distort signature markings or facial proportions into a different identity between states.",
+        "Avoid excessive line boil, grunge overlays, and expression details too small for the face.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Energetic cartoon pets and highly expressive companion characters."
+      ],
+      "limitations": [
+        "Exaggeration must preserve the approved identity and remain within the fixed animation cell margins."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Use antialiased tapered ink; inspect sharp corners and narrow facial gaps after downsampling.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "whimsical",
+        "spooky"
+      ]
+    },
+    {
+      "id": "y2k",
+      "name": "Y2K",
+      "category": "historical-retro",
+      "kind": "technique",
+      "description": "A turn-of-the-millennium digital mascot with rounded techno forms, glossy gel panels, and restrained metallic edging.",
+      "tags": [
+        "gel-graphics",
+        "rounded-techno",
+        "digital-retro"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use opaque digital illustration combining glossy gel-like color panels and small smooth metallic trim areas.",
+        "forms": "Build compact inflated geometric masses with oval panel shapes and simple integrated techno accessories.",
+        "linework": "Use clean vector-like contours and a few rounded panel divisions, keeping the face graphic and readable.",
+        "shading": "Apply broad inset gel highlights, soft bevel shading, and limited metallic bands without external bloom.",
+        "palette": "Choose a tight palette of cool digital colors plus one contrasting accent while retaining the approved identity colors.",
+        "texture": "Keep surfaces clean with a few large translucent-looking overlays contained inside an opaque character core.",
+        "rendering": "Render a self-contained glossy digital mascot without interface windows, typography, floating icons, or decorative orbital rings."
+      },
+      "negative_constraints": [
+        "Do not rely only on a pastel palette or add a desktop-interface collage.",
+        "Avoid transparent facial features, excessive chrome, and detached cyber ornaments.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Glossy digital companion designs and compact techno mascots."
+      ],
+      "limitations": [
+        "Gel and metallic treatments should be assigned to stable body regions rather than changing between frames."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Keep the body opaque and preserve antialiased bevel edges; chroma selection must account for reflected trim colors.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "futuristic"
+      ]
+    },
+    {
+      "id": "pulp-illustration",
+      "name": "Pulp Illustration",
+      "category": "historical-retro",
+      "kind": "technique",
+      "description": "A dramatic painted mascot with bold dark masses, directional brush modeling, and simplified adventure-cover energy.",
+      "tags": [
+        "dramatic-paint",
+        "pulp-art",
+        "brush-modeling"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use opaque painted illustration with visible broad brushwork and restrained printed-paper texture.",
+        "forms": "Build strong compact body masses and expressive directional poses with clear separated limbs.",
+        "linework": "Define edges through confident painted contours and a few strong ink-like feature accents.",
+        "shading": "Use dramatic but readable light-dark planes with the face kept illuminated and no external cast shadow.",
+        "palette": "Choose a controlled warm-cool contrast palette with deep stable shadow colors and a few bright accents.",
+        "texture": "Show broad directional brush strokes and slight print grain inside the figure, avoiding photographic surface complexity.",
+        "rendering": "Render an isolated painted character with consistent lighting and no cover typography, scenic threat, or surrounding action effects."
+      },
+      "negative_constraints": [
+        "Do not add magazine covers, captions, weapons, or narrative scenery unless explicitly requested.",
+        "Avoid crushed black facial details and brush texture that changes identity markings.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Bold adventure mascots and dramatic painted companion characters."
+      ],
+      "limitations": [
+        "Dramatic lighting must remain stable and cannot hide facial expression during required states."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Preserve antialiased painted contours and opaque dark masses; inspect shadow edges against dark backgrounds.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "fantasy",
+        "nautical"
+      ]
+    },
+    {
+      "id": "retrofuturism",
+      "name": "Retrofuturism",
+      "category": "historical-retro",
+      "kind": "technique",
+      "description": "A streamlined illustrated mascot combining optimistic rounded machine forms and simple vintage technical styling.",
+      "tags": [
+        "streamlined-machine",
+        "retro-future",
+        "rounded-industrial"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use smooth painted metal and opaque illustration fills with small enamel-like panels and simplified mechanical joints.",
+        "forms": "Build rounded streamlined body masses with a few integrated fins or domed features kept short and readable.",
+        "linework": "Use clean curved contours and sparse panel seams that reinforce anatomy rather than add technical clutter.",
+        "shading": "Use broad soft volume shading with a few graphic metal highlights and no reflected environment.",
+        "palette": "Choose a compact appliance-like color palette with one contrasting status or identity accent.",
+        "texture": "Keep painted surfaces smooth with a few stable rivet or grille shapes large enough to read.",
+        "rendering": "Render an isolated retro-future character with attached design features and no rockets, cityscape, orbit lines, or labels."
+      },
+      "negative_constraints": [
+        "Do not replace the approved character with an unrelated robot or vehicle.",
+        "Avoid delicate antennae, tiny instrument panels, and detached exhaust effects.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Optimistic machine-inspired mascots and streamlined companion characters."
+      ],
+      "limitations": [
+        "Mechanical styling is subordinate to the existing species, anatomy, props, and identity requirements."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Use antialiased machine contours and keep reflections within opaque material; inspect small grilles during keying.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "futuristic",
+        "solarpunk"
+      ]
+    },
+    {
+      "id": "synthwave",
+      "name": "Synthwave",
+      "category": "historical-retro",
+      "kind": "treatment",
+      "description": "A graphic treatment using angular airbrush modeling, restrained neon rim accents, and broad poster-like value bands.",
+      "tags": [
+        "neon-rim",
+        "retro-digital",
+        "airbrush-bands"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use opaque digital poster illustration with smooth airbrush planes and a thin controlled emissive-looking rim.",
+        "forms": "Preserve compact character anatomy while simplifying body volumes into bold angular illuminated planes.",
+        "linework": "Use dark graphic contours and selective neon edge accents that remain attached to the silhouette.",
+        "shading": "Apply broad directional color ramps and one stable rim-light side without glow extending into transparency.",
+        "palette": "Use a small dark-to-bright palette with restrained contrasting neon accents and stable face colors.",
+        "texture": "Keep surfaces smooth with at most a few broad parallel interior bands, avoiding busy grid overlays.",
+        "rendering": "Render a self-contained synthwave-treated mascot with no sunset disk, landscape grid, palm trees, or poster typography."
+      },
+      "negative_constraints": [
+        "Do not rely on a background scene to establish the visual direction.",
+        "Avoid detached neon trails, rainbow cycling, and black silhouettes with unreadable faces.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "A controlled graphic treatment for energetic digital mascots."
+      ],
+      "limitations": [
+        "This is a compositional graphic treatment rather than an additional base material technique."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Keep the body opaque and neon accents within the contour; genuine outer glow is incompatible with clean sprite extraction.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "futuristic",
+        "cyberpunk"
+      ]
+    },
+    {
+      "id": "vaporwave",
+      "name": "Vaporwave",
+      "category": "historical-retro",
+      "kind": "treatment",
+      "description": "A graphic treatment combining softly modeled digital forms, restrained print offsets, and sparse geometric surface motifs.",
+      "tags": [
+        "soft-digital",
+        "print-offset",
+        "retro-graphic"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use opaque soft digital illustration with lightly posterized plastic-like surfaces and selected print-offset edges.",
+        "forms": "Retain compact mascot anatomy while simplifying body masses into rounded shapes with broad inset geometric markings.",
+        "linework": "Use clean principal contours and a restrained offset color echo contained within the character boundary.",
+        "shading": "Apply broad soft gradients and flat posterized shadow steps, keeping facial values distinct.",
+        "palette": "Choose a limited low-to-high-value pastel and deep-accent palette while preserving approved identity color roles.",
+        "texture": "Use a few stable geometric surface motifs or broad scan-band hints, without distress over the face.",
+        "rendering": "Render one isolated treated character without classical busts, computer windows, text fragments, or scenic collage."
+      },
+      "negative_constraints": [
+        "Do not introduce unrelated statues, mall scenes, or internet-collage objects.",
+        "Avoid palette-only restyling, transparent facial areas, and detached offset copies.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "A restrained retro-digital graphic treatment for existing mascots."
+      ],
+      "limitations": [
+        "This is a compositional treatment and is not counted as a distinct base artistic technique."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Preserve a single opaque silhouette; offset channels must remain inside it and must not be mistaken for alpha fringes.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "futuristic",
+        "whimsical"
+      ]
+    },
+    {
+      "id": "vintage-advertising",
+      "name": "Vintage Advertising",
+      "category": "historical-retro",
+      "kind": "technique",
+      "description": "A cheerful commercial mascot with confident ink contours, opaque painted color, and restrained lithographic print texture.",
+      "tags": [
+        "commercial-mascot",
+        "painted-print",
+        "advertising-illustration"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use opaque commercial illustration with clean ink outlines and subtly textured printed color fills.",
+        "forms": "Favor clear rounded mascot proportions, open gestures, and instantly readable facial expressions.",
+        "linework": "Use confident tapered contours and simple bold facial features with minimal interior detail.",
+        "shading": "Apply broad painted highlights and one soft shadow family with no dramatic environmental lighting.",
+        "palette": "Choose a coordinated limited print palette with a distinct accent color and clear face-to-body contrast.",
+        "texture": "Show restrained lithographic grain or slight ink unevenness inside large fills without artificial paper damage.",
+        "rendering": "Render the mascot alone as an advertising illustration with no slogan, product label, logo, or poster border."
+      },
+      "negative_constraints": [
+        "Do not invent brand claims, readable packaging text, or imitate an existing protected mascot.",
+        "Avoid yellowed rectangular paper backgrounds and distress that obscures the expression.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Original commercial mascots and friendly retro character identities."
+      ],
+      "limitations": [
+        "Brand references remain subordinate to explicit permissions and identity guidance; the style supplies no logo authorization."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Keep antialiased ink borders and opaque printed colors; preserve slight print texture inside the silhouette.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "cozy",
+        "whimsical"
+      ]
+    },
+    {
+      "id": "vintage-illustration",
+      "name": "Vintage Illustration",
+      "category": "historical-retro",
+      "kind": "technique",
+      "description": "A colored-ink character with delicate but enlarged hatching, naturalistic simplified forms, and restrained printed texture.",
+      "tags": [
+        "colored-ink",
+        "hatched-illustration",
+        "antique-print"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use colored ink and light opaque washes reproduced as a clean printed illustration without a paper rectangle.",
+        "forms": "Simplify naturalistic anatomy into compact readable forms while retaining a gentle hand-drawn irregularity.",
+        "linework": "Use varied ink contours and sparse enlarged hatching that follows the body form.",
+        "shading": "Model volumes through broad wash values and a few directional hatch groups, keeping the face uncluttered.",
+        "palette": "Choose a restrained print-ink palette with muted body colors, clear dark features, and one gentle accent.",
+        "texture": "Show controlled ink grain and sparse paper-like tooth inside opaque regions, avoiding scratches and stains.",
+        "rendering": "Render a self-contained illustrated character with stable hatch placement and no captions, decorative frames, or page margins."
+      },
+      "negative_constraints": [
+        "Do not use tiny engraving-level detail or sepia color alone as the style.",
+        "Avoid antique stains, illegible script, and paper backgrounds around the character.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Classic printed-book mascots and gently naturalistic companion illustrations."
+      ],
+      "limitations": [
+        "Fine hatching must be broadened for the target size; the result is an adaptation rather than a historical facsimile."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Preserve antialiased ink and wash boundaries; keep paper-like texture opaque inside the character only.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "botanical",
+        "nautical"
+      ]
+    },
+    {
+      "id": "illuminated-manuscript",
+      "name": "Illuminated Manuscript",
+      "category": "historical-retro",
+      "kind": "technique",
+      "description": "A flat tempera-and-gold character with rhythmic ink contours and a few enlarged ornamental markings.",
+      "tags": [
+        "tempera-and-gold",
+        "manuscript-illumination",
+        "flat-ornament"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use opaque tempera-like pigment and restrained gold-leaf accents on a character-shaped illustration without parchment backing.",
+        "forms": "Build compact stylized forms with clear profile or frontal features and broad decorative body regions.",
+        "linework": "Use rhythmic dark ink contours and a few simple interior curves or enlarged decorative marks.",
+        "shading": "Model with flat color layers and short controlled hatch accents rather than realistic perspective or cast shadows.",
+        "palette": "Choose a small saturated pigment palette with one restrained gold area and strong dark facial contrast.",
+        "texture": "Show slight pigment granulation and broad burnished-gold variation confined to fixed markings.",
+        "rendering": "Render an isolated illuminated character without manuscript text, initial letters, borders, halos, or surrounding foliage."
+      },
+      "negative_constraints": [
+        "Do not add readable sacred or historical text, illuminated initials, or manuscript pages.",
+        "Avoid intricate gold filigree, detached ornament, and tiny patterned clothing.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Decorative story mascots and flat pigment-and-gold character designs."
+      ],
+      "limitations": [
+        "Fine manuscript ornament is deliberately enlarged and reduced to preserve sprite readability."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Use antialiased ink and opaque gold accents; inspect bright gilding during chroma analysis and on light backgrounds.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "fantasy",
+        "botanical"
+      ]
+    },
+    {
+      "id": "vintage-toy-packaging",
+      "name": "Vintage Toy Packaging",
+      "category": "historical-retro",
+      "kind": "technique",
+      "description": "A lively printed toy-mascot illustration with bold keylines, limited spot colors, and restrained offset-print character.",
+      "tags": [
+        "toy-illustration",
+        "spot-color",
+        "retro-packaging-art"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use printed cardboard-illustration color with bold black keylines and a small number of opaque spot-color fills.",
+        "forms": "Build appealing toy-like proportions and compact action poses with broad easily recognized accessories.",
+        "linework": "Use thick ink contours, simple interior divisions, and oversized clean facial features.",
+        "shading": "Shade with one hard-edged printed shadow color and a few simple highlight cutouts.",
+        "palette": "Choose a limited spot-ink palette with stable bold body colors and a consistent dark keyline.",
+        "texture": "Show sparse halftone areas or restrained registration character inside fills without distressed carton edges.",
+        "rendering": "Render only the illustrated toy mascot on transparency, without a box, blister card, price label, or lettering."
+      },
+      "negative_constraints": [
+        "Do not generate actual packaging layouts, safety labels, product claims, or copied toy branding.",
+        "Avoid tiny halftone dots, aged-paper rectangles, and print misregistration outside the silhouette.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Bold collectible mascots and retro toy illustration variants."
+      ],
+      "limitations": [
+        "The output is character art and does not constitute a packaging design or toy-safety certification."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Preserve antialiased keylines and keep offset-print effects inside the opaque contour; inspect dots after reduction.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "whimsical",
+        "seasonal"
+      ]
+    }
+  ]
+}

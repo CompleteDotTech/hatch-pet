@@ -1,0 +1,823 @@
+{
+  "schema_version": 1,
+  "category": "electronic-experimental",
+  "styles": [
+    {
+      "id": "hologram",
+      "name": "Hologram",
+      "category": "electronic-experimental",
+      "kind": "technique",
+      "description": "A luminous projected-looking mascot with a stable opaque core, restrained scan bands, and controlled translucent edges.",
+      "tags": [
+        "projection-look",
+        "scan-bands",
+        "luminous-core"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use digital light-like surfaces over an opaque readable body core with controlled translucent border zones.",
+        "forms": "Preserve compact solid anatomy and broad facial planes rather than a floating cloud or particle outline.",
+        "linework": "Use clear luminous contour bands and opaque facial marks with stable thickness across poses.",
+        "shading": "Model broad internal light gradients and a few scan bands without external bloom or a projection beam.",
+        "palette": "Choose one main emission hue with a contrasting facial value and retain approved identity markings through stable value regions.",
+        "texture": "Use sparse evenly spaced scan bands anchored to the body with no random noise or flickering particles.",
+        "rendering": "Render a self-contained hologram-like character that remains readable on both dark and light backgrounds."
+      },
+      "negative_constraints": [
+        "Do not generate a projector, pedestal, beam, room, or detached light particles.",
+        "Avoid near-invisible anatomy, random transparency glitches, and glow spilling outside the character.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Projected-looking digital companions and futuristic mascot variants."
+      ],
+      "limitations": [
+        "The projection effect is stylized; broad opaque identity regions are required for reliable sprite readability."
+      ],
+      "applicability": {
+        "character": "adapted",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "adapted",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "required",
+        "chroma": "unsupported",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Require true alpha for controlled translucent edges and keep the facial core opaque; chroma is unsupported.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "futuristic",
+        "cyberpunk"
+      ]
+    },
+    {
+      "id": "wireframe",
+      "name": "Wireframe",
+      "category": "electronic-experimental",
+      "kind": "technique",
+      "description": "A connected polygon-mesh character drawn with sparse structural lines and a readable solid facial region.",
+      "tags": [
+        "polygon-mesh",
+        "connected-lines",
+        "technical-render"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use opaque digital mesh lines with a small stable filled facial plate and no shaded physical material.",
+        "forms": "Construct broad low-density polygonal body volumes with thick connected limb meshes and clear silhouette edges.",
+        "linework": "Draw only major mesh edges using consistent readable stroke width and a heavier outer contour.",
+        "shading": "Differentiate front and rear mesh lines through a few stable values rather than dense transparency layering.",
+        "palette": "Choose one or two mesh colors with strong contrast and an opaque facial region that stays legible.",
+        "texture": "Keep surfaces free from noise; the regular sparse topology is the defining visual structure.",
+        "rendering": "Render a connected wireframe character with fixed mesh topology, no axes, labels, bounding boxes, or surrounding grid."
+      },
+      "negative_constraints": [
+        "Do not add a modeling viewport, coordinate axes, or technical annotations.",
+        "Avoid dense triangulation, hairline edges, and disconnected mesh segments that fragment the figure.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Technical mascots and simplified mesh-visualization characters."
+      ],
+      "limitations": [
+        "Open mesh interiors require explicit visual review and may need source-bound extraction annotations for legitimate components."
+      ],
+      "applicability": {
+        "character": "adapted",
+        "sequence": "adapted",
+        "icon": "unsuitable",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "required",
+        "chroma": "unsupported",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Require alpha for intentional mesh openings; preserve connected robust lines and use a solid facial core rather than relying on the background.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "futuristic"
+      ]
+    },
+    {
+      "id": "ascii-inspired",
+      "name": "ASCII-Inspired Graphics",
+      "category": "electronic-experimental",
+      "kind": "technique",
+      "description": "A fixed-grid character assembled from enlarged glyph-like blocks whose density defines anatomy and tone.",
+      "tags": [
+        "glyph-mosaic",
+        "character-grid",
+        "text-mode"
+      ],
+      "aliases": [
+        "ascii-inspired-graphics",
+        "ascii-art"
+      ],
+      "instructions": {
+        "materials": "Use opaque monospaced glyph-like marks as visual tiles on a fixed transparent character grid.",
+        "forms": "Build a compact silhouette from dense connected clusters of glyph tiles with broad recognizable limbs.",
+        "linework": "Use heavier glyph clusters for the outer contour and simple repeated marks for eyes and mouth.",
+        "shading": "Represent tone through a small stable set of sparse and dense glyph shapes rather than smooth gradients.",
+        "palette": "Choose one or two terminal-like ink colors with a clear value hierarchy and stable feature assignments.",
+        "texture": "Keep glyph size, spacing, and density mapping fixed, using only a few repeated symbol-like forms.",
+        "rendering": "Render raster artwork inspired by a glyph grid, without captions, readable sentences, terminal windows, or executable commands."
+      },
+      "negative_constraints": [
+        "Do not substitute actual text output, code snippets, or a screenshot of a terminal.",
+        "Avoid tiny glyphs, uneven grid spacing, and random character changes that make the surface crawl.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Glyph-inspired game mascots and retro digital character graphics."
+      ],
+      "limitations": [
+        "This produces raster art rather than valid ASCII text; glyph structure needs enlargement for small cells."
+      ],
+      "applicability": {
+        "character": "adapted",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "adapted",
+        "grid": "adapted"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "hard",
+        "resampling": "nearest",
+        "scaling": "Keep the fixed target cell geometry; prefer integer artwork scaling with nearest-neighbor resampling and inspect every pixel cluster at actual size.",
+        "notes": [
+          "Use nearest resampling and keep glyph clusters robust; intentionally separate glyph components may require source-bound extraction annotations.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "futuristic"
+      ]
+    },
+    {
+      "id": "dot-matrix",
+      "name": "Dot Matrix",
+      "category": "electronic-experimental",
+      "kind": "technique",
+      "description": "A mascot formed from a regular field of large uniform printed or display dots.",
+      "tags": [
+        "round-dot-grid",
+        "matrix-display",
+        "dot-graphic"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use opaque circular dot marks arranged on a fixed orthogonal matrix with consistent diameter and spacing.",
+        "forms": "Build broad character shapes from tightly grouped dot clusters, leaving facial gaps large and deliberate.",
+        "linework": "Use dense dot boundaries for contours and a few unmistakable dot clusters for facial features.",
+        "shading": "Create tone through discrete dot occupancy or a small number of dot-color values without blurring the grid.",
+        "palette": "Choose a restrained dot palette with clear value separation and no single-dot decorative accents outside the figure.",
+        "texture": "Keep dot size and pitch constant across anatomy and every frame, avoiding variable stochastic stippling.",
+        "rendering": "Render an isolated dot-matrix character without a display panel, printer paper, grid border, or surrounding dots."
+      },
+      "negative_constraints": [
+        "Do not use random stippled points or tiny dots that blend into smooth shading.",
+        "Avoid changing matrix pitch and accidental missing dots in identity-critical features.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Matrix-display mascots and coarse dotted character graphics."
+      ],
+      "limitations": [
+        "Separated dot components may require explicit extraction annotations; automated component checks remain in force."
+      ],
+      "applicability": {
+        "character": "adapted",
+        "sequence": "adapted",
+        "icon": "recommended",
+        "print": "recommended",
+        "grid": "adapted"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "hard",
+        "resampling": "nearest",
+        "scaling": "Keep the fixed target cell geometry; prefer integer artwork scaling with nearest-neighbor resampling and inspect every pixel cluster at actual size.",
+        "notes": [
+          "Use nearest resampling and preserve consistent dot pitch; do not change cell dimensions to fit the artwork grid.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "futuristic"
+      ]
+    },
+    {
+      "id": "led-matrix",
+      "name": "LED Matrix",
+      "category": "electronic-experimental",
+      "kind": "technique",
+      "description": "A character arranged as a stable grid of chunky luminous LED cells with tightly contained highlights.",
+      "tags": [
+        "led-cells",
+        "luminous-grid",
+        "digital-matrix"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use opaque illuminated square or round LED cells with a small brighter center and dark separating gaps.",
+        "forms": "Build compact broad anatomy from aligned LED clusters with clear high-contrast facial groupings.",
+        "linework": "Let occupied LED cells define the contour and use consistent cell clusters for the face.",
+        "shading": "Apply one repeated cell highlight pattern and a few brightness levels without blur or outer light spill.",
+        "palette": "Choose a small LED color set with stable brightness roles and preserve identity colors through grouped cells.",
+        "texture": "Keep LED shape, spacing, and center highlights identical across the grid and every animation state.",
+        "rendering": "Render the luminous-cell mascot on transparency without a signboard, electrical housing, wires, or scrolling text."
+      },
+      "negative_constraints": [
+        "Do not add glow halos between cells, external bloom, or simulated room lighting.",
+        "Avoid changing LED shapes, blinking random pixels, and a black rectangular display background.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Luminous game mascots and compact digital-display characters."
+      ],
+      "limitations": [
+        "A coarse LED pitch is needed for readability; separated cells can require source-bound extraction annotations."
+      ],
+      "applicability": {
+        "character": "adapted",
+        "sequence": "adapted",
+        "icon": "recommended",
+        "print": "adapted",
+        "grid": "adapted"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "hard",
+        "resampling": "nearest",
+        "scaling": "Keep the fixed target cell geometry; prefer integer artwork scaling with nearest-neighbor resampling and inspect every pixel cluster at actual size.",
+        "notes": [
+          "Use nearest resampling with luminous effects confined to each opaque cell; inspect transparency gaps without smoothing them shut.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "futuristic",
+        "cyberpunk"
+      ]
+    },
+    {
+      "id": "e-ink",
+      "name": "E-Ink",
+      "category": "electronic-experimental",
+      "kind": "technique",
+      "description": "A matte electronic-paper mascot using coarse discrete gray levels and controlled ordered dithering.",
+      "tags": [
+        "electronic-paper",
+        "matte-display",
+        "ordered-dither"
+      ],
+      "aliases": [
+        "electronic-paper"
+      ],
+      "instructions": {
+        "materials": "Use opaque matte electronic-paper marks with a small number of discrete gray or muted display-color levels.",
+        "forms": "Build broad compact shapes with strong edge contrast and large uncomplicated facial regions.",
+        "linework": "Use dark stable contour clusters and simple feature blocks aligned to a consistent raster grid.",
+        "shading": "Model with a few discrete value steps and broad ordered-dither patches rather than smooth antialiased gradients.",
+        "palette": "Choose a limited electronic-paper palette with clear white-to-dark separation and any accent used sparingly.",
+        "texture": "Keep dithering coarse and registered to the character so static display texture does not crawl between frames.",
+        "rendering": "Render an isolated e-ink-style character without a reader device, paper rectangle, page text, or simulated refresh flash."
+      },
+      "negative_constraints": [
+        "Do not add a device bezel, ghosted duplicate poses, or whole-frame refresh artifacts.",
+        "Avoid low-contrast gray faces and dither patterns finer than the target pixels.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Low-distraction mascots and electronic-paper-inspired icon sequences."
+      ],
+      "limitations": [
+        "The style does not change profile timing or certify playback performance on an actual e-ink device."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "recommended",
+        "print": "recommended",
+        "grid": "adapted"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "hard",
+        "resampling": "nearest",
+        "scaling": "Keep the fixed target cell geometry; prefer integer artwork scaling with nearest-neighbor resampling and inspect every pixel cluster at actual size.",
+        "notes": [
+          "Use nearest resampling and preserve opaque white body areas; white display pixels must not be mistaken for background alpha.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      }
+    },
+    {
+      "id": "crt-display",
+      "name": "CRT Display",
+      "category": "electronic-experimental",
+      "kind": "technique",
+      "description": "A pixel-based mascot with restrained phosphor-band texture and clear edges adapted from a CRT display appearance.",
+      "tags": [
+        "phosphor",
+        "scanline",
+        "crt-raster"
+      ],
+      "aliases": [
+        "crt"
+      ],
+      "instructions": {
+        "materials": "Use opaque raster color clusters with subtle phosphor-like horizontal banding contained inside the character.",
+        "forms": "Preserve a compact stepped sprite silhouette and broad facial features rather than warping the image into a curved screen.",
+        "linework": "Define contours through stable pixel clusters and a restrained darker edge band with no detached color fringe.",
+        "shading": "Use a few discrete brightness steps and broad scan-band values without blur or glow outside the silhouette.",
+        "palette": "Choose a controlled display-color palette with consistent phosphor accent values and readable dark facial pixels.",
+        "texture": "Apply coarse stable scanlines or phosphor groups inside large fills, using the same spacing across every frame.",
+        "rendering": "Render only the CRT-styled sprite on transparency without a monitor, bezel, screen curvature, or broadcast noise."
+      },
+      "negative_constraints": [
+        "Do not apply a full-frame scanline overlay or black display rectangle.",
+        "Avoid color fringing outside the contour, jitter, ghosting, and heavy blur that erases pixel structure.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Retro display mascots and controlled phosphor-texture game characters."
+      ],
+      "limitations": [
+        "Display artifacts are restrained stylistic cues; they must not alter layout, frame alignment, or readability."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "adapted"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "hard",
+        "resampling": "nearest",
+        "scaling": "Keep the fixed target cell geometry; prefer integer artwork scaling with nearest-neighbor resampling and inspect every pixel cluster at actual size.",
+        "notes": [
+          "Use nearest resampling to preserve pixel and scanline rhythm; keep all phosphor texture inside opaque character pixels.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "futuristic"
+      ]
+    },
+    {
+      "id": "retro-terminal",
+      "name": "Retro Terminal",
+      "category": "electronic-experimental",
+      "kind": "technique",
+      "description": "A character drawn from chunky fixed-width terminal-style blocks and a limited phosphor-value hierarchy.",
+      "tags": [
+        "terminal-blocks",
+        "text-display",
+        "phosphor-ink"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use opaque rectangular terminal-style block marks on transparency with a restrained phosphor-like color treatment.",
+        "forms": "Construct compact stepped anatomy from a small fixed block grid with broad face and limb clusters.",
+        "linework": "Use dense block borders and a few simple cell-aligned facial marks with constant cell dimensions.",
+        "shading": "Use discrete brightness levels and sparse ordered block fills instead of smooth gradients or optical bloom.",
+        "palette": "Choose a limited terminal-ink hue family with clearly separated bright, middle, and dark feature values.",
+        "texture": "Keep the block-cell structure regular and free from random static, scan jitter, or changing symbols.",
+        "rendering": "Render a terminal-inspired character graphic without command prompts, code, status text, or a computer window."
+      },
+      "negative_constraints": [
+        "Do not output readable shell commands or screenshots of actual terminal software.",
+        "Avoid cursor blinking, random glyph substitutions, and background rectangles.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Text-display-inspired mascots and compact retro computing characters."
+      ],
+      "limitations": [
+        "The result is raster character art; it does not function as terminal text or change animation timing."
+      ],
+      "applicability": {
+        "character": "adapted",
+        "sequence": "adapted",
+        "icon": "recommended",
+        "print": "recommended",
+        "grid": "adapted"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "hard",
+        "resampling": "nearest",
+        "scaling": "Keep the fixed target cell geometry; prefer integer artwork scaling with nearest-neighbor resampling and inspect every pixel cluster at actual size.",
+        "notes": [
+          "Use nearest resampling and keep the opaque block cluster readable on any background; do not smooth cell boundaries.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "futuristic"
+      ]
+    },
+    {
+      "id": "glitch-art",
+      "name": "Glitch Art",
+      "category": "electronic-experimental",
+      "kind": "treatment",
+      "description": "A bounded digital-art treatment using stable block offsets and channel accents inside a recognizable mascot silhouette.",
+      "tags": [
+        "bounded-glitch",
+        "pixel-offset",
+        "channel-shift"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use opaque digital raster color with a few deliberate rectangular displacement zones and restrained channel-shift accents.",
+        "forms": "Preserve the approved compact outer silhouette while introducing small internal block offsets away from the face.",
+        "linework": "Keep a stable main contour and readable facial clusters; secondary channel edges stay inside the body.",
+        "shading": "Use discrete value blocks and a few repeated interference bands without uncontrolled blur or missing anatomy.",
+        "palette": "Retain the identity palette and limit channel accents to a small stable set of contrasting colors.",
+        "texture": "Place a few coarse glitch blocks at fixed anatomical landmarks instead of random noise across every frame.",
+        "rendering": "Render a controlled glitch-treated character with repeatable offsets and no detached fragments, duplicated heads, or corrupted background."
+      },
+      "negative_constraints": [
+        "Do not use random corruption, flashing color cycles, unreadable faces, or changing anatomy.",
+        "Avoid detached RGB echoes, missing limbs, and treating extraction damage as intentional glitch art.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "A controlled digital treatment for experimental mascot variants."
+      ],
+      "limitations": [
+        "Glitch is a compositional treatment; visual review must distinguish deliberate bounded offsets from actual corruption."
+      ],
+      "applicability": {
+        "character": "adapted",
+        "sequence": "adapted",
+        "icon": "unsuitable",
+        "print": "recommended",
+        "grid": "adapted"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "hard",
+        "resampling": "nearest",
+        "scaling": "Keep the fixed target cell geometry; prefer integer artwork scaling with nearest-neighbor resampling and inspect every pixel cluster at actual size.",
+        "notes": [
+          "Use nearest resampling for stable blocks and keep channel effects within opaque pixels; chroma must avoid every accent color.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "cyberpunk",
+        "futuristic"
+      ]
+    },
+    {
+      "id": "thermal-printer",
+      "name": "Thermal Printer",
+      "category": "electronic-experimental",
+      "kind": "technique",
+      "description": "A mascot formed from coarse black thermal-print marks with directional row texture and sparse dithered values.",
+      "tags": [
+        "receipt-print",
+        "thermal-raster",
+        "binary-dots"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use opaque dark thermal-print-like marks with a small number of coarse dithered value regions on transparency.",
+        "forms": "Build broad character masses and simple expression shapes with strong separation between adjoining limbs.",
+        "linework": "Use bold raster contours with slight controlled horizontal print-row character rather than smooth ink curves.",
+        "shading": "Represent shading through stable binary dot clusters and a few broad darker print bands.",
+        "palette": "Choose one dark ink color with optional opaque pale body fill where identity needs a solid core.",
+        "texture": "Show restrained row-wise print density variation and consistent dot pitch without random missing print streaks.",
+        "rendering": "Render the thermal-print mascot alone without a receipt roll, paper rectangle, store logo, barcode, or transaction text."
+      },
+      "negative_constraints": [
+        "Do not generate receipt content, account information, barcodes, or QR codes.",
+        "Avoid random band dropout, tiny dithering, and white backgrounds mistaken for transparent edges.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Receipt-print-inspired mascots and coarse monochrome character graphics."
+      ],
+      "limitations": [
+        "The raster illustration is not a printer-ready receipt job; real hardware dithering requires separate validation."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "adapted"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "hard",
+        "resampling": "nearest",
+        "scaling": "Keep the fixed target cell geometry; prefer integer artwork scaling with nearest-neighbor resampling and inspect every pixel cluster at actual size.",
+        "notes": [
+          "Use nearest resampling and preserve intended opaque light regions; coarse dither components may need source-bound extraction annotations.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      }
+    },
+    {
+      "id": "blueprint-illustration",
+      "name": "Blueprint Illustration",
+      "category": "electronic-experimental",
+      "kind": "technique",
+      "description": "A simplified technical character drawn with clean light construction lines over an opaque blueprint-colored body core.",
+      "tags": [
+        "blueprint-lines",
+        "technical-illustration",
+        "construction-view"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use opaque digital blueprint-like color with clean contrasting construction lines confined to the character form.",
+        "forms": "Build a compact simplified character as broad readable solid volumes with only a few structural cross-section cues.",
+        "linework": "Use clear uniform contour and construction strokes, giving facial lines stronger weight than secondary geometry.",
+        "shading": "Keep shading mostly flat with sparse parallel section hatching in selected larger body regions.",
+        "palette": "Choose a deep blueprint-like body tone and a contrasting light line color while respecting explicit identity color requirements.",
+        "texture": "Keep surfaces clean with no paper grid and only a few stable technical hatch marks.",
+        "rendering": "Render a character illustration with consistent construction lines and no labels, dimensions, ruler marks, or full-page drafting layout."
+      },
+      "negative_constraints": [
+        "Do not add measurement text, numeric annotations, graph-paper backgrounds, or engineering claims.",
+        "Avoid hairline construction strokes and exposing so much internal geometry that the face becomes illegible.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Technical-looking mascots and simplified educational character diagrams."
+      ],
+      "limitations": [
+        "The style is illustrative and does not provide accurate dimensions or mechanical construction instructions."
+      ],
+      "applicability": {
+        "character": "adapted",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Use antialiased strokes over an opaque core; verify light linework after downsampling and avoid matching the blueprint tone to a key.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "futuristic"
+      ]
+    },
+    {
+      "id": "technical-schematic",
+      "name": "Technical Schematic",
+      "category": "electronic-experimental",
+      "kind": "technique",
+      "description": "A diagrammatic mascot organized into simple modules, structural connectors, and deliberate technical line hierarchy.",
+      "tags": [
+        "modular-diagram",
+        "structural-lines",
+        "schematic-art"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use opaque flat diagram shapes with clean technical ink lines and no simulated photographic material.",
+        "forms": "Represent body regions as broad connected modules while preserving the approved character anatomy and expression.",
+        "linework": "Use a clear hierarchy of thick outer lines, medium structural links, and very few secondary internal marks.",
+        "shading": "Avoid volumetric shading; separate modules using flat values and a few simple filled section areas.",
+        "palette": "Choose a restrained diagram palette with consistent roles for body modules, connectors, and facial landmarks.",
+        "texture": "Keep surfaces untextured and free from tiny circuit traces, dense grids, or decorative data noise.",
+        "rendering": "Render an isolated schematic-style character with all connectors contained within the silhouette and no text labels or legend."
+      },
+      "negative_constraints": [
+        "Do not generate functional circuitry, wiring instructions, measurements, or a full engineering sheet.",
+        "Avoid disconnected connector lines and replacing the face with tiny symbols.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Diagrammatic mascots and visually organized technical character systems."
+      ],
+      "limitations": [
+        "Schematic appearance is illustrative; it makes no claim that the depicted structure is functional engineering."
+      ],
+      "applicability": {
+        "character": "adapted",
+        "sequence": "adapted",
+        "icon": "recommended",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Preserve antialiased line hierarchy and an opaque character core; check connector continuity at actual size.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "futuristic"
+      ]
+    },
+    {
+      "id": "futuristic-hud",
+      "name": "Futuristic HUD",
+      "category": "electronic-experimental",
+      "kind": "technique",
+      "description": "A mascot built from a restrained set of luminous interface-like plates and readable segmented line accents.",
+      "tags": [
+        "interface-plates",
+        "segmented-lines",
+        "hud-graphic"
+      ],
+      "aliases": [
+        "hud"
+      ],
+      "instructions": {
+        "materials": "Use opaque dark digital plates with bright segmented edge accents and a few contained translucent-looking overlays.",
+        "forms": "Build compact connected body modules with large readable facial panels and short attached limbs.",
+        "linework": "Use consistent bright contour segments and sparse internal brackets that follow anatomy rather than a screen layout.",
+        "shading": "Keep plates mostly flat with restrained inset highlights and one stable luminous edge direction.",
+        "palette": "Choose a small interface-like palette with a dark opaque core and one or two high-contrast accent hues.",
+        "texture": "Use only a few large stable ticks or panel segments, avoiding microtext and dense data patterns.",
+        "rendering": "Render a self-contained HUD-styled character with no interface frame, targeting reticle, readouts, or floating status widgets."
+      },
+      "negative_constraints": [
+        "Do not generate unreadable pseudo-text, data dashboards, crosshairs, or external interface elements.",
+        "Avoid transparent faces, blinking random panels, and glow extending beyond the character.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Compact futuristic companions and interface-styled mascot illustrations."
+      ],
+      "limitations": [
+        "Decorative technical marks are not live status indicators or functional controls."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Keep the core opaque and preserve antialiased segmented edges; inspect small gaps so segments remain visually connected.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "futuristic",
+        "cyberpunk"
+      ]
+    },
+    {
+      "id": "low-resolution-digital-display",
+      "name": "Low-Resolution Digital Display",
+      "category": "electronic-experimental",
+      "kind": "technique",
+      "description": "A character built from coarse rectangular display pixels and a few stable discrete brightness levels.",
+      "tags": [
+        "coarse-pixels",
+        "display-raster",
+        "low-resolution"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use opaque rectangular digital-display cells with a coarse uniform raster and no physical screen housing.",
+        "forms": "Reduce the mascot to broad block clusters with thick limbs and clearly separated face pixels.",
+        "linework": "Define contours through stepped occupied cells and reserve consistent small clusters for key facial landmarks.",
+        "shading": "Use a few discrete brightness levels with broad block shading and no interpolated gradients.",
+        "palette": "Choose a limited display palette with strong value separation and stable colors for all identity markings.",
+        "texture": "Keep pixel-cell aspect, pitch, and fill pattern identical across the body and every animation frame.",
+        "rendering": "Render a deliberately coarse display character inside the unchanged profile geometry with no bezel, status bar, or menu text."
+      },
+      "negative_constraints": [
+        "Do not change cell dimensions, animation counts, or package geometry to emulate a device.",
+        "Avoid variable pixel sizes, fractional cells, and smoothing that erases the coarse display structure.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Low-detail digital mascots and small display-inspired character assets."
+      ],
+      "limitations": [
+        "Artwork resolution is a visual convention; actual output cell and atlas dimensions remain fixed."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "recommended",
+        "print": "recommended",
+        "grid": "adapted"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "hard",
+        "resampling": "nearest",
+        "scaling": "Keep the fixed target cell geometry; prefer integer artwork scaling with nearest-neighbor resampling and inspect every pixel cluster at actual size.",
+        "notes": [
+          "Use nearest resampling and integer artwork scaling where possible; the display pixel grid must fit within the existing cell geometry.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "futuristic"
+      ]
+    },
+    {
+      "id": "chrome-3d",
+      "name": "Chrome 3D",
+      "category": "electronic-experimental",
+      "kind": "technique",
+      "description": "A smooth sculptural chrome mascot with broad controlled reflection bands and clearly opaque facial details.",
+      "tags": [
+        "polished-chrome",
+        "reflective-3d",
+        "metallic-sculpture"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use opaque polished chrome over simple smooth sculpted forms with a few matte or dark inset facial details.",
+        "forms": "Build compact rounded body masses and thick integrated limbs with clean continuous metal surfaces.",
+        "linework": "Define anatomy through sculpted boundaries and broad reflection changes without drawn outlines or dense seams.",
+        "shading": "Use a small fixed set of broad light and dark reflection bands that reveal volume without depicting a room.",
+        "palette": "Keep chrome predominantly neutral with restrained approved color reflections and a stable dark facial treatment.",
+        "texture": "Maintain a smooth polished surface with no scratches, crumpled foil wrinkles, or glitter particles.",
+        "rendering": "Render an isolated chrome character with consistent reflection structure and no environment, floor mirror, or external lens flare."
+      },
+      "negative_constraints": [
+        "Do not use uncontrolled environment reflections or specular glare that hides the face.",
+        "Avoid detached glints, mirror-floor shadows, and changing reflected scenes between frames.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Polished metallic mascots and compact sculptural character variants."
+      ],
+      "limitations": [
+        "Reflections are deliberately simplified for consistent recognition on arbitrary application backgrounds."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Keep all chrome surfaces opaque and preserve antialiased contours; inspect bright reflection bands for false holes during keying.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "futuristic"
+      ]
+    }
+  ]
+}

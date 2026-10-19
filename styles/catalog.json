@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "catalog_version": "1.0.0",
+  "categories": [
+    {
+      "id": "pixel-games",
+      "name": "Pixel art and video games"
+    },
+    {
+      "id": "cartoon-vector",
+      "name": "Cartoon and vector"
+    },
+    {
+      "id": "anime-comics",
+      "name": "Anime, manga and comics"
+    },
+    {
+      "id": "painting-drawing",
+      "name": "Traditional painting and drawing"
+    },
+    {
+      "id": "printmaking",
+      "name": "Printmaking and reproduction"
+    },
+    {
+      "id": "sculpture-toys",
+      "name": "3D, sculpture and toys"
+    },
+    {
+      "id": "textile-fiber",
+      "name": "Textiles, fabric and fiber arts"
+    },
+    {
+      "id": "paper-craft",
+      "name": "Paper arts and crafts"
+    },
+    {
+      "id": "glass-materials",
+      "name": "Glass, metal and unusual materials"
+    },
+    {
+      "id": "historical-retro",
+      "name": "Historical and retro aesthetics"
+    },
+    {
+      "id": "graphic-design",
+      "name": "Contemporary graphic design"
+    },
+    {
+      "id": "electronic-experimental",
+      "name": "Electronic, technical and experimental"
+    },
+    {
+      "id": "additional-techniques",
+      "name": "Additional artistic techniques"
+    },
+    {
+      "id": "adaptive",
+      "name": "Adaptive style selectors"
+    }
+  ]
+}

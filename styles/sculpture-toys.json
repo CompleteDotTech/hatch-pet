@@ -1,0 +1,1001 @@
+{
+  "schema_version": 1,
+  "category": "sculpture-toys",
+  "styles": [
+    {
+      "id": "3d-toy",
+      "name": "3D Toy",
+      "category": "sculpture-toys",
+      "kind": "technique",
+      "description": "Smooth rounded stylized toy with simple materials, a clear silhouette and restrained dimensional lighting.",
+      "tags": [
+        "toy-render",
+        "rounded",
+        "simple-material",
+        "stylized-3d"
+      ],
+      "aliases": [
+        "toy-3d"
+      ],
+      "instructions": {
+        "materials": "Use simple smooth toy-like materials with a soft matte or mild satin finish.",
+        "forms": "Sculpt rounded compact body masses, clear facial features and sturdy readable limbs.",
+        "linework": "Let the clean rendered form boundary define the silhouette without drawn outlines.",
+        "shading": "Apply broad soft lighting and restrained contact shading where body parts meet.",
+        "palette": "Keep material colors stable with simple local-color surfaces and small predictable highlights.",
+        "texture": "Leave surfaces smooth, using only essential seams or markings required by the identity.",
+        "rendering": "Render an isolated stylized 3D toy with one fixed camera and light direction and no photoreal complexity."
+      },
+      "negative_constraints": [
+        "Avoid photo-studio backdrops, floor shadows, pedestals or reflected scenery.",
+        "Do not add tiny molded text, intricate surface scratches or complex metallic coatings."
+      ],
+      "use_cases": [
+        "Dimensional companion pets",
+        "Simple toy-like mascot casts"
+      ],
+      "limitations": [
+        "Smooth shading still needs strong local-color separation so forms do not merge at compact size."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "recommended",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Preserve the original preset’s smooth rounded simple-material direction; the style does not alter atlas geometry.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "low-poly-3d",
+      "name": "Low-Poly 3D",
+      "category": "sculpture-toys",
+      "kind": "technique",
+      "description": "Faceted character built from a modest number of flat polygon planes with deliberate angular silhouette breaks.",
+      "tags": [
+        "faceted",
+        "polygon",
+        "flat-shaded",
+        "geometric-volume"
+      ],
+      "aliases": [
+        "low-poly"
+      ],
+      "instructions": {
+        "materials": "Use matte solid polygon surfaces with visible flat facets rather than texture-mapped detail.",
+        "forms": "Construct a compact character from broad angular planes with carefully chosen silhouette vertices.",
+        "linework": "Let polygon boundaries define internal edges, with no wireframe or ink overlay.",
+        "shading": "Shade each facet as a flat value under a single consistent light direction.",
+        "palette": "Assign stable approved local colors and a small predictable set of facet-light variants.",
+        "texture": "Leave facets untextured; shape and plane lighting supply all surface interest.",
+        "rendering": "Render an isolated low-poly mascot with a fixed camera, readable face and consistent apparent polygon scale."
+      },
+      "negative_constraints": [
+        "Avoid random triangulation noise, wireframe grids or photoreal material textures.",
+        "Do not change the underlying facet layout arbitrarily between poses."
+      ],
+      "use_cases": [
+        "Geometric game pets",
+        "Faceted character asset families"
+      ],
+      "limitations": [
+        "Too many tiny facets undermine the style and may flicker after downsampling."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "recommended",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Lightly antialias the raster perimeter while preserving flat facet shading; low-poly surfaces do not require a pixel grid.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "stylized-3d",
+      "name": "Stylized 3D",
+      "category": "sculpture-toys",
+      "kind": "technique",
+      "description": "Sculpted dimensional character with exaggerated silhouette, selectively simplified materials and art-directed nonphotoreal lighting.",
+      "tags": [
+        "stylized-render",
+        "sculpted",
+        "simplified-materials",
+        "dimensional"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use a small set of simplified rendered materials, distinguishing skin, cloth or shell through broad surface cues.",
+        "forms": "Sculpt an expressive compact body with intentional exaggeration in a few identity-defining forms.",
+        "linework": "Define clean contours through geometry and selective dark creases rather than uniform ink.",
+        "shading": "Use broad art-directed light and shade planes with restrained occlusion at joints.",
+        "palette": "Keep strong approved local colors and control highlight saturation so materials remain recognizable.",
+        "texture": "Suggest each material with broad repeated cues, omitting individual pores, fibers and scratches.",
+        "rendering": "Render an isolated dimensional mascot from one fixed camera with consistent material response across animation."
+      },
+      "negative_constraints": [
+        "Avoid environmental reflections, atmospheric haze or a separately lit scenic background.",
+        "Do not introduce photographic microdetail or random shader changes across states."
+      ],
+      "use_cases": [
+        "Dimensional character systems",
+        "Stylized animated mascot casts"
+      ],
+      "limitations": [
+        "Several materials can create inconsistent lighting cues; simplify them and approve the full base before states."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Keep material response tied to the approved base; a different pose may alter visible form without changing roughness or light direction.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "clay",
+      "name": "Clay",
+      "category": "sculpture-toys",
+      "kind": "technique",
+      "description": "Handmade clay or polymer-clay mascot with rounded sculpted forms, soft tactile texture and simple readable features.",
+      "tags": [
+        "handmade",
+        "clay",
+        "rounded-sculpture",
+        "tactile"
+      ],
+      "aliases": [
+        "modeling-clay",
+        "modelling-clay"
+      ],
+      "instructions": {
+        "materials": "Use soft-looking hand-shaped clay or polymer clay with a matte tactile finish.",
+        "forms": "Build rounded sculpted body masses with gently pressed facial details and sturdy short limbs.",
+        "linework": "Keep the outline clean but slightly hand-shaped, with soft seams at joined forms.",
+        "shading": "Light the clay with broad soft highlights and shallow contact shading inside the figure.",
+        "palette": "Use stable clay body colors with clear approved markings modeled as simple colored patches.",
+        "texture": "Show restrained fingerprints or smoothing traces on large surfaces without gritty detail.",
+        "rendering": "Render an isolated handmade clay mascot with readable edges and consistent sculpted proportions."
+      },
+      "negative_constraints": [
+        "Avoid a workbench, sculpting tools, loose clay crumbs or ground shadows.",
+        "Do not turn handmade texture into cracked skin or constantly changing surface dents."
+      ],
+      "use_cases": [
+        "Tactile friendly pets",
+        "Clay-inspired character casts"
+      ],
+      "limitations": [
+        "Surface dents and seams need to remain subtle and stable so they do not look like defects or changing markings."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "recommended",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Keep the original rounded soft-material preset behavior; true alpha avoids color fringes along gently lit clay edges.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "polymer-clay",
+      "name": "Polymer Clay",
+      "category": "sculpture-toys",
+      "kind": "technique",
+      "description": "Small baked-clay figure with crisp applied color pieces, neat shallow seams and a smooth finely finished handmade surface.",
+      "tags": [
+        "polymer",
+        "baked-clay",
+        "applied-pieces",
+        "miniature"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Suggest firm smooth polymer clay with a matte-to-satin baked finish.",
+        "forms": "Construct a compact figurine from neat rounded body pieces and flattened applied markings.",
+        "linework": "Keep precise gently rounded edges with visible but shallow joins between colored clay components.",
+        "shading": "Use soft light with small controlled highlights on smooth convex surfaces.",
+        "palette": "Give each component a stable solid clay color, avoiding painted gradients across material boundaries.",
+        "texture": "Add very subtle hand-finishing traces while keeping the surface finer and cleaner than soft modeling clay.",
+        "rendering": "Render an isolated baked-clay miniature with repeatable applied details and no craft-table setting."
+      },
+      "negative_constraints": [
+        "Avoid loose unbaked scraps, bead holes, jewelry hardware or scattered sculpting tools.",
+        "Do not melt applied markings into body color or change their thickness between states."
+      ],
+      "use_cases": [
+        "Detailed handmade toy pets",
+        "Small craft-figurine character families"
+      ],
+      "limitations": [
+        "Raised applied pieces need simplified shapes so their seams remain readable after downsampling."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Retain small attached clay details as geometry cues; visual review must confirm they are not detached extraction artifacts.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "plasticine",
+      "name": "Plasticine",
+      "category": "sculpture-toys",
+      "kind": "technique",
+      "description": "Soft modeling-compound character with thumb-pressed forms, rounded seams and controlled malleable deformation.",
+      "tags": [
+        "modeling-compound",
+        "soft-sculpture",
+        "pressed-forms",
+        "malleable"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use opaque soft plasticine-like material with a slightly oily matte surface.",
+        "forms": "Form the body from squashed rounded lumps with pressed facial cavities and simple stubby limbs.",
+        "linework": "Keep gently uneven hand-molded contours and visible broad joins between body pieces.",
+        "shading": "Use broad dull highlights and soft indent shadows that emphasize pressed shapes.",
+        "palette": "Keep colored compound regions distinct with restrained blended seams where approved.",
+        "texture": "Show a few stable thumb smoothing marks and shallow tool-free depressions on broad surfaces.",
+        "rendering": "Render an isolated malleable clay character with controlled squash while preserving its approved face and markings."
+      },
+      "negative_constraints": [
+        "Avoid greasy glare, crumbling edges, work-surface stains or loose material pieces.",
+        "Do not use melting or deformation to change the mascot’s identity across states."
+      ],
+      "use_cases": [
+        "Soft stop-motion-style pets",
+        "Malleable character performance studies"
+      ],
+      "limitations": [
+        "Deformation should preserve body volume and surface landmarks rather than creating a newly sculpted design each frame."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Anchor visible dents and seams to body parts so surface detail follows motion rather than flickering independently.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "vinyl-toy",
+      "name": "Vinyl Toy",
+      "category": "sculpture-toys",
+      "kind": "technique",
+      "description": "Designer-toy-like character with inflated simple volumes, smooth molded plastic and tightly controlled printed details.",
+      "tags": [
+        "vinyl",
+        "molded-plastic",
+        "designer-toy",
+        "inflated-forms"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use smooth opaque vinyl-like plastic with a soft satin sheen.",
+        "forms": "Favor oversized simple head or body volumes and thick rounded limbs with very few small projections.",
+        "linework": "Keep clean molded contours and almost invisible assembly seams.",
+        "shading": "Apply broad soft highlights with a small consistent sheen on convex surfaces.",
+        "palette": "Use solid molded body colors and a few crisp printed or applied identity marks.",
+        "texture": "Leave surfaces nearly perfect and untextured, apart from essential shallow molded details.",
+        "rendering": "Render an isolated vinyl mascot with a stable toy silhouette and no retail box or display plinth."
+      },
+      "negative_constraints": [
+        "Avoid packaging, collector labels, removable extra parts or a display stand.",
+        "Do not add realistic skin pores, fabric weave or scratched distressed plastic."
+      ],
+      "use_cases": [
+        "Designer-toy-inspired pets",
+        "Minimal dimensional mascot families"
+      ],
+      "limitations": [
+        "Highly simplified toy volumes can hide limb articulation; poses need clear internal separation."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "recommended",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Preserve crisp printed markings on the curved surface and keep the highlight placement stable enough for animation.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "resin-figure",
+      "name": "Resin Figure",
+      "category": "sculpture-toys",
+      "kind": "technique",
+      "description": "Precisely cast opaque figure with fine but restrained sculpted relief, painted local colors and a controlled satin finish.",
+      "tags": [
+        "cast-resin",
+        "painted-figure",
+        "sculpted-relief",
+        "satin"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use opaque cast-resin-like material with a finely finished satin paint surface.",
+        "forms": "Sculpt compact coherent anatomy with selected shallow relief for fur clumps, folds or armor if approved.",
+        "linework": "Keep sharp but slightly softened cast edges and clear separations between relief layers.",
+        "shading": "Use controlled studio-like lighting with small highlights and shallow relief shadows.",
+        "palette": "Apply stable painted local colors with clean boundaries and restrained shade accents.",
+        "texture": "Include a few repeatable casting or sculpting details on broad surfaces without micro-scratches.",
+        "rendering": "Render an isolated resin character as a complete figure without a base, label or collector display."
+      },
+      "negative_constraints": [
+        "Avoid unapproved transparency, glitter suspension or decorative resin droplets.",
+        "Do not add tiny fragile protrusions or relief detail that disappears at pet scale."
+      ],
+      "use_cases": [
+        "Collectible-style mascot pets",
+        "Detailed sculpted character concepts"
+      ],
+      "limitations": [
+        "Fine relief is intentionally limited; material realism must not compromise readable face and silhouette."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "This preset uses opaque cast resin; translucent decorative resin is a separate material direction and needs its own alpha guidance.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "collectible-figurine",
+      "name": "Collectible Figurine",
+      "category": "sculpture-toys",
+      "kind": "technique",
+      "description": "Finished painted miniature with carefully separated sculpted components, neat panel detail and balanced display-quality form.",
+      "tags": [
+        "painted-miniature",
+        "collectible",
+        "assembled-sculpture",
+        "detailed-toy"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use finely painted miniature materials with consistent matte body areas and restrained satin accents.",
+        "forms": "Sculpt compact posed anatomy with a few well-defined costume or body components that retain the approved identity.",
+        "linework": "Keep crisp component separations and neat shallow seams without ink-like black outlining everywhere.",
+        "shading": "Apply soft general lighting with small painted edge highlights on selected raised details.",
+        "palette": "Use precise stable paint colors and deliberate contrast between neighboring sculpted components.",
+        "texture": "Show limited sculpted folds, seams or grouped fur details at a scale readable in the final cell.",
+        "rendering": "Render the isolated figurine as if freed from its display base, with consistent proportions through every pose."
+      },
+      "negative_constraints": [
+        "Avoid pedestal bases, packaging, product labels or extra accessories not approved by the user.",
+        "Do not add fragile miniature ornament that changes count or shape during animation."
+      ],
+      "use_cases": [
+        "Painted miniature pets",
+        "Polished sculpted mascot collections"
+      ],
+      "limitations": [
+        "A display-figurine aesthetic must be adapted to motion without treating the original pose as a required static stand."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Prioritize stable large sculpted landmarks over miniature detail; no display stand is implied by the style name.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "porcelain",
+      "name": "Porcelain",
+      "category": "sculpture-toys",
+      "kind": "technique",
+      "description": "Refined glazed character with smooth pale ceramic forms, delicate painted marks and small coherent glaze highlights.",
+      "tags": [
+        "porcelain",
+        "glazed",
+        "smooth-ceramic",
+        "delicate-paint"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Suggest smooth fired porcelain with an opaque body and a clear glossy glaze.",
+        "forms": "Sculpt rounded refined forms with gently tapered extremities sturdy enough for a compact mascot.",
+        "linework": "Keep immaculate continuous contours and fine shallow seams only where construction needs them.",
+        "shading": "Use broad pale form shading and a few clean glaze highlights that follow one light source.",
+        "palette": "Favor light porcelain body tones while preserving required approved body colors and painted markings.",
+        "texture": "Leave the glaze smooth with almost no grain, cracks or crazing.",
+        "rendering": "Render an isolated porcelain character with no table reflection, pedestal or decorative plate surround."
+      },
+      "negative_constraints": [
+        "Avoid shattered fragments, crackle distress, floral decals or gilding unless identity explicitly requires them.",
+        "Do not use blown-out highlights that erase eyes or approved markings."
+      ],
+      "use_cases": [
+        "Refined ceramic pets",
+        "Glazed figurine character concepts"
+      ],
+      "limitations": [
+        "Pale glossy forms need careful contrast so edges remain readable on light backgrounds."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Prefer alpha to protect subtle pale glaze edges and inspect highlights separately from permanent white markings.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "ceramic",
+      "name": "Ceramic",
+      "category": "sculpture-toys",
+      "kind": "technique",
+      "description": "Hand-built glazed or matte earthenware character with solid rounded form, slight surface variation and expressive incised details.",
+      "tags": [
+        "earthenware",
+        "pottery",
+        "hand-built",
+        "glaze"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use opaque ceramic with a softly matte or restrained glazed finish and subtle mineral variation.",
+        "forms": "Build solid rounded hand-formed body masses with pressed or incised simple facial features.",
+        "linework": "Keep slightly irregular but smooth fired contours and gentle joins between sculpted parts.",
+        "shading": "Use broad lighting with soft cavity shading and restrained glaze accents on raised areas.",
+        "palette": "Keep approved ceramic colors distinct, allowing mild glaze-depth variation within each color region.",
+        "texture": "Show small contained mineral speckles or broad hand-forming traces without cracks.",
+        "rendering": "Render an isolated ceramic mascot with a stable handmade surface and no pottery shelf or wheel."
+      },
+      "negative_constraints": [
+        "Avoid detached clay chips, pottery tools, glaze drips outside the silhouette or ground shadows.",
+        "Do not add random crack networks or change the glaze color between animation states."
+      ],
+      "use_cases": [
+        "Handmade ceramic pets",
+        "Pottery-inspired mascot collections"
+      ],
+      "limitations": [
+        "Glaze speckles and incisions need reduced density so they do not compete with the face at small scale."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Choose alpha when glaze produces pale edge reflections; a chroma key must be clear of every glaze hue.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "wooden-toy",
+      "name": "Wooden Toy",
+      "category": "sculpture-toys",
+      "kind": "technique",
+      "description": "Simple assembled character with lathe-rounded wood pieces, painted blocks of color and restrained visible grain.",
+      "tags": [
+        "wood",
+        "assembled-toy",
+        "turned-forms",
+        "painted-pieces"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use smooth finished wood with selected painted surfaces and a subtle satin finish.",
+        "forms": "Assemble the body from turned oval or cylindrical pieces and broad solid limbs.",
+        "linework": "Keep clean rounded machined contours with a few clear joins between wooden components.",
+        "shading": "Apply soft broad lighting that reveals cylindrical volume without harsh reflective glare.",
+        "palette": "Combine approved painted colors with optional natural wood tones only where identity permits.",
+        "texture": "Show restrained grain following each wooden piece’s own axis rather than a canvas-wide pattern.",
+        "rendering": "Render an isolated wooden toy whose component proportions and grain orientation stay consistent through motion."
+      },
+      "negative_constraints": [
+        "Avoid pull strings, wheels, dowel handles or bases unless they are approved identity features.",
+        "Do not add wood shavings, workshop scenery or large cracks."
+      ],
+      "use_cases": [
+        "Simple crafted toy pets",
+        "Wooden character systems"
+      ],
+      "limitations": [
+        "Visible joints should support the approved anatomy rather than imply unrequested toy mechanisms."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "recommended",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Keep grain tied to each component and preserve required painted markings rather than replacing them with natural wood color.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "carved-wood",
+      "name": "Carved Wood",
+      "category": "sculpture-toys",
+      "kind": "technique",
+      "description": "Hand-carved figure with broad knife facets, carved recesses and body-following wood grain.",
+      "tags": [
+        "carving",
+        "knife-facets",
+        "wood-grain",
+        "hand-shaped"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Suggest solid carved wood with a matte or lightly oiled surface.",
+        "forms": "Sculpt compact body masses through broad flattened knife-cut planes and rounded transition areas.",
+        "linework": "Define contours with deliberate small facet changes and shallow carved facial recesses.",
+        "shading": "Light broad carving planes distinctly and use modest dark shading inside cuts.",
+        "palette": "Retain approved painted identity colors where required, with exposed wood tones only in permitted regions.",
+        "texture": "Show a few long grain lines and broad tool facets following the carved body direction.",
+        "rendering": "Render an isolated hand-carved mascot with no stump base, chips or workshop setting."
+      },
+      "negative_constraints": [
+        "Avoid splinters, detached chips, deep cracks or photographic bark texture.",
+        "Do not alter the figure’s face with new carving cuts in each state."
+      ],
+      "use_cases": [
+        "Handcrafted sculptural pets",
+        "Woodcarving-inspired character studies"
+      ],
+      "limitations": [
+        "Strong wood grain can masquerade as new markings; keep it subtle and anatomically anchored."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Use clean alpha around small carving facets and avoid smoothing away the intentional tool-cut plane changes.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "stone-sculpture",
+      "name": "Stone Sculpture",
+      "category": "sculpture-toys",
+      "kind": "technique",
+      "description": "Compact carved-stone character with broad chiseled planes, restrained mineral texture and weighty simplified form.",
+      "tags": [
+        "stone",
+        "carved",
+        "chiseled-planes",
+        "mineral"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use opaque matte carved stone with a fine restrained mineral surface.",
+        "forms": "Build sturdy weighty body masses with simplified protrusions and clearly cut facial features.",
+        "linework": "Keep sculpted contours clean, with a few deliberate planar breaks from chisel shaping.",
+        "shading": "Use broad directional light to separate stone planes and modest cavity shading in facial recesses.",
+        "palette": "Use approved character colors as painted stone where required, otherwise a coherent stone-value family.",
+        "texture": "Add subtle mineral mottling and selected tool traces inside broad surfaces without crumbling edges.",
+        "rendering": "Render an isolated stone mascot with no pedestal, ruin, landscape or ground shadow."
+      },
+      "negative_constraints": [
+        "Avoid dust, broken fragments, moss or decorative carving not included in the approved identity.",
+        "Do not make deep recesses so dark that they replace the intended eye or mouth design."
+      ],
+      "use_cases": [
+        "Sculptural mascot pets",
+        "Stone-material character studies"
+      ],
+      "limitations": [
+        "Heavy stone styling should not make animated limbs appear to change thickness or material between poses."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Mineral texture must remain restrained at the cell size; simplify surface mottling before modifying the fixed viewport.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "metal-sculpture",
+      "name": "Metal Sculpture",
+      "category": "sculpture-toys",
+      "kind": "technique",
+      "description": "Formed-metal character with broad brushed planes, controlled specular bands and restrained seams or hammered facets.",
+      "tags": [
+        "metal",
+        "sculpture",
+        "brushed-surface",
+        "specular-bands"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use opaque formed metal with a brushed or gently hammered finish, avoiding mirror-like reflection.",
+        "forms": "Shape a compact coherent figure from broad metal volumes and a few carefully joined parts.",
+        "linework": "Keep smooth cast or bent contours and sparse purposeful seams at component joins.",
+        "shading": "Use broad controlled reflection bands and dark-light plane changes from one fixed studio light setup.",
+        "palette": "Keep metal tones coordinated with required painted identity colors and a stable approved accent palette.",
+        "texture": "Show restrained brushing direction or a few broad hammered facets inside the body.",
+        "rendering": "Render an isolated metal mascot without environmental reflections, welding sparks or a display stand."
+      },
+      "negative_constraints": [
+        "Avoid reflected rooms, chrome-like scenic mirrors, detached sparks or sharp stray wire details.",
+        "Do not introduce new seams, bolts or dents that alter approved facial or body identity."
+      ],
+      "use_cases": [
+        "Metallic sculptural pets",
+        "Industrial character material studies"
+      ],
+      "limitations": [
+        "Specular bands can resemble changing markings; use broad stable lighting and review every animation row."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Prefer alpha when reflections approach the chosen key color; broad highlight bands must remain inside a clear silhouette.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "stop-motion-puppet",
+      "name": "Stop-Motion Puppet",
+      "category": "sculpture-toys",
+      "kind": "technique",
+      "description": "Hand-built articulated puppet with tactile mixed materials, visible crafted seams and deliberately repeatable physical construction.",
+      "tags": [
+        "puppet",
+        "articulated",
+        "mixed-material",
+        "stop-motion"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Combine a few tactile puppet materials such as matte sculpted face pieces, fabric body panels and simple painted props.",
+        "forms": "Build a compact articulated body with sturdy joints and an expressive replaceable-looking face that keeps one design.",
+        "linework": "Let seams and material boundaries define form, with clean attached extremities and no drawn outline.",
+        "shading": "Use soft practical-looking lighting with restrained joint contact shadows and readable facial planes.",
+        "palette": "Preserve the approved material colors and keep replacement expression pieces color-matched to the base.",
+        "texture": "Show selected seams, broad fabric weave or sculpted tool traces without loose fibers.",
+        "rendering": "Render the isolated handmade puppet from a fixed camera with coherent physical joints and stable material textures."
+      },
+      "negative_constraints": [
+        "Avoid rigging wires, support rods, animator hands or a miniature set.",
+        "Do not add random surface wear or mismatched face-piece colors between frames."
+      ],
+      "use_cases": [
+        "Tactile character-performance pets",
+        "Hand-built puppet cast concepts"
+      ],
+      "limitations": [
+        "The physical puppet impression needs careful joint and face consistency even though frames are generated artwork."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Style guidance does not claim a real photographed stop-motion production; preserve actual imagegen or import provenance unchanged.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "inflatable-toy",
+      "name": "Inflatable Toy",
+      "category": "sculpture-toys",
+      "kind": "technique",
+      "description": "Soft pressurized vinyl character with swollen panel volumes, broad heat seams and restrained stretched-surface highlights.",
+      "tags": [
+        "inflatable",
+        "vinyl-panels",
+        "pressurized",
+        "welded-seams"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use opaque flexible inflated vinyl with a smooth mildly glossy surface.",
+        "forms": "Build rounded pressurized body chambers with broad attached limbs and gently pinched joints.",
+        "linework": "Keep smooth swollen contours and a few thin attached heat-seam ridges at panel boundaries.",
+        "shading": "Use broad curved highlights and soft compression shadows where inflated chambers meet.",
+        "palette": "Apply stable solid panel colors and crisp printed identity markings that follow the swollen form.",
+        "texture": "Show very subtle panel tension and shallow seam creases without dense wrinkles.",
+        "rendering": "Render an isolated inflatable mascot with consistent inflation and no pool, valve accessory or floor shadow."
+      },
+      "negative_constraints": [
+        "Avoid transparent hollow interiors, excessive wrinkles or unapproved valves and ropes.",
+        "Do not deflate or change body pressure between frames unless specifically required by the action."
+      ],
+      "use_cases": [
+        "Playful dimensional pets",
+        "Inflated material mascot concepts"
+      ],
+      "limitations": [
+        "Inflated forms can merge at the joints; maintain readable limb separation and stable panel seams."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Keep broad edge highlights color-stable; prefer alpha when bright vinyl reflections would confuse chroma removal.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "balloon-sculpture",
+      "name": "Balloon Sculpture",
+      "category": "sculpture-toys",
+      "kind": "technique",
+      "description": "Twisted-balloon character formed from connected tubular lobes, visible twist joints and a controlled glossy rubber surface.",
+      "tags": [
+        "balloon-art",
+        "twisted-tubes",
+        "rubber",
+        "connected-lobes"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use opaque glossy balloon rubber with a smooth stretched surface.",
+        "forms": "Build the mascot from connected inflated tubes and rounded lobes joined by visible twists.",
+        "linework": "Let smooth tube contours and pinched twist junctions describe the anatomy without drawn outlines.",
+        "shading": "Place a few long soft highlight bands along tubes and darker contact regions at twists.",
+        "palette": "Use stable balloon colors with clearly retained approved face and body markings.",
+        "texture": "Keep the rubber surface smooth with only tiny pinched folds at essential junctions.",
+        "rendering": "Render an isolated balloon-built mascot with physically connected parts and no string, knot tail or loose balloon pieces."
+      },
+      "negative_constraints": [
+        "Avoid dangling strings, detached balloons, confetti or drifting decorative lobes.",
+        "Do not change the number or ordering of the balloon segments between poses."
+      ],
+      "use_cases": [
+        "Playful party-material pets",
+        "Connected balloon character studies"
+      ],
+      "limitations": [
+        "Some detailed species features need simplification into balloon lobes without losing the approved identity."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Approve the segment layout in the base; maintain connectivity while posing limbs and preserve true alpha between open loops.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "miniature-diorama",
+      "name": "Miniature Diorama Craft",
+      "category": "sculpture-toys",
+      "kind": "technique",
+      "description": "Character-only adaptation of miniature scene craft: hand-built scale textures, tiny assembled components and cohesive practical lighting.",
+      "tags": [
+        "miniature",
+        "model-making",
+        "assembled-craft",
+        "scale-texture"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use a small coherent mix of model-making materials such as painted resin, miniature cloth and carved components.",
+        "forms": "Construct a compact scale-model character with clearly assembled body parts and a few approved tactile details.",
+        "linework": "Keep tiny assembly seams and material joins visible but subordinate to the main silhouette.",
+        "shading": "Use broad practical-style illumination and restrained contact shadows within the model only.",
+        "palette": "Coordinate miniature paint colors carefully, preserving approved identity colors without scene-wide color grading.",
+        "texture": "Suggest scale through limited broad fabric weave, painted grain or sculpted seams rather than tiny scenery.",
+        "rendering": "Render only the isolated crafted character; adapt the diorama finish to a sprite without a scenic base or environment."
+      },
+      "negative_constraints": [
+        "Avoid a diorama platform, terrain, miniature furniture, scenic background or display case.",
+        "Do not use tilt-shift blur or shallow depth of field that makes the face or extremities unreadable."
+      ],
+      "use_cases": [
+        "Model-making-inspired pets",
+        "Miniature crafted character casts"
+      ],
+      "limitations": [
+        "This is a character-only adaptation of diorama craftsmanship; a complete scene is incompatible with the isolated pet profile."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "The style name describes scale-model surface craft; it never authorizes exporting a background or changing the profile’s subject requirements.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    }
+  ]
+}

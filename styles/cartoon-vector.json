@@ -1,0 +1,898 @@
+{
+  "schema_version": 1,
+  "category": "cartoon-vector",
+  "styles": [
+    {
+      "id": "flat-vector",
+      "name": "Flat Vector",
+      "category": "cartoon-vector",
+      "kind": "technique",
+      "description": "Simple geometric mascot with clean outlines, crisp color areas and minimal shading.",
+      "tags": [
+        "vector-like",
+        "geometric",
+        "flat-fill",
+        "clean-outline"
+      ],
+      "aliases": [
+        "vector"
+      ],
+      "instructions": {
+        "materials": "Use opaque vector-like color fills without simulated paper or material grain.",
+        "forms": "Combine clear circles, rounded rectangles and tapered limbs into a compact mascot.",
+        "linework": "Draw clean smooth outlines with consistent joins and deliberate simple overlaps.",
+        "shading": "Keep shading minimal, limited to a small flat accent where overlap needs clarification.",
+        "palette": "Use a stable set of crisp solid colors with obvious foreground-background value separation.",
+        "texture": "Leave surfaces smooth and untextured so shape and color do the descriptive work.",
+        "rendering": "Rasterize the isolated vector-style construction with controlled edge antialiasing at the target size."
+      },
+      "negative_constraints": [
+        "Avoid glossy gradients, photoreal texture or complex mesh-like shadow fields.",
+        "Do not add typography, a badge container or a surrounding illustration scene."
+      ],
+      "use_cases": [
+        "Clean interface mascots",
+        "Reusable pictograms and simple printed assets"
+      ],
+      "limitations": [
+        "Very thin outlines can vanish at small sizes; choose visibly robust line weight in the canonical base."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "recommended",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "This produces raster vector-style artwork through imagegen; it does not promise editable SVG paths.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "sticker",
+      "name": "Sticker",
+      "category": "cartoon-vector",
+      "kind": "technique",
+      "description": "Polished die-cut mascot with bold clean shapes, a crisp contour and small controlled highlights.",
+      "tags": [
+        "decal",
+        "die-cut",
+        "bold-shapes",
+        "flat-color"
+      ],
+      "aliases": [
+        "decal"
+      ],
+      "instructions": {
+        "materials": "Suggest smooth opaque printed sticker stock with a clean cut edge.",
+        "forms": "Build a compact unified figure whose extremities fit a simple readable cut contour.",
+        "linework": "Use a crisp dark outline and, if compatible with references, a narrow attached light rim.",
+        "shading": "Add only small flat highlights and restrained overlap shading inside the character.",
+        "palette": "Choose clear flat colors with strong contrast between the outline and primary body hues.",
+        "texture": "Keep printed surfaces smooth; any gloss is a small stable mark, not a reflected scene.",
+        "rendering": "Render an isolated sticker mascot with no sheet, backing paper, curled corner or external shadow."
+      },
+      "negative_constraints": [
+        "Avoid a detached white border, broad halo or oversized die-cut surround.",
+        "Do not add slogans, lettering or decorative sparkles around the mascot."
+      ],
+      "use_cases": [
+        "Friendly sticker-like pets",
+        "Die-cut illustration concepts and badges"
+      ],
+      "limitations": [
+        "A light rim can disappear on white backgrounds or expand the silhouette; review the exact bound outline."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "recommended",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Preserve the intentional attached sticker rim during extraction; it is character artwork rather than chroma spill.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "cel-shaded",
+      "name": "Cel-Shaded Cartoon",
+      "category": "cartoon-vector",
+      "kind": "technique",
+      "description": "Volume drawn with crisp ink boundaries and discrete graphic light and shadow regions.",
+      "tags": [
+        "cel",
+        "hard-shadow",
+        "cartoon-volume",
+        "clean-ink"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use opaque digitally inked color with a polished animation-cel surface.",
+        "forms": "Build rounded expressive forms with clear overlapping joints and simplified anatomy.",
+        "linework": "Keep confident smooth contours with slightly heavier weight on the shadow side.",
+        "shading": "Use sharply bounded two- or three-tone shadow shapes that wrap around major volumes.",
+        "palette": "Keep local colors stable and shift values through a small coordinated shadow palette.",
+        "texture": "Leave fill regions smooth, with no painterly grain or photographic surface noise.",
+        "rendering": "Render an isolated character using one consistent graphic light direction and clean antialiased ink edges."
+      },
+      "negative_constraints": [
+        "Avoid airbrushed shadow borders, physically complex reflections or gradient-heavy surfaces.",
+        "Do not draw separate cast shadows or cinematic scenery to establish the lighting."
+      ],
+      "use_cases": [
+        "Animation-ready cartoon pets",
+        "Strongly lit character icon sets"
+      ],
+      "limitations": [
+        "Sharp shadows must follow the approved anatomy through motion without becoming new identity markings."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "recommended",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Use the canonical base to distinguish permanent markings from cel-shadow patches before state generation.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "soft-vector",
+      "name": "Soft Vector",
+      "category": "cartoon-vector",
+      "kind": "technique",
+      "description": "Rounded vector-style character with gentle internal gradients, colored edges and a soft but controlled finish.",
+      "tags": [
+        "vector-like",
+        "rounded",
+        "gentle-gradients",
+        "colored-contour"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use smooth opaque digital fills with a soft matte graphic finish.",
+        "forms": "Shape pill-like limbs, generous cheeks and rounded joins without sharp spikes.",
+        "linework": "Replace black ink with subtle darker local-color contours or clean color-to-color seams.",
+        "shading": "Apply broad low-contrast interior gradients that do not blur the outer silhouette.",
+        "palette": "Select a harmonious medium-contrast palette with darker face accents for readability.",
+        "texture": "Keep surface texture nearly absent; softness comes from form and shading rather than fuzz.",
+        "rendering": "Render the isolated mascot with carefully antialiased edges and restrained internal tonal falloff."
+      },
+      "negative_constraints": [
+        "Avoid an outer glow, blurry perimeter or low-opacity body that merges with the background.",
+        "Do not add volumetric photography, fur detail or heavy black comic outlines."
+      ],
+      "use_cases": [
+        "Gentle product mascots",
+        "Approachable interface characters"
+      ],
+      "limitations": [
+        "Very pale forms need sufficient contour contrast to remain readable across light and dark host surfaces."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "recommended",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Use alpha for soft contour sampling; chroma keying can discolor pale gradients near the boundary.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "geometric-cartoon",
+      "name": "Geometric Cartoon",
+      "category": "cartoon-vector",
+      "kind": "technique",
+      "description": "Character built from visible circles, triangles and angular planes with deliberately diagrammatic anatomy.",
+      "tags": [
+        "geometry",
+        "shape-built",
+        "angular",
+        "cartoon"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use flat opaque graphic shapes with no simulated material substrate.",
+        "forms": "Assemble the face and body from conspicuous circles, wedges, triangles and simple polygons.",
+        "linework": "Use sharp intentional joins and sparse geometric contour strokes rather than organic sketch lines.",
+        "shading": "Indicate volume with a few flat offset planes whose geometry matches the construction.",
+        "palette": "Balance a handful of contrasting color blocks while preserving approved identity colors.",
+        "texture": "Leave each geometric plane texture-free so the underlying shape grammar stays obvious.",
+        "rendering": "Render an isolated shape-built cartoon with equal visual weight given to silhouette and negative gaps."
+      },
+      "negative_constraints": [
+        "Avoid arbitrary ornamental shapes disconnected from anatomy.",
+        "Do not round every angle until the construction becomes a generic soft mascot."
+      ],
+      "use_cases": [
+        "Shape-language mascot systems",
+        "Geometric pictograms and teaching assets"
+      ],
+      "limitations": [
+        "Highly specific organic markings may need translation into simple geometric patches."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "recommended",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Inspect tiny triangular tips and internal gaps at final size; simplify geometry before increasing line weight.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "rubber-hose-animation",
+      "name": "Rubber-Hose Animation",
+      "category": "cartoon-vector",
+      "kind": "technique",
+      "description": "Elastic loop-limbed cartoon with rounded mitten extremities, buoyant curves and simple inked expression shapes.",
+      "tags": [
+        "elastic-limbs",
+        "vintage-cartoon",
+        "curved-ink",
+        "mitten-hands"
+      ],
+      "aliases": [
+        "rubber-hose"
+      ],
+      "instructions": {
+        "materials": "Use smooth opaque ink-and-cel fills with lightly rounded cartoon surfaces.",
+        "forms": "Build flexible tube limbs, broad shoes or paws and a bean-shaped torso around the approved identity.",
+        "linework": "Draw flowing unbroken curved contours with consistent weight and generous looped joints.",
+        "shading": "Keep shading sparse, using one simple underside patch when forms overlap.",
+        "palette": "Use clear body and accent colors separated by dark ink, respecting required modern colors when supplied.",
+        "texture": "Keep fills clean; a hint of cel irregularity may appear inside large regions only.",
+        "rendering": "Animate the isolated character through readable elastic arcs while holding facial proportions and markings stable."
+      },
+      "negative_constraints": [
+        "Avoid changing the number of fingers or introducing decorative floating musical notes.",
+        "Do not substitute a recognizable existing cartoon character for the approved mascot."
+      ],
+      "use_cases": [
+        "Bouncy expressive pets",
+        "Elastic looping character performances"
+      ],
+      "limitations": [
+        "Strong limb deformation needs identity review so hands, props and markings remain recognizable."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "recommended",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Design elastic poses within the shared viewport; exaggerated arcs do not justify clipping or per-frame rescaling.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "saturday-morning-cartoon",
+      "name": "Saturday-Morning Cartoon",
+      "category": "cartoon-vector",
+      "kind": "technique",
+      "description": "Energetic television-adventure character with broad graphic anatomy, decisive ink and emblematic expressions.",
+      "tags": [
+        "tv-cartoon",
+        "adventure",
+        "broad-anatomy",
+        "expressive"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use opaque animation-style paint with simple costume and body materials.",
+        "forms": "Exaggerate a few defining traits such as cheeks, brows or paws within a sturdy compact body.",
+        "linework": "Use decisive dark contours with angular accents at elbows, ears and expression creases.",
+        "shading": "Place a small set of graphic shadow wedges beneath overlaps and under the chin.",
+        "palette": "Choose confident separated character colors with strong accent blocks and a quiet shared shadow hue.",
+        "texture": "Keep surfaces smooth and production-simple rather than densely rendered.",
+        "rendering": "Draw isolated television-cartoon key poses with a consistent model-sheet face and clearly staged gestures."
+      },
+      "negative_constraints": [
+        "Avoid background action bursts, floating impact symbols or scene-specific lighting changes.",
+        "Do not swap approved props for generic adventure costumes without a user requirement."
+      ],
+      "use_cases": [
+        "Lively episodic mascot casts",
+        "Clear expression and action strips"
+      ],
+      "limitations": [
+        "Overly large expressions can alter eye spacing and face shape unless the approved model is closely followed."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "recommended",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Treat broad expression changes as animation, keeping the underlying head construction identical across rows.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "modern-mascot",
+      "name": "Modern Mascot",
+      "category": "cartoon-vector",
+      "kind": "technique",
+      "description": "Contemporary identity-led character with a memorable silhouette, few features and a polished flexible design system.",
+      "tags": [
+        "brand-character",
+        "simple-face",
+        "distinctive-silhouette",
+        "polished"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use clean matte digital color with only the material cues needed to support the character concept.",
+        "forms": "Emphasize one memorable body shape and a restrained set of large expressive facial features.",
+        "linework": "Use economical smooth contours, with consistent local-color outlines only where separation needs them.",
+        "shading": "Add a single soft or flat shade family while keeping the face almost unshaded.",
+        "palette": "Limit the design to primary body colors, one accent and strong facial contrast unless identity requires more.",
+        "texture": "Keep texture quiet so the silhouette and expression remain the memorable elements.",
+        "rendering": "Render a production-ready isolated mascot whose shape and visual weight are consistent across a full expression set."
+      },
+      "negative_constraints": [
+        "Avoid copying an existing corporate mascot or adding unapproved logos.",
+        "Do not increase facial detail, texture or accessory count between states."
+      ],
+      "use_cases": [
+        "Product and community mascots",
+        "Consistent animated brand characters"
+      ],
+      "limitations": [
+        "A simplified style still requires an explicit distinctive identity; generic roundness alone may be insufficient."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "recommended",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Approved reference features take precedence over the preset preference for few colors and minimal detail.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "editorial-cartoon",
+      "name": "Editorial Cartoon",
+      "category": "cartoon-vector",
+      "kind": "technique",
+      "description": "Expressive opinion-illustration character shaped through purposeful exaggeration, lively pen weight and concise washes.",
+      "tags": [
+        "editorial",
+        "caricature",
+        "pen-line",
+        "expressive-proportion"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Combine opaque pen-like marks with selective flat or lightly washed color areas.",
+        "forms": "Exaggerate approved character traits with a large expressive face and economical body anatomy.",
+        "linework": "Use lively tapered pen lines, stronger around the silhouette and looser inside the body.",
+        "shading": "Add a few directional hatch patches or flat shadow washes beneath overlaps.",
+        "palette": "Keep a restrained illustration palette with clear value contrast and controlled accent colors.",
+        "texture": "Suggest slight pen drag within major lines, avoiding stray sketch debris.",
+        "rendering": "Render a standalone editorial character with readable gestures and no caption or political-scene context."
+      },
+      "negative_constraints": [
+        "Avoid speech balloons, captions, labels or detached satirical symbols.",
+        "Do not turn expressive exaggeration into unapproved facial or identity changes."
+      ],
+      "use_cases": [
+        "Expressive commentary mascots",
+        "Illustrated communication characters"
+      ],
+      "limitations": [
+        "Caricature must exaggerate approved traits consistently rather than inventing different anatomy for each emotion."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Preserve intentional variable ink weight through downsampling; simplify hatch density before shrinking the character.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "doodle",
+      "name": "Doodle",
+      "category": "cartoon-vector",
+      "kind": "technique",
+      "description": "Spontaneous-looking character made from economical looping marks, imperfect contours and a few broad color accents.",
+      "tags": [
+        "casual-line",
+        "sketchbook",
+        "looping-marks",
+        "simple"
+      ],
+      "aliases": [
+        "doodle-art"
+      ],
+      "instructions": {
+        "materials": "Use felt-pen-like opaque marks with occasional broad flat color swashes inside the form.",
+        "forms": "Construct the body from a few naive loops and simple lopsided shapes that remain intentionally repeatable.",
+        "linework": "Draw slightly wobbly single-pass contours with rounded starts and stops.",
+        "shading": "Suggest depth with one or two loose short hatch groups instead of full modeling.",
+        "palette": "Keep most marks in a dark ink family with a few approved color accents.",
+        "texture": "Preserve small line irregularities while keeping the surrounding alpha completely clean.",
+        "rendering": "Render an isolated doodle mascot whose apparent spontaneity uses the same landmarks in every state."
+      },
+      "negative_constraints": [
+        "Avoid notebook paper, margin scribbles or detached decorative marks.",
+        "Do not let contour wobble randomly change body mass, face placement or props."
+      ],
+      "use_cases": [
+        "Casual friendly pets",
+        "Simple hand-drawn status illustrations"
+      ],
+      "limitations": [
+        "The base needs reproducible landmark placement so a loose drawing style does not become identity drift."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "recommended",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Keep the outline dark and thick enough for the smallest output; do not erase deliberate pen taper as background noise.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "kawaii",
+      "name": "Kawaii Cartoon",
+      "category": "cartoon-vector",
+      "kind": "technique",
+      "description": "Extremely simple rounded character with spacious facial placement, gentle linework and small restrained expression changes.",
+      "tags": [
+        "cute",
+        "rounded",
+        "simple-face",
+        "gentle"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use smooth opaque matte cartoon fills with minimal material simulation.",
+        "forms": "Favor softly rounded compact proportions, stubby extremities and ample clear space around the face.",
+        "linework": "Use gentle rounded contour lines with no aggressive spikes or scratchy hatching.",
+        "shading": "Keep the face flat and use only a faint lower-body shade or tiny cheek accent.",
+        "palette": "Use friendly clear body colors with high-contrast eyes and the required identity accents.",
+        "texture": "Keep surfaces nearly textureless; cuteness comes from spacing and proportion rather than detail.",
+        "rendering": "Render the isolated character with small legible expression changes and stable eye spacing throughout animation."
+      },
+      "negative_constraints": [
+        "Avoid floating hearts, stars, blush clouds or decorative sparkle fields.",
+        "Do not replace approved markings with a generic blank face to make it cuter."
+      ],
+      "use_cases": [
+        "Gentle companion pets",
+        "Small expressive reaction mascots"
+      ],
+      "limitations": [
+        "Extremely tiny mouths or pale outlines may need enlargement or contrast adjustment for actual-size readability."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "recommended",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Keep cheek accents inside the face and distinguish them from approved permanent markings during base review.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "chibi",
+      "name": "Chibi Character",
+      "category": "cartoon-vector",
+      "kind": "technique",
+      "description": "Miniaturized character illustration with an oversized expressive head, compact torso and deliberately abbreviated anatomy.",
+      "tags": [
+        "super-deformed",
+        "big-head",
+        "compact-anatomy",
+        "character"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use opaque clean illustration fills with simple hair, fabric or body-material cues.",
+        "forms": "Enlarge the head relative to a short torso and small sturdy limbs while preserving identity landmarks.",
+        "linework": "Draw confident tapered outlines with clear separation around hair, ears and tiny hands.",
+        "shading": "Use a small number of cel-shadow patches to clarify the head and overlapping body parts.",
+        "palette": "Keep approved hair, body and costume colors distinct with limited highlight accents.",
+        "texture": "Simplify material detail into a few large locks, folds or patches instead of fine strands.",
+        "rendering": "Render an isolated chibi figure with the entire shortened body and approved props visible."
+      },
+      "negative_constraints": [
+        "Avoid detached emotion symbols, giant speech balloons or decorative backgrounds.",
+        "Do not change apparent species, age cues or costume identity merely to exaggerate the head."
+      ],
+      "use_cases": [
+        "Compact character avatars",
+        "Expressive miniature mascot performances"
+      ],
+      "limitations": [
+        "Large heads and props require careful balance so running and waving silhouettes fit the shared viewport."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "recommended",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Record the chosen head-to-body proportion in the canonical identity and preserve it in action poses.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "minimal-outline",
+      "name": "Minimal Outline",
+      "category": "cartoon-vector",
+      "kind": "technique",
+      "description": "Character described by a small number of clean open and closed contour strokes with almost no interior modeling.",
+      "tags": [
+        "contour",
+        "minimal",
+        "line-art",
+        "sparse"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use opaque smooth line ink with sparse flat fills only where identity needs them.",
+        "forms": "Reduce anatomy to a clear outer contour and a few essential facial and joint landmarks.",
+        "linework": "Use an even rounded stroke with deliberate openings that do not fragment the main body.",
+        "shading": "Omit volumetric shading; a tiny solid overlap accent may clarify a hand or prop.",
+        "palette": "Use one dominant stroke color plus explicitly required identity accents.",
+        "texture": "Keep lines clean and smooth with no grain, hatching or textured fill.",
+        "rendering": "Render an isolated minimal contour mascot with stroke width chosen for actual-size visibility."
+      },
+      "negative_constraints": [
+        "Avoid hairline strokes, accidental contour gaps or intricate nested loops.",
+        "Do not add shadows, halos or filled decorative badge shapes behind the outline."
+      ],
+      "use_cases": [
+        "Lightweight interface mascots",
+        "Simple line pictograms"
+      ],
+      "limitations": [
+        "Outline-only anatomy can be hard to distinguish against mixed backgrounds; review both dark and light surfaces."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "recommended",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Transparent body interiors are intentional where present; preserve them without treating the drawing as an unreviewed extraction failure.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "thick-outline",
+      "name": "Thick Outline",
+      "category": "cartoon-vector",
+      "kind": "technique",
+      "description": "Graphic character whose heavy rounded contour and simplified inner divisions carry most of the visual identity.",
+      "tags": [
+        "bold-ink",
+        "heavy-contour",
+        "cartoon",
+        "high-readability"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use dense opaque outline ink surrounding smooth flat cartoon color.",
+        "forms": "Build broad squat forms with ample interior space around eyes and important markings.",
+        "linework": "Draw a consistently heavy contour with rounded corners and slightly lighter interior dividers.",
+        "shading": "Restrict shading to a few broad flat patches that do not compete with the ink.",
+        "palette": "Contrast dark linework against bright or light body regions while retaining required palette cues.",
+        "texture": "Leave fill areas untextured and let the weight of the ink supply visual impact.",
+        "rendering": "Render an isolated bold-outline mascot with clear line junctions and no congested facial detail."
+      },
+      "negative_constraints": [
+        "Avoid stacked outlines, tiny enclosed gaps or dense black knots at limb overlaps.",
+        "Do not allow contour thickness to vary simply because a pose was drawn at a different scale."
+      ],
+      "use_cases": [
+        "High-contrast small pets",
+        "Bold illustration stickers and icons"
+      ],
+      "limitations": [
+        "Very heavy ink may swallow small accessories and facial features unless those features are enlarged."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "recommended",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Review at the actual cell size; measure apparent line weight consistently across the canonical base and every state.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "cutout-cartoon",
+      "name": "Cutout Cartoon",
+      "category": "cartoon-vector",
+      "kind": "technique",
+      "description": "Flat cartoon assembled from rigid illustrated body pieces with visible overlaps and puppet-like articulation.",
+      "tags": [
+        "cutout-animation",
+        "jointed",
+        "flat-pieces",
+        "puppet"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use opaque flat illustrated pieces that appear cut from painted sheets.",
+        "forms": "Construct a torso, head and broad limb segments as separate but visually connected simple shapes.",
+        "linework": "Keep piece perimeters clean, with slightly stronger seams at the intended joints.",
+        "shading": "Use tiny interior overlap shadows between body pieces, without a shadow behind the whole figure.",
+        "palette": "Assign stable solid colors to each piece and keep repeated limbs visually matched.",
+        "texture": "Allow a faint painted-sheet surface inside parts while preserving smooth cut boundaries.",
+        "rendering": "Render the isolated character as a coherent articulated cutout with fixed piece shapes throughout motion."
+      },
+      "negative_constraints": [
+        "Avoid detached spare parts, visible control rods or a theatrical stage.",
+        "Do not stretch rigid pieces into rubbery anatomy unless explicitly required by the action."
+      ],
+      "use_cases": [
+        "Puppet-like cartoon loops",
+        "Reusable modular illustrated casts"
+      ],
+      "limitations": [
+        "Rotation at joints must not expose unintended gaps or change which parts overlap in impossible ways."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "recommended",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Preserve deliberate internal seams; extraction should remove only the outside background, not the joints between parts.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "classic-animation",
+      "name": "Classic Hand-Drawn Animation",
+      "category": "cartoon-vector",
+      "kind": "technique",
+      "description": "Appealing hand-drawn character with sculptural curves, carefully tapered ink and controlled squash-and-stretch appeal.",
+      "tags": [
+        "hand-drawn",
+        "animation-cel",
+        "tapered-ink",
+        "squash-stretch"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use smooth opaque cel-like paint under carefully drawn expressive ink.",
+        "forms": "Shape rounded volumes with clear line-of-action curves and balanced squash-and-stretch anatomy.",
+        "linework": "Taper ink through curves, keeping overlaps deliberate and facial lines delicate but readable.",
+        "shading": "Use sparse painted shadow shapes that support the volume without flattening the gesture.",
+        "palette": "Coordinate local colors and soft shadow hues around the approved character palette.",
+        "texture": "Keep fills clean with only a trace of hand-drawn variation in line contours.",
+        "rendering": "Render isolated animation drawings with consistent construction landmarks and flowing, readable key poses."
+      },
+      "negative_constraints": [
+        "Avoid copying the design of an established studio character.",
+        "Do not use motion smears that erase required facial identity in every readable key pose."
+      ],
+      "use_cases": [
+        "Expressive hand-drawn pets",
+        "Character-performance animation studies"
+      ],
+      "limitations": [
+        "Expressive deformation requires visual review of volume and landmark consistency across the full timed sequence."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "recommended",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Style permits expressive deformation but does not change the profile state count, frame counts or timing.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "expressive-character-illustration",
+      "name": "Expressive Character Illustration",
+      "category": "cartoon-vector",
+      "kind": "technique",
+      "description": "Gesture-led illustrated mascot with intentionally asymmetric curves, expressive brows and varied but controlled brush-pen line.",
+      "tags": [
+        "gesture",
+        "brush-pen",
+        "personality",
+        "asymmetrical-curves"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Combine opaque brushed ink with confident flat or lightly modeled illustration color.",
+        "forms": "Design the body around a strong gesture and a few distinctive asymmetric curves.",
+        "linework": "Vary brush-pen pressure deliberately, with broad outer strokes and lively interior expression lines.",
+        "shading": "Place selective graphic shade blocks to reinforce gesture, leaving the face uncluttered.",
+        "palette": "Use a small character-specific palette with a purposeful accent supporting facial expression.",
+        "texture": "Retain restrained brush edge irregularity inside major contours without loose splatter.",
+        "rendering": "Render an isolated personality-rich figure with repeatable asymmetry and consistent construction in each pose."
+      },
+      "negative_constraints": [
+        "Avoid off-body emphasis marks, handwritten captions or decorative color swashes.",
+        "Do not improvise new asymmetries or change eye and ear construction between expressions."
+      ],
+      "use_cases": [
+        "Personality-led mascot casts",
+        "Animated expressive illustration"
+      ],
+      "limitations": [
+        "Spontaneous gestures need a clear model sheet so expressiveness does not become inconsistent anatomy."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Keep permanent asymmetry attached to the correct anatomical side; do not infer that style authorizes mirroring.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    }
+  ]
+}

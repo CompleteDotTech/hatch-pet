@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "category": "adaptive",
+  "styles": [
+    {
+      "id": "auto",
+      "name": "Automatic / reference guided",
+      "category": "adaptive",
+      "kind": "adaptive",
+      "description": "Resolve an explicit artistic cue when present; otherwise preserve supplied references or use a readable flat-vector default.",
+      "tags": [
+        "adaptive",
+        "reference",
+        "identity"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "When visual references are supplied, infer and preserve their approved material response instead of assigning a new material. Without references, use the resolved supported default.",
+        "forms": "Retain the reference proportions and silhouette; simplify only unresolved tiny shapes so the whole subject stays recognizable in the selected cells.",
+        "linework": "Match the approved source contour language, whether stepped, painted or smooth; keep its thickness and edge treatment consistent across the full sequence.",
+        "shading": "Use the reference shading logic and light direction without introducing new shadows or highlights between states; a text-only default uses simple color planes.",
+        "palette": "Preserve required colors and reference markings; never infer a replacement brand palette or select a chroma key by recoloring the approved subject.",
+        "texture": "Reuse visible reference texture at a scale that reads in the final cell; pin its distinctive motifs and seams to the same surfaces in all poses.",
+        "rendering": "Choose a supported direction consistent with the user concept: pixel for stepped grids, plush for stitched fabric, clay for sculpted material, painterly for brushwork, or flat-vector for clean graphic forms. Approved references control the final technique; lock it in the canonical base review."
+      },
+      "negative_constraints": [
+        "Do not average incompatible reference styles or silently restyle imported artwork.",
+        "Do not treat automatic selection as visual proof or introduce background scenes."
+      ],
+      "use_cases": [
+        "Reference-led character development",
+        "Consistent reusable asset sequences"
+      ],
+      "limitations": [
+        "Automatic textual matching cannot inspect source pixels; reference-guided runs require an explicit canonical-base art-direction review."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "adapted",
+        "grid": "adapted"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Inspect the actual approved medium before selecting resampling; use nearest for stepped grids and filtered resampling for continuous edges.",
+        "notes": [
+          "Actual reference materials may require a different extraction filter; inspect alpha and key collisions before state generation."
+        ]
+      },
+      "recommended_modifiers": []
+    },
+    {
+      "id": "brand-inspired",
+      "name": "Brand inspired",
+      "category": "adaptive",
+      "kind": "adaptive",
+      "description": "Translate attributed approved brand cues into an original compact character while preserving explicit requirements and identity.",
+      "tags": [
+        "brand",
+        "identity",
+        "mascot"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Translate an approved brand material cue into a simplified surface such as matte product plastic, woven workwear or soft coated paper; use only cues present in the retained brief.",
+        "forms": "Build original rounded or angular character masses from the approved product personality; keep recognizable reference proportions and avoid reshaping an existing imported mascot.",
+        "linework": "Use a single contour system informed by approved graphic guidance, such as even monoline or broad rounded outlines; freeze this choice at the canonical base.",
+        "shading": "Favor a small consistent highlight-and-shadow vocabulary suitable for the approved brand finish; keep every light and reflected shape inside the character.",
+        "palette": "Apply retained approved brand colors only where explicit character requirements allow; maintain their hierarchy and contrast without inserting logos or lettering.",
+        "texture": "Use one restrained surface motif derived from attributed guidance; make it large enough to survive reduction and keep repeat placement stable through animation.",
+        "rendering": "Create a readable original mascot from approved public or user-provided colors, themes and tone. Keep researched inferences attributed and subordinate to explicit constraints; avoid logo copying and readable brand text unless explicitly approved."
+      },
+      "negative_constraints": [
+        "Do not invent brand facts, palette approvals or source attribution.",
+        "Do not copy a logo, add branded text or claim official affiliation without an explicit request."
+      ],
+      "use_cases": [
+        "Reference-led character development",
+        "Consistent reusable asset sequences"
+      ],
+      "limitations": [
+        "Brand guidance does not establish permission or visual consistency; record sources and review original character identity."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "adapted",
+        "grid": "adapted"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Inspect the actual approved medium before selecting resampling; use nearest for stepped grids and filtered resampling for continuous edges.",
+        "notes": [
+          "Actual reference materials may require a different extraction filter; inspect alpha and key collisions before state generation."
+        ]
+      },
+      "recommended_modifiers": []
+    }
+  ]
+}
