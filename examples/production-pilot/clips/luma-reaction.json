@@ -1,0 +1,128 @@
+{
+  "character": "luma@3.0.0",
+  "completion": "hold",
+  "contacts": [],
+  "displacement": [
+    0,
+    0
+  ],
+  "duration_frames": 24,
+  "end_pose": "stand",
+  "entry_points": [
+    {
+      "frame": 0,
+      "pose": "stand"
+    }
+  ],
+  "events": [],
+  "exit_points": [
+    {
+      "frame": 23,
+      "pose": "stand"
+    }
+  ],
+  "facing": "front",
+  "full_frames": [],
+  "id": "luma-reaction",
+  "interpolation": {
+    "max_frames": 12,
+    "max_offset_per_frame": 20,
+    "max_rotation_per_frame": 20
+  },
+  "interruptions": {
+    "cancel_pose": "stand",
+    "frames": [
+      0,
+      12,
+      23
+    ],
+    "max_transition_frames": 12,
+    "policy": "at-markers"
+  },
+  "kind": "clip",
+  "mode": "once",
+  "requirements": {
+    "action": [
+      "reaction"
+    ],
+    "expression": [
+      "warm-surprise"
+    ],
+    "hand": [
+      "open-paw"
+    ],
+    "intensity": [
+      "medium"
+    ],
+    "pose": [
+      "stand"
+    ]
+  },
+  "root": {
+    "offset": {
+      "interpolation": "linear",
+      "keys": [
+        {
+          "frame": 0,
+          "value": [
+            0,
+            0
+          ]
+        }
+      ]
+    }
+  },
+  "schema_version": 1,
+  "start_pose": "stand",
+  "tracks": {
+    "body": {},
+    "face": {
+      "brows": {
+        "drawing": {
+          "interpolation": "step",
+          "keys": [
+            {
+              "frame": 0,
+              "value": "neutral"
+            },
+            {
+              "frame": 5,
+              "value": "raised"
+            },
+            {
+              "frame": 21,
+              "value": "neutral"
+            }
+          ]
+        }
+      },
+      "head": {
+        "rotation": {
+          "interpolation": "linear",
+          "keys": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 8,
+              "value": 4
+            },
+            {
+              "frame": 18,
+              "value": 2
+            },
+            {
+              "frame": 24,
+              "value": 0
+            }
+          ]
+        }
+      }
+    },
+    "gaze": {},
+    "mouth": {}
+  },
+  "version": "3.0.0",
+  "viewpoint": "front"
+}
