@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "kind": "fresh-synthetic-regression-evidence",
+  "created_at": "2026-10-19T20:10:35.930076+00:00",
+  "scratch_project": "/tmp/hatch-production-final-regression-wn1w32a4",
+  "renderer": {
+    "id": "hatch-reference-rgba",
+    "version": "1.0.0",
+    "code_sha256": "7b8b1c68aef4e55ca5941f32ba6c928b599f059b81a0f9b3b9989424f6c53833",
+    "implementation": {
+      "production_render.py": "b4d6cf5b97268d650ccef53d721ee352ad4583c39e71eee950f3ae5ade4de492",
+      "production_performance.py": "6d282e15b541d7f13dab076529a6c395e004b10bd596a065b5cdf17a4f03a26c",
+      "production_contracts.py": "7b0c7f873a5b8cd129cf6d550cb5d1ba7ac7a367c399b1a300ccebacb98e2a46"
+    },
+    "pillow": "13.0.0",
+    "python": "3.12.14",
+    "compositing": "8-bit encoded-srgb source-over; straight output alpha",
+    "filtering": "premultiplied-alpha affine except exact nearest"
+  },
+  "fixture": true,
+  "human_review": false,
+  "production_art_acceptance": false,
+  "provider_called": false,
+  "elapsed_seconds": 18.206,
+  "scene_count": 3,
+  "frame_count": 300,
+  "coverage_ready": true,
+  "scenes": [
+    {
+      "scene_id": "first-scene",
+      "frame_count": 12,
+      "render_manifest": "renders/first-scene/render-manifest.json",
+      "preview": "renders/first-scene/index.html",
+      "storyboard": "first-scene-storyboard.png",
+      "movie": "renders/first-scene/review.mp4",
+      "validated": true,
+      "complete": true,
+      "resume_operation": {
+        "rendered_frames": 0,
+        "reused_frames": 12
+      },
+      "manifest_sha256": "6962792f6f7176182b687375853b77d2123b4260decf678a97157f00132a9a4f",
+      "movie_sha256": "141b30b7e8903d24b3d7430fd3afd129ed3216e049517d75d4377bd4f1ec0036",
+      "movie_bytes": 4792,
+      "storyboard_sha256": "5256ff9e47f1d8d8915c49fd9fd315fab9942dc0e406722672671c326b7b26a5",
+      "validation": {
+        "ok": true,
+        "kind": "offline-frame-and-pcm-validation",
+        "frame_count": 12,
+        "fps": {
+          "denominator": 1,
+          "numerator": 12
+        },
+        "duration": {
+          "numerator": 1,
+          "denominator": 1
+        },
+        "sample_count": 48000,
+        "render_manifest_sha256": "6962792f6f7176182b687375853b77d2123b4260decf678a97157f00132a9a4f",
+        "visual_review": "not-performed",
+        "application_integration": "not-performed"
+      }
+    },
+    {
+      "scene_id": "second-scene",
+      "frame_count": 12,
+      "render_manifest": "renders/second-scene/render-manifest.json",
+      "preview": "renders/second-scene/index.html",
+      "storyboard": "second-scene-storyboard.png",
+      "movie": "renders/second-scene/review.mp4",
+      "validated": true,
+      "complete": true,
+      "resume_operation": {
+        "rendered_frames": 0,
+        "reused_frames": 12
+      },
+      "manifest_sha256": "0ed08cbb4415e151345eab529de03302058d6461c28ca8088178f08903e51681",
+      "movie_sha256": "52ac38398c7f3ce304c569e4ac83ca42cc8141078bfc9127cf647338b491e66d",
+      "movie_bytes": 5033,
+      "storyboard_sha256": "39b0e70eaa184fd4164307f91f4761f86b32ec223fbd04d01e74480f5f86a6f1",
+      "validation": {
+        "ok": true,
+        "kind": "offline-frame-and-pcm-validation",
+        "frame_count": 12,
+        "fps": {
+          "denominator": 1,
+          "numerator": 12
+        },
+        "duration": {
+          "numerator": 1,
+          "denominator": 1
+        },
+        "sample_count": 48000,
+        "render_manifest_sha256": "0ed08cbb4415e151345eab529de03302058d6461c28ca8088178f08903e51681",
+        "visual_review": "not-performed",
+        "application_integration": "not-performed"
+      }
+    },
+    {
+      "scene_id": "regression-performances",
+      "frame_count": 276,
+      "render_manifest": "renders/regression-performances/render-manifest.json",
+      "preview": "renders/regression-performances/index.html",
+      "storyboard": "regression-performances-storyboard.png",
+      "movie": "renders/regression-performances/review.mp4",
+      "validated": true,
+      "complete": true,
+      "resume_operation": {
+        "rendered_frames": 0,
+        "reused_frames": 276
+      },
+      "manifest_sha256": "fb063ece468fd5b4a78ad5486bda2092fff22cb69a63867c2070678aa3fb2cd5",
+      "movie_sha256": "af268821a21b452633b6b0142fae8fd756599dc1a0e4f37fd7a0843ee1a675f0",
+      "movie_bytes": 84315,
+      "storyboard_sha256": "b6521d99bf52fff642b00c56f3c6489401b1b98ba3381e9c22af2a650aafa456",
+      "validation": {
+        "ok": true,
+        "kind": "offline-frame-and-pcm-validation",
+        "frame_count": 276,
+        "fps": {
+          "denominator": 1,
+          "numerator": 12
+        },
+        "duration": {
+          "numerator": 23,
+          "denominator": 1
+        },
+        "sample_count": 552000,
+        "render_manifest_sha256": "fb063ece468fd5b4a78ad5486bda2092fff22cb69a63867c2070678aa3fb2cd5",
+        "visual_review": "not-performed",
+        "application_integration": "not-performed"
+      }
+    }
+  ],
+  "copied_evidence": {
+    "acceptance.json": "5d57908f697b0dc04ab02e12306475f390984af7f378da5e8ab5e7a6798676f6",
+    "performance-evidence.json": "72c7bc26ac5ea85031c5fc2cc0d5829de3fbf2490e3771e6097c7485709dda85"
+  }
+}
