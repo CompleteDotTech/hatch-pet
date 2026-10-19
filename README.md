@@ -5,7 +5,7 @@
 <img src="assets/title.svg" alt="hatch-pet" width="720">
 
 **A Codex skill for animated pets and reusable visual asset production.**<br>
-Start with a concept, brand, sketch, or existing artwork. Generate through the installed imagegen skill or import explicitly, validate and visually review, then export or create a local package.
+Start with a concept, brand, sketch, or existing artwork. Generate through the installed imagegen skill, import explicitly, or decompose a character into editable visual components. Validate and visually review, then export or create a local package.
 
 <br>
 
@@ -180,6 +180,37 @@ See [the local delivery validation report](references/validation-results.md) for
 
 <br>
 
+## Character decomposition: from a finished image back to editable layers
+
+Hatch Pet supports both directions of character creation:
+
+| Direction | Workflow |
+| --- | --- |
+| Forward | Description and references → canonical character → poses and animation → assets |
+| Reverse | Existing character image → foreground analysis and semantic annotations → transparent components → reviewed character definition → reusable generation references |
+
+```bash
+python scripts/hatch.py decompose --source ./character.png --run-dir ./output/decomposed-character
+python scripts/hatch.py decompose-review-ui --run-dir ./output/decomposed-character --destination ./output/decomposition-review
+python scripts/hatch.py decompose-validate --run-dir ./output/decomposed-character
+```
+
+The reverse workflow preserves the original file and extracts actual visible source pixels into tightly cropped transparent assets with full-canvas masks, placement coordinates, semantic hierarchy, pivots, confidence, and provenance. It writes `decomposition.json`, compatible `identity.json`, deterministic recomposition and comparison previews, and coverage/overlap diagnostics. PNG, JPEG and WebP inputs keep their native resolution; pixel art keeps its original palette and uses nearest-neighbor previews.
+
+The local review desk supports component isolation, mask correction, split/merge, names and categories, hierarchy, layer order, pivots, attachments, component verdicts and undo. Downloaded changes must be applied through the controller; revisions stay bound to the original source hash. A corrected component can be rebuilt independently while unaffected component approvals remain valid.
+
+**Semantic labels require evidence.** The offline path identifies foreground geometry and retains every unassigned pixel for review. Supplied masks and semantic labels enable connected body regions to become separate parts, and disconnected details to remain one logical part. An unannotated image is a reviewable starting point; a matching reconstruction does not establish that its anatomy was understood. Optional model assistance follows a documented external annotation/imagegen handoff, and hidden-area reconstruction requires explicit opt-in with separately preserved observed assets.
+
+For a complete, inspectable fixture exercise with no model calls:
+
+```bash
+python examples/decomposition/build_fixture.py --case creature --output-dir output/decomposition-creature
+```
+
+This creates an authored nonhuman character, extracted layers, a portable export and reload, and an ordinary forward run with an imported base and pending animation work. It never fabricates human approval or generated frames. [Character decomposition](references/character-decomposition.md) contains annotation examples, review/export/reload commands, forward reuse, documented limits, and the separate real-image semantic acceptance protocol.
+
+<br>
+
 ## ⚙️ Under the shell
 
 ```mermaid
@@ -216,6 +247,10 @@ flowchart LR
 | `scripts/export_assets.py` | Frames, atlas, stills, GIF/WebP and bounded browser state-machine playback |
 | `scripts/asset_exporters.py` | Printable cards, flipbooks, boards, stimuli, Xcursor and craft grids |
 | `scripts/demonstrate.py` | Ten labeled deterministic demonstrations and acceptance checks |
+| `scripts/character_decomposition.py` | Source-preserving character import, semantic component extraction, deterministic reconstruction and validation |
+| `scripts/decomposition_masks.py` / `scripts/decomposition_spec.py` | Bounded source-space masks and strict extensible character contracts |
+| `scripts/decomposition_review.py` | Source-bound component corrections, review evidence and revision restoration |
+| `scripts/decomposition_package.py` / `scripts/decomposition_reuse.py` | Validated portable layer packages and provenance-tracked forward generation inputs |
 
 **Design principles**
 

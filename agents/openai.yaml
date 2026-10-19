@@ -1,4 +1,4 @@
 interface:
   display_name: "Hatch Pet"
-  short_description: "Create, import and review reusable visual assets"
-  default_prompt: "Use $hatch-pet to create or import, validate, visually review and export a Codex pet or a purpose-specific raster asset sequence."
+  short_description: "Create, decompose and review reusable character assets"
+  default_prompt: "Use $hatch-pet to create, import or decompose character artwork, validate source provenance and pixels, visually review and export editable layers, a Codex pet or a purpose-specific raster asset sequence."

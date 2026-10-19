@@ -50,8 +50,10 @@ def build():
         '$defs':{'identity':identity,'source':source,'annotation':annotation},
         'oneOf':[{'$ref':'#/$defs/'+name} for name in ('identity','source','annotation')]}
     from style_registry import catalog_schema
+    from decomposition_spec import schemas as decomposition_schemas
     return {ROOT/'profiles/profile.schema.json':profile,ROOT/'profiles/asset-inputs.schema.json':inputs,
-            ROOT/'profiles/style-catalog.schema.json':catalog_schema()}
+            ROOT/'profiles/style-catalog.schema.json':catalog_schema(),
+            **{ROOT / 'profiles' / name: value for name, value in decomposition_schemas().items()}}
 
 
 if __name__=='__main__':

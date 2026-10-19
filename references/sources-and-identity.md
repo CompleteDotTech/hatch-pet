@@ -2,6 +2,8 @@
 
 Source interface version 1 supports installed-imagegen generation and explicit imports. Imports accept single-frame PNG, WebP and JPEG: an image for the canonical base, a horizontal strip for a state, or an ordered list of equal-sized frames for a state. SVG, PDF, video and animated-image imports are rejected; convert deliberately before import. Frame lists are concatenated without per-pose scaling. Arbitrary layouts can use [rectangular extraction annotations](extraction-and-review.md).
 
+For one flattened character that needs editable semantic layers, use [character decomposition](character-decomposition.md). Its separate manifest preserves raw-source hashes, normalized pixels, full-canvas ownership masks, component placement and source attribution. `decompose-prepare` imports the observed foreground as an ordinary canonical base and carries compatible structured identity plus selected component references into the existing forward workflow. Decomposition evidence never substitutes for base review, genuine new artwork or animation review.
+
 Descriptors contain `schema_version: 1`, `kind: "import"`, `layout: "image" | "strip" | "frames"`, `files: [...]`, and nonempty `origin` attribution. File paths resolve relative to the descriptor. `fixture: true` can only enter fixture-mode runs. Originals must be outside managed run outputs and are preserved. Import receipts retain original hashes, descriptor hash, normalized source hash, origin and inspection note. They are distinct from generation receipts.
 
 ## Complete import-and-review recipe

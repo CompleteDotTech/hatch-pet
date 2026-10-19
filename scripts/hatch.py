@@ -1349,8 +1349,9 @@ def calibrate(root, data, path, apply=False):
 
 
 def main():
+    from decomposition_cli import COMMANDS as decomposition_commands, add_arguments as decomposition_arguments
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument('command', choices=['prepare', 'status', 'claim', 'ingest', 'import-source', 'base-review', 'fail', 'resume', 'repair', 'configure', 'revise-profile', 'derive', 'validate', 'review-template', 'review-ui', 'review', 'export', 'package', 'install', 'rollback', 'cleanup', 'doctor', 'capabilities', 'limits', 'annotate', 'calibrate', 'archive', 'restore', 'migrate', 'styles', 'style', 'style-modifiers'])
+    p.add_argument('command', choices=['prepare', 'status', 'claim', 'ingest', 'import-source', 'base-review', 'fail', 'resume', 'repair', 'configure', 'revise-profile', 'derive', 'validate', 'review-template', 'review-ui', 'review', 'export', 'package', 'install', 'rollback', 'cleanup', 'doctor', 'capabilities', 'limits', 'annotate', 'calibrate', 'archive', 'restore', 'migrate', 'styles', 'style', 'style-modifiers', *decomposition_commands])
     p.add_argument('--run-dir', help='Required for lifecycle commands; omit for doctor, capabilities and style discovery')
     p.add_argument('--search', default='', help='Style keyword, name or category search')
     p.add_argument('--category', help='Filter styles by stable category ID')
@@ -1367,7 +1368,7 @@ def main():
     p.add_argument('--pet-notes', default='')
     for flag in ('profile', 'constraints', 'identity', 'reference-roles', 'brand-discovery-file', 'brand-name', 'brand-brief', 'chroma-key', 'style-preset', 'style-notes', 'description', 'pet-id', 'display-name'):
         p.add_argument('--' + flag)
-    p.add_argument('--background', choices=['auto', 'alpha', 'chroma'])
+    p.add_argument('--background', choices=['auto', 'alpha', 'chroma', 'solid', 'keep'])
     p.add_argument('--holes', choices=['preserve', 'key'])
     p.add_argument('--shared-scale', type=float)
     p.add_argument('--key-threshold', type=float)
@@ -1378,6 +1379,7 @@ def main():
     p.add_argument('--unit-budget', type=float)
     for flag in ('reference', 'avoid', 'require', 'brand-source'):
         p.add_argument('--' + flag, action='append', default=[])
+    decomposition_arguments(p)
     args = p.parse_args()
     required = {
         'claim': ('job',), 'ingest': ('job', 'source', 'token', 'receipt'),
@@ -1413,7 +1415,10 @@ def main():
             raise ValueError('--out must be outside the run to avoid changing reviewed artifacts')
         with ownership(root):
             recover_prepare(root)
-            if args.command == 'restore':
+            if args.command in decomposition_commands:
+                from decomposition_cli import dispatch
+                result = dispatch(root, args)
+            elif args.command == 'restore':
                 from portable_runs import restore_run
                 result = restore_run(args.source, root)
             elif args.command == 'migrate':
