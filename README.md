@@ -177,6 +177,8 @@ The production workflow adds versioned projects and casts, layered character con
 
 Start with the [production recipe](references/production-pilot.md) to restore the exact artwork and original speech, reconstruct the editable project, render both scenes, inspect them, review changes and export the editor handoff. The [demonstration index](examples/production-pilot/README.md) separates source provenance, actual artwork inspection, offline timing, adapter verification and application integration. [Production validation](references/production-validation.md) records the current results and limitations; [P01–P15 traceability](references/production-traceability.md) maps the requirements to code, tests and evidence.
 
+**Current delivery limitation:** both films and the complete project are validated locally, but automatic approval review has blocked publication of specific artwork and TTS source parts, plus textual review-history parts. Fresh-clone reconstruction of the production pilot requires those remaining parts; [delivery status](DELIVERY_STATUS.md) records the public branch boundary and pending approval. The synthetic workflow below uses no model calls or pilot media.
+
 For a complete model-free regression demonstration:
 
 ```bash
