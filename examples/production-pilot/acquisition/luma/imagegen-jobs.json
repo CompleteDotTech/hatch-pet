@@ -1,0 +1,321 @@
+{
+  "schema_version": 3,
+  "created_at": "2026-10-19T17:36:50.319569+00:00",
+  "run_dir": "/workspace/scratch/368aa013e993/hatch-pet/examples/production-pilot/acquisition/luma",
+  "primary_generation_skill": "$imagegen",
+  "jobs": [
+    {
+      "id": "base",
+      "kind": "base-pet",
+      "status": "generated",
+      "prompt_file": "prompts/base-pet.md",
+      "input_images": [],
+      "output_path": "decoded/base.png",
+      "depends_on": [],
+      "generation_skill": "$imagegen",
+      "requires_grounded_generation": false,
+      "allow_prompt_only_generation": true,
+      "attempts": 1,
+      "history": [
+        {
+          "event": "claim",
+          "time": 1792436301.4348147,
+          "token": "51df83d7125246eb9c9b86853336f834",
+          "input_hashes": {
+            "pet_request.json": "b0e58378b074606d0741a1954e85c6f0c85bdad8d4e9f0558883863a4a740bb1",
+            "prompts/base-pet.md": "a52f022c339aed4fa2fc1982ac985c7805b9163faf71124795a66a0a35be290d",
+            "@generation-profile": "610558d8647dc55d0d08e439a24fd362a2bf438952f58d23bafa204bec16bb41"
+          },
+          "prompt_snapshot": {
+            "path": "prompts/base-pet.md",
+            "sha256": "a52f022c339aed4fa2fc1982ac985c7805b9163faf71124795a66a0a35be290d",
+            "utf8": "Create one canonical full-body character reference for `luma` using the installed imagegen skill.\n\nIdentity: a slender teal rabbit with long upright ears and cream inner ears, cream muzzle and belly, dark brown eyes, soft paws and an ochre waistcoat with two small buttons. Base image: a design turnaround with four full-body views arranged left to right: front, three-quarter, side, back. Consistent relative scale. No text..\nStyle: Pet-safe sprite: compact full-body mascot, readable at the selected profile cell size, clear silhouette, simple face, stable palette/materials, and crisp edges for alpha or selected chroma-key extraction. Style `painterly`: Painterly mascot with simplified brush texture, readable forms, stable palette, and enough edge clarity for clean extraction. User style notes: Polished storybook cut-paper animation artwork, softly painted fur texture, clean readable silhouettes, rounded anatomy, warm light from upper left. True transparent RGBA background. No floor, shadow outside the character, scenery, text, labels, grid lines, watermark or unrelated props..\nPreserve the approved input references. Keep the entire subject visible and readable at 1024x1024.\nReturn a true transparent alpha background. Preserve intentional holes, permitted detached details, and antialiased character edges. Do not draw a checkerboard or a solid background.\n\nProfile requirements:\n- Create the requested original character design and construction artwork. Polished storybook cut-paper animation artwork, softly painted fur texture, clean readable silhouettes, rounded anatomy, warm light from upper left. True transparent RGBA background. No floor, shadow outside the character, scenery, text, labels, grid lines, watermark or unrelated props.\n\nExplicit user requirements and avoidances (preserve across retries):\n{\"require\": [\"original non-fixture production artwork\", \"retain asymmetry and costume\", \"true transparency\"], \"avoid\": [\"text\", \"background\", \"unrelated props\"]}\nInferred brand guidance (subordinate to explicit user instructions; preserve sources and uncertainty):\n{\"guidance\": {\"text\": \"\", \"sources\": [], \"inferred\": true, \"uncertainty\": \"No researched brand guidance supplied.\"}, \"effective_avoid\": [], \"reported_conflicts\": []}\nComplete structured constraints for provenance:\n{\"require\": [\"original non-fixture production artwork\", \"retain asymmetry and costume\", \"true transparency\"], \"avoid\": [\"text\", \"background\", \"unrelated props\"], \"brand_avoid\": [], \"brand_guidance\": {\"text\": \"\", \"sources\": [], \"inferred\": true, \"uncertainty\": \"No researched brand guidance supplied.\"}, \"conflicts\": [], \"effective_brand_avoid\": [], \"identity\": {\"schema_version\": 1, \"markings\": [\"cream inner ears and muzzle\", \"two small waistcoat buttons\"], \"palette\": {\"fur\": \"#548F8B\", \"cream\": \"#E5DDC2\", \"waistcoat\": \"#C69540\", \"eyes\": \"#302D2B\"}, \"materials\": [\"softly painted fur\", \"matte woven costume\"], \"proportions\": {\"head_to_body_height\": 0.6}, \"approved_props\": [\"ochre waistcoat\"], \"asymmetries\": [], \"directions\": {\"parts\": \"front\"}, \"forbid_mirror\": true, \"unresolved_conflicts\": []}}\n"
+          },
+          "input_images": [],
+          "identity": {
+            "schema_version": 1,
+            "markings": [
+              "cream inner ears and muzzle",
+              "two small waistcoat buttons"
+            ],
+            "palette": {
+              "fur": "#548F8B",
+              "cream": "#E5DDC2",
+              "waistcoat": "#C69540",
+              "eyes": "#302D2B"
+            },
+            "materials": [
+              "softly painted fur",
+              "matte woven costume"
+            ],
+            "proportions": {
+              "head_to_body_height": 0.6
+            },
+            "approved_props": [
+              "ochre waistcoat"
+            ],
+            "asymmetries": [],
+            "directions": {
+              "parts": "front"
+            },
+            "forbid_mirror": true,
+            "unresolved_conflicts": []
+          }
+        },
+        {
+          "event": "generated",
+          "time": 1792436364.266887,
+          "source_hash": "270eb609c8cc566a61f3081d09c6e2f47390592d7650e9547872a64cb9f1cced",
+          "source_path": "/workspace/scratch/368aa013e993/hatch-pet/examples/production-pilot/art/originals/luma-turnaround-v3.png",
+          "output_hash": "e96b5277966d7ffd52371580647ad120937dbdad226470726e56329ab7c72e96",
+          "model_call": {
+            "id": null,
+            "model": null,
+            "parameters": null,
+            "unavailable_reason": "The handoff did not expose provider call metadata."
+          },
+          "generation_receipt": {
+            "generation_skill": "$imagegen",
+            "input_hashes": {
+              "pet_request.json": "b0e58378b074606d0741a1954e85c6f0c85bdad8d4e9f0558883863a4a740bb1",
+              "prompts/base-pet.md": "a52f022c339aed4fa2fc1982ac985c7805b9163faf71124795a66a0a35be290d",
+              "@generation-profile": "610558d8647dc55d0d08e439a24fd362a2bf438952f58d23bafa204bec16bb41"
+            },
+            "job": "base",
+            "token": "51df83d7125246eb9c9b86853336f834"
+          }
+        }
+      ],
+      "input_hashes": {
+        "pet_request.json": "b0e58378b074606d0741a1954e85c6f0c85bdad8d4e9f0558883863a4a740bb1",
+        "prompts/base-pet.md": "a52f022c339aed4fa2fc1982ac985c7805b9163faf71124795a66a0a35be290d",
+        "@generation-profile": "610558d8647dc55d0d08e439a24fd362a2bf438952f58d23bafa204bec16bb41"
+      },
+      "started_at": 1792436301.434668,
+      "canonical_hash": "e96b5277966d7ffd52371580647ad120937dbdad226470726e56329ab7c72e96",
+      "output_hash": "e96b5277966d7ffd52371580647ad120937dbdad226470726e56329ab7c72e96",
+      "source_hash": "270eb609c8cc566a61f3081d09c6e2f47390592d7650e9547872a64cb9f1cced",
+      "source_path": "/workspace/scratch/368aa013e993/hatch-pet/examples/production-pilot/art/originals/luma-turnaround-v3.png",
+      "qa_note": "Actual front, three-quarter, side and back design inspected. Teal rabbit, cream muzzle/inner ears/belly and ochre two-button waistcoat retained. Thin whiskers reach the canvas edge; construction uses independently extracted front parts. Original is retained without a prior-version approval.",
+      "generated_at": 1792436364.2668765,
+      "generation_receipt": {
+        "generation_skill": "$imagegen",
+        "input_hashes": {
+          "pet_request.json": "b0e58378b074606d0741a1954e85c6f0c85bdad8d4e9f0558883863a4a740bb1",
+          "prompts/base-pet.md": "a52f022c339aed4fa2fc1982ac985c7805b9163faf71124795a66a0a35be290d",
+          "@generation-profile": "610558d8647dc55d0d08e439a24fd362a2bf438952f58d23bafa204bec16bb41"
+        },
+        "job": "base",
+        "token": "51df83d7125246eb9c9b86853336f834"
+      },
+      "source_origin": "imagegen",
+      "model_call": {
+        "id": null,
+        "model": null,
+        "parameters": null,
+        "unavailable_reason": "The handoff did not expose provider call metadata."
+      }
+    },
+    {
+      "id": "parts",
+      "kind": "row-strip",
+      "status": "generated",
+      "prompt_file": "prompts/rows/parts.md",
+      "retry_prompt_file": "prompts/row-retries/parts.md",
+      "input_images": [
+        {
+          "path": "references/layout-guides/parts.png",
+          "role": "layout guide for 1 frame slots; do not copy guide lines"
+        },
+        {
+          "path": "references/canonical-base.png",
+          "role": "canonical identity reference"
+        }
+      ],
+      "output_path": "decoded/parts.png",
+      "depends_on": [
+        "base"
+      ],
+      "generation_skill": "$imagegen",
+      "requires_grounded_generation": true,
+      "allow_prompt_only_generation": false,
+      "identity_reference_paths": [
+        "references/canonical-base.png"
+      ],
+      "parallelizable_after": [
+        "base"
+      ],
+      "derivation_policy": {
+        "may_derive": false,
+        "allowed": [],
+        "requires_explicit_approval": false
+      },
+      "attempts": 1,
+      "history": [
+        {
+          "event": "claim",
+          "time": 1792436364.8813505,
+          "token": "948af97bb9fd47068eb7203a2f1f5b27",
+          "input_hashes": {
+            "pet_request.json": "b0e58378b074606d0741a1954e85c6f0c85bdad8d4e9f0558883863a4a740bb1",
+            "prompts/rows/parts.md": "f2a8183cddcb62e40d27d83dfaaf7a61afa44ada910460fbcefa948cde4935da",
+            "prompts/row-retries/parts.md": "4b0a12e6b5a79d5fbb0d31b5d5f5e9ea0dc01b385caad933c2085002ba8d5833",
+            "references/layout-guides/parts.png": "12b10c983aff1f94e0b3d27191dac8688e38f1f2d54e0238e734fe5b1372c7e1",
+            "references/canonical-base.png": "e96b5277966d7ffd52371580647ad120937dbdad226470726e56329ab7c72e96",
+            "@generation-profile": "3fa027552a822ea67a0c3b57cd03062daafc2ab5d2289991ad23a06dc0426392"
+          },
+          "prompt_snapshot": {
+            "path": "prompts/rows/parts.md",
+            "sha256": "f2a8183cddcb62e40d27d83dfaaf7a61afa44ada910460fbcefa948cde4935da",
+            "utf8": "Create one horizontal animation strip for `luma`, state `parts`, using the installed imagegen skill.\n\nAttach every identity and layout input listed in this job, including the canonical base and all original references. Use the layout guide for slot geometry only; never draw its lines or labels.\nOutput exactly 1 complete poses in left-to-right playback order, one pose in each equal-width slot, with clear gutters and no overlap or clipping.\nIdentity: a slender teal rabbit with long upright ears and cream inner ears, cream muzzle and belly, dark brown eyes, soft paws and an ochre waistcoat with two small buttons. Base image: a design turnaround with four full-body views arranged left to right: front, three-quarter, side, back. Consistent relative scale. No text.. Preserve the same face, proportions, markings, palette, material, style, and approved props in every frame except explicitly approved state differences.\nStyle: Pet-safe sprite: compact full-body mascot, readable at the selected profile cell size, clear silhouette, simple face, stable palette/materials, and crisp edges for alpha or selected chroma-key extraction. Style `painterly`: Painterly mascot with simplified brush texture, readable forms, stable palette, and enough edge clarity for clean extraction. User style notes: Polished storybook cut-paper animation artwork, softly painted fur texture, clean readable silhouettes, rounded anatomy, warm light from upper left. True transparent RGBA background. No floor, shadow outside the character, scenery, text, labels, grid lines, watermark or unrelated props..\nAction: One layered construction sheet for manual hash-bound part extraction\nMotion policy: static. Preserve intentional vertical motion, including jump height. Maintain one consistent source viewport and apparent character scale across the row; a wider or taller pose must not be drawn at a different scale.\nExtraction alignment: {\"coordinate_policy\": \"slot\", \"scale_policy\": \"row\", \"padding\": 5, \"anchor\": [0.5, 0.5]}. This describes extraction; do not draw anchors or guides.\nDetached character details are permitted by this profile when semantically intended.\nReturn a true transparent alpha background. Preserve intentional holes, permitted detached details, and antialiased character edges. Do not draw a checkerboard or a solid background.\n\nProfile requirements:\n- Create the requested original character design and construction artwork. Polished storybook cut-paper animation artwork, softly painted fur texture, clean readable silhouettes, rounded anatomy, warm light from upper left. True transparent RGBA background. No floor, shadow outside the character, scenery, text, labels, grid lines, watermark or unrelated props.\n- Create ONE animation construction sheet in an exact 4-column by 4-row grid of equally sized invisible cells. Every separate item is centered with generous transparent margins within its own cell; nothing crosses a cell boundary. Front view only, consistent scale and palette. These are reusable drawings, not sixteen complete characters. Row 1 left to right: torso with costume, no head or arms or legs; whole head including ears and muzzle and nose but NO eyes, eyebrows or mouth; viewer-left upper arm ending at wrist, no hand; viewer-right upper arm ending at wrist, no hand. Row 2: viewer-left open paw; viewer-right open paw; viewer-left entire short leg with foot; viewer-right entire short leg with foot. Row 3: a pair of open eyes only; a pair of closed blinking eyes only; a pair of raised friendly eyebrows only; a pair of neutral eyebrows only. Row 4: closed neutral smiling mouth only; open A speaking mouth only; E speaking mouth only; round O speaking mouth only. Do not include any eye socket, background patch or duplicate muzzle around facial drawings. Torso and limbs have full rounded overlapping joint ends for a cutout rig. Keep the torso roughly 220px high and head roughly 210px wide within a cell, except the rabbit head with ears can be tall. All four mouth shapes share the same center and scale, all eye pairs share the same spacing. Preserve identity, costume details and upper-left lighting from the attached canonical four-view reference. The second attachment is the required overall layout safety guide: keep all artwork inside the square; use the explicit 4x4 arrangement described here, and do not copy visible guide marks.\n\nExplicit user requirements and avoidances (preserve across retries):\n{\"require\": [\"original non-fixture production artwork\", \"retain asymmetry and costume\", \"true transparency\"], \"avoid\": [\"text\", \"background\", \"unrelated props\"]}\nInferred brand guidance (subordinate to explicit user instructions; preserve sources and uncertainty):\n{\"guidance\": {\"text\": \"\", \"sources\": [], \"inferred\": true, \"uncertainty\": \"No researched brand guidance supplied.\"}, \"effective_avoid\": [], \"reported_conflicts\": []}\nComplete structured constraints for provenance:\n{\"require\": [\"original non-fixture production artwork\", \"retain asymmetry and costume\", \"true transparency\"], \"avoid\": [\"text\", \"background\", \"unrelated props\"], \"brand_avoid\": [], \"brand_guidance\": {\"text\": \"\", \"sources\": [], \"inferred\": true, \"uncertainty\": \"No researched brand guidance supplied.\"}, \"conflicts\": [], \"effective_brand_avoid\": [], \"identity\": {\"schema_version\": 1, \"markings\": [\"cream inner ears and muzzle\", \"two small waistcoat buttons\"], \"palette\": {\"fur\": \"#548F8B\", \"cream\": \"#E5DDC2\", \"waistcoat\": \"#C69540\", \"eyes\": \"#302D2B\"}, \"materials\": [\"softly painted fur\", \"matte woven costume\"], \"proportions\": {\"head_to_body_height\": 0.6}, \"approved_props\": [\"ochre waistcoat\"], \"asymmetries\": [], \"directions\": {\"parts\": \"front\"}, \"forbid_mirror\": true, \"unresolved_conflicts\": []}}\n"
+          },
+          "input_images": [
+            {
+              "path": "references/layout-guides/parts.png",
+              "role": "layout guide for 1 frame slots; do not copy guide lines"
+            },
+            {
+              "path": "references/canonical-base.png",
+              "role": "canonical identity reference"
+            }
+          ],
+          "identity": {
+            "schema_version": 1,
+            "markings": [
+              "cream inner ears and muzzle",
+              "two small waistcoat buttons"
+            ],
+            "palette": {
+              "fur": "#548F8B",
+              "cream": "#E5DDC2",
+              "waistcoat": "#C69540",
+              "eyes": "#302D2B"
+            },
+            "materials": [
+              "softly painted fur",
+              "matte woven costume"
+            ],
+            "proportions": {
+              "head_to_body_height": 0.6
+            },
+            "approved_props": [
+              "ochre waistcoat"
+            ],
+            "asymmetries": [],
+            "directions": {
+              "parts": "front"
+            },
+            "forbid_mirror": true,
+            "unresolved_conflicts": []
+          }
+        },
+        {
+          "event": "generated",
+          "time": 1792436460.8816833,
+          "source_hash": "bdfb919fd64776e45014f9654f41cf83d56bd5f34a2d1979b1bb09fd80be32f6",
+          "source_path": "/workspace/scratch/368aa013e993/hatch-pet/examples/production-pilot/art/originals/luma-parts-v3.png",
+          "output_hash": "ba819f471cef4444f3d98954560cc58e1d0e2ff97841a89a9a2d0d9d5a5bd243",
+          "model_call": {
+            "id": null,
+            "model": null,
+            "parameters": null,
+            "unavailable_reason": "The handoff did not expose provider call metadata."
+          },
+          "generation_receipt": {
+            "generation_skill": "$imagegen",
+            "input_hashes": {
+              "pet_request.json": "b0e58378b074606d0741a1954e85c6f0c85bdad8d4e9f0558883863a4a740bb1",
+              "prompts/rows/parts.md": "f2a8183cddcb62e40d27d83dfaaf7a61afa44ada910460fbcefa948cde4935da",
+              "prompts/row-retries/parts.md": "4b0a12e6b5a79d5fbb0d31b5d5f5e9ea0dc01b385caad933c2085002ba8d5833",
+              "references/layout-guides/parts.png": "12b10c983aff1f94e0b3d27191dac8688e38f1f2d54e0238e734fe5b1372c7e1",
+              "references/canonical-base.png": "e96b5277966d7ffd52371580647ad120937dbdad226470726e56329ab7c72e96",
+              "@generation-profile": "3fa027552a822ea67a0c3b57cd03062daafc2ab5d2289991ad23a06dc0426392"
+            },
+            "job": "parts",
+            "token": "948af97bb9fd47068eb7203a2f1f5b27"
+          }
+        }
+      ],
+      "prompt_settings_hash": "5a3d9200833ed703f9f814a21e2b2bc58d8daa94fcd4e998e0b2ba4aac341ad3",
+      "input_hashes": {
+        "pet_request.json": "b0e58378b074606d0741a1954e85c6f0c85bdad8d4e9f0558883863a4a740bb1",
+        "prompts/rows/parts.md": "f2a8183cddcb62e40d27d83dfaaf7a61afa44ada910460fbcefa948cde4935da",
+        "prompts/row-retries/parts.md": "4b0a12e6b5a79d5fbb0d31b5d5f5e9ea0dc01b385caad933c2085002ba8d5833",
+        "references/layout-guides/parts.png": "12b10c983aff1f94e0b3d27191dac8688e38f1f2d54e0238e734fe5b1372c7e1",
+        "references/canonical-base.png": "e96b5277966d7ffd52371580647ad120937dbdad226470726e56329ab7c72e96",
+        "@generation-profile": "3fa027552a822ea67a0c3b57cd03062daafc2ab5d2289991ad23a06dc0426392"
+      },
+      "started_at": 1792436364.8811996,
+      "output_hash": "ba819f471cef4444f3d98954560cc58e1d0e2ff97841a89a9a2d0d9d5a5bd243",
+      "source_hash": "bdfb919fd64776e45014f9654f41cf83d56bd5f34a2d1979b1bb09fd80be32f6",
+      "source_path": "/workspace/scratch/368aa013e993/hatch-pet/examples/production-pilot/art/originals/luma-parts-v3.png",
+      "qa_note": "Actual construction sheet inspected. Arms include paw tips despite request; component extraction will terminate at the wrist and use the separate paw drawings. Mouth choices include complete muzzle patches and use fixed nose-anchor registration. Eye choices preserve cream surrounds. Head and torso are retained with explicit joint masks. Acquisition is not visual acceptance of the assembled rig or motion.",
+      "generated_at": 1792436460.8816714,
+      "generation_receipt": {
+        "generation_skill": "$imagegen",
+        "input_hashes": {
+          "pet_request.json": "b0e58378b074606d0741a1954e85c6f0c85bdad8d4e9f0558883863a4a740bb1",
+          "prompts/rows/parts.md": "f2a8183cddcb62e40d27d83dfaaf7a61afa44ada910460fbcefa948cde4935da",
+          "prompts/row-retries/parts.md": "4b0a12e6b5a79d5fbb0d31b5d5f5e9ea0dc01b385caad933c2085002ba8d5833",
+          "references/layout-guides/parts.png": "12b10c983aff1f94e0b3d27191dac8688e38f1f2d54e0238e734fe5b1372c7e1",
+          "references/canonical-base.png": "e96b5277966d7ffd52371580647ad120937dbdad226470726e56329ab7c72e96",
+          "@generation-profile": "3fa027552a822ea67a0c3b57cd03062daafc2ab5d2289991ad23a06dc0426392"
+        },
+        "job": "parts",
+        "token": "948af97bb9fd47068eb7203a2f1f5b27"
+      },
+      "source_origin": "imagegen",
+      "model_call": {
+        "id": null,
+        "model": null,
+        "parameters": null,
+        "unavailable_reason": "The handoff did not expose provider call metadata."
+      }
+    }
+  ],
+  "run_id": "e35092f6bece4078a65dd0eae401b835",
+  "gates": {},
+  "history": [],
+  "fixture_mode": false,
+  "previous_run_id": null,
+  "versions": {
+    "hatch": "2.0.0",
+    "run_schema": 3,
+    "profile_schemas": [
+      1,
+      2
+    ],
+    "source_schema": 1,
+    "python": "3.12.14",
+    "pillow": "13.0.0",
+    "platform": "Linux-6.18.55-x86_64-with-glibc2.39",
+    "code_sha256": "669858632b5df2884e558c41bca8c3dce25134672386dbc0cb032921fa45da7e",
+    "consumer_assets": {
+      "playback.html": "531e6407405be8d7e7db23d72a095269dac08908751d3b2d402ace1e415eacde",
+      "playback.js": "078d218c82fbc41653bd346f932b7c30f873b9e44a2b2078cef909773c347b21",
+      "production-preview.html": "3d5fce3fa06ad46fcbf0dba48008a001e02a355c751295fd16402ce5f81f3efa",
+      "production-preview.js": "23bba7db4ad716bbcb16c7311f5cf8889c19bcc49738ddf9d4771bdf9dc9a3b0",
+      "review.html": "f4cf831b82819f4e4d3b3641d1082c5274908b3665d90384205a11cb12359db8"
+    },
+    "model_call": {
+      "id": null,
+      "model": null,
+      "parameters": null,
+      "unavailable_reason": "No model call is performed by the deterministic controller."
+    }
+  },
+  "limits": {
+    "attempts_per_job": 1,
+    "concurrency": 1,
+    "generation_calls": 2,
+    "estimated_units_per_call": null,
+    "unit_budget": null
+  },
+  "base_review": {
+    "canonical_hash": "e96b5277966d7ffd52371580647ad120937dbdad226470726e56329ab7c72e96",
+    "settings_hash": "5a3d9200833ed703f9f814a21e2b2bc58d8daa94fcd4e998e0b2ba4aac341ad3",
+    "time": 1792436364.7766316,
+    "note": "Assistant visual inspection of actual four-view design and alpha. Approved as a design reference for front-view construction; no back/side animation rig is implied. Separate component, motion, dialogue and shot review remains required.",
+    "accepted_color_warning": false
+  }
+}
