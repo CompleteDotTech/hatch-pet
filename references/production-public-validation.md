@@ -8,6 +8,22 @@ The October 20 recovery restored every missing artwork/audio fragment and the or
 
 The [anonymous public-clone report](../tests/results/public-delivery-public-clone.json) verifies public revision `51d0e5a951465993d2ebf3556ef4eb870bc4d640`: all four transports, complete project restoration, unchanged checkout, and a portable archive roundtrip preserving all 20 historical review records. It deliberately records `complete_delivery_gate: false` because that run exercised restoration without the full test/render options. The production CLI separately reported no missing or stale resources, with two characters, 20 clips, five shots and both scenes.
 
+The later [anonymous-public proof](../tests/results/public-delivery-anonymous-final.json) verifies `bb79992`: all five transports, all seven public media/provenance files, exact two-scene restoration, an unchanged checkout and a 168-file portable archive retaining all 20 reviews. It also records the reduced-duplicate-storage sequence used after shared-disk failures. This is restoration evidence; full rendering results remain independently scoped.
+
+## Verified three-platform delivery
+
+The complete gate passed on Linux, macOS and Windows for implementation commit [`bb79992`](https://github.com/CompleteDotTech/hatch-pet/commit/bb799921eb3ded5eef9eb5d27bb4ff3375b86a78). The PR checkout `c6de0f6` has the identical Git tree, `109884f147b92e7ab9e11b4b4a797c33485d2624`. The [CI evidence index](../tests/results/public-delivery-ci.json) binds actual reports, logs, artifact digests and jobs. Later documentation-only commits are covered by the final PR checks; the reports retain their original execution revision.
+
+| Platform | Python | Tests | Failures / errors | Recorded exceptions | Regression time |
+| --- | --- | ---: | --- | --- | ---: |
+| [Linux report](../tests/results/public-delivery-linux.json) / [log](../tests/results/public-delivery-linux-tests.log) | 3.12.15 | 790 | 0 / 0 | One optional native Krita check | 313.090 s |
+| [macOS report](../tests/results/public-delivery-macos.json) / [log](../tests/results/public-delivery-macos-tests.log) | 3.12.10 | 790 | 0 / 0 | One optional native Krita check | 342.587 s |
+| [Windows report](../tests/results/public-delivery-windows.json) / [log](../tests/results/public-delivery-windows-tests.log) | 3.12.10 | 790 | 0 / 0 | Native Krita; POSIX FIFO unavailable | 446.828 s |
+
+Every platform completed both 432/264-frame layered films, exact 36/22-second PCM, FFmpeg stream validation, full PNG/WAV/OpenRaster handoffs and portable archive restoration. Repeat rendering produced zero new frames and reused all 696 verified frames with unchanged manifests. All source inventories and scene PCM hashes agree across the three platforms. The Linux frame and MP4 bytes also match the public media and the original historical frame dependencies. No required regression was skipped, and every checkout remained unchanged.
+
+These are full normal-mode results, with `complete_delivery_gate: true`; none uses the reduced `--compact` scope. Native editor execution and human or auditory review are not inferred.
+
 ## Reproduce the complete gate
 
 Use a fresh clone, Python 3.12, Git, Node, FFmpeg/ffprobe, and the pinned dependencies:
@@ -39,7 +55,7 @@ The command checks:
 
 The frozen local regression ran **786 tests in 267.596 seconds**, with **zero failures, zero errors and one native Krita skip**. Its [actual log](../tests/results/public-delivery-local-tests.log) and [input hashes/report](../tests/results/public-delivery-local.json) are retained. After that run, the added checkpoint-preservation regression passed with all six delivery tests, and all 17 transport cases passed, including all four bundles and pinned metadata under forced Git newline conversion. These targeted logs are also retained in `tests/results/`.
 
-The earlier sandbox-only integration exposed Chromium kernel restrictions and one legacy review invalidated by concurrent source edits. Those issues were resolved for the frozen 786-test pass above; required browser checks were not skipped. The following render attempt exhausted the shared workstation disk while writing scene audio. A later full-gate attempt was also interrupted by shared disk exhaustion. Atomic report replacement now preserves the previous checkpoint on a failed write. The initial public Linux [full CI gate](https://github.com/CompleteDotTech/hatch-pet/actions/runs/39405174981) subsequently passed **787 tests**, complete rendering, video validation, repeat reuse and both full editor handoffs. Mac and Windows exposed canonical-path bugs and platform-dependent PNG encoding and floating-point authoring; these are required failures, not optional skips. The repaired gate adds a renderer-backend regression (**790 tests** total) and must pass on all three platforms before merge.
+The earlier sandbox-only integration exposed Chromium kernel restrictions and one legacy review invalidated by concurrent source edits. Those issues were resolved for the frozen 786-test pass above; required browser checks were not skipped. The following render attempt exhausted the shared workstation disk while writing scene audio. A later full-gate attempt was also interrupted by shared disk exhaustion. Atomic report replacement now preserves the previous checkpoint on a failed write. The initial public Linux [full CI gate](https://github.com/CompleteDotTech/hatch-pet/actions/runs/39405174981) subsequently passed **787 tests**, complete rendering, video validation, repeat reuse and both full editor handoffs. Mac and Windows exposed canonical-path bugs and platform-dependent PNG encoding and floating-point authoring; these are required failures, not optional skips. The repaired gate adds a renderer-backend regression (**790 tests** total) and passed on all three platforms as recorded above.
 
 ## Historical records remain historical
 
