@@ -215,6 +215,18 @@ class SavedSelectionWorkflows(unittest.TestCase):
             self.assertFalse(accepted['production_artwork_accepted'])
             self.assertFalse(accepted['external_integration_verified'])
 
+    def test_animated_demo_preserves_distinct_poses_with_pixel_style_resampling(self):
+        from demonstrate_states import demonstrate_states
+        with tempfile.TemporaryDirectory(prefix='hatch-state-pixel-demo-') as directory:
+            accepted = demonstrate_states('states-cat', directory)
+            self.assertTrue(accepted['ok'])
+            self.assertEqual((accepted['states'], accepted['frames']), (25, 100))
+            self.assertEqual(accepted['model_calls'], 0)
+            root = Path(directory) / 'states-cat/run'
+            self.assertEqual(hatch.read(root / 'extraction-settings.json')['resampling'], 'nearest')
+            self.assertTrue(accepted['fixture'])
+            self.assertFalse(accepted['production_artwork_accepted'])
+
 
 if __name__ == '__main__':
     unittest.main()

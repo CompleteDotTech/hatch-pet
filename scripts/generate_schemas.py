@@ -51,7 +51,9 @@ def build():
     inputs={'$schema':'https://json-schema.org/draft/2020-12/schema','title':'Hatch asset input interfaces v1',
         '$defs':{'identity':identity,'source':source,'annotation':annotation},
         'oneOf':[{'$ref':'#/$defs/'+name} for name in ('identity','source','annotation')]}
-    return {ROOT/'profiles/profile.schema.json':profile,ROOT/'profiles/asset-inputs.schema.json':inputs}
+    from style_registry import catalog_schema
+    return {ROOT/'profiles/profile.schema.json':profile,ROOT/'profiles/asset-inputs.schema.json':inputs,
+            ROOT/'profiles/style-catalog.schema.json':catalog_schema()}
 
 
 if __name__=='__main__':

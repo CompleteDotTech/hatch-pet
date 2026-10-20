@@ -64,7 +64,7 @@ def import_source(root, data, name, descriptor_path, note):
     hatch.os.replace(temporary, target)
     if name == 'base':
         hatch.shutil.copy2(target, root / 'references/canonical-base.png')
-        hatch.select_base(root, data)
+        hatch.select_base(root, data, source_origin='import')
         job['canonical_hash'] = sha(root / 'references/canonical-base.png')
     for key in ('generation_receipt', 'derivation_receipt', 'derived_from', 'source_path', 'source_hash', 'model_call', 'generated_at', 'qa_note'):
         job.pop(key, None)

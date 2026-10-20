@@ -30,6 +30,16 @@ Read the compilation estimates, substitutions and omissions. Confirm the chosen 
 
 Treat every catalog entry as a definition, not generated artwork. `states preview` reports available assets and their origin/review status; an ungenerated state has no animation preview. Never build or generate the Complete Character Studio as one atlas. Use bounded subsets, inspect state/frame/memory/call estimates, and retain the existing attempt/concurrency/budget controls. Use `--reduced-motion` at compilation for one expressive still per selected state, or the ordinary per-state still alternatives in browser playback. Expanded profiles are custom exports; they do not extend Codex's fixed nine rows.
 
+## Select and preserve visual style
+
+Use `python scripts/hatch.py styles` to enumerate the versioned visual library, `styles --search WORD` or `--category ID` to narrow it, and `style --style-preset ID` to inspect the full artistic direction and limitations. Add `--json` for agent-readable metadata. Read [the style catalog](references/style-catalog.md) for every ID, category quick starts, composition rules and contributor instructions; do not load the entire catalog into a generation prompt.
+
+Select a stable ID or declared alias with the existing `--style-preset`. Add explicit refinements with `--style-notes` and zero to four separate themes with repeated `--style-modifier`; enumerate those with `style-modifiers`. Keep themes, treatments and aliases separate from the technique count. Preserve the original nine presets and existing profile semantics.
+
+Resolve the style once during preparation. Keep `pet_request.json.resolved_style`, its version/hash and exact contract unchanged across canonical-base generation, rows, retries, repair, resume and archive restoration. Every profile receives the complete selected instructions. Explicit requirements/avoidances, approved references/identity and the profile contract take precedence. For an imported base, preserve its approved existing rendering; do not restyle it or label it generated because a preset was requested. For reference-guided `auto`, lock the exact rendering through canonical visual review.
+
+Read compatibility warnings before generation. Adapt glass, light effects, fibers, fine marks and decorative techniques into a readable isolated silhouette. Resolve unsupported chroma combinations using alpha or a deliberate supported adaptation before proceeding. New runs use the style's recommended extraction fallback; explicit profile filters win. Use nearest for crisp grids and filtered edges for continuous media, preserving fixed geometry. Review actual-size consistency and edge quality; record notes for every current warning. Automated catalog tests do not establish subjective imagegen artwork quality.
+
 ## Execute and preserve evidence
 
 1. **Prepare** a new run with profile, concept, style, user constraints, structured identity and required references. Keep inferred brand guidance separate, attributed and subordinate to explicit requirements. Report unresolved conflicts. Structured identity helps inspection; it does not prove visual consistency.
@@ -50,6 +60,7 @@ When authorized to delegate, one worker may own one existing generation claim or
 ## Reference map
 
 - [Workflow](references/workflow.md): preparation, acquisition, validation, review and delivery commands.
+- [Style catalog](references/style-catalog.md): complete IDs, aliases, thematic modifiers, materials, compatibility, frozen specifications and extension schema.
 - [Sources and identity](references/sources-and-identity.md): schemas and complete import recipe.
 - [Extraction and review](references/extraction-and-review.md): annotations, filters, calibration and evidence UI.
 - [Portability and operations](references/portability-and-operations.md): limits, stale work, schema migration, archives and restore.

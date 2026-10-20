@@ -1,0 +1,363 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-20",
+  "implementation_version": "2.1.0",
+  "integration_base": "55d4c829bc8ec81c3cf52095937f25cade4d2874",
+  "state_implementation_tree": "f76857e778d4e10433b34a2a6f9e038ec1cfe7b4",
+  "code_sha256": "b9b76c94a3fecaa8af6d394b6090fe8186d469371845279cd43514831daed925",
+  "consumer_assets": {
+    "playback.html": "531e6407405be8d7e7db23d72a095269dac08908751d3b2d402ace1e415eacde",
+    "playback.js": "9aa7d5228de0a57cd443b70c14b160cb22238d21a861a0fb06f6b4bcc6ccbc79",
+    "review.html": "1bcb05b6e053c363f47a8e63d177fb5d9e752774bc04459353aed7c670fa0ac8"
+  },
+  "state_catalog": {
+    "catalog_version": "1.0.0",
+    "catalog_sha256": "5de72dedb3262ee0e350d1c5b45fa1cd4455d763b4760fa69ff20914f1895795",
+    "states": 416,
+    "aliases": 408,
+    "categories": 16,
+    "packs": 16,
+    "archetypes": 15,
+    "capabilities": 19,
+    "transition_recipes": 9,
+    "animation_recipes": 9,
+    "category_counts": {
+      "neutral-idle": 34,
+      "positive-emotions": 26,
+      "difficult-emotions": 30,
+      "cognition": 29,
+      "locomotion": 40,
+      "social-gestures": 32,
+      "pet-daily-life": 49,
+      "agent-workflows": 43,
+      "activities-hobbies": 19,
+      "game-rpg": 29,
+      "streaming-communication": 17,
+      "environmental-reactions": 14,
+      "narrative-cinematic": 13,
+      "transitions-microexpressions": 14,
+      "lifecycle-progression": 14,
+      "accessibility": 13
+    },
+    "artwork_status": "definitions-only"
+  },
+  "style_catalog": {
+    "version": "1.0.0",
+    "sha256": "be2cc5f8e194a61f28b0828edbb2baef295865757d099fdf1ab25c801bfcf747",
+    "styles": 205,
+    "modifiers": 14
+  },
+  "codex": {
+    "profile": "profiles/codex-v1.json",
+    "sha256": "f4e0279f8634ea53ef544ecb49b9a71ec2565c61ec5b8e63163ecc5ead478a6b",
+    "unchanged_from_base": true,
+    "expanded_consumer_supported": false
+  },
+  "environment": {
+    "python": "3.12.14",
+    "pillow": "13.0.0",
+    "jsonschema": "4.26.0",
+    "playwright": "1.64.0",
+    "chromium_tests_enabled": true
+  },
+  "checks": {
+    "doctor": "pass",
+    "schemas_generated_match": "pass",
+    "presets_generated_match": "pass",
+    "style_reference_generated_match": "pass",
+    "skill_validation": "pass",
+    "independent_merge_review": "pass",
+    "unittest": {
+      "command": "python -m unittest discover -s tests -v",
+      "tests": 487,
+      "seconds": 197.498,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "output": "tests/results/state-style-unittest.txt",
+      "output_sha256": "68b8cc669074a34459b629a5b3372de32b5a0f1380ad6ee9136049a10c44cee9"
+    },
+    "demonstrations": {
+      "command": "python scripts/demonstrate.py --all --output-dir output/capability-demos",
+      "execution_output_dir": "/dev/shm/hatch-state-ff56a597f0db/state-style-final-demos",
+      "count": 15,
+      "results": {
+        "assembly": {
+          "ok": true,
+          "fixture": true,
+          "production_artwork_accepted": false,
+          "external_integration_verified": false,
+          "checks": [
+            "receipt hashes match all output files",
+            "fixture and integration boundaries explicit",
+            "all ordered frames decode at exact cell size",
+            "printable PDF page tree and card order checked",
+            "content-review requirements retained"
+          ],
+          "use": "U01",
+          "external_consumer": "Provide product-specific tolerances, fastener torque and safety instructions; verify printed scale."
+        },
+        "process": {
+          "ok": true,
+          "fixture": true,
+          "production_artwork_accepted": false,
+          "external_integration_verified": false,
+          "checks": [
+            "receipt hashes match all output files",
+            "fixture and integration boundaries explicit",
+            "all ordered frames decode at exact cell size",
+            "printable PDF page tree and card order checked",
+            "content-review requirements retained"
+          ],
+          "use": "U02",
+          "external_consumer": "Supply curricular sources and expert content review; embed the exported page in the lesson."
+        },
+        "configurator": {
+          "ok": true,
+          "fixture": true,
+          "production_artwork_accepted": false,
+          "external_integration_verified": false,
+          "checks": [
+            "receipt hashes match all output files",
+            "fixture and integration boundaries explicit",
+            "all ordered frames decode at exact cell size",
+            "identical viewpoint alpha geometry across three distinct glaze variants"
+          ],
+          "use": "U03",
+          "external_consumer": "Wire selections to real SKU data and approved product imagery; browser selection alone is not commerce integration."
+        },
+        "flipbook": {
+          "ok": true,
+          "fixture": true,
+          "production_artwork_accepted": false,
+          "external_integration_verified": false,
+          "checks": [
+            "receipt hashes match all output files",
+            "fixture and integration boundaries explicit",
+            "all ordered frames decode at exact cell size",
+            "12 ordered print frames and slits",
+            "constant ball area and retained jump displacement"
+          ],
+          "use": "U04",
+          "external_consumer": "Print at 100%, cut, bind in order or assemble slit cylinder; physically test rotation speed."
+        },
+        "communication": {
+          "ok": true,
+          "fixture": true,
+          "production_artwork_accepted": false,
+          "external_integration_verified": false,
+          "checks": [
+            "receipt hashes match all output files",
+            "fixture and integration boundaries explicit",
+            "all ordered frames decode at exact cell size",
+            "selectable board includes every described static alternative"
+          ],
+          "use": "U05",
+          "external_consumer": "Fit vocabulary and access method to the user; external assistive app integration and clinical assessment are separate."
+        },
+        "perception": {
+          "ok": true,
+          "fixture": true,
+          "production_artwork_accepted": false,
+          "external_integration_verified": false,
+          "checks": [
+            "receipt hashes match all output files",
+            "fixture and integration boundaries explicit",
+            "all ordered frames decode at exact cell size",
+            "controlled geometry with distinct contrast",
+            "condition/timing/source hash table verified"
+          ],
+          "use": "U06",
+          "external_consumer": "Use a calibrated display and measured onset timing, randomization and experiment software. Ordinary browser timing is not laboratory precision."
+        },
+        "regression": {
+          "ok": true,
+          "fixture": true,
+          "production_artwork_accepted": false,
+          "external_integration_verified": false,
+          "checks": [
+            "receipt hashes match all output files",
+            "fixture and integration boundaries explicit",
+            "all ordered frames decode at exact cell size",
+            "partial alpha, actual holes and detached details survive extraction",
+            "animated lossless WebP reconstructs every pixel/frame"
+          ],
+          "use": "U07",
+          "external_consumer": "Import these labeled fixtures into the target compositor and record renderer/codec versions; no live compositor is exercised here."
+        },
+        "cursor": {
+          "ok": true,
+          "fixture": true,
+          "production_artwork_accepted": false,
+          "external_integration_verified": false,
+          "checks": [
+            "receipt hashes match all output files",
+            "fixture and integration boundaries explicit",
+            "all ordered frames decode at exact cell size",
+            "Xcursor headers, offsets, frame order, hotspots, timing and premultiplied pixels reconstruct"
+          ],
+          "use": "U08",
+          "external_consumer": "Load the Xcursor file in an Xcursor-capable consumer or adapt the local page; OS cursor settings are never changed."
+        },
+        "protocol": {
+          "ok": true,
+          "fixture": true,
+          "production_artwork_accepted": false,
+          "external_integration_verified": false,
+          "checks": [
+            "receipt hashes match all output files",
+            "fixture and integration boundaries explicit",
+            "all ordered frames decode at exact cell size",
+            "legal-event contract exported; actual transitions covered by browser regression"
+          ],
+          "use": "U09",
+          "external_consumer": "Connect real protocol events after reviewing concurrency and failure semantics; this is an illustrative local consumer."
+        },
+        "craft": {
+          "ok": true,
+          "fixture": true,
+          "production_artwork_accepted": false,
+          "external_integration_verified": false,
+          "checks": [
+            "receipt hashes match all output files",
+            "fixture and integration boundaries explicit",
+            "all ordered frames decode at exact cell size",
+            "24x24 grids, palette symbols, legends and material counts checked"
+          ],
+          "use": "U10",
+          "external_consumer": "Choose actual bead/thread colors, pitch and technique; the pack is a planning source, not a validated stitch instruction."
+        },
+        "states-cat": {
+          "ok": true,
+          "fixture": true,
+          "catalog_version": "1.0.0",
+          "profile_sha256": "ea8a7454dec76ac8fba99994bbf0fab794ef8826c40dfe63aad3e4ffc2ba51dc",
+          "states": 25,
+          "frames": 100,
+          "model_calls": 0,
+          "production_artwork_accepted": false,
+          "external_integration_verified": false,
+          "artwork_description": "Deterministic calibration shape; not a semantic character-performance demonstration.",
+          "checks": [
+            "compiled profile and selection hash binding",
+            "exact source import origin and zero generation claims",
+            "strict extraction and atlas validation",
+            "distinct indexed fixture frames and exact exported timings",
+            "per-state reduced-motion still pixels",
+            "export file hashes and original selection evidence",
+            "fixture-only visual-review and package gates",
+            "offline review workspace"
+          ],
+          "preview": "export/preview.html",
+          "review": "review/review.html"
+        },
+        "states-agent": {
+          "ok": true,
+          "fixture": true,
+          "catalog_version": "1.0.0",
+          "profile_sha256": "2f48f9d76e6390ca5724d47d90860bdb4369e80d910205252d166e9a8ec82230",
+          "states": 49,
+          "frames": 196,
+          "model_calls": 0,
+          "production_artwork_accepted": false,
+          "external_integration_verified": false,
+          "artwork_description": "Deterministic calibration shape; not a semantic character-performance demonstration.",
+          "checks": [
+            "compiled profile and selection hash binding",
+            "exact source import origin and zero generation claims",
+            "strict extraction and atlas validation",
+            "distinct indexed fixture frames and exact exported timings",
+            "per-state reduced-motion still pixels",
+            "export file hashes and original selection evidence",
+            "fixture-only visual-review and package gates",
+            "offline review workspace"
+          ],
+          "preview": "export/preview.html",
+          "review": "review/review.html"
+        },
+        "states-game": {
+          "ok": true,
+          "fixture": true,
+          "catalog_version": "1.0.0",
+          "profile_sha256": "25d1ee0d623048200eb86da96dcb96cec8e968eead819fc3ad7cbfba3f4bdafa",
+          "states": 29,
+          "frames": 116,
+          "model_calls": 0,
+          "production_artwork_accepted": false,
+          "external_integration_verified": false,
+          "artwork_description": "Deterministic calibration shape; not a semantic character-performance demonstration.",
+          "checks": [
+            "compiled profile and selection hash binding",
+            "exact source import origin and zero generation claims",
+            "strict extraction and atlas validation",
+            "distinct indexed fixture frames and exact exported timings",
+            "per-state reduced-motion still pixels",
+            "export file hashes and original selection evidence",
+            "fixture-only visual-review and package gates",
+            "offline review workspace"
+          ],
+          "preview": "export/preview.html",
+          "review": "review/review.html"
+        },
+        "states-obs": {
+          "ok": true,
+          "fixture": true,
+          "catalog_version": "1.0.0",
+          "profile_sha256": "86f0ac1a4d36a8717a3ae9acb081aa550ca303b9bc118f87c149afd32faefd95",
+          "states": 25,
+          "frames": 100,
+          "model_calls": 0,
+          "production_artwork_accepted": false,
+          "external_integration_verified": false,
+          "artwork_description": "Deterministic calibration shape; not a semantic character-performance demonstration.",
+          "checks": [
+            "compiled profile and selection hash binding",
+            "exact source import origin and zero generation claims",
+            "strict extraction and atlas validation",
+            "distinct indexed fixture frames and exact exported timings",
+            "per-state reduced-motion still pixels",
+            "export file hashes and original selection evidence",
+            "fixture-only visual-review and package gates",
+            "offline review workspace"
+          ],
+          "preview": "export/preview.html",
+          "review": "review/review.html"
+        },
+        "states-accessibility": {
+          "ok": true,
+          "fixture": true,
+          "catalog_version": "1.0.0",
+          "profile_sha256": "5b95395f91f305d8fba89baa23972e07fde41d9a0b7d5f6c144576aefaf91d97",
+          "states": 14,
+          "frames": 14,
+          "model_calls": 0,
+          "production_artwork_accepted": false,
+          "external_integration_verified": false,
+          "artwork_description": "Deterministic calibration shape; not a semantic character-performance demonstration.",
+          "checks": [
+            "compiled profile and selection hash binding",
+            "exact source import origin and zero generation claims",
+            "strict extraction and atlas validation",
+            "distinct indexed fixture frames and exact exported timings",
+            "per-state reduced-motion still pixels",
+            "export file hashes and original selection evidence",
+            "fixture-only visual-review and package gates",
+            "offline review workspace"
+          ],
+          "preview": "export/preview.html",
+          "review": "review/review.html"
+        }
+      }
+    }
+  },
+  "fixture_correction": {
+    "source_extension_per_frame_pixels": 3,
+    "previous_extension_pixels": 1,
+    "reason": "Preserve distinct calibration poses through actual pixel-style nearest-neighbor extraction with destination padding.",
+    "regression_test": "SavedSelectionWorkflows.test_animated_demo_preserves_distinct_poses_with_pixel_style_resampling",
+    "validation_relaxed": false
+  },
+  "production_model_calls": 0,
+  "new_production_artwork_accepted": false,
+  "external_integration_verified": false
+}

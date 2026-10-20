@@ -17,6 +17,7 @@ from PIL import Image
 from PIL import ImageDraw
 from profile_spec import load_profile
 from asset_contracts import validate_identity, reference_roles, check_image
+from style_registry import resolve_style, validate_snapshot, compatibility_warnings, preset_mapping
 
 # Module defaults come from the same profile as every deterministic consumer.
 _DEFAULT_PROFILE = load_profile()
@@ -25,49 +26,23 @@ ROWS = [(s["id"], i, s["frames"], s["purpose"]) for i, s in enumerate(_DEFAULT_P
 
 PET_SAFE_STYLE = (
     "Pet-safe sprite: compact full-body mascot, readable at the selected profile cell size, "
-    "clear silhouette, simple face, stable palette/materials, and crisp edges "
+    "clear silhouette, simple face, stable palette/materials, and clean readable edges "
     "for alpha or selected chroma-key extraction."
 )
 
-STYLE_PRESETS = {
-    "auto": (
-        "Infer the most appropriate pet-safe style from the user request and "
-        "reference images, then keep that exact style consistent across every row."
-    ),
-    "pixel": (
-        "Pixel-art-adjacent digital mascot with a chunky silhouette, simple dark "
-        "outline, limited palette, flat cel shading, and visible stepped edges."
-    ),
-    "plush": (
-        "Soft plush toy mascot with rounded stitched forms, fuzzy fabric feel, "
-        "simple sewn details, and readable toy-like proportions."
-    ),
-    "clay": (
-        "Handmade clay or polymer-clay mascot with rounded sculpted forms, soft "
-        "material texture, simple features, and clean readable edges."
-    ),
-    "sticker": (
-        "Polished sticker mascot with bold clean shapes, crisp outline, flat "
-        "colors, and minimal highlight detail."
-    ),
-    "flat-vector": (
-        "Flat vector-style mascot with simple geometric forms, crisp color areas, "
-        "clean outline, and minimal shading."
-    ),
-    "3d-toy": (
-        "Stylized 3D toy mascot with smooth rounded forms, simple materials, "
-        "clear silhouette, and no photoreal complexity."
-    ),
-    "painterly": (
-        "Painterly mascot with simplified brush texture, readable forms, stable "
-        "palette, and enough edge clarity for clean extraction."
-    ),
-    "brand-inspired": (
-        "Brand-inspired mascot using approved public or user-provided brand cues "
-        "such as colors, mascot themes, and vibe while avoiding readable text or "
-        "logo copying unless explicitly approved."
-    ),
-}
+# Load the compatibility dictionary only when a caller asks for it. Saved-run
+# lifecycle operations import this module to rebuild prompts from frozen data;
+# they must not require the currently installed catalog to be available.
+def __getattr__(name):
+    if name == 'STYLE_PRESETS':
+        presets = preset_mapping()
+        globals()[name] = presets
+        return presets
+    raise AttributeError(f'module {__name__!r} has no attribute {name!r}')
+
+
+def __dir__():
+    return sorted(set(globals()) | {'STYLE_PRESETS'})
 
 CHROMA_KEY_CANDIDATES = [
     ("magenta", "#FF00FF"),
@@ -372,20 +347,10 @@ def write_text(path: Path, text: str) -> None:
 
 
 def resolved_style_contract(style_preset: str, raw_style_notes: str) -> str:
-    style_preset = style_preset.strip().lower()
-    if style_preset not in STYLE_PRESETS:
-        allowed = ", ".join(sorted(STYLE_PRESETS))
-        raise SystemExit(
-            f"invalid style preset: {style_preset}; expected one of: {allowed}"
-        )
-    raw_style_notes = raw_style_notes.strip()
-    preset_contract = STYLE_PRESETS[style_preset]
-    if not raw_style_notes:
-        return f"{PET_SAFE_STYLE} Style `{style_preset}`: {preset_contract}"
-    return (
-        f"{PET_SAFE_STYLE} Style `{style_preset}`: {preset_contract} "
-        f"User style notes: {raw_style_notes}."
-    )
+    try:
+        return PET_SAFE_STYLE + "\n" + resolve_style(style_preset, raw_style_notes)['contract']
+    except ValueError as exc:
+        raise SystemExit(str(exc)) from exc
 
 
 def compact(value: str) -> str:
@@ -479,7 +444,9 @@ def _background_instructions(args):
     settings = _settings(args)
     mode = settings.get("background", "auto")
     if mode in ("alpha", "auto"):
-        return "Return a true transparent alpha background. Preserve intentional holes, permitted detached details, and antialiased character edges. Do not draw a checkerboard or a solid background."
+        snapshot = getattr(args, 'resolved_style', None)
+        edges = 'crisp stepped character edges without smoothing' if snapshot and snapshot['style']['compatibility']['edge_mode'] == 'hard' else 'antialiased character edges'
+        return f"Return a true transparent alpha background. Preserve intentional holes, permitted detached details, and {edges}. Do not draw a checkerboard or a solid background."
     key = settings.get("chroma_key", args.chroma_key)
     key = key.get("hex", args.chroma_key["hex"]) if isinstance(key, dict) else key
     return f"Use a perfectly flat {key} chroma-key background. Keep that key and nearby colors out of character surfaces, props, and highlights. If this conflicts with required character colors, report the collision for a different key instead of recoloring the character."
@@ -504,9 +471,32 @@ def _profile_requirements(args, state=None):
 
 
 def artwork_style(args):
+    snapshot = getattr(args, 'resolved_style', None)
+    if snapshot is not None:
+        validate_snapshot(snapshot)
+        if getattr(args, 'style_contract', snapshot['contract']) != snapshot['contract']:
+            raise ValueError('saved style contract differs from resolved style snapshot')
+        safety = PET_SAFE_STYLE if args.profile_data['schema_version'] == 1 else 'Reusable raster artwork: preserve the requested asset identity, semantic components and profile geometry.'
+        origin = ''
+        if _settings(args).get('canonical_source_origin') == 'import':
+            origin = 'The canonical base is imported artwork. Its approved existing rendering, materials and identity are authoritative. The requested preset is guidance only and does not authorize restyling this imported base. Match the base in every generated state.\n'
+        return safety + '\n' + origin + snapshot['contract']
+    # Read historical requests without rewriting their evidence or adding new styles.
     if args.profile_data['schema_version'] == 1:
-        return resolved_style_contract(args.style_preset, args.style_notes)
+        return getattr(args, 'style_contract', None) or resolved_style_contract(args.style_preset, args.style_notes)
     return f"Consistent reusable artwork; style choice: {args.style_preset}. {args.style_notes}. Follow this profile's subject and medium requirements."
+
+
+def raster_guidance(args):
+    snapshot = getattr(args, 'resolved_style', None)
+    if snapshot is None:
+        return ''
+    c = snapshot['style']['compatibility']
+    warnings = compatibility_warnings(snapshot, args.profile_data, _settings(args).get('background', 'auto'),
+                                      _settings(args).get('resampling'))
+    return ('Rasterization guidance: ' + c['scaling'] + ' Recommended resampling: ' + c['resampling'] +
+            '. Explicit profile alignment settings take precedence. Never change cell dimensions, state counts or timing to realize a style.\n' +
+            '\n'.join('Compatibility warning: ' + value for value in warnings))
 
 
 def base_pet_prompt(args: argparse.Namespace) -> str:
@@ -516,6 +506,7 @@ def base_pet_prompt(args: argparse.Namespace) -> str:
 
 Identity: {args.pet_notes}.
 Style: {artwork_style(args)}
+{raster_guidance(args)}
 Preserve the approved input references. Keep the entire subject visible and readable at {width}x{height}.
 {_background_instructions(args)}
 
@@ -537,6 +528,7 @@ Attach every identity and layout input listed in this job, including the canonic
 Output exactly {frames} complete poses in left-to-right playback order, one pose in each equal-width slot, with clear gutters and no overlap or clipping.
 Identity: {args.pet_notes}. Preserve the same {invariants} in every frame except explicitly approved state differences.
 Style: {artwork_style(args)}
+{raster_guidance(args)}
 Action: {purpose}
 Frame durations in playback order: {', '.join(str(value) + ' ms' for value in spec['durations'])}.
 Playback behavior: {spec.get('playback', {}).get('mode', 'loop')}. {'Draw one intentionally static expressive pose.' if frames == 1 else 'Draw a meaningful pose progression; do not duplicate frames merely to fill the strip. Use the specified durations for intentional holds.'}
@@ -638,10 +630,10 @@ def main() -> None:
     parser.add_argument(
         "--style-preset",
         default="auto",
-        choices=sorted(STYLE_PRESETS),
-        help="Pet-safe style preset to use across the base and all animation rows.",
+        help="Stable style ID or alias; use hatch.py styles to discover all supported entries.",
     )
     parser.add_argument("--style-notes", default="")
+    parser.add_argument("--style-modifier", action="append", default=[], help="Optional theme ID; repeat up to four times. Themes are separate from styles.")
     parser.add_argument(
         "--chroma-key",
         default="auto",
@@ -690,7 +682,6 @@ def main() -> None:
     args.pet_notes = infer_pet_notes(args, raw_reference_paths)
     args.pet_id = slugify(args.pet_id or args.pet_name or args.display_name)
     args.style_preset = args.style_preset.strip().lower()
-    args.style_contract = resolved_style_contract(args.style_preset, args.style_notes)
     args.brand_name = compact(args.brand_name)
     args.brand_brief = compact(args.brand_brief)
     args.brand_source = [
@@ -703,6 +694,11 @@ def main() -> None:
     if conflicts:
         raise ValueError('identity contradicts explicit avoidances: ' + ', '.join(sorted(conflicts)))
     args.constraints = constraints
+    args.resolved_style = resolve_style(args.style_preset, args.style_notes, args.style_modifier,
+        context=' '.join([args.pet_notes, *constraints['require'], *args.identity['materials']]),
+        has_references=bool(raw_reference_paths), has_brand=bool(args.brand_name or args.brand_brief or raw_brand_discovery_path),
+        avoidances=constraints['avoid'])
+    args.style_contract = args.resolved_style['contract']
 
     run_dir = (
         Path(args.output_dir).expanduser().resolve()
@@ -754,7 +750,9 @@ def main() -> None:
         brand_discovery_path = rel(copied_discovery, run_dir)
 
     args.chroma_key = choose_chroma_key(copied_ref_paths, args.chroma_key)
-    args.extraction = {"background": args.background, "chroma_key": args.chroma_key, "key_threshold": 48, "shared_scale": None}
+    args.extraction = {"background": args.background, "chroma_key": args.chroma_key, "key_threshold": 48, "shared_scale": None,
+                       "resampling": args.resolved_style['style']['compatibility']['resampling']}
+    style_warnings = compatibility_warnings(args.resolved_style, profile, args.background, args.extraction['resampling'])
     layout_guides = create_layout_guides(run_dir)
 
     request = {
@@ -782,6 +780,9 @@ def main() -> None:
         "style_preset": args.style_preset,
         "style_notes": args.style_notes,
         "style_contract": args.style_contract,
+        "resolved_style": args.resolved_style,
+        "style_modifiers": [m['id'] for m in args.resolved_style['modifiers']],
+        "style_warnings": style_warnings,
         "brand_name": args.brand_name,
         "brand_brief": args.brand_brief,
         "brand_sources": args.brand_source,
@@ -813,6 +814,7 @@ def main() -> None:
 
     jobs = {
         "schema_version": 1,
+        "style_sha256": args.resolved_style['sha256'],
         "created_at": datetime.now(timezone.utc).isoformat(),
         "run_dir": str(run_dir),
         "primary_generation_skill": "$imagegen",
@@ -830,6 +832,9 @@ def main() -> None:
                 "request": str(run_dir / "pet_request.json"),
                 "jobs": str(run_dir / "imagegen-jobs.json"),
                 "ready_jobs": ["base"],
+                "style_id": args.resolved_style['resolved_id'],
+                "style_sha256": args.resolved_style['sha256'],
+                "warnings": style_warnings,
             },
             indent=2,
         )

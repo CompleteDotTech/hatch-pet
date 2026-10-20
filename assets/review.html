@@ -10,6 +10,7 @@
 const data=__REVIEW_DATA__, template=data.template;
 document.querySelector('#origin').textContent=(template.fixture?'DETERMINISTIC FIXTURE — review exercises gates only. ':'Artwork provenance: ')+Object.entries(data.origins).map(([name,origin])=>name+': '+origin).join(', ');
 document.querySelector('#identity').textContent=JSON.stringify(data.identity,null,2);
+if(data.style){const details=document.createElement('details'),summary=document.createElement('summary'),pre=document.createElement('pre');summary.textContent='Requested style and compatibility';pre.id='style-specification';pre.textContent=JSON.stringify(data.style,null,2);details.append(summary,pre);document.querySelector('#evidence').before(details)}
 for(const item of data.evidence){const f=document.createElement('figure'),a=document.createElement('a'),im=document.createElement('img'),c=document.createElement('figcaption');a.href=item.path;a.target='_blank';im.src=item.path;im.alt=item.name;a.append(im);c.textContent=item.name+' · '+item.sha256;f.append(a,c);document.querySelector('#evidence').append(f)}
 function select(parent,label){const l=document.createElement('label');l.textContent=label;const s=document.createElement('select');for(const v of ['unreviewed','pass','fail']){const o=document.createElement('option');o.value=v;o.textContent=v;s.append(o)}l.append(s);parent.append(l);return s}
 function note(parent,label){const l=document.createElement('label');l.textContent=label;const n=document.createElement('textarea');n.required=true;l.append(n);parent.append(l);return n}

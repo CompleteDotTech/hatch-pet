@@ -4,6 +4,8 @@ Use Python 3.10+ and Pillow 10.1+. Commands work in PowerShell and POSIX shells.
 
 ## Prepare and acquire sources
 
+Discover visual techniques with `python scripts/hatch.py styles`, inspect one with `style --style-preset ID`, and list separate themes with `style-modifiers`. Add `--json` for full metadata. Preparation supports aliases, repeated `--style-modifier` and user refinements through `--style-notes`; inspect [style compatibility](style-catalog.md) before calling imagegen. Every run freezes the selected instructions and catalog version/hash.
+
 ```powershell
 python scripts/hatch.py doctor --destination output/otter-run
 python scripts/hatch.py prepare --run-dir output/otter-run --pet-name Otter --pet-notes "sleepy otter barista" --style-preset plush --avoid "readable text"

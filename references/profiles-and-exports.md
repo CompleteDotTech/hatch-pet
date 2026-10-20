@@ -11,7 +11,7 @@ A profile contains `id`, `schema_version`, `layout` (`columns`, `cell_width`, `c
 - `slot` preserves each full source slot, including vertical displacement. All frames in a row share one viewport and scale; a taller or wider pose never triggers per-frame fitting.
 - `center` explicitly recenters each pose within that viewport; `baseline` explicitly bottom-aligns each pose. These policies remove intended displacement and should not be used for jumping.
 - `row` fits the full row viewport inside the padded destination cell. `none` uses source pixels at 1:1 and rejects clipping. `shared` uses a single positive finite scale from calibration (`configure --shared-scale`) or a common profile `alignment.scale`. Conflicting explicit shared scales are rejected. Source resolutions must be comparable for a pixel multiplier to represent a common character scale.
-- `alignment.resampling` selects nearest, bilinear, bicubic or lanczos (the unchanged default). `anchor` positions the scaled viewport in the destination's available space. `pivot` is exported metadata for consumers; it does not change raster pixels. Both remain in `animation.json` and do not imply an engine integration.
+- `alignment.resampling` explicitly selects nearest, bilinear, bicubic or lanczos. If omitted, new runs use the frozen style's recorded fallback; historical runs without one retain lanczos. No profile dimensions or timing change to accommodate a style. `anchor` positions the scaled viewport in the destination's available space. `pivot` is exported metadata for consumers; it does not change raster pixels. Both remain in `animation.json` and do not imply an engine integration.
 
 Generated production states use `generation.skill: imagegen` and `requires_identity_reference: true`. Top-level and state `generation.instructions` and `generation.requirements` provide semantic guidance to base/row/retry prompts. Allowed derivations contain at most one `horizontal-mirror` record with a source state and `requires_explicit_approval: true`; declaring it never grants approval. The default permits only `running-right` to `running-left`.
 
@@ -59,7 +59,9 @@ For OBS, use `examples/obs-mascot.json` and point a browser source at the export
 
 ## Representative examples
 
-Every JSON in `examples/` is a complete supported profile usable by the same preparation/extraction/export pipeline. These are example adaptations; they do not establish production integration.
+All profile versions use the same [style registry](style-catalog.md). Their own subject and generation requirements remain authoritative. Controller exports retain the complete frozen style under `provenance.json.resolved_style`; reviewed packages add hashed `style-provenance.json` without changing `pet.json` or atlas dimensions. These are requested artistic specifications, with separate actual source origins and review evidence.
+
+The top-level `examples/*.json` files are complete supported runtime profiles usable by the same preparation/extraction/export pipeline. Files in `examples/state-selections/` are saved compiler inputs, and `examples/state-packs/` contains pack definitions; compile those selections before preparation. These are example adaptations; they do not establish production integration.
 
 | Profile | Local capability | Remaining integration |
 | --- | --- | --- |

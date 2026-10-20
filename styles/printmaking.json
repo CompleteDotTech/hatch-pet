@@ -1,0 +1,799 @@
+{
+  "schema_version": 1,
+  "category": "printmaking",
+  "styles": [
+    {
+      "id": "woodcut",
+      "name": "Woodcut",
+      "category": "printmaking",
+      "kind": "technique",
+      "description": "Bold carved-wood print language with broad dark masses, directional gouges and restrained wood-grain interruptions.",
+      "tags": [
+        "relief-print",
+        "carved-gouges",
+        "wood-grain",
+        "bold-ink"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Suggest dense relief-print ink with carved light channels passing through dark body regions.",
+        "forms": "Reduce the mascot to strong interlocking forms with broad cheeks, limbs and simple facial features.",
+        "linework": "Use angular cut contours and a few thick directional gouges to define anatomy.",
+        "shading": "Shade through grouped carved hatch channels of varying width instead of smooth gradients.",
+        "palette": "Use a small set of ink colors with strong light-dark separation and required identity accents.",
+        "texture": "Add restrained wood-grain interruptions inside large ink masses, aligned with an approved grain direction.",
+        "rendering": "Render an isolated woodcut-style character on alpha, keeping the light body substrate inside the silhouette."
+      },
+      "negative_constraints": [
+        "Avoid a wooden block, printed paper rectangle or detached carving chips.",
+        "Do not use dense fine gouges that make the character look hairy or fragmented."
+      ],
+      "use_cases": [
+        "Bold print-textured pets",
+        "Artistic relief-print character families"
+      ],
+      "limitations": [
+        "Carved light marks must not sever narrow limbs or erase approved markings at compact scale."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Distinguish intentional light carving marks inside opaque body regions from alpha outside the printed silhouette.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "linocut",
+      "name": "Linocut",
+      "category": "printmaking",
+      "kind": "technique",
+      "description": "Graphic relief-print character with smooth sweeping carved contours, solid ink masses and rounded negative cuts.",
+      "tags": [
+        "relief-print",
+        "linoleum",
+        "smooth-carving",
+        "negative-cuts"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use dense matte print ink with clean carved light shapes and subtle interior roller coverage.",
+        "forms": "Build the body from broad simplified masses with smooth curved silhouettes and clear joint gaps.",
+        "linework": "Draw sweeping cut contours and rounded gouge marks rather than fine pen-like outlines.",
+        "shading": "Describe volume using a few broad curved light cuts through solid ink areas.",
+        "palette": "Choose two or three coordinated ink families while preserving mandatory identity colors.",
+        "texture": "Add slight uneven ink coverage inside broad solids without visible wood-grain lines.",
+        "rendering": "Render an isolated linocut character with decisive positive-negative shape balance and clean outer edges."
+      },
+      "negative_constraints": [
+        "Avoid wood grain, etched hairlines or a printed paper backing.",
+        "Do not let carved negative channels split the face or detach small body parts."
+      ],
+      "use_cases": [
+        "Bold handmade print pets",
+        "High-contrast printed mascot systems"
+      ],
+      "limitations": [
+        "Wide carved cuts require careful placement to preserve small facial landmarks."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Use alpha outside the print and keep any light body fill intact; chroma cleanup must not widen carved channels.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "screen-print",
+      "name": "Screen Print",
+      "category": "printmaking",
+      "kind": "technique",
+      "description": "Layered spot-ink character with opaque overlapping color shapes, restrained mesh texture and precise registered silhouettes.",
+      "tags": [
+        "silkscreen",
+        "spot-ink",
+        "layered-color",
+        "opaque-print"
+      ],
+      "aliases": [
+        "silkscreen",
+        "screenprint"
+      ],
+      "instructions": {
+        "materials": "Use flat opaque screen-print inks with a dry matte surface.",
+        "forms": "Organize the body into large separable color shapes and simple registered facial landmarks.",
+        "linework": "Define forms through clean stencil-like ink boundaries, adding only necessary contour strokes.",
+        "shading": "Build shade from a small number of overlapping spot-color shapes rather than continuous gradients.",
+        "palette": "Plan a concise set of compatible ink colors whose overlap mixtures remain stable.",
+        "texture": "Suggest faint mesh or ink deposit texture only inside broad filled areas.",
+        "rendering": "Render an isolated registered print character with no off-body registration marks or paper surround."
+      },
+      "negative_constraints": [
+        "Avoid color misregistration extending outside the approved silhouette.",
+        "Do not add crop marks, printer labels or a paper poster background."
+      ],
+      "use_cases": [
+        "Spot-color mascot illustration",
+        "Print-oriented animated character sets"
+      ],
+      "limitations": [
+        "Very subtle ink textures may vanish after reduction; the design must work as flat shapes first."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "recommended",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Keep intentional overprint mixtures inside body regions and ensure none collide with a selected chroma key.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "risograph",
+      "name": "Risograph",
+      "category": "printmaking",
+      "kind": "technique",
+      "description": "Limited-ink print character with porous grain, translucent-looking overprint colors and restrained internal registration offsets.",
+      "tags": [
+        "riso",
+        "porous-ink",
+        "overprint",
+        "grainy-color"
+      ],
+      "aliases": [
+        "riso"
+      ],
+      "instructions": {
+        "materials": "Suggest porous risograph-like ink layers with visible grain inside printed regions.",
+        "forms": "Form the mascot from broad graphic shapes suited to a small number of separate ink passes.",
+        "linework": "Keep the outer silhouette clean while allowing tiny internal offsets between selected color layers.",
+        "shading": "Use overprinted tone patches and sparse coarse dot fields to suggest form.",
+        "palette": "Choose a few approved ink families with deliberate mixed colors where layers overlap.",
+        "texture": "Add consistent porous grain and slight ink-density variation tied to each body region.",
+        "rendering": "Render an isolated riso-style mascot with body-bound overprint effects and stable registration across poses."
+      },
+      "negative_constraints": [
+        "Avoid registration fringes outside the silhouette or random layer jitter in every frame.",
+        "Do not add paper sheets, printer artifacts or unapproved fluorescent colors."
+      ],
+      "use_cases": [
+        "Independent print mascots",
+        "Tactile limited-ink illustration sets"
+      ],
+      "limitations": [
+        "Misregistration is limited to safe interior regions; broad outside offsets would undermine extraction and identity."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Use alpha and inspect porous texture in playback; do not regenerate a new random grain pattern for each state.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "lithograph",
+      "name": "Lithograph",
+      "category": "printmaking",
+      "kind": "technique",
+      "description": "Greasy-crayon print character with rounded grainy modeling, soft tonal transitions and carefully drawn contour accents.",
+      "tags": [
+        "lithography",
+        "crayon-grain",
+        "tonal-print",
+        "drawn-stone"
+      ],
+      "aliases": [
+        "lithography"
+      ],
+      "instructions": {
+        "materials": "Suggest lithographic crayon and wash ink transferred as matte marks over light body regions.",
+        "forms": "Model rounded character forms with broad connected tonal masses and simple expression features.",
+        "linework": "Use flexible crayon-like contours that become darker at overlaps and quieter on lit edges.",
+        "shading": "Build tone from layered grainy crayon fields with gentle wash-like transitions.",
+        "palette": "Keep a restrained set of approved ink colors with clear value hierarchy across the body.",
+        "texture": "Show fine irregular stone-grain impressions inside broad tone regions, avoiding uniform digital noise.",
+        "rendering": "Render an isolated lithographic character with drawn tonal richness and no print border or page field."
+      },
+      "negative_constraints": [
+        "Avoid a stone slab, paper rectangle, plate label or printer signature.",
+        "Do not overgrain facial features or use soft tone to dissolve the silhouette."
+      ],
+      "use_cases": [
+        "Tonal print illustration pets",
+        "Classic drawing-inspired mascot portraits"
+      ],
+      "limitations": [
+        "Fine print grain can muddy reduced artwork; broad tone masses need to carry the form."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Prefer alpha for grainy contour transitions and inspect the final-size face separately from large preview artwork.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "etching",
+      "name": "Etching",
+      "category": "printmaking",
+      "kind": "technique",
+      "description": "Needle-drawn intaglio character with slightly irregular fine lines, compact crosshatching and sparse plate-tone shading.",
+      "tags": [
+        "intaglio",
+        "needle-line",
+        "crosshatch",
+        "etched"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use dark intaglio-like ink marks over opaque light character planes.",
+        "forms": "Keep a clear compact anatomical construction with large expressive features suitable for fine-line translation.",
+        "linework": "Draw slightly irregular needle-like contours with short deliberate breaks inside stronger boundaries.",
+        "shading": "Model volume using spaced directional crosshatch bundles and restrained soft plate-tone patches.",
+        "palette": "Use an ink-value structure with approved identity color accents retained as carefully bounded additions.",
+        "texture": "Suggest delicate bitten-line roughness without scratches or random marks outside the body.",
+        "rendering": "Render an isolated etched character with reduced hatch density and no plate edge, caption or paper field."
+      },
+      "negative_constraints": [
+        "Avoid ultra-dense hatch meshes that turn into moiré at the cell size.",
+        "Do not add printing-plate borders, signatures or stray needle marks."
+      ],
+      "use_cases": [
+        "Fine-line print mascots",
+        "Intaglio-inspired character portraits"
+      ],
+      "limitations": [
+        "Traditional fine-line detail must be enlarged or simplified for a compact animated sprite."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Check hatch spacing after one downsampling pass; preserve a clean opaque light body substrate for legibility.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "engraving",
+      "name": "Engraving",
+      "category": "printmaking",
+      "kind": "technique",
+      "description": "Precisely cut line illustration using tapered curved hatch bands, polished contour control and sharply separated values.",
+      "tags": [
+        "engraved-line",
+        "tapered-hatching",
+        "precise",
+        "intaglio"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Suggest crisp engraved ink lines and polished light body regions without metallic surface reflections.",
+        "forms": "Construct clearly rounded volumes whose planes can be described by orderly curved line bands.",
+        "linework": "Use sharply tapered contours and disciplined parallel form lines with clean intersections.",
+        "shading": "Vary hatch spacing and line thickness to create light-dark modeling around each major volume.",
+        "palette": "Favor dark ink against a clear light value, preserving explicit color identifiers as approved accents.",
+        "texture": "Keep the line pattern regular and anatomy-following with no random grain.",
+        "rendering": "Render an isolated engraved mascot with bold enough line spacing for the selected profile size."
+      },
+      "negative_constraints": [
+        "Avoid decorative currency borders, inscriptions or elaborate ornamental surrounds.",
+        "Do not shrink fine hatch bands until they fuse into solid unplanned dark areas."
+      ],
+      "use_cases": [
+        "Precise line-art pets",
+        "Formal print-style character illustration"
+      ],
+      "limitations": [
+        "Engraving depends on legible line rhythm; heavily detailed source art requires intentional reduction before export."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Distinguish permanent markings from hatch shadows in the base and keep the pattern direction consistent across poses.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "stippling",
+      "name": "Stippling",
+      "category": "printmaking",
+      "kind": "technique",
+      "description": "Character modeled with hand-placed-looking ink dots whose density describes volume inside a stable clean silhouette.",
+      "tags": [
+        "dots",
+        "point-density",
+        "ink",
+        "tonal-drawing"
+      ],
+      "aliases": [
+        "stipple"
+      ],
+      "instructions": {
+        "materials": "Use opaque ink dots over a light body fill so the character retains a continuous readable mass.",
+        "forms": "Reduce the figure to rounded simple forms with large clear facial landmarks.",
+        "linework": "Define the boundary with a denser dotted band or sparse solid contour where readability needs it.",
+        "shading": "Build volume by changing dot density in broad patches, keeping dot size mostly consistent.",
+        "palette": "Use a concise ink and light-value scheme with essential identity accents retained explicitly.",
+        "texture": "Place irregular but controlled hand-stipple dot spacing anchored to the same body regions.",
+        "rendering": "Render an isolated stippled mascot with no points drifting outside the approved silhouette."
+      },
+      "negative_constraints": [
+        "Avoid detached dot clouds, random speckle halos or transparent dust around the body.",
+        "Do not describe tiny eyes solely through faint sparse dots."
+      ],
+      "use_cases": [
+        "Point-textured illustration pets",
+        "Distinctive ink character portraits"
+      ],
+      "limitations": [
+        "Dot patterns can shimmer during motion unless their placement and density remain tied to the character form."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Use a light opaque body substrate when needed to preserve the silhouette; a floating particle silhouette is not the intended adaptation.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "block-print",
+      "name": "Block Print",
+      "category": "printmaking",
+      "kind": "technique",
+      "description": "Stamped carved-shape character with broad simplified forms, compact negative cuts and slightly uneven ink transfer.",
+      "tags": [
+        "stamp",
+        "relief",
+        "carved-shapes",
+        "uneven-ink"
+      ],
+      "aliases": [
+        "blockprint"
+      ],
+      "instructions": {
+        "materials": "Use matte stamped ink with slightly uneven transfer inside the printed body shapes.",
+        "forms": "Build the mascot as a compact arrangement of broad stamp-like masses and short limbs.",
+        "linework": "Define contours with blunt carved edges and a few rounded negative cuts.",
+        "shading": "Suggest depth with a small number of separate stamped color or light patches.",
+        "palette": "Use a few distinct approved ink colors with strong silhouette-to-feature contrast.",
+        "texture": "Add controlled patchy ink coverage in broad interiors without visible directional wood grain.",
+        "rendering": "Render an isolated block-printed character whose carved shape stays identical in visual weight across states."
+      },
+      "negative_constraints": [
+        "Avoid a physical stamp block, repeated wallpaper field or ink smudges outside the character.",
+        "Do not make patchy ink coverage erase major markings or break narrow limbs."
+      ],
+      "use_cases": [
+        "Hand-stamped mascots",
+        "Bold craft illustration characters"
+      ],
+      "limitations": [
+        "Patchy transfer is a surface cue and must not make the character’s outline look incompletely generated."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "recommended",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Approve the amount of ink loss in the base and preserve opaque body continuity where the profile disallows detached details.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "cyanotype",
+      "name": "Cyanotype",
+      "category": "printmaking",
+      "kind": "technique",
+      "description": "Contact-print-inspired character with deep blue photographic tone, pale exposure shapes and restrained emulsion mottling.",
+      "tags": [
+        "contact-print",
+        "photographic-emulsion",
+        "blue-print",
+        "exposure"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Suggest a matte blue photosensitive-print emulsion confined to the character’s opaque body region.",
+        "forms": "Build simple recognisable body masses using broad exposure silhouettes and clear light facial features.",
+        "linework": "Keep outer edges crisp like contact exposure while allowing subtle softer internal exposure boundaries.",
+        "shading": "Describe volume with broad pale-to-deep-blue exposure steps instead of ink hatching.",
+        "palette": "Use a coherent cyanotype-blue tonal family, retaining required identity colors as explicit adapted accents.",
+        "texture": "Show restrained emulsion mottling and exposure variation inside large body planes.",
+        "rendering": "Render an isolated contact-print-style mascot without a sheet, botanical specimen or surrounding exposure field."
+      },
+      "negative_constraints": [
+        "Avoid a blue rectangular paper background, decorative leaves or contact-print labels.",
+        "Do not rely only on a blue palette while omitting the exposure-shaped tonal construction."
+      ],
+      "use_cases": [
+        "Photographic-print artistic pets",
+        "Exposure-based illustration experiments"
+      ],
+      "limitations": [
+        "Monochrome exposure translation may lose color-defined identity, which must be retained through approved accents."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "The technique is conveyed by contact-edge and emulsion behavior, not merely blue color; alpha outside the body remains clean.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "monotype",
+      "name": "Monotype",
+      "category": "printmaking",
+      "kind": "technique",
+      "description": "Painterly one-off print language with pressed color masses, wiped highlights and body-bound transfer textures.",
+      "tags": [
+        "painterly-print",
+        "wiped-highlight",
+        "transfer-texture",
+        "monoprint"
+      ],
+      "aliases": [
+        "monoprint"
+      ],
+      "instructions": {
+        "materials": "Suggest thick colored ink pressed from a smooth plate into matte printed body shapes.",
+        "forms": "Construct the character from broad slightly compressed-looking painted masses with readable features.",
+        "linework": "Use softly pressed edge variations inside a deliberate clear outer contour.",
+        "shading": "Form light with wiped-looking patches and darker rolled ink regions rather than systematic hatching.",
+        "palette": "Combine a few approved ink colors with restrained blended transitions and clear facial accents.",
+        "texture": "Show plate-transfer streaks, soft ink skips and a few broad roller marks inside the body.",
+        "rendering": "Render an isolated monotype-style mascot with its accidental-looking textures made repeatable across the sequence."
+      },
+      "negative_constraints": [
+        "Avoid a plate outline, paper rectangle, loose ink smears or unrelated print artifacts.",
+        "Do not randomize wiping marks so dramatically that body markings appear to change."
+      ],
+      "use_cases": [
+        "Painterly print mascots",
+        "Tactile experimental character illustration"
+      ],
+      "limitations": [
+        "The original one-off print impression must be adapted into stable body-bound texture for animation."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Freeze the approved large transfer marks; variation between poses must follow deformation rather than a newly randomized print.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "newsprint",
+      "name": "Newsprint",
+      "category": "printmaking",
+      "kind": "technique",
+      "description": "Absorbent low-detail print rendering with coarse tonal dots, softened ink spread and strong editorial shape grouping.",
+      "tags": [
+        "absorbent-print",
+        "coarse-screen",
+        "ink-spread",
+        "newspaper"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Suggest matte ink absorbed into a light character-only substrate with slightly spread internal mark edges.",
+        "forms": "Simplify the mascot into robust printed masses and large high-contrast facial symbols.",
+        "linework": "Use firm ink contours with modest softened spread, keeping the silhouette complete and bounded.",
+        "shading": "Render broad shade areas with coarse tonal dot patches and a limited flat value range.",
+        "palette": "Use dark ink and restrained approved spot colors with deliberate strong value separation.",
+        "texture": "Add gentle porous ink spread and consistent coarse screen texture in large tonal areas.",
+        "rendering": "Render an isolated newsprint-style character with readable print compression and no surrounding newspaper page."
+      },
+      "negative_constraints": [
+        "Avoid columns of text, page borders, visible headlines or a beige paper rectangle.",
+        "Do not imitate poor printing by breaking important contours or blurring the entire character."
+      ],
+      "use_cases": [
+        "Editorial print pets",
+        "Coarse-print illustration characters"
+      ],
+      "limitations": [
+        "Ink spread and coarse dots must be subtle enough that small eyes and identity marks remain distinct."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Inspect coarse tone patches after downsampling; alpha is preferable to keying around spread ink edges.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "stencil-print",
+      "name": "Stencil Print",
+      "category": "printmaking",
+      "kind": "technique",
+      "description": "Sprayed or rolled stencil character with linked solid shapes, deliberate bridge cuts and restrained interior ink texture.",
+      "tags": [
+        "stencil",
+        "bridges",
+        "spray-print",
+        "linked-shapes"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use opaque sprayed or rolled print ink contained within cut-stencil-shaped body regions.",
+        "forms": "Build a clear compact silhouette with broad linked masses and simple cut-in facial details.",
+        "linework": "Define edges as deliberate cut openings with a few visible bridge interruptions inside the figure.",
+        "shading": "Keep shading mostly flat, allowing a small controlled interior density falloff from the spray direction.",
+        "palette": "Use a few separate approved stencil ink colors with strong contrast at each layer boundary.",
+        "texture": "Show restrained interior spray grain or roller texture without overspray beyond the silhouette.",
+        "rendering": "Render an isolated stencil-printed mascot with intentional bridge geometry and no wall, sign or stencil sheet."
+      },
+      "negative_constraints": [
+        "Avoid exterior overspray, paint drips, stencil panels or background wall texture.",
+        "Do not let stencil bridges erase approved eyes, markings or essential limb separations."
+      ],
+      "use_cases": [
+        "Stencil-crafted pets",
+        "Graphic print and signage mascots"
+      ],
+      "limitations": [
+        "Bridge cuts are a style adaptation and must remain compatible with the approved character’s facial features."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "recommended",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Prefer alpha to retain controlled print-edge texture; remove unintended spray particles instead of weakening detached-detail checks.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "halftone-print",
+      "name": "Halftone Print",
+      "category": "printmaking",
+      "kind": "technique",
+      "description": "Image-toned character whose broad light and shade regions are represented by regular variable-size printed dots.",
+      "tags": [
+        "halftone",
+        "variable-dot",
+        "tonal-reproduction",
+        "print-screen"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use regular opaque printed dot cells over a light continuous character substrate.",
+        "forms": "Start from broad dimensional body forms with simplified faces and clearly separated value planes.",
+        "linework": "Keep a clean outer silhouette with minimal drawn outline so dot reproduction describes the interior form.",
+        "shading": "Model tone by changing dot diameter within a fixed screen spacing across large planes.",
+        "palette": "Use a controlled set of approved ink channels whose overlaps remain stable and legible.",
+        "texture": "Make the screen pattern visible but coarse enough to survive the final profile size.",
+        "rendering": "Render an isolated dot-reproduced mascot with a fixed screen orientation and no printed page surround."
+      },
+      "negative_constraints": [
+        "Avoid canvas-wide dot fields, arbitrary screen rotation or subpixel moiré patterns.",
+        "Do not apply comic outlines and speech effects that replace the tonal reproduction technique."
+      ],
+      "use_cases": [
+        "Print-reproduction character studies",
+        "Dot-toned artistic mascots"
+      ],
+      "limitations": [
+        "Variable-dot tonal screens require final-size review because resizing can change apparent density and produce moiré."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Keep dot-cell orientation and phase body-relative through animation; inspect actual timed playback for pattern shimmer.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "vintage-illustrated-print",
+      "name": "Vintage Illustrated Print",
+      "category": "printmaking",
+      "kind": "technique",
+      "description": "Chromolithograph-like character with layered color plates, softly drawn form and restrained printed grain.",
+      "tags": [
+        "color-plates",
+        "illustrated-print",
+        "printed-grain",
+        "vintage"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Suggest layered opaque color-print inks with a softly matte illustrated surface.",
+        "forms": "Use carefully drawn rounded body masses and clear expressive features with modest decorative simplification.",
+        "linework": "Draw subtle colored contour accents with darker ink only at important overlaps and facial landmarks.",
+        "shading": "Build volume using broad printed color gradations and small grainy tone patches.",
+        "palette": "Use harmonious approved colors with a warm print-like value structure, avoiding automatic sepia replacement.",
+        "texture": "Add a faint consistent printed grain within the figure, keeping the exterior contour clean.",
+        "rendering": "Render an isolated vintage color-print character without aging damage, labels, border ornament or paper."
+      },
+      "negative_constraints": [
+        "Avoid antique page backgrounds, commercial lettering, torn edges or fake provenance stamps.",
+        "Do not mute required brand or identity colors into an unapproved sepia wash."
+      ],
+      "use_cases": [
+        "Classic print illustration pets",
+        "Warm character portrait collections"
+      ],
+      "limitations": [
+        "A print-era feeling must come from color-plate and drawn-form treatment rather than arbitrary aging artifacts."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Preserve faint contour colors in alpha; apparent aged-paper coloration must stay inside approved character fills if used at all.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    }
+  ]
+}

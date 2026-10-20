@@ -43,7 +43,10 @@ def calibration_frame(spec, index, width, height):
     draw.rounded_rectangle((center - 17, y, center + 17, y + 41), radius=7, fill='#b43c28')
     # This protrusion touches the body, stays inside the slot and makes each
     # animated frame measurably distinct without requesting detached permissions.
-    arm = 20 + index
+    # A one-pixel change can collapse when the pixel style's nearest-neighbor
+    # extraction fits the source viewport inside destination padding. Make the
+    # calibration motion large enough to remain distinct after that real path.
+    arm = 20 + 3 * index
     draw.rectangle((center + 15, y + 17, center + arm, y + 22), fill='#b43c28')
     draw.rectangle((center - 9, y + 9, center - 5, y + 14), fill='#17222d')
     draw.rectangle((center - 15, y + 26, center - 11, y + 32), fill='#f5d09a')

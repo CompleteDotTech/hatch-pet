@@ -1,0 +1,800 @@
+{
+  "schema_version": 1,
+  "category": "pixel-games",
+  "styles": [
+    {
+      "id": "pixel",
+      "name": "Pixel Art",
+      "category": "pixel-games",
+      "kind": "technique",
+      "description": "Chunky digital mascot built from deliberate pixel clusters, a simple dark outline and a compact color ramp.",
+      "tags": [
+        "pixels",
+        "sprites",
+        "stepped-edges",
+        "retro"
+      ],
+      "aliases": [
+        "pixel-art"
+      ],
+      "instructions": {
+        "materials": "Opaque digital pixel clusters with no simulated physical surface.",
+        "forms": "Build a chunky silhouette from squat interlocking blocks and readable face clusters.",
+        "linework": "Use a simple dark contour with deliberate stair steps and consistent corner rules.",
+        "shading": "Place flat cel-shadow clusters beneath forms; avoid interpolated lighting between color steps.",
+        "palette": "Limit each material to a small stable ramp with clearly separated values.",
+        "texture": "Keep visible stepped edges and purposeful pixel clusters rather than random grain.",
+        "rendering": "Construct the entire isolated mascot on one consistent logical pixel grid."
+      },
+      "negative_constraints": [
+        "Avoid softened pixel edges, fractional-grid outlines or isolated noise pixels.",
+        "Do not replace the chunky face with high-resolution painted anatomy."
+      ],
+      "use_cases": [
+        "Codex pets with strongly readable expressions",
+        "Small game sprites and grid-oriented assets"
+      ],
+      "limitations": [
+        "Non-integer resizing can introduce uneven pixel widths and destroy the intended contour rhythm."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "recommended",
+        "print": "recommended",
+        "grid": "recommended"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "hard",
+        "resampling": "nearest",
+        "scaling": "Use a consistent logical pixel grid and integer nearest-neighbor enlargement inside the existing profile cells; preserve whole pixel clusters.",
+        "notes": [
+          "Choose a chroma key outside every palette ramp; retain hard opaque boundary pixels when removing it.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "8-bit",
+      "name": "8-Bit Sprite",
+      "category": "pixel-games",
+      "kind": "technique",
+      "description": "Very compact tile-era sprite language using broad square features, sparse color clusters and emphatic poses.",
+      "tags": [
+        "pixel",
+        "tiles",
+        "restricted-color",
+        "game-sprite"
+      ],
+      "aliases": [
+        "8bit"
+      ],
+      "instructions": {
+        "materials": "Use opaque square pixels as the only mark-making unit.",
+        "forms": "Reduce limbs, muzzle and props to a few broad tile-like masses.",
+        "linework": "Describe contours with short straight runs and simple one-step corners.",
+        "shading": "Use one shadow color per material and omit reflected-light modeling.",
+        "palette": "Keep a small shared set of colors with large value gaps between neighbors.",
+        "texture": "Let large unbroken pixel patches dominate, with almost no internal dithering.",
+        "rendering": "Draw an isolated sprite whose pose is legible before any interior detail is added."
+      },
+      "negative_constraints": [
+        "Avoid smooth gradients or hundreds of one-pixel accent colors.",
+        "Do not add display hardware, score text or a game-level backdrop."
+      ],
+      "use_cases": [
+        "Tiny retro game mascots",
+        "Low-detail animated status characters"
+      ],
+      "limitations": [
+        "Tiny facial markings and complicated accessories need deliberate simplification to remain distinct."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "recommended",
+        "print": "recommended",
+        "grid": "recommended"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "hard",
+        "resampling": "nearest",
+        "scaling": "Use a consistent logical pixel grid and integer nearest-neighbor enlargement inside the existing profile cells; preserve whole pixel clusters.",
+        "notes": [
+          "Keep the source pixel pitch constant across all rows; reposition complete clusters instead of resampling each pose independently.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "16-bit",
+      "name": "16-Bit Sprite",
+      "category": "pixel-games",
+      "kind": "technique",
+      "description": "Rounded pixel character with controlled color ramps, selective outlines and small clustered highlights.",
+      "tags": [
+        "pixel",
+        "color-ramps",
+        "selective-outline",
+        "console-sprite"
+      ],
+      "aliases": [
+        "16bit"
+      ],
+      "instructions": {
+        "materials": "Treat the character as richly colored opaque sprite pixels rather than a filtered painting.",
+        "forms": "Shape rounded limbs and expressive heads through planned multi-pixel arcs.",
+        "linework": "Use selective dark outlines on shadow sides and lighter contour colors near highlights.",
+        "shading": "Model each volume with two or three broad stepped shade bands.",
+        "palette": "Give each material a short coordinated ramp with a warm light and cooler shadow.",
+        "texture": "Add a few compact highlight clusters while leaving large surfaces uncluttered.",
+        "rendering": "Render the isolated pose with crisp cluster boundaries and consistent implied upper-side lighting."
+      },
+      "negative_constraints": [
+        "Avoid blurred edges or continuous photographic light falloff.",
+        "Do not scatter single-pixel sparkle noise across moving surfaces."
+      ],
+      "use_cases": [
+        "Expressive console-style pets",
+        "Colorful sprite animation sets"
+      ],
+      "limitations": [
+        "Additional shading must not crowd small faces or reduce separation between neighboring limbs."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "recommended",
+        "print": "recommended",
+        "grid": "recommended"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "hard",
+        "resampling": "nearest",
+        "scaling": "Use a consistent logical pixel grid and integer nearest-neighbor enlargement inside the existing profile cells; preserve whole pixel clusters.",
+        "notes": [
+          "Preserve selective outline colors during extraction; a pale contour pixel is artwork, not necessarily background spill.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "32-bit",
+      "name": "32-Bit Sprite",
+      "category": "pixel-games",
+      "kind": "technique",
+      "description": "Detailed pre-rendered sprite language with dense but controlled pixel shading and carefully sampled curved volumes.",
+      "tags": [
+        "pixel",
+        "prerendered-look",
+        "detailed-sprite",
+        "clustered-light"
+      ],
+      "aliases": [
+        "32bit"
+      ],
+      "instructions": {
+        "materials": "Suggest sculpted surfaces represented by deliberately sampled opaque color pixels.",
+        "forms": "Use compact volumetric forms with round joints and broad readable planes.",
+        "linework": "Keep a crisp sampled perimeter with subdued colored edge pixels rather than a heavy outline.",
+        "shading": "Build smooth-looking volume from several ordered pixel shade bands and clustered highlights.",
+        "palette": "Use richer material ramps while keeping the approved hue families stable.",
+        "texture": "Allow restrained interior dithering in large shade transitions, never at facial landmarks.",
+        "rendering": "Render a convincing toy-like volume as a crisp isolated sprite without applying a blur filter."
+      },
+      "negative_constraints": [
+        "Avoid noisy photo reduction, compression artifacts or random edge antialias colors.",
+        "Do not turn subtle surface modeling into moving specular glitter."
+      ],
+      "use_cases": [
+        "Detailed retro sprite mascots",
+        "Small pre-rendered character sequences"
+      ],
+      "limitations": [
+        "The richer shading needs actual-size review because fine ramps can collapse into muddy patches."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "recommended"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "hard",
+        "resampling": "nearest",
+        "scaling": "Use a consistent logical pixel grid and integer nearest-neighbor enlargement inside the existing profile cells; preserve whole pixel clusters.",
+        "notes": [
+          "Approve a fixed light direction and shade ramp in the base so darker edge samples remain stable during animation.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "isometric-pixel-art",
+      "name": "Isometric Pixel Art",
+      "category": "pixel-games",
+      "kind": "technique",
+      "description": "Axonometric pixel mascot with a consistent diagonal grid, readable top planes and stair-stepped volume.",
+      "tags": [
+        "pixel",
+        "isometric",
+        "axonometric",
+        "stepped-diagonals"
+      ],
+      "aliases": [
+        "isometric-pixel"
+      ],
+      "instructions": {
+        "materials": "Use clean opaque pixel planes with a crafted game-object finish.",
+        "forms": "Construct the body from compact isometric masses with visible top and side planes.",
+        "linework": "Follow consistent two-across one-up diagonal stair steps on major receding edges.",
+        "shading": "Shade top, near side and far side as three distinct planar values.",
+        "palette": "Assign a small material ramp to each approved color with strong plane separation.",
+        "texture": "Keep plane interiors mostly solid; use small seams only where the identity needs them.",
+        "rendering": "Hold the isometric viewing angle constant while animating the isolated character within each slot."
+      },
+      "negative_constraints": [
+        "Avoid a perspective floor, tile platform or cast shadow beneath the mascot.",
+        "Do not change camera angle or diagonal grid between animation states."
+      ],
+      "use_cases": [
+        "Isometric game companions",
+        "Object-like character avatars"
+      ],
+      "limitations": [
+        "Front-facing expressions and direction changes must be adapted to the fixed axonometric camera."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "recommended"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "hard",
+        "resampling": "nearest",
+        "scaling": "Use a consistent logical pixel grid and integer nearest-neighbor enlargement inside the existing profile cells; preserve whole pixel clusters.",
+        "notes": [
+          "Do not rotate a finished raster to obtain new views; draw each approved view on the same isometric grid.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "dithered-pixel-art",
+      "name": "Dithered Pixel Art",
+      "category": "pixel-games",
+      "kind": "technique",
+      "description": "Pixel forms shaded with intentional repeating dither patterns instead of extra intermediate colors.",
+      "tags": [
+        "pixel",
+        "dithering",
+        "ordered-pattern",
+        "limited-ramp"
+      ],
+      "aliases": [
+        "dithered-pixel"
+      ],
+      "instructions": {
+        "materials": "Use opaque pixel ink with patterned mixtures standing in for intermediate tones.",
+        "forms": "Start from broad solid body masses that can hold several readable dither patches.",
+        "linework": "Maintain a clean stepped contour free from checkerboard holes at the perimeter.",
+        "shading": "Transition between light and shade using fixed checker or diagonal dither motifs.",
+        "palette": "Use a compact set of approved colors whose paired mixtures remain visibly distinct.",
+        "texture": "Place dither patches inside larger planes and anchor the pattern to each body part.",
+        "rendering": "Render isolated pixel artwork with patterned shade transitions and an undithered readable face."
+      },
+      "negative_constraints": [
+        "Avoid randomly changing dither seeds, shimmering patterns or transparent speckles.",
+        "Do not cover tiny eyes, mouth or identity markings with dense checkerboard texture."
+      ],
+      "use_cases": [
+        "Textured retro mascots",
+        "Stylized low-color sprite sets"
+      ],
+      "limitations": [
+        "Dither patterns may shimmer when scaled fractionally or moved without regard to the logical pixel grid."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "recommended"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "hard",
+        "resampling": "nearest",
+        "scaling": "Use a consistent logical pixel grid and integer nearest-neighbor enlargement inside the existing profile cells; preserve whole pixel clusters.",
+        "notes": [
+          "Lock the chosen dither motif and its body-relative origin in the approved base; review motion for texture crawl.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "voxel",
+      "name": "Voxel Sculpture",
+      "category": "pixel-games",
+      "kind": "technique",
+      "description": "A compact character assembled from visible cubic units with lit planar faces and block-stepped contours.",
+      "tags": [
+        "cubes",
+        "block-volume",
+        "voxel",
+        "sculpture"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Build the mascot from solid matte cubic units with gently lit faces.",
+        "forms": "Stack cubes into a squat recognizable body, stepped cheeks and blocky articulated limbs.",
+        "linework": "Let cube boundaries and silhouette steps define edges instead of drawn ink.",
+        "shading": "Separate top and side faces with flat directional lighting and small contact occlusion.",
+        "palette": "Reuse a few body colors, each with consistent light and dark face values.",
+        "texture": "Show selected block seams on broad surfaces without outlining every hidden cube.",
+        "rendering": "Render the isolated cubic construction at a consistent three-quarter camera and scale."
+      },
+      "negative_constraints": [
+        "Avoid smoothing the cubes into rounded clay or covering them with photo textures.",
+        "Do not add a terrain base, floating cubes or ambient floor shadow."
+      ],
+      "use_cases": [
+        "Block-built game mascots",
+        "Construction-themed animated characters"
+      ],
+      "limitations": [
+        "Thin limbs may require larger block groupings; tiny voxel details can disappear at pet size."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Antialias the rendered outer contour lightly while preserving planar cube faces; voxel geometry does not imply a mandatory pixel-art raster grid.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "retro-handheld",
+      "name": "Retro Handheld Sprite",
+      "category": "pixel-games",
+      "kind": "technique",
+      "description": "Portable-game sprite with soft-looking color relationships, coarse clusters and especially compact limb gestures.",
+      "tags": [
+        "pixel",
+        "handheld",
+        "portable-game",
+        "compact-gestures"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Represent colored LCD sprite pixels as opaque patches without drawing a screen enclosure.",
+        "forms": "Favor a large head, short limbs and broad gestures designed for a tiny display.",
+        "linework": "Use a dark colored perimeter with blunt corners and few isolated protrusions.",
+        "shading": "Add only one compact shadow patch and one highlight patch to each large form.",
+        "palette": "Favor restrained portable-display colors while retaining explicit identity and brand hues.",
+        "texture": "Keep a coarse consistent pixel pitch with quiet solid interiors and minimal surface detail.",
+        "rendering": "Produce an isolated color-handheld sprite, making pose changes through clusters rather than fine anatomy."
+      },
+      "negative_constraints": [
+        "Avoid a bezel, battery icon, game UI or tinted rectangular screen background.",
+        "Do not replace broad clusters with high-detail console rendering."
+      ],
+      "use_cases": [
+        "Compact nostalgic pets",
+        "Small friendly device mascots"
+      ],
+      "limitations": [
+        "Approved markings must be simplified if they are thinner than the chosen logical pixel pitch."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "recommended",
+        "print": "recommended",
+        "grid": "recommended"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "hard",
+        "resampling": "nearest",
+        "scaling": "Use a consistent logical pixel grid and integer nearest-neighbor enlargement inside the existing profile cells; preserve whole pixel clusters.",
+        "notes": [
+          "Treat the display influence as a design language inside the character; exported transparency remains genuine alpha.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "lcd-game",
+      "name": "Segmented LCD Game",
+      "category": "pixel-games",
+      "kind": "technique",
+      "description": "A mascot assembled from bold opaque LCD-like segments with characteristic gaps and mechanically limited articulation.",
+      "tags": [
+        "lcd",
+        "segmented",
+        "electronic-game",
+        "flat-silhouette"
+      ],
+      "aliases": [
+        "lcd"
+      ],
+      "instructions": {
+        "materials": "Use opaque dark liquid-crystal-like segment shapes with a faint molded interior sheen.",
+        "forms": "Build the character from linked rounded polygons and simple segmented facial symbols.",
+        "linework": "Define contours by the edges of solid segments, with intentional narrow interior separations.",
+        "shading": "Keep segments mostly flat; allow one restrained inner value change without glow.",
+        "palette": "Use a dark dominant material with approved identity accents confined to essential markings.",
+        "texture": "Suggest subtle segment surface unevenness inside shapes without a full display grid.",
+        "rendering": "Render only active character segments as an isolated mascot with stable segment geometry per pose."
+      },
+      "negative_constraints": [
+        "Avoid inactive ghost segments, a rectangular screen or a display housing.",
+        "Do not insert digits, game counters or detached electronic symbols."
+      ],
+      "use_cases": [
+        "Retro electronic pets",
+        "Segment-based pictogram animation"
+      ],
+      "limitations": [
+        "Segment gaps must stay large enough to survive downsampling while keeping each limb visually connected."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "recommended",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Review interior gaps on light and dark backgrounds; extraction must not fill intended transparent separations.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "arcade-sprite",
+      "name": "Arcade Sprite",
+      "category": "pixel-games",
+      "kind": "technique",
+      "description": "Energetic pixel character using exaggerated action silhouettes, strong outlines and bright clustered highlights.",
+      "tags": [
+        "pixel",
+        "arcade",
+        "action-pose",
+        "bold-contrast"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use saturated opaque sprite pixels with a polished action-game finish.",
+        "forms": "Exaggerate hands, feet and body lean to make each movement read instantly.",
+        "linework": "Draw a bold stepped contour with thicker shadow-side clusters and clean interior separations.",
+        "shading": "Place sharp two-step highlights on broad muscles, clothing or shell planes.",
+        "palette": "Choose vivid approved hues balanced by a dark shared contour and bright face accents.",
+        "texture": "Reserve tiny glints for a few stable locations rather than distributing sparkle noise.",
+        "rendering": "Construct strong isolated key poses with consistent pixel pitch and no action-effect debris."
+      },
+      "negative_constraints": [
+        "Avoid speed trails, impact stars, projectile effects or floating score labels.",
+        "Do not trade approved facial identity for aggressive action detail."
+      ],
+      "use_cases": [
+        "High-energy game pets",
+        "Expressive action sprite loops"
+      ],
+      "limitations": [
+        "Large poses must be designed inside the fixed safe viewport instead of shrinking individual frames."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "recommended",
+        "print": "recommended",
+        "grid": "recommended"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "hard",
+        "resampling": "nearest",
+        "scaling": "Use a consistent logical pixel grid and integer nearest-neighbor enlargement inside the existing profile cells; preserve whole pixel clusters.",
+        "notes": [
+          "Check the widest action pose before finalizing scale; preserve one shared viewport for all arcade-style exaggeration.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "monochrome-handheld",
+      "name": "Monochrome Handheld Dots",
+      "category": "pixel-games",
+      "kind": "technique",
+      "description": "Single-ink character modeled through visibly ordered LCD dot clusters and intentional empty-dot highlights.",
+      "tags": [
+        "dot-grid",
+        "handheld",
+        "monochrome-display",
+        "pixel"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use one opaque display-ink family with explicit lit-dot clusters and unlit interior gaps.",
+        "forms": "Reduce the body to compact dot-grid masses with very large facial landmarks.",
+        "linework": "Keep an unbroken outer dot contour except for clearly intentional limb separations.",
+        "shading": "Model light with sparse ordered empty-dot patterns inside the silhouette, not gray gradients.",
+        "palette": "Use a near-monochrome ink treatment while keeping any mandatory identity color exceptions explicit.",
+        "texture": "Show a regular dot rhythm in broad shaded regions and leave the face nearly solid.",
+        "rendering": "Render the character-only dot structure on alpha with no colored screen rectangle."
+      },
+      "negative_constraints": [
+        "Avoid a simulated display panel, handheld casing or scanline overlay beyond the silhouette.",
+        "Do not use random holes that change the approved body contour."
+      ],
+      "use_cases": [
+        "Dot-display pets",
+        "Nostalgic device pictograms"
+      ],
+      "limitations": [
+        "If mandatory color markings carry identity, retain them explicitly and document the adapted monochrome direction."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "recommended",
+        "print": "recommended",
+        "grid": "recommended"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "hard",
+        "resampling": "nearest",
+        "scaling": "Use a consistent logical pixel grid and integer nearest-neighbor enlargement inside the existing profile cells; preserve whole pixel clusters.",
+        "notes": [
+          "The distinct construction is an ordered display-dot lattice; the palette by itself is not a separate artistic technique.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "limited-palette-pixel-art",
+      "name": "Limited-Palette Pixel Art",
+      "category": "pixel-games",
+      "kind": "treatment",
+      "description": "A palette-constrained treatment of crisp pixel construction with shared color roles across the entire mascot.",
+      "tags": [
+        "pixel",
+        "palette-treatment",
+        "shared-ramp",
+        "limited-colors"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use opaque pixel clusters that share a deliberate small set of color roles.",
+        "forms": "Simplify the body into clearly separated masses before allocating any extra colors.",
+        "linework": "Reuse one contour color across body parts and preserve uniform stepped edge rules.",
+        "shading": "Share shadow and highlight colors between compatible materials instead of adding new ramps.",
+        "palette": "Plan a fixed small palette covering contour, light, shade and required identity accents.",
+        "texture": "Keep surfaces largely solid so scarce colors communicate anatomy rather than noise.",
+        "rendering": "Render isolated pixel art with the approved palette reused exactly across every pose."
+      },
+      "negative_constraints": [
+        "Avoid inventing intermediate colors through smoothing, opacity blending or automatic gradients.",
+        "Do not discard an explicit brand color or identifying mark solely to satisfy a palette preference."
+      ],
+      "use_cases": [
+        "Palette-limited sprite exports",
+        "Coordinated pixel mascot families"
+      ],
+      "limitations": [
+        "This is a compositional color treatment of pixel art and is excluded from the distinct-technique count."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "recommended",
+        "print": "recommended",
+        "grid": "recommended"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "hard",
+        "resampling": "nearest",
+        "scaling": "Use a consistent logical pixel grid and integer nearest-neighbor enlargement inside the existing profile cells; preserve whole pixel clusters.",
+        "notes": [
+          "Validate the resulting palette after resizing; nearest-neighbor sampling preserves colors but chroma removal still needs a noncolliding key.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "pixel-outline",
+      "name": "Pixel Outline",
+      "category": "pixel-games",
+      "kind": "technique",
+      "description": "Bold stepped contour drawing around nearly empty or flat pixel interiors, emphasizing the shape of the line itself.",
+      "tags": [
+        "pixel",
+        "contour",
+        "outlined-sprite",
+        "sparse-interior"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use solid pixel-ink bands around simple flat color body regions.",
+        "forms": "Express anatomy with a broad perimeter and a few strong internal contour turns.",
+        "linework": "Make a deliberate multi-pixel stepped outline the dominant visual feature throughout the figure.",
+        "shading": "Restrict shading to a few flat blocks tucked beneath the outline or overlapping limbs.",
+        "palette": "Separate the dark contour strongly from a small number of quiet interior colors.",
+        "texture": "Keep interiors smooth and untextured so staircase line rhythm remains visible.",
+        "rendering": "Draw an isolated outline-led sprite with the same line thickness on all approved poses."
+      },
+      "negative_constraints": [
+        "Avoid hairline broken contours, high-frequency interior dithering or soft outer glow.",
+        "Do not let outline thickness expand and contract accidentally from frame to frame."
+      ],
+      "use_cases": [
+        "Bold outlined pixel pets",
+        "Small sprite badges"
+      ],
+      "limitations": [
+        "Heavy contours consume interior space; faces and props need large simplified shapes."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "recommended",
+        "print": "recommended",
+        "grid": "recommended"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "hard",
+        "resampling": "nearest",
+        "scaling": "Use a consistent logical pixel grid and integer nearest-neighbor enlargement inside the existing profile cells; preserve whole pixel clusters.",
+        "notes": [
+          "Check dark-background previews so a thick dark contour still separates clearly from the host UI.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "retro-console",
+      "name": "Retro Console Sprite",
+      "category": "pixel-games",
+      "kind": "technique",
+      "description": "Tile-conscious cartridge-game character with repeated modular clusters, side-readable forms and economical animation design.",
+      "tags": [
+        "pixel",
+        "cartridge",
+        "modular-tiles",
+        "platform-sprite"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use clean opaque color tiles with a graphic cartridge-game surface.",
+        "forms": "Form a compact side-readable body from reusable block groups for head, torso and feet.",
+        "linework": "Use rhythmic stair-step contours with repeated corner motifs across matching body parts.",
+        "shading": "Shade with broad material-colored blocks that reinforce the modular construction.",
+        "palette": "Share compatible ramps between limbs and clothing while preserving essential identity accents.",
+        "texture": "Let repeated tile-like clusters create structure instead of fine painted texture.",
+        "rendering": "Render an isolated sprite whose modular body pieces retain size and visual weight through animation."
+      },
+      "negative_constraints": [
+        "Avoid a level platform, scenery tiles or interface text accompanying the sprite.",
+        "Do not reshape repeated limb clusters inconsistently between left and right states."
+      ],
+      "use_cases": [
+        "Platform-game companion pets",
+        "Economical modular sprite animation"
+      ],
+      "limitations": [
+        "Distinct asymmetrical markings must remain intentional when modular shapes are reused or mirrored."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "recommended",
+        "print": "recommended",
+        "grid": "recommended"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "hard",
+        "resampling": "nearest",
+        "scaling": "Use a consistent logical pixel grid and integer nearest-neighbor enlargement inside the existing profile cells; preserve whole pixel clusters.",
+        "notes": [
+          "The tile influence governs drawing economy only; retain the profile atlas layout and its existing slot geometry.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "hand-painted-game-sprite",
+      "name": "Hand-Painted Game Sprite",
+      "category": "pixel-games",
+      "kind": "technique",
+      "description": "Brush-modeled character optimized like a game asset, with broad lit planes and carefully sharpened silhouette edges.",
+      "tags": [
+        "painted",
+        "game-asset",
+        "broad-values",
+        "brushwork"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Suggest hand-painted surfaces through broad opaque brush marks tied to each material.",
+        "forms": "Carve the silhouette into simple readable body masses with slightly exaggerated face and hands.",
+        "linework": "Use painted contour accents at overlaps instead of a uniform ink border.",
+        "shading": "Group lighting into a few large planes with soft transitions only within those planes.",
+        "palette": "Keep warm and cool shifts inside a stable material palette rather than changing local colors.",
+        "texture": "Place visible brush strokes on larger forms, reducing texture near eyes and fine markings.",
+        "rendering": "Paint an isolated production sprite with controlled antialiased edges and one fixed light direction."
+      },
+      "negative_constraints": [
+        "Avoid concept-art scenery, atmospheric haze or a painted ground shadow.",
+        "Do not leave loose brush flecks detached from the mascot silhouette."
+      ],
+      "use_cases": [
+        "Painterly game companions",
+        "Readable hand-painted animation strips"
+      ],
+      "limitations": [
+        "Subtle brush detail may disappear after downsampling; identity must depend on broad color and shape."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Inspect antialiased edges against several backgrounds; prefer true alpha over keying through soft paint transitions.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    }
+  ]
+}

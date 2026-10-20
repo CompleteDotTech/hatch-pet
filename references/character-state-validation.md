@@ -4,7 +4,7 @@
 
 Hatch Pet 2.1.0 adds catalog version 1.0.0 with **416 canonical states, 408 aliases, 16 categories, 16 composable packs, 15 archetypes, 19 anatomy capabilities, nine animation recipes and nine transition recipes**. Every canonical state compiles into a bounded custom profile with usable generation instructions. The ordinary preparation, acquisition/import, extraction, validation, review, playback, export and packaging systems consume the result.
 
-This record was measured on **2026-10-19**. [Machine-readable evidence](character-state-validation.json) records the code and consumer hashes, catalog hash, exact test results and demonstration acceptance summaries. The catalog hash is `5de72dedb3262ee0e350d1c5b45fa1cd4455d763b4760fa69ff20914f1895795`.
+This pre-integration state-expansion record was measured on **2026-10-19**. See [combined state and style validation](state-style-integration.md) for the subsequent 487-test integration run; the historical results below are preserved. [Machine-readable evidence](character-state-validation.json) records the code and consumer hashes, catalog hash, exact test results and demonstration acceptance summaries. The catalog hash is `5de72dedb3262ee0e350d1c5b45fa1cd4455d763b4760fa69ff20914f1895795`.
 
 ## Required validation results
 

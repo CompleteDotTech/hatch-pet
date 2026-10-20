@@ -14,6 +14,9 @@ def capabilities():
         'sources': {'imagegen': ['image', 'strip'], 'import': ['image', 'strip', 'frames']},
         'extraction': ['conservative-slots', 'source-bound-rectangles'],
         'resampling': ['nearest', 'bilinear', 'bicubic', 'lanczos'],
+        'styles': {'schema_version': 1, 'catalog': 'styles/catalog.json',
+                   'discovery': ['styles', 'style', 'style-modifiers'],
+                   'immutable_run_specification': True, 'thematic_modifiers': True},
         'exporters': ['frames', 'atlas', 'gif', 'webp', 'browser', 'cards', 'flipbook', 'board', 'stimuli', 'cursor', 'craft'],
         'consumers': ['browser-state-machine-v2', 'communication-board-v1', 'Xcursor-v1', 'local-cursor-v1', 'print-layout-v1', 'stimuli-csv-v1', 'craft-grid-v1'],
         'state_library': {'interface_version': 1, 'command': 'python scripts/hatch.py states',
@@ -55,6 +58,15 @@ def doctor(destination=None, profile=None):
         result['state_library'] = load_library().summary()
     except (ImportError, ValueError, OSError, KeyError, TypeError) as exc:
         result['errors'].append('Character state library is incomplete or invalid: ' + str(exc))
+    try:
+        from style_registry import load_catalog, digest
+        catalog = load_catalog()
+        result['style_catalog'] = {'version': catalog['catalog_version'], 'sha256': digest(catalog),
+                                   'styles': len(catalog['styles']),
+                                   'techniques': sum(s['kind'] == 'technique' for s in catalog['styles']),
+                                   'categories': len(catalog['categories']), 'modifiers': len(catalog['modifiers'])}
+    except (ImportError, ValueError, OSError, KeyError, TypeError) as exc:
+        result['errors'].append('Style catalog is invalid: ' + str(exc))
     parent = Path(destination or Path.cwd()).resolve()
     while not parent.exists():
         parent = parent.parent
