@@ -1,4 +1,4 @@
-"""Produce and verify all ten deterministic fixture demonstrations. No model or live app calls."""
+"""Verify original capability presets and selected character-state fixture workflows."""
 from __future__ import annotations
 import argparse
 import csv
@@ -254,4 +254,9 @@ if __name__=='__main__':
     args=parser.parse_args()
     names=list(hatch.read(ROOT/'presets/catalog.json')) if args.all else [args.preset]
     results={name:demonstrate(name,args.output_dir) for name in names}
+    if args.all:
+        from demonstrate_states import DEMONSTRATIONS, demonstrate_states
+        from state_catalog import load_library
+        library = load_library()
+        results.update({name: demonstrate_states(name, args.output_dir, library=library) for name in DEMONSTRATIONS})
     print(json.dumps(results,indent=2))

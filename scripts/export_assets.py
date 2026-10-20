@@ -54,6 +54,10 @@ def export_assets(frames_root, output_dir, profile=None):
     run_manifest=root.parent/'imagegen-jobs.json'
     fixture=json.loads(run_manifest.read_text(encoding='utf-8')).get('fixture_mode',False) if run_manifest.is_file() else False
     metadata={'schema_version':2,'profile_id':p['id'],'profile_sha256':profile_hash(p),'layout':p['layout'],'events':p['events'],'playback':p.get('playback', {}),'static_state':p['export']['static_state'],'states':[],'fixture':fixture,'integration_verified':False,'source':'Deterministic export; artwork origin is recorded in provenance. Browser timings are best effort.'}
+    from state_selection import export_selection
+    selection = export_selection(root.parent, out, p)
+    if selection is not None:
+        metadata['state_selection'] = selection
     write_frames=True
     for state in p['states']:
         frames=[]; records=[]
@@ -64,13 +68,18 @@ def export_assets(frames_root, output_dir, profile=None):
                 if write_frames:
                     target=out/relative;target.parent.mkdir(parents=True,exist_ok=True);frame.save(target)
                 records.append({'index':index,'path':relative if write_frames else None,'duration_ms':state['durations'][index],'source_sha256':sha256(path),'column':index})
-        static_frame=p['export']['static_frame'] if state['id']==p['export']['static_state'] else 0
+        static_frame=state.get('playback', {}).get('reduced_motion_frame',
+            p['export']['static_frame'] if state['id']==p['export']['static_state'] else 0)
         records_state={'id':state['id'],'purpose':state['purpose'],'row':len(metadata['states']),'frames':records,'static_frame':static_frame,'alignment':state['alignment'],'playback':state.get('playback', {})}
+        playback = state.get('playback', {})
+        mode, hold_frame = playback.get('mode', 'loop'), playback.get('hold_frame', 0)
         if 'gif' in formats:
-            relative=f'animations/{state["id"]}.gif';save_preview(frames,state['durations'],out/relative);records_state['gif']=relative
+            relative=f'animations/{state["id"]}.gif';save_preview(frames,state['durations'],out/relative,mode,hold_frame);records_state['gif']=relative
         if 'webp' in formats:
             target=out/'animations'/f'{state["id"]}.webp';target.parent.mkdir(parents=True,exist_ok=True)
-            frames[0].save(target,format='WEBP',save_all=True,append_images=frames[1:],duration=state['durations'],loop=0,lossless=True,exact=True)
+            selected = [frames[hold_frame]] if mode == 'hold' else frames
+            durations = [state['durations'][hold_frame]] if mode == 'hold' else state['durations']
+            selected[0].save(target,format='WEBP',save_all=True,append_images=selected[1:],duration=durations,loop=0 if mode=='loop' else 1,lossless=True,exact=True)
             records_state['webp']=target.relative_to(out).as_posix()
         static_path=out/'static'/f'{state["id"]}.png';static_path.parent.mkdir(parents=True,exist_ok=True);frames[static_frame].save(static_path)
         records_state['static']=static_path.relative_to(out).as_posix()

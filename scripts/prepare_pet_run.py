@@ -538,6 +538,8 @@ Output exactly {frames} complete poses in left-to-right playback order, one pose
 Identity: {args.pet_notes}. Preserve the same {invariants} in every frame except explicitly approved state differences.
 Style: {artwork_style(args)}
 Action: {purpose}
+Frame durations in playback order: {', '.join(str(value) + ' ms' for value in spec['durations'])}.
+Playback behavior: {spec.get('playback', {}).get('mode', 'loop')}. {'Draw one intentionally static expressive pose.' if frames == 1 else 'Draw a meaningful pose progression; do not duplicate frames merely to fill the strip. Use the specified durations for intentional holds.'}
 Motion policy: {spec['motion']}. Preserve intentional vertical motion, including jump height. Maintain one consistent source viewport and apparent character scale across the row; a wider or taller pose must not be drawn at a different scale.
 Extraction alignment: {json.dumps(policy, ensure_ascii=False)}. This describes extraction; do not draw anchors or guides.
 Detached character details are {'permitted by this profile when semantically intended' if detached else 'not permitted by this profile'}.
@@ -648,6 +650,7 @@ def main() -> None:
     parser.add_argument("--force", action="store_true")
     parser.add_argument("--background", choices=("auto", "alpha", "chroma"), default="auto")
     parser.add_argument("--profile")
+    parser.add_argument('--state-selection', help='Catalog compilation sidecar; defaults to PROFILE.selection.json when present')
     parser.add_argument("--avoid", action="append", default=[])
     parser.add_argument("--require", action="append", default=[])
     parser.add_argument("--constraints", help="JSON structured user requirements and inferred guidance")
@@ -661,6 +664,15 @@ def main() -> None:
     ROWS = [(s["id"], i, s["frames"], s["purpose"]) for i, s in enumerate(profile["states"])]
     raw_constraints = json.loads(Path(args.constraints).read_text(encoding="utf-8")) if args.constraints else {}
     args.identity = validate_identity(json.loads(Path(args.identity).read_text(encoding='utf-8')) if args.identity else None, profile)
+    selection_path = Path(args.state_selection).expanduser().resolve() if args.state_selection else None
+    if selection_path is None and args.profile:
+        companion = Path(args.profile).expanduser().resolve().with_suffix('.selection.json')
+        if companion.is_file():
+            selection_path = companion
+    selection = None
+    if selection_path is not None:
+        from state_selection import read_selection
+        selection = read_selection(selection_path, profile, args.identity)
     roles = reference_roles(json.loads(Path(args.reference_roles).read_text(encoding='utf-8')) if args.reference_roles else None, len(args.reference))
 
     raw_reference_paths = [
@@ -778,6 +790,11 @@ def main() -> None:
     }
     if brand_discovery_path:
         request["brand_discovery_path"] = brand_discovery_path
+    if selection is not None:
+        selection_bytes = (json.dumps(selection, indent=2, ensure_ascii=False) + '\n').encode('utf-8')
+        (run_dir / 'state-selection.json').write_bytes(selection_bytes)
+        request['state_selection'] = {'path': 'state-selection.json',
+            'sha256': hashlib.sha256(selection_bytes).hexdigest(), 'profile_sha256': selection['profile_sha256']}
     (run_dir / "pet_request.json").write_text(
         json.dumps(request, indent=2) + "\n", encoding="utf-8"
     )

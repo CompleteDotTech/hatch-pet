@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "profile_id": "accessible-feedback",
+  "states": [
+    "idle", "low-stimulation-idle", "static-neutral", "static-positive",
+    "static-concern", "static-working", "notification-safe",
+    "nonverbal-confirmation", "nonverbal-refusal", "nonverbal-uncertainty",
+    "assistance-needed", "completion-acknowledgment", "attention-prompt",
+    "nonverbal-distress"
+  ],
+  "archetype": "generic",
+  "reduced_motion": true,
+  "anatomy_policy": "error",
+  "queue_limit": 4
+}

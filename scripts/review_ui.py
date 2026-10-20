@@ -26,6 +26,9 @@ def build_review(root, data, destination):
     hatch.atomic(out / 'review-template.json', template)
     hatch.atomic(out / 'identity.json', hatch.read(root / 'pet_request.json').get('identity', {}))
     payload = json.dumps({'template': template, 'evidence': evidence,
+        'state_guidance': {state['id']: {'purpose': state['purpose'],
+            'generation': state['generation'], 'playback': state.get('playback', {}),
+            'durations': state['durations']} for state in profile['states']},
         'identity': hatch.read(root / 'pet_request.json').get('identity', {}),
         'origins': {j['id']: j.get('source_origin', 'derived' if j.get('derived_from') else 'unrecorded') for j in data['jobs']}}).replace('<', '\\u003c')
     shell = (Path(__file__).parents[1] / 'assets/review.html').read_text(encoding='utf-8')

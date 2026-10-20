@@ -20,11 +20,13 @@ def build():
     state['frames']['maximum']=64
     state['alignment']['properties']['resampling']={'enum':['nearest','bilinear','bicubic','lanczos']}
     state['playback']=object_schema({'mode':{'enum':['loop','once','hold']},'completion':{'type':'string'},
-        'hold_frame':{'type':'integer','minimum':0},'interruptible':{'type':'boolean'}})
+        'hold_frame':{'type':'integer','minimum':0},'interruptible':{'type':'boolean'},
+        'reduced_motion_frame':{'type':'integer','minimum':0}})
     event=object_schema({'target':{'type':'string'},'priority':{'type':'integer','minimum':0,'maximum':100},
-        'interrupt':{'enum':['always','higher','never']},'restart':{'type':'boolean'},
-        'from':{'type':'array','minItems':1,'items':{'type':'string'}}},['target'])
+        'interrupt':{'enum':['always','higher','never']},'restart':{'type':'boolean'},'resume':{'type':'boolean'},
+        'from':{'type':'array','minItems':1,'uniqueItems':True,'items':{'type':'string'}}},['target'])
     profile['properties']['playback']=object_schema({'initial':{'type':'string'},'cancel_state':{'type':'string'},
+        'max_consecutive_interruptions':{'type':'integer','minimum':0,'maximum':32},
         'queue_limit':{'type':'integer','minimum':0,'maximum':32},'events':{'type':'object','additionalProperties':event}})
     export=profile['properties']['export']['properties']
     export['formats']['items']['enum']=['frames','atlas','gif','webp','browser','cards','flipbook','board','stimuli','cursor','craft']

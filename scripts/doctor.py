@@ -16,6 +16,11 @@ def capabilities():
         'resampling': ['nearest', 'bilinear', 'bicubic', 'lanczos'],
         'exporters': ['frames', 'atlas', 'gif', 'webp', 'browser', 'cards', 'flipbook', 'board', 'stimuli', 'cursor', 'craft'],
         'consumers': ['browser-state-machine-v2', 'communication-board-v1', 'Xcursor-v1', 'local-cursor-v1', 'print-layout-v1', 'stimuli-csv-v1', 'craft-grid-v1'],
+        'state_library': {'interface_version': 1, 'command': 'python scripts/hatch.py states',
+            'discovery': ['list', 'search', 'show', 'packs', 'archetypes', 'recipes', 'preview'],
+            'compilation': 'Selected definitions compile to an ordinary validated custom profile and a separate provenance manifest.',
+            'generation': 'Selective installed imagegen handoffs or explicit imports; compilation performs no model calls.',
+            'codex_extension': False},
         'unsupported': 'No dynamic plugins, arbitrary code hooks, remote generation clients or automatic external installation.'}
 
 
@@ -45,6 +50,11 @@ def doctor(destination=None, profile=None):
         result['errors'].append('Pillow is missing: python -m pip install Pillow')
     result['optional'] = {'playwright_python': importlib.util.find_spec('playwright') is not None,
                           'imagegen': 'External installed skill/tool; availability cannot be probed by Python.'}
+    try:
+        from state_catalog import load_library
+        result['state_library'] = load_library().summary()
+    except (ImportError, ValueError, OSError, KeyError, TypeError) as exc:
+        result['errors'].append('Character state library is incomplete or invalid: ' + str(exc))
     parent = Path(destination or Path.cwd()).resolve()
     while not parent.exists():
         parent = parent.parent

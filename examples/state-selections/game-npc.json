@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "profile_id": "game-npc-29",
+  "states": [
+    "idle", "ready-stance", "walking-left", "walking-right",
+    "running-left", "running-right", "stopping", "turning-left",
+    "turning-right", "jumping", "landing", "greeting", "waving",
+    "listening", "pointing", "nodding", "attacking", "defending",
+    "dodging", "being-hit", "stunned", "knocked-down", "getting-up",
+    "healing", "using-item", "victory", "defeated", "non-graphic-knockout",
+    "respawning"
+  ],
+  "archetype": "humanoid",
+  "approved_props": ["usable-item"],
+  "anatomy_policy": "error"
+}

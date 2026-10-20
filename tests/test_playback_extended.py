@@ -102,6 +102,73 @@ class ExtendedBrowser(unittest.TestCase):
         self.page.evaluate("hatchPet.dispatchLocalEvent('success')")
         self.assertEqual(self.state()['index'],1)
 
+    def test_reduced_motion_static_export_matches_each_selected_frame(self):
+        from PIL import Image
+        p=small_profile()
+        p['states'][0]['playback']={'reduced_motion_frame':2,'interruptible':False}
+        p['states'][1]['playback']={'mode':'once','reduced_motion_frame':1}
+        p['playback']={'events':{'success':{'target':'jump','interrupt':'never'}}}
+        self.export(p)
+        metadata=hatch.read(self.home/'export/animation.json')
+        for state in metadata['states']:
+            expected=2 if state['id']=='rest' else 1
+            self.assertEqual(state['static_frame'],expected)
+            with Image.open(self.home/'export'/state['static']) as static, Image.open(self.home/'export'/state['frames'][expected]['path']) as frame:
+                self.assertEqual(static.convert('RGBA').tobytes(),frame.convert('RGBA').tobytes())
+        self.page.emulate_media(reduced_motion='reduce')
+        self.page.wait_for_function('hatchPet.playback.reducedMotion')
+        self.assertEqual(self.state()['index'],2)
+        self.assertEqual(self.page.locator('#character').get_attribute('src'),'static/rest.png')
+        self.assertTrue(self.page.evaluate("hatchPet.dispatchLocalEvent('success')"))
+        self.assertEqual((self.state()['state'],self.state()['index']),('jump',1))
+        self.assertEqual(self.page.locator('#character').get_attribute('src'),'static/jump.png')
+        self.assertEqual(self.page.evaluate('timers.size'),0)
+        self.assertEqual(self.errors,[])
+
+    def test_resumable_notification_restores_frame_and_pause_timing(self):
+        p=small_profile();p['states'][1]['playback']={'mode':'once','completion':'rest'}
+        p['playback']={'events':{'success':{'target':'jump','priority':8,'resume':True}}}
+        self.export(p)
+        self.page.evaluate("testAdvance(60);hatchPet.dispatchLocalEvent('success');testAdvance(200)")
+        self.assertEqual((self.state()['state'],self.state()['index']),('rest',1))
+        self.assertEqual(self.state()['remainingMs'],50)
+        self.page.evaluate('hatchPet.pause();hide(true);testAdvance(1000);hide(false);testAdvance(1000)')
+        self.assertTrue(self.state()['paused']);self.assertEqual(self.state()['remainingMs'],50)
+        self.page.evaluate('hatchPet.resume();testAdvance(49)');self.assertEqual(self.state()['index'],1)
+        self.page.evaluate('testAdvance(1)');self.assertEqual(self.state()['index'],2)
+        self.assertEqual(self.errors,[])
+
+    def test_repeated_high_priority_events_have_bounded_queue_fairness(self):
+        p=small_profile();p['events']={'low':'jump','flood':'rest'}
+        p['states'][1]['playback']={'mode':'once','completion':'rest'}
+        p['playback']={'queue_limit':2,'max_consecutive_interruptions':2,'events':{
+            'low':{'target':'jump','priority':0,'interrupt':'never'},
+            'flood':{'target':'rest','priority':100,'restart':True}}}
+        self.export(p)
+        serviced=self.page.evaluate("""() => {
+            hatchPet.dispatchLocalEvent('low');
+            for(let round=0;round<6;round++){
+                for(let burst=0;burst<100;burst++)hatchPet.dispatchLocalEvent('flood');
+                testAdvance(200);
+                if(hatchPet.playback.state==='jump'){
+                    for(let burst=0;burst<100;burst++)hatchPet.dispatchLocalEvent('flood');
+                    testAdvance(199);
+                    return hatchPet.playback.state==='jump';
+                }
+            }
+            return false;
+        }""")
+        self.assertTrue(serviced);self.assertLessEqual(len(self.state()['queued']),2)
+        self.assertEqual(self.errors,[])
+
+    def test_queued_event_source_is_checked_before_default_completion(self):
+        p=small_profile();p['states'][0]['playback']={'mode':'once','completion':'jump','interruptible':False}
+        p['playback']={'events':{'success':{'target':'jump','from':['rest'],'priority':7,'interrupt':'never'}}}
+        self.export(p)
+        self.page.evaluate("hatchPet.dispatchLocalEvent('success');testAdvance(200)")
+        self.assertEqual((self.state()['state'],self.state()['priority']),('jump',7))
+        self.assertEqual(self.errors,[])
+
     def test_review_ui_steps_frames_and_binds_downloaded_evidence(self):
         demonstrate('assembly',self.home)
         self.page.goto((self.home/'assembly/review/review.html').as_uri())
