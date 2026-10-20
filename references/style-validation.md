@@ -4,7 +4,7 @@ Validated on **2026-10-19 UTC** against the implementation branched from main co
 
 ## Result
 
-The final integrated suite passed **403 tests in 164.292 seconds, with zero failures and zero skips**. The original baseline passed all 123 tests before implementation. The expansion adds 280 regression cases, including a separate preparation case for each of the 205 registered entries. [Complete unittest output](../tests/results/style-catalog-unittest.txt) is retained as automated test evidence.
+The final style-expansion suite passed **403 tests in 164.292 seconds, with zero failures and zero skips**. The original baseline passed all 123 tests before implementation. The expansion adds 280 regression cases, including a separate preparation case for each of the 205 registered entries. [Complete unittest output](../tests/results/style-catalog-unittest.txt) is retained as automated test evidence. See [combined state and style validation](state-style-integration.md) for the subsequent integration check.
 
 | Check | Result |
 | --- | --- |

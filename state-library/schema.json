@@ -1,0 +1,837 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Hatch Pet state library version 1",
+  "description": "Strict structural schema for all five state-library data files. Animation records reuse the existing runtime profile schema. scripts/state_catalog.py additionally verifies unique IDs and aliases, references and cycles, per-state frames/timings, applicability, legal transitions, recipe recovery and bounded profile compilation.",
+  "$defs": {
+    "named": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "description"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]*$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "direction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "facing",
+        "travel",
+        "mirror_policy",
+        "dependencies"
+      ],
+      "properties": {
+        "facing": {
+          "enum": [
+            "front",
+            "left",
+            "right",
+            "back",
+            "any"
+          ]
+        },
+        "travel": {
+          "enum": [
+            "none",
+            "left",
+            "right",
+            "up",
+            "down",
+            "forward",
+            "backward"
+          ]
+        },
+        "mirror_policy": {
+          "const": "explicit-approval-only"
+        },
+        "dependencies": {
+          "type": "array",
+          "minItems": 0,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9-]*$"
+          }
+        }
+      }
+    },
+    "anatomy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "requires_all",
+        "requires_any",
+        "excludes",
+        "fallback"
+      ],
+      "properties": {
+        "requires_all": {
+          "type": "array",
+          "minItems": 0,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9-]*$"
+          }
+        },
+        "requires_any": {
+          "type": "array",
+          "minItems": 0,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9-]*$"
+          }
+        },
+        "excludes": {
+          "type": "array",
+          "minItems": 0,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9-]*$"
+          }
+        },
+        "fallback": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]*$"
+        }
+      }
+    },
+    "state": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "category",
+        "family",
+        "tags",
+        "aliases",
+        "description",
+        "archetypes",
+        "anatomy",
+        "animation_recipe",
+        "animation",
+        "poses",
+        "expression",
+        "direction",
+        "events",
+        "priority",
+        "interrupt",
+        "repeat",
+        "legal_transitions",
+        "completion",
+        "recovery",
+        "reduced_motion",
+        "props",
+        "negative_constraints",
+        "semantic_review",
+        "compatibility",
+        "examples"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]*$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "category": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]*$"
+        },
+        "family": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]*$"
+        },
+        "tags": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9-]*$"
+          }
+        },
+        "aliases": {
+          "type": "array",
+          "minItems": 0,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9-]*$"
+          }
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "archetypes": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9-]*$"
+          }
+        },
+        "anatomy": {
+          "$ref": "#/$defs/anatomy"
+        },
+        "animation_recipe": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]*$"
+        },
+        "animation": {
+          "$ref": "../profiles/profile.schema.json#/properties/states/items"
+        },
+        "poses": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "expression": {
+          "type": "string",
+          "minLength": 1
+        },
+        "direction": {
+          "$ref": "#/$defs/direction"
+        },
+        "events": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          }
+        },
+        "priority": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "interrupt": {
+          "enum": [
+            "always",
+            "higher",
+            "never"
+          ]
+        },
+        "repeat": {
+          "enum": [
+            "coalesce",
+            "restart"
+          ]
+        },
+        "legal_transitions": {
+          "type": "array",
+          "minItems": 0,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9-]*$"
+          }
+        },
+        "completion": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-z0-9][a-z0-9-]*$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "recovery": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]*$"
+        },
+        "reduced_motion": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "mode",
+            "frame",
+            "description"
+          ],
+          "properties": {
+            "mode": {
+              "const": "static"
+            },
+            "frame": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "description": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "props": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "required",
+            "optional"
+          ],
+          "properties": {
+            "required": {
+              "type": "array",
+              "minItems": 0,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "optional": {
+              "type": "array",
+              "minItems": 0,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "negative_constraints": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "semantic_review": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "compatibility": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "codex",
+            "custom_profile"
+          ],
+          "properties": {
+            "codex": {
+              "const": false
+            },
+            "custom_profile": {
+              "const": true
+            }
+          }
+        },
+        "examples": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "catalog": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "states",
+        "catalog_version",
+        "categories"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "states": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/state"
+          }
+        },
+        "catalog_version": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+        },
+        "categories": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/named"
+          }
+        }
+      }
+    },
+    "pack": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "description",
+        "states",
+        "includes",
+        "exclude",
+        "selection_only"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]*$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "states": {
+          "type": "array",
+          "minItems": 0,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9-]*$"
+          }
+        },
+        "includes": {
+          "type": "array",
+          "minItems": 0,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9-]*$"
+          }
+        },
+        "exclude": {
+          "type": "array",
+          "minItems": 0,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9-]*$"
+          }
+        },
+        "archetypes": {
+          "type": "array",
+          "minItems": 0,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9-]*$"
+          }
+        },
+        "recommended_limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 256
+        },
+        "selection_only": {
+          "type": "boolean"
+        }
+      }
+    },
+    "packs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "packs"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "packs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/pack"
+          }
+        }
+      }
+    },
+    "archetype": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "description",
+        "capabilities"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]*$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "capabilities": {
+          "type": "array",
+          "minItems": 0,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9-]*$"
+          }
+        }
+      }
+    },
+    "archetypes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "archetypes",
+        "capabilities"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "archetypes": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/archetype"
+          }
+        },
+        "capabilities": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/named"
+          }
+        }
+      }
+    },
+    "event": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "target"
+      ],
+      "properties": {
+        "target": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]*$"
+        },
+        "from": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9-]*$"
+          }
+        },
+        "priority": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "interrupt": {
+          "enum": [
+            "always",
+            "higher",
+            "never"
+          ]
+        },
+        "restart": {
+          "type": "boolean"
+        },
+        "resume": {
+          "type": "boolean"
+        }
+      }
+    },
+    "transition_recipe": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "description",
+        "states",
+        "initial",
+        "cancel_state",
+        "steps",
+        "completion",
+        "events",
+        "queue_limit"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]*$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "states": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9-]*$"
+          }
+        },
+        "initial": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]*$"
+        },
+        "cancel_state": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]*$"
+        },
+        "steps": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9-]*$"
+          }
+        },
+        "completion": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9-]*$"
+          }
+        },
+        "events": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {
+            "$ref": "#/$defs/event"
+          }
+        },
+        "queue_limit": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 32
+        }
+      }
+    },
+    "transition_recipes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "recipes"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "recipes": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/transition_recipe"
+          }
+        }
+      }
+    },
+    "animation_recipe": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "description",
+        "frames",
+        "durations",
+        "key_phases",
+        "loop_seam"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]*$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "frames": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 64
+        },
+        "durations": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "integer",
+            "minimum": 10,
+            "maximum": 60000
+          }
+        },
+        "key_phases": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "loop_seam": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "animation_recipes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "recipes"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "recipes": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/animation_recipe"
+          }
+        }
+      }
+    },
+    "catalog_extension": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "states",
+        "catalog_version",
+        "categories"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "states": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/state"
+          }
+        },
+        "catalog_version": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+        },
+        "categories": {
+          "type": "array",
+          "minItems": 0,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/named"
+          }
+        },
+        "entry_transitions": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z0-9][a-z0-9-]*$"
+            }
+          }
+        }
+      }
+    }
+  },
+  "anyOf": [
+    {
+      "$ref": "#/$defs/catalog"
+    },
+    {
+      "$ref": "#/$defs/packs"
+    },
+    {
+      "$ref": "#/$defs/archetypes"
+    },
+    {
+      "$ref": "#/$defs/transition_recipes"
+    },
+    {
+      "$ref": "#/$defs/animation_recipes"
+    },
+    {
+      "$ref": "#/$defs/catalog_extension"
+    }
+  ]
+}

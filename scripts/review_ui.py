@@ -28,6 +28,9 @@ def build_review(root, data, destination):
     style = hatch.style_provenance(root, data)
     hatch.atomic(out / 'style-provenance.json', style)
     payload = json.dumps({'template': template, 'evidence': evidence,
+        'state_guidance': {state['id']: {'purpose': state['purpose'],
+            'generation': state['generation'], 'playback': state.get('playback', {}),
+            'durations': state['durations']} for state in profile['states']},
         'identity': hatch.read(root / 'pet_request.json').get('identity', {}),
         'style': style,
         'origins': {j['id']: hatch.source_origin(j) for j in data['jobs']}}).replace('<', '\\u003c')

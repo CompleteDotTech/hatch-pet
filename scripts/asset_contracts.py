@@ -11,7 +11,7 @@ from pathlib import Path
 
 from PIL import Image, __version__ as PILLOW_VERSION
 
-VERSION = '2.0.0'
+VERSION = '2.1.0'
 RESAMPLING = {'nearest': Image.Resampling.NEAREST, 'bilinear': Image.Resampling.BILINEAR,
               'bicubic': Image.Resampling.BICUBIC, 'lanczos': Image.Resampling.LANCZOS}
 MAX_SOURCE_PIXELS = 2_000_000

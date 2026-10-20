@@ -34,16 +34,26 @@ def load_frames(frames_root: Path, state: str, expected_count: int) -> list[Imag
     return frames
 
 
-def save_preview(frames: list[Image.Image], durations: list[int], output: Path) -> None:
+def save_preview(frames: list[Image.Image], durations: list[int], output: Path,
+                 mode: str = 'loop', hold_frame: int = 0) -> None:
     output.parent.mkdir(parents=True, exist_ok=True)
-    frames[0].save(
+    if mode not in ('loop', 'once', 'hold'):
+        raise ValueError('unsupported preview playback mode: ' + mode)
+    if not frames or not 0 <= hold_frame < len(frames) or len(durations) != len(frames):
+        raise ValueError('preview requires aligned frames, durations and a valid hold frame')
+    selected = [frames[hold_frame]] if mode == 'hold' else frames
+    timing = [durations[hold_frame]] if mode == 'hold' else durations
+    # Omitting the GIF loop extension means one play. A loop value of 1 would
+    # request a repeat in common GIF consumers, so it is not a one-shot.
+    options = {'loop': 0} if mode == 'loop' else {}
+    selected[0].save(
         output,
         save_all=True,
-        append_images=frames[1:],
-        duration=durations,
-        loop=0,
+        append_images=selected[1:],
+        duration=timing,
         disposal=2,
         optimize=False,
+        **options,
     )
 
 
@@ -57,12 +67,13 @@ def main() -> None:
     frames_root = Path(args.frames_root).expanduser().resolve()
     output_dir = Path(args.output_dir).expanduser().resolve()
     profile = profile_for_run(frames_root, args.profile)
-    durations_by_state = {state["id"]: state["durations"] for state in profile["states"]}
     previews = []
-    for state, durations in durations_by_state.items():
+    for spec in profile['states']:
+        state, durations = spec['id'], spec['durations']
         frames = load_frames(frames_root, state, len(durations))
         output = output_dir / f"{state}.gif"
-        save_preview(frames, durations, output)
+        playback = spec.get('playback', {})
+        save_preview(frames, durations, output, playback.get('mode', 'loop'), playback.get('hold_frame', 0))
         previews.append({"state": state, "path": str(output), "frames": len(frames)})
 
     result = {"ok": True, "output_dir": str(output_dir), "previews": previews}

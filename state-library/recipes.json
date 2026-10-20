@@ -1,0 +1,586 @@
+{
+  "schema_version": 1,
+  "recipes": [
+    {
+      "id": "curiosity-discovery",
+      "name": "Curiosity to discovery",
+      "description": "A finite drawn performance from curiosity through investigation and realization to celebration; returns to idle.",
+      "states": [
+        "idle",
+        "curious",
+        "investigating",
+        "realization",
+        "excited",
+        "celebrating"
+      ],
+      "initial": "idle",
+      "cancel_state": "idle",
+      "steps": [
+        "idle",
+        "curious",
+        "investigating",
+        "realization",
+        "excited",
+        "celebrating",
+        "idle"
+      ],
+      "completion": {
+        "curious": "investigating",
+        "investigating": "realization",
+        "realization": "excited",
+        "excited": "celebrating",
+        "celebrating": "idle"
+      },
+      "events": {
+        "discover": {
+          "target": "curious",
+          "from": [
+            "idle"
+          ],
+          "priority": 40,
+          "interrupt": "higher",
+          "restart": false
+        },
+        "curiosity-discovery:cancel": {
+          "target": "idle",
+          "from": [
+            "idle",
+            "curious",
+            "investigating",
+            "realization",
+            "excited",
+            "celebrating"
+          ],
+          "priority": 100,
+          "interrupt": "always",
+          "restart": false
+        }
+      },
+      "queue_limit": 8
+    },
+    {
+      "id": "sleep-cycle",
+      "name": "Gentle sleep cycle",
+      "description": "An explicit finite demonstration of waking energy winding down to sleep and waking again; sleeping is adapted to one cycle only in this recipe.",
+      "states": [
+        "idle",
+        "tired",
+        "yawning",
+        "sleeping",
+        "waking",
+        "stretching"
+      ],
+      "initial": "idle",
+      "cancel_state": "idle",
+      "steps": [
+        "idle",
+        "tired",
+        "yawning",
+        "sleeping",
+        "waking",
+        "stretching",
+        "idle"
+      ],
+      "completion": {
+        "tired": "yawning",
+        "yawning": "sleeping",
+        "sleeping": "waking",
+        "waking": "stretching",
+        "stretching": "idle"
+      },
+      "events": {
+        "rest": {
+          "target": "tired",
+          "from": [
+            "idle"
+          ],
+          "priority": 40,
+          "interrupt": "higher",
+          "restart": false
+        },
+        "sleep-cycle:cancel": {
+          "target": "idle",
+          "from": [
+            "idle",
+            "tired",
+            "yawning",
+            "sleeping",
+            "waking",
+            "stretching"
+          ],
+          "priority": 100,
+          "interrupt": "always",
+          "restart": false
+        }
+      },
+      "queue_limit": 8
+    },
+    {
+      "id": "social-welcome",
+      "name": "Social welcome",
+      "description": "An anatomy-neutral welcome and listening exchange with a polite conclusion.",
+      "states": [
+        "idle",
+        "greeting",
+        "listening",
+        "acknowledging",
+        "thanking",
+        "saying-goodbye"
+      ],
+      "initial": "idle",
+      "cancel_state": "idle",
+      "steps": [
+        "idle",
+        "greeting",
+        "listening",
+        "acknowledging",
+        "thanking",
+        "saying-goodbye",
+        "idle"
+      ],
+      "completion": {
+        "greeting": "listening",
+        "listening": "acknowledging",
+        "acknowledging": "thanking",
+        "thanking": "saying-goodbye",
+        "saying-goodbye": "idle"
+      },
+      "events": {
+        "visitor-arrived": {
+          "target": "greeting",
+          "from": [
+            "idle"
+          ],
+          "priority": 40,
+          "interrupt": "higher",
+          "restart": false
+        },
+        "social-welcome:cancel": {
+          "target": "idle",
+          "from": [
+            "idle",
+            "greeting",
+            "listening",
+            "acknowledging",
+            "thanking",
+            "saying-goodbye"
+          ],
+          "priority": 100,
+          "interrupt": "always",
+          "restart": false
+        }
+      },
+      "queue_limit": 8
+    },
+    {
+      "id": "setback-resilience",
+      "name": "Setback and resilience",
+      "description": "A failed outcome becomes frustration, emotional recovery and renewed availability through finite drawn states.",
+      "states": [
+        "idle",
+        "failed",
+        "frustrated",
+        "emotional-recovery",
+        "recover-from-setback",
+        "encouraged"
+      ],
+      "initial": "idle",
+      "cancel_state": "idle",
+      "steps": [
+        "idle",
+        "failed",
+        "frustrated",
+        "emotional-recovery",
+        "recover-from-setback",
+        "encouraged",
+        "idle"
+      ],
+      "completion": {
+        "failed": "frustrated",
+        "frustrated": "emotional-recovery",
+        "emotional-recovery": "recover-from-setback",
+        "recover-from-setback": "encouraged",
+        "encouraged": "idle"
+      },
+      "events": {
+        "setback": {
+          "target": "failed",
+          "from": [
+            "idle"
+          ],
+          "priority": 40,
+          "interrupt": "higher",
+          "restart": false
+        },
+        "setback-resilience:cancel": {
+          "target": "idle",
+          "from": [
+            "idle",
+            "failed",
+            "frustrated",
+            "emotional-recovery",
+            "recover-from-setback",
+            "encouraged"
+          ],
+          "priority": 100,
+          "interrupt": "always",
+          "restart": false
+        }
+      },
+      "queue_limit": 8
+    },
+    {
+      "id": "cinematic-arrival",
+      "name": "Cinematic arrival",
+      "description": "A short character introduction and story-resolution performance with an explicit exit pose and idle recovery.",
+      "states": [
+        "idle",
+        "entering",
+        "introduction",
+        "heroic-pose",
+        "scene-resolution",
+        "exiting"
+      ],
+      "initial": "idle",
+      "cancel_state": "idle",
+      "steps": [
+        "idle",
+        "entering",
+        "introduction",
+        "heroic-pose",
+        "scene-resolution",
+        "exiting",
+        "idle"
+      ],
+      "completion": {
+        "entering": "introduction",
+        "introduction": "heroic-pose",
+        "heroic-pose": "scene-resolution",
+        "scene-resolution": "exiting",
+        "exiting": "idle"
+      },
+      "events": {
+        "scene-start": {
+          "target": "entering",
+          "from": [
+            "idle"
+          ],
+          "priority": 40,
+          "interrupt": "higher",
+          "restart": false
+        },
+        "cinematic-arrival:cancel": {
+          "target": "idle",
+          "from": [
+            "idle",
+            "entering",
+            "introduction",
+            "heroic-pose",
+            "scene-resolution",
+            "exiting"
+          ],
+          "priority": 100,
+          "interrupt": "always",
+          "restart": false
+        }
+      },
+      "queue_limit": 8
+    },
+    {
+      "id": "low-motion-feedback",
+      "name": "Calm accessible feedback",
+      "description": "One restrained notification, acknowledgment and completion phrase; all states also provide static per-state frames.",
+      "states": [
+        "idle",
+        "notification-safe",
+        "attention-prompt",
+        "nonverbal-confirmation",
+        "completion-acknowledgment"
+      ],
+      "initial": "idle",
+      "cancel_state": "idle",
+      "steps": [
+        "idle",
+        "notification-safe",
+        "attention-prompt",
+        "nonverbal-confirmation",
+        "completion-acknowledgment",
+        "idle"
+      ],
+      "completion": {
+        "notification-safe": "attention-prompt",
+        "attention-prompt": "nonverbal-confirmation",
+        "nonverbal-confirmation": "completion-acknowledgment",
+        "completion-acknowledgment": "idle"
+      },
+      "events": {
+        "notify-calmly": {
+          "target": "notification-safe",
+          "from": [
+            "idle"
+          ],
+          "priority": 40,
+          "interrupt": "higher",
+          "restart": false
+        },
+        "low-motion-feedback:cancel": {
+          "target": "idle",
+          "from": [
+            "idle",
+            "notification-safe",
+            "attention-prompt",
+            "nonverbal-confirmation",
+            "completion-acknowledgment"
+          ],
+          "priority": 100,
+          "interrupt": "always",
+          "restart": false
+        }
+      },
+      "queue_limit": 8
+    },
+    {
+      "id": "agent-success",
+      "name": "Agent task success",
+      "description": "Host events keep work active until review and success are known. Completion animations then return to idle without claiming actual task execution.",
+      "states": [
+        "ready",
+        "running",
+        "review",
+        "successful",
+        "idle"
+      ],
+      "initial": "ready",
+      "cancel_state": "idle",
+      "steps": [
+        "ready",
+        "running",
+        "review",
+        "successful",
+        "idle"
+      ],
+      "completion": {
+        "successful": "idle"
+      },
+      "events": {
+        "task-start": {
+          "target": "running",
+          "from": [
+            "ready",
+            "idle"
+          ],
+          "priority": 30,
+          "interrupt": "higher",
+          "restart": false
+        },
+        "task-review": {
+          "target": "review",
+          "from": [
+            "running"
+          ],
+          "priority": 40,
+          "interrupt": "higher",
+          "restart": false
+        },
+        "task-success": {
+          "target": "successful",
+          "from": [
+            "review"
+          ],
+          "priority": 50,
+          "interrupt": "higher",
+          "restart": false
+        },
+        "task-ready": {
+          "target": "ready",
+          "from": [
+            "idle"
+          ],
+          "priority": 10,
+          "interrupt": "always",
+          "restart": false
+        },
+        "task-cancel": {
+          "target": "idle",
+          "from": [
+            "ready",
+            "running",
+            "review",
+            "successful",
+            "idle"
+          ],
+          "priority": 100,
+          "interrupt": "always",
+          "restart": false
+        }
+      },
+      "queue_limit": 8
+    },
+    {
+      "id": "agent-recovery",
+      "name": "Agent task recovery",
+      "description": "Failure is acknowledged before finite frustration and recovery return the character to ready; cancel remains reachable from every state.",
+      "states": [
+        "ready",
+        "running",
+        "failed",
+        "frustrated",
+        "recovering",
+        "idle"
+      ],
+      "initial": "ready",
+      "cancel_state": "idle",
+      "steps": [
+        "ready",
+        "running",
+        "failed",
+        "frustrated",
+        "recovering",
+        "ready"
+      ],
+      "completion": {
+        "failed": "frustrated",
+        "frustrated": "recovering",
+        "recovering": "ready"
+      },
+      "events": {
+        "task-start": {
+          "target": "running",
+          "from": [
+            "ready",
+            "idle"
+          ],
+          "priority": 30,
+          "interrupt": "higher",
+          "restart": false
+        },
+        "task-failed": {
+          "target": "failed",
+          "from": [
+            "running"
+          ],
+          "priority": 70,
+          "interrupt": "higher",
+          "restart": false
+        },
+        "task-cancel": {
+          "target": "idle",
+          "from": [
+            "ready",
+            "running",
+            "failed",
+            "frustrated",
+            "recovering",
+            "idle"
+          ],
+          "priority": 100,
+          "interrupt": "always",
+          "restart": false
+        },
+        "task-ready": {
+          "target": "ready",
+          "from": [
+            "idle"
+          ],
+          "priority": 10,
+          "interrupt": "always",
+          "restart": false
+        }
+      },
+      "queue_limit": 8
+    },
+    {
+      "id": "stream-conversation",
+      "name": "Streaming conversation",
+      "description": "Local browser events alternate listening and speech. The one-shot interruption event restores the interrupted prior loop after completion; resume-speech is also an explicit legal manual return to speaking.",
+      "states": [
+        "idle",
+        "listening",
+        "speaking",
+        "interrupted",
+        "celebrating"
+      ],
+      "initial": "idle",
+      "cancel_state": "idle",
+      "steps": [
+        "idle",
+        "listening",
+        "speaking",
+        "interrupted",
+        "speaking",
+        "celebrating",
+        "idle"
+      ],
+      "completion": {
+        "celebrating": "idle"
+      },
+      "events": {
+        "listen": {
+          "target": "listening",
+          "from": [
+            "idle",
+            "speaking"
+          ],
+          "priority": 30,
+          "interrupt": "always",
+          "restart": false
+        },
+        "speak": {
+          "target": "speaking",
+          "from": [
+            "listening",
+            "idle"
+          ],
+          "priority": 30,
+          "interrupt": "always",
+          "restart": false
+        },
+        "interrupt": {
+          "target": "interrupted",
+          "from": [
+            "speaking",
+            "listening"
+          ],
+          "priority": 80,
+          "interrupt": "higher",
+          "restart": false,
+          "resume": true
+        },
+        "resume-speech": {
+          "target": "speaking",
+          "from": [
+            "interrupted"
+          ],
+          "priority": 30,
+          "interrupt": "always",
+          "restart": false
+        },
+        "celebrate": {
+          "target": "celebrating",
+          "from": [
+            "speaking",
+            "listening",
+            "idle"
+          ],
+          "priority": 50,
+          "interrupt": "higher",
+          "restart": false
+        },
+        "stream-cancel": {
+          "target": "idle",
+          "from": [
+            "idle",
+            "listening",
+            "speaking",
+            "interrupted",
+            "celebrating"
+          ],
+          "priority": 100,
+          "interrupt": "always",
+          "restart": false
+        }
+      },
+      "queue_limit": 4
+    }
+  ]
+}

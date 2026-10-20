@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "profile_id": "expressive-cat-25",
+  "states": [
+    "idle",
+    "relaxed-idle",
+    "alert-idle",
+    "sleepy-idle",
+    "curious",
+    "happy",
+    "excited",
+    "content",
+    "playful",
+    "confused",
+    "hungry",
+    "thirsty",
+    "yawning",
+    "sleeping",
+    "dreaming",
+    "waking",
+    "tired",
+    "grooming",
+    "scratching",
+    "sniffing",
+    "being-petted",
+    "tail-wagging",
+    "ear-twitching",
+    "paw-grooming",
+    "kneading"
+  ],
+  "archetype": "cat",
+  "anatomy_policy": "error"
+}

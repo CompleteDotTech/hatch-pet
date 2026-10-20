@@ -176,40 +176,63 @@ def validate_profile(profile: dict) -> dict:
 
 def validate_playback(p, seen):
     playback = p.get('playback', {})
-    strict_keys(playback, {'initial', 'cancel_state', 'queue_limit', 'events'}, 'playback')
+    strict_keys(playback, {'initial', 'cancel_state', 'queue_limit', 'max_consecutive_interruptions', 'events'}, 'playback')
     for key in ('initial', 'cancel_state'):
-        if key in playback and playback[key] not in seen:
+        if key in playback and (not isinstance(playback[key], str) or playback[key] not in seen):
             raise ValueError('playback.' + key + ' must identify a state')
     limit = playback.get('queue_limit', 8)
     if type(limit) is not int or not 0 <= limit <= 32:
         raise ValueError('playback queue_limit must be 0..32')
+    burst = playback.get('max_consecutive_interruptions', 4)
+    if type(burst) is not int or not 0 <= burst <= 32:
+        raise ValueError('playback max_consecutive_interruptions must be 0..32')
     rules = playback.get('events', {})
     if not isinstance(rules, dict):
         raise ValueError('playback.events must be an object')
     for event, rule in rules.items():
-        strict_keys(rule, {'target', 'priority', 'interrupt', 'from', 'restart'}, 'event ' + event)
-        if rule.get('target') not in seen or event not in p['events'] or p['events'][event] != rule['target']:
+        if not isinstance(event, str) or not event.strip():
+            raise ValueError('playback event names must be nonempty strings')
+        strict_keys(rule, {'target', 'priority', 'interrupt', 'from', 'restart', 'resume'}, 'event ' + event)
+        if not isinstance(rule.get('target'), str) or rule['target'] not in seen or event not in p['events'] or p['events'][event] != rule['target']:
             raise ValueError('playback event must agree with events mapping: ' + event)
         if type(rule.get('priority', 0)) is not int or not 0 <= rule.get('priority', 0) <= 100:
             raise ValueError('event priority must be 0..100')
         if rule.get('interrupt', 'always') not in ('always', 'higher', 'never'):
             raise ValueError('event interrupt must be always, higher or never')
-        if 'from' in rule and (not isinstance(rule['from'], list) or not rule['from'] or any(x not in seen for x in rule['from'])):
+        if 'from' in rule and (not isinstance(rule['from'], list) or not rule['from'] or any(not isinstance(x, str) or x not in seen for x in rule['from']) or len(set(rule['from'])) != len(rule['from'])):
             raise ValueError('event from must list legal source states')
         if type(rule.get('restart', False)) is not bool:
             raise ValueError('event restart must be boolean')
+        if type(rule.get('resume', False)) is not bool:
+            raise ValueError('event resume must be boolean')
     for name, state in seen.items():
         rule = state.get('playback', {})
-        strict_keys(rule, {'mode', 'completion', 'hold_frame', 'interruptible'}, name + '.playback')
+        strict_keys(rule, {'mode', 'completion', 'hold_frame', 'interruptible', 'reduced_motion_frame'}, name + '.playback')
         mode = rule.get('mode', 'loop')
         if mode not in ('loop', 'once', 'hold'):
             raise ValueError('unsupported playback mode')
-        if 'completion' in rule and (mode != 'once' or rule['completion'] not in seen or rule['completion'] == name):
+        if 'completion' in rule and (mode != 'once' or not isinstance(rule['completion'], str) or rule['completion'] not in seen or rule['completion'] == name):
             raise ValueError('completion requires once mode and another existing state')
         if type(rule.get('hold_frame', 0)) is not int or not 0 <= rule.get('hold_frame', 0) < state['frames']:
             raise ValueError('hold_frame must identify a frame')
         if type(rule.get('interruptible', True)) is not bool:
             raise ValueError('interruptible must be boolean')
+        if 'reduced_motion_frame' in rule and (type(rule['reduced_motion_frame']) is not int or not 0 <= rule['reduced_motion_frame'] < state['frames']):
+            raise ValueError('reduced_motion_frame must identify a frame')
+    # A finite one-shot chain must end in a loop, a hold, or a completed still.
+    # Repeated performances use loop mode or explicit events, never an automatic
+    # completion cycle that makes the configured recovery unreachable.
+    for name in seen:
+        path = set()
+        current = name
+        while current is not None:
+            if current in path:
+                raise ValueError('playback completion cycle involving ' + current)
+            path.add(current)
+            current = seen[current].get('playback', {}).get('completion')
+    for event, rule in rules.items():
+        if rule.get('resume', False) and seen[rule['target']].get('playback', {}).get('mode', 'loop') != 'once':
+            raise ValueError('event resume requires a once target: ' + event)
 
 
 def validate_export_options(p):
