@@ -1,0 +1,167 @@
+{
+  "character": "luma@3.0.0",
+  "completion": "hold",
+  "contacts": [
+    {
+      "anchor": "grip",
+      "component": "hand-left",
+      "end_frame": 103,
+      "kind": "hand",
+      "start_frame": 60,
+      "target": "seed"
+    }
+  ],
+  "displacement": [
+    0,
+    0
+  ],
+  "duration_frames": 168,
+  "end_pose": "stand",
+  "entry_points": [
+    {
+      "frame": 0,
+      "pose": "stand"
+    }
+  ],
+  "events": [
+    {
+      "anchor": "grip",
+      "component": "hand-left",
+      "frame": 84,
+      "id": "receive",
+      "target": "seed",
+      "type": "attach"
+    }
+  ],
+  "exit_points": [
+    {
+      "frame": 167,
+      "pose": "stand"
+    }
+  ],
+  "facing": "front",
+  "full_frames": [],
+  "id": "luma-exchange",
+  "interpolation": {
+    "max_frames": 12,
+    "max_offset_per_frame": 20,
+    "max_rotation_per_frame": 20
+  },
+  "interruptions": {
+    "cancel_pose": "stand",
+    "frames": [
+      0,
+      84,
+      167
+    ],
+    "max_transition_frames": 12,
+    "policy": "at-markers"
+  },
+  "kind": "clip",
+  "mode": "once",
+  "requirements": {
+    "action": [
+      "reach",
+      "grasp",
+      "hold",
+      "release"
+    ],
+    "contact": [
+      "seed"
+    ],
+    "gaze": [
+      "partner",
+      "seed"
+    ],
+    "hand": [
+      "open-paw"
+    ],
+    "pose": [
+      "stand",
+      "hold"
+    ],
+    "prop_state": [
+      "shared"
+    ]
+  },
+  "root": {
+    "offset": {
+      "interpolation": "linear",
+      "keys": [
+        {
+          "frame": 0,
+          "value": [
+            0,
+            0
+          ]
+        }
+      ]
+    }
+  },
+  "schema_version": 1,
+  "start_pose": "stand",
+  "tracks": {
+    "body": {
+      "arm-left": {
+        "rotation": {
+          "interpolation": "linear",
+          "keys": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 24,
+              "value": 0
+            },
+            {
+              "frame": 60,
+              "value": 33.522254386749935
+            },
+            {
+              "frame": 102,
+              "value": 33.522254386749935
+            },
+            {
+              "frame": 144,
+              "value": 0
+            },
+            {
+              "frame": 168,
+              "value": 0
+            }
+          ]
+        }
+      }
+    },
+    "face": {
+      "head": {
+        "rotation": {
+          "interpolation": "linear",
+          "keys": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 34,
+              "value": 2
+            },
+            {
+              "frame": 64,
+              "value": 0
+            },
+            {
+              "frame": 120,
+              "value": 0
+            }
+          ]
+        }
+      }
+    },
+    "gaze": {},
+    "mouth": {}
+  },
+  "version": "3.0.0",
+  "viewpoint": "front"
+}

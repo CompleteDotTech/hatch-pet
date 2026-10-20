@@ -1,0 +1,178 @@
+{
+  "schema_version": 3,
+  "identity": {
+    "schema_version": 1,
+    "markings": [
+      "cream inner ears and muzzle",
+      "two small waistcoat buttons"
+    ],
+    "palette": {
+      "fur": "#548F8B",
+      "cream": "#E5DDC2",
+      "waistcoat": "#C69540",
+      "eyes": "#302D2B"
+    },
+    "materials": [
+      "softly painted fur",
+      "matte woven costume"
+    ],
+    "proportions": {
+      "head_to_body_height": 0.6
+    },
+    "approved_props": [
+      "ochre waistcoat"
+    ],
+    "asymmetries": [],
+    "directions": {
+      "parts": "front"
+    },
+    "forbid_mirror": true,
+    "unresolved_conflicts": []
+  },
+  "profile": {
+    "schema_version": 1,
+    "id": "luma-construction-v3",
+    "layout": {
+      "columns": 1,
+      "cell_width": 1024,
+      "cell_height": 1024,
+      "rows": 1,
+      "width": 1024,
+      "height": 1024
+    },
+    "states": [
+      {
+        "id": "parts",
+        "frames": 1,
+        "durations": [
+          1000
+        ],
+        "purpose": "One layered construction sheet for manual hash-bound part extraction",
+        "motion": "static",
+        "generation": {
+          "instructions": "Create ONE animation construction sheet in an exact 4-column by 4-row grid of equally sized invisible cells. Every separate item is centered with generous transparent margins within its own cell; nothing crosses a cell boundary. Front view only, consistent scale and palette. These are reusable drawings, not sixteen complete characters. Row 1 left to right: torso with costume, no head or arms or legs; whole head including ears and muzzle and nose but NO eyes, eyebrows or mouth; viewer-left upper arm ending at wrist, no hand; viewer-right upper arm ending at wrist, no hand. Row 2: viewer-left open paw; viewer-right open paw; viewer-left entire short leg with foot; viewer-right entire short leg with foot. Row 3: a pair of open eyes only; a pair of closed blinking eyes only; a pair of raised friendly eyebrows only; a pair of neutral eyebrows only. Row 4: closed neutral smiling mouth only; open A speaking mouth only; E speaking mouth only; round O speaking mouth only. Do not include any eye socket, background patch or duplicate muzzle around facial drawings. Torso and limbs have full rounded overlapping joint ends for a cutout rig. Keep the torso roughly 220px high and head roughly 210px wide within a cell, except the rabbit head with ears can be tall. All four mouth shapes share the same center and scale, all eye pairs share the same spacing. Preserve identity, costume details and upper-left lighting from the attached canonical four-view reference. The second attachment is the required overall layout safety guide: keep all artwork inside the square; use the explicit 4x4 arrangement described here, and do not copy visible guide marks.",
+          "skill": "imagegen",
+          "requires_identity_reference": true
+        },
+        "alignment": {
+          "coordinate_policy": "slot",
+          "scale_policy": "row",
+          "padding": 5,
+          "anchor": [
+            0.5,
+            0.5
+          ]
+        },
+        "allowed_derivations": [],
+        "validation": {}
+      }
+    ],
+    "generation": {
+      "instructions": "Create the requested original character design and construction artwork. Polished storybook cut-paper animation artwork, softly painted fur texture, clean readable silhouettes, rounded anatomy, warm light from upper left. True transparent RGBA background. No floor, shadow outside the character, scenery, text, labels, grid lines, watermark or unrelated props.",
+      "skill": "imagegen",
+      "requires_identity_reference": true
+    },
+    "validation": {
+      "require_provenance": true,
+      "allow_detached_details": true
+    },
+    "export": {
+      "formats": [
+        "frames"
+      ],
+      "static_state": "parts",
+      "static_frame": 0
+    },
+    "events": {}
+  },
+  "constraints": {
+    "require": [
+      "original non-fixture production artwork",
+      "retain asymmetry and costume",
+      "true transparency"
+    ],
+    "avoid": [
+      "text",
+      "background",
+      "unrelated props"
+    ],
+    "brand_avoid": [],
+    "brand_guidance": {
+      "text": "",
+      "sources": [],
+      "inferred": true,
+      "uncertainty": "No researched brand guidance supplied."
+    },
+    "conflicts": [],
+    "effective_brand_avoid": []
+  },
+  "pet_id": "luma",
+  "display_name": "Luma",
+  "description": "An animated character: a slender teal rabbit with long upright ears and cream inner ears, cream muzzle and belly, dark brown eyes, soft paws and an ochre waistcoat with two small buttons. Base image: a design turnaround with four full-body views arranged left to right: front, three-quarter, side, back. Consistent relative scale. No text.",
+  "created_at": "2026-10-19T17:36:50.318114+00:00",
+  "atlas": {
+    "columns": 1,
+    "cell_width": 1024,
+    "cell_height": 1024,
+    "rows": 1,
+    "width": 1024,
+    "height": 1024
+  },
+  "rows": [
+    {
+      "state": "parts",
+      "row": 0,
+      "frames": 1,
+      "purpose": "One layered construction sheet for manual hash-bound part extraction"
+    }
+  ],
+  "layout_guides": [
+    {
+      "state": "parts",
+      "path": "references/layout-guides/parts.png",
+      "width": 1024,
+      "height": 1024,
+      "frames": 1,
+      "cell_width": 1024,
+      "cell_height": 1024,
+      "safe_margin_x": 18,
+      "safe_margin_y": 16,
+      "usage": "layout guide input only; do not copy visible guide lines into generated sprite strips"
+    }
+  ],
+  "references": [],
+  "chroma_key": {
+    "hex": "#FF00FF",
+    "rgb": [
+      255,
+      0,
+      255
+    ],
+    "name": "magenta",
+    "selection": "fallback"
+  },
+  "extraction": {
+    "background": "alpha",
+    "chroma_key": {
+      "hex": "#FF00FF",
+      "rgb": [
+        255,
+        0,
+        255
+      ],
+      "name": "magenta",
+      "selection": "fallback"
+    },
+    "key_threshold": 48,
+    "shared_scale": null
+  },
+  "pet_notes": "a slender teal rabbit with long upright ears and cream inner ears, cream muzzle and belly, dark brown eyes, soft paws and an ochre waistcoat with two small buttons. Base image: a design turnaround with four full-body views arranged left to right: front, three-quarter, side, back. Consistent relative scale. No text.",
+  "style_preset": "painterly",
+  "style_notes": "Polished storybook cut-paper animation artwork, softly painted fur texture, clean readable silhouettes, rounded anatomy, warm light from upper left. True transparent RGBA background. No floor, shadow outside the character, scenery, text, labels, grid lines, watermark or unrelated props.",
+  "style_contract": "Pet-safe sprite: compact full-body mascot, readable at the selected profile cell size, clear silhouette, simple face, stable palette/materials, and crisp edges for alpha or selected chroma-key extraction. Style `painterly`: Painterly mascot with simplified brush texture, readable forms, stable palette, and enough edge clarity for clean extraction. User style notes: Polished storybook cut-paper animation artwork, softly painted fur texture, clean readable silhouettes, rounded anatomy, warm light from upper left. True transparent RGBA background. No floor, shadow outside the character, scenery, text, labels, grid lines, watermark or unrelated props..",
+  "brand_name": "",
+  "brand_brief": "",
+  "brand_sources": [],
+  "pet_safe_style": "Pet-safe sprite: compact full-body mascot, readable at the selected profile cell size, clear silhouette, simple face, stable palette/materials, and crisp edges for alpha or selected chroma-key extraction.",
+  "primary_generation_skill": "$imagegen"
+}

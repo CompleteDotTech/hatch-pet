@@ -11,6 +11,15 @@ from asset_contracts import versions
 MAX_ARCHIVE_BYTES = 1024 * 1024 * 1024
 
 
+def _unique_json_object(pairs):
+    result = {}
+    for key, value in pairs:
+        if key in result:
+            raise ValueError('duplicate JSON key in archive receipt: ' + key)
+        result[key] = value
+    return result
+
+
 def migrate(root):
     import hatch
     data = hatch.read(root / 'imagegen-jobs.json')
@@ -91,9 +100,13 @@ def verify_archive(path):
             raise ValueError('archive duplicate, entry count or decompressed size bound exceeded')
         for entry in entries:
             path = PurePosixPath(entry.filename)
-            if path.is_absolute() or '..' in path.parts or '\\' in entry.filename or ':' in entry.filename or (entry.external_attr >> 16) & 0o170000 == 0o120000:
+            if (entry.orig_filename != entry.filename or not entry.filename or path.as_posix() != entry.filename or entry.filename == '.' or
+                    path.is_absolute() or '..' in path.parts or '\\' in entry.filename or ':' in entry.filename or
+                    (entry.external_attr >> 16) & 0o170000 == 0o120000):
                 raise ValueError('unsafe archive member: ' + entry.filename)
-        receipt = json.loads(archive.read('archive-receipt.json'))
+        receipt = json.loads(archive.read('archive-receipt.json'), object_pairs_hook=_unique_json_object)
+        if not isinstance(receipt, dict):
+            raise ValueError('archive receipt must be an object')
         if type(receipt.get('schema_version', 1)) is not int or receipt.get('schema_version', 1) not in (1, 2):
             raise ValueError('unsupported archive receipt version')
         files = receipt.get('files')

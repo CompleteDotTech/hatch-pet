@@ -1,0 +1,2093 @@
+{
+  "characters": [
+    {
+      "capabilities": {
+        "action": [
+          "idle",
+          "walk",
+          "stop",
+          "reaction",
+          "reach",
+          "grasp",
+          "hold",
+          "release"
+        ],
+        "contact": [
+          "ground",
+          "seed"
+        ],
+        "costume": [
+          "everyday"
+        ],
+        "expression": [
+          "neutral",
+          "warm-surprise",
+          "listening"
+        ],
+        "facing": [
+          "front"
+        ],
+        "gaze": [
+          "partner",
+          "seed"
+        ],
+        "hand": [
+          "open-paw"
+        ],
+        "intensity": [
+          "low",
+          "medium"
+        ],
+        "mouth": [
+          "neutral",
+          "a",
+          "e",
+          "o"
+        ],
+        "pose": [
+          "stand",
+          "walk",
+          "reach",
+          "hold"
+        ],
+        "prop_state": [
+          "carried",
+          "shared",
+          "received"
+        ],
+        "viewpoint": [
+          "front"
+        ]
+      },
+      "components": [
+        {
+          "anchors": {
+            "hip-left": [
+              50,
+              139
+            ],
+            "hip-right": [
+              126,
+              139
+            ],
+            "neck": [
+              88,
+              20
+            ],
+            "shoulder-left": [
+              40,
+              47
+            ],
+            "shoulder-right": [
+              136,
+              47
+            ]
+          },
+          "default_drawing": "default",
+          "drawings": {
+            "default": {
+              "alpha": "straight",
+              "costume": "everyday",
+              "image": {
+                "path": "art/components/milo/torso.png",
+                "provenance": {
+                  "fixture": false,
+                  "kind": "derived",
+                  "operation": {
+                    "kind": "annotated-crop-register",
+                    "note": "{\"source_pixels_to_character_pixels\": 0.5, \"source_anchor\": null, \"canvas\": null, \"pivot\": null, \"rotation_degrees\": 0, \"resampling\": \"Pillow LANCZOS; straight source alpha\"}",
+                    "rect": [
+                      20,
+                      165,
+                      378,
+                      450
+                    ]
+                  },
+                  "origin": "Hash-bound manual component extraction and fixed family registration.",
+                  "source": {
+                    "path": "art/originals/milo-parts-v3.png",
+                    "sha256": "84e0abc18797bbeb5224dacc281873cfd7b39ed64d7ef0ac2161947772c63588"
+                  }
+                },
+                "sha256": "4dbfdecf0c78f4a2f21011592a9a569c645510a2fc9b7dc86875e52b67e357c0",
+                "size": [
+                  179,
+                  142
+                ]
+              },
+              "viewpoint": "front"
+            }
+          },
+          "id": "torso",
+          "mask": {
+            "path": "art/components/milo/torso-mask.png",
+            "provenance": {
+              "fixture": false,
+              "kind": "derived",
+              "operation": {
+                "kind": "construction-mask",
+                "note": "{\"source_polygon\": [[96, 174], [334, 174], [374, 296], [330, 333], [320, 408], [276, 449], [109, 445], [76, 385], [78, 254]]}"
+              },
+              "origin": "Authored construction occlusion mask removing duplicated source arm silhouettes; review separately.",
+              "source": {
+                "path": "art/originals/milo-parts-v3.png",
+                "sha256": "84e0abc18797bbeb5224dacc281873cfd7b39ed64d7ef0ac2161947772c63588"
+              }
+            },
+            "sha256": "41a9e7ef46eceaef030c4ceaa91713686fb9aaa3d4589dc5ffa3ca0006abb226",
+            "size": [
+              179,
+              142
+            ]
+          },
+          "offset": [
+            0,
+            -76
+          ],
+          "parent": null,
+          "parent_anchor": null,
+          "pivot": [
+            88,
+            136
+          ],
+          "role": "torso",
+          "visible": true,
+          "z": 0
+        },
+        {
+          "anchors": {
+            "brows": [
+              108,
+              78
+            ],
+            "eyes": [
+              108,
+              102
+            ],
+            "mouth": [
+              108,
+              139
+            ]
+          },
+          "default_drawing": "default",
+          "drawings": {
+            "default": {
+              "alpha": "straight",
+              "costume": "everyday",
+              "image": {
+                "path": "art/components/milo/head.png",
+                "provenance": {
+                  "fixture": false,
+                  "kind": "derived",
+                  "operation": {
+                    "kind": "annotated-crop-register",
+                    "note": "{\"source_pixels_to_character_pixels\": 0.53, \"source_anchor\": null, \"canvas\": null, \"pivot\": null, \"rotation_degrees\": 0, \"resampling\": \"Pillow LANCZOS; straight source alpha\"}",
+                    "rect": [
+                      373,
+                      85,
+                      791,
+                      449
+                    ]
+                  },
+                  "origin": "Hash-bound manual component extraction and fixed family registration.",
+                  "source": {
+                    "path": "art/originals/milo-parts-v3.png",
+                    "sha256": "84e0abc18797bbeb5224dacc281873cfd7b39ed64d7ef0ac2161947772c63588"
+                  }
+                },
+                "sha256": "f52ab1e98007dde1b949f65eb1a1eb265f2769a11c3d540845cd7aa2f3562710",
+                "size": [
+                  222,
+                  193
+                ]
+              },
+              "viewpoint": "front"
+            }
+          },
+          "id": "head",
+          "mask": null,
+          "offset": [
+            0,
+            0
+          ],
+          "parent": "torso",
+          "parent_anchor": "neck",
+          "pivot": [
+            108,
+            184
+          ],
+          "role": "head",
+          "visible": true,
+          "z": 4
+        },
+        {
+          "anchors": {
+            "wrist": [
+              26.64,
+              101.38
+            ]
+          },
+          "default_drawing": "default",
+          "drawings": {
+            "default": {
+              "alpha": "straight",
+              "costume": "everyday",
+              "image": {
+                "path": "art/components/milo/arm-left.png",
+                "provenance": {
+                  "fixture": false,
+                  "kind": "derived",
+                  "operation": {
+                    "kind": "annotated-crop-register",
+                    "note": "{\"source_pixels_to_character_pixels\": 0.37, \"source_anchor\": [937, 193], \"canvas\": null, \"pivot\": null, \"rotation_degrees\": 0, \"resampling\": \"Pillow LANCZOS; straight source alpha\"}",
+                    "rect": [
+                      790,
+                      147,
+                      984,
+                      452
+                    ]
+                  },
+                  "origin": "Hash-bound manual component extraction and fixed family registration.",
+                  "source": {
+                    "path": "art/originals/milo-parts-v3.png",
+                    "sha256": "84e0abc18797bbeb5224dacc281873cfd7b39ed64d7ef0ac2161947772c63588"
+                  }
+                },
+                "sha256": "e075d9c7b16e977149aea3a4a7530962f8554c165f51db0e3170d0971663fcd4",
+                "size": [
+                  72,
+                  113
+                ]
+              },
+              "viewpoint": "front"
+            }
+          },
+          "id": "arm-left",
+          "mask": null,
+          "offset": [
+            0,
+            0
+          ],
+          "parent": "torso",
+          "parent_anchor": "shoulder-left",
+          "pivot": [
+            54.39,
+            17.02
+          ],
+          "role": "limb",
+          "visible": true,
+          "z": -1
+        },
+        {
+          "anchors": {
+            "grip": [
+              16.6,
+              32.54
+            ]
+          },
+          "default_drawing": "default",
+          "drawings": {
+            "default": {
+              "alpha": "straight",
+              "costume": "everyday",
+              "image": {
+                "path": "art/components/milo/hand-left.png",
+                "provenance": {
+                  "fixture": false,
+                  "kind": "derived",
+                  "operation": {
+                    "kind": "annotated-crop-register",
+                    "note": "{\"source_pixels_to_character_pixels\": 0.23, \"source_anchor\": [218, 695], \"canvas\": null, \"pivot\": null, \"rotation_degrees\": 180, \"resampling\": \"Pillow LANCZOS; straight source alpha\"}",
+                    "rect": [
+                      38,
+                      493,
+                      291,
+                      704
+                    ]
+                  },
+                  "origin": "Hash-bound manual component extraction and fixed family registration.",
+                  "source": {
+                    "path": "art/originals/milo-parts-v3.png",
+                    "sha256": "84e0abc18797bbeb5224dacc281873cfd7b39ed64d7ef0ac2161947772c63588"
+                  }
+                },
+                "sha256": "876faeedd14fdf57e1c6714d28b72a4696da9d4d454ebef971a64d69b3f7985d",
+                "size": [
+                  58,
+                  49
+                ]
+              },
+              "viewpoint": "front"
+            }
+          },
+          "id": "hand-left",
+          "mask": null,
+          "offset": [
+            0,
+            0
+          ],
+          "parent": "arm-left",
+          "parent_anchor": "wrist",
+          "pivot": [
+            16.6,
+            2.539999999999999
+          ],
+          "role": "hands",
+          "visible": true,
+          "z": 7
+        },
+        {
+          "anchors": {
+            "sole": [
+              48.0,
+              94.08
+            ]
+          },
+          "default_drawing": "default",
+          "drawings": {
+            "default": {
+              "alpha": "straight",
+              "costume": "everyday",
+              "image": {
+                "path": "art/components/milo/leg-left.png",
+                "provenance": {
+                  "fixture": false,
+                  "kind": "derived",
+                  "operation": {
+                    "kind": "annotated-crop-register",
+                    "note": "{\"source_pixels_to_character_pixels\": 0.32, \"source_anchor\": [782, 490], \"canvas\": null, \"pivot\": null, \"rotation_degrees\": 0, \"resampling\": \"Pillow LANCZOS; straight source alpha\"}",
+                    "rect": [
+                      632,
+                      451,
+                      906,
+                      772
+                    ]
+                  },
+                  "origin": "Hash-bound manual component extraction and fixed family registration.",
+                  "source": {
+                    "path": "art/originals/milo-parts-v3.png",
+                    "sha256": "84e0abc18797bbeb5224dacc281873cfd7b39ed64d7ef0ac2161947772c63588"
+                  }
+                },
+                "sha256": "343fbdbbae5b25acba14bc7af0d15f6c593850a5560171f865c5567aa06cae12",
+                "size": [
+                  88,
+                  103
+                ]
+              },
+              "viewpoint": "front"
+            }
+          },
+          "id": "leg-left",
+          "mask": null,
+          "offset": [
+            0,
+            -8.599999999999994
+          ],
+          "parent": "torso",
+          "parent_anchor": "hip-left",
+          "pivot": [
+            48.0,
+            12.48
+          ],
+          "role": "limb",
+          "visible": true,
+          "z": -2
+        },
+        {
+          "anchors": {
+            "wrist": [
+              44.4,
+              103.23
+            ]
+          },
+          "default_drawing": "default",
+          "drawings": {
+            "default": {
+              "alpha": "straight",
+              "costume": "everyday",
+              "image": {
+                "path": "art/components/milo/arm-right.png",
+                "provenance": {
+                  "fixture": false,
+                  "kind": "derived",
+                  "operation": {
+                    "kind": "annotated-crop-register",
+                    "note": "{\"source_pixels_to_character_pixels\": 0.37, \"source_anchor\": [1099, 192], \"canvas\": null, \"pivot\": null, \"rotation_degrees\": 0, \"resampling\": \"Pillow LANCZOS; straight source alpha\"}",
+                    "rect": [
+                      1037,
+                      144,
+                      1245,
+                      452
+                    ]
+                  },
+                  "origin": "Hash-bound manual component extraction and fixed family registration.",
+                  "source": {
+                    "path": "art/originals/milo-parts-v3.png",
+                    "sha256": "84e0abc18797bbeb5224dacc281873cfd7b39ed64d7ef0ac2161947772c63588"
+                  }
+                },
+                "sha256": "6e938c5ab2bd329bab6f32669100ac24336660c00c418f57a3b2d85c5fdd3f71",
+                "size": [
+                  77,
+                  114
+                ]
+              },
+              "viewpoint": "front"
+            }
+          },
+          "id": "arm-right",
+          "mask": null,
+          "offset": [
+            0,
+            0
+          ],
+          "parent": "torso",
+          "parent_anchor": "shoulder-right",
+          "pivot": [
+            22.94,
+            17.759999999999998
+          ],
+          "role": "limb",
+          "visible": true,
+          "z": -1
+        },
+        {
+          "anchors": {
+            "grip": [
+              44.519999999999996,
+              32.39
+            ]
+          },
+          "default_drawing": "default",
+          "drawings": {
+            "default": {
+              "alpha": "straight",
+              "costume": "everyday",
+              "image": {
+                "path": "art/components/milo/hand-right.png",
+                "provenance": {
+                  "fixture": false,
+                  "kind": "derived",
+                  "operation": {
+                    "kind": "annotated-crop-register",
+                    "note": "{\"source_pixels_to_character_pixels\": 0.23, \"source_anchor\": [426, 695], \"canvas\": null, \"pivot\": null, \"rotation_degrees\": 180, \"resampling\": \"Pillow LANCZOS; straight source alpha\"}",
+                    "rect": [
+                      350,
+                      488,
+                      621,
+                      704
+                    ]
+                  },
+                  "origin": "Hash-bound manual component extraction and fixed family registration.",
+                  "source": {
+                    "path": "art/originals/milo-parts-v3.png",
+                    "sha256": "84e0abc18797bbeb5224dacc281873cfd7b39ed64d7ef0ac2161947772c63588"
+                  }
+                },
+                "sha256": "18f7c3b12867b18e0412beb7b8b11afa6aa8f8338368a2c4be9db6d021c6345c",
+                "size": [
+                  62,
+                  50
+                ]
+              },
+              "viewpoint": "front"
+            }
+          },
+          "id": "hand-right",
+          "mask": null,
+          "offset": [
+            0,
+            0
+          ],
+          "parent": "arm-right",
+          "parent_anchor": "wrist",
+          "pivot": [
+            44.519999999999996,
+            2.3900000000000006
+          ],
+          "role": "hands",
+          "visible": true,
+          "z": 7
+        },
+        {
+          "anchors": {
+            "sole": [
+              37.44,
+              94.72
+            ]
+          },
+          "default_drawing": "default",
+          "drawings": {
+            "default": {
+              "alpha": "straight",
+              "costume": "everyday",
+              "image": {
+                "path": "art/components/milo/leg-right.png",
+                "provenance": {
+                  "fixture": false,
+                  "kind": "derived",
+                  "operation": {
+                    "kind": "annotated-crop-register",
+                    "note": "{\"source_pixels_to_character_pixels\": 0.32, \"source_anchor\": [1078, 489], \"canvas\": null, \"pivot\": null, \"rotation_degrees\": 0, \"resampling\": \"Pillow LANCZOS; straight source alpha\"}",
+                    "rect": [
+                      961,
+                      449,
+                      1225,
+                      772
+                    ]
+                  },
+                  "origin": "Hash-bound manual component extraction and fixed family registration.",
+                  "source": {
+                    "path": "art/originals/milo-parts-v3.png",
+                    "sha256": "84e0abc18797bbeb5224dacc281873cfd7b39ed64d7ef0ac2161947772c63588"
+                  }
+                },
+                "sha256": "feed293405eb977dfe730c233ffca644921f99363b526ef35f798559f44e373d",
+                "size": [
+                  84,
+                  103
+                ]
+              },
+              "viewpoint": "front"
+            }
+          },
+          "id": "leg-right",
+          "mask": null,
+          "offset": [
+            0,
+            -8.920000000000002
+          ],
+          "parent": "torso",
+          "parent_anchor": "hip-right",
+          "pivot": [
+            37.44,
+            12.8
+          ],
+          "role": "limb",
+          "visible": true,
+          "z": -2
+        },
+        {
+          "anchors": {},
+          "default_drawing": "open",
+          "drawings": {
+            "blink": {
+              "alpha": "straight",
+              "costume": "everyday",
+              "image": {
+                "path": "art/components/milo/eyes-blink.png",
+                "provenance": {
+                  "fixture": false,
+                  "kind": "derived",
+                  "operation": {
+                    "kind": "annotated-crop-register",
+                    "note": "{\"source_pixels_to_character_pixels\": 0.42, \"source_anchor\": [480, 886], \"canvas\": [144, 78], \"pivot\": [72, 39], \"rotation_degrees\": 0, \"resampling\": \"Pillow LANCZOS; straight source alpha\"}",
+                    "rect": [
+                      347,
+                      814,
+                      627,
+                      965
+                    ]
+                  },
+                  "origin": "Hash-bound manual component extraction and fixed family registration.",
+                  "source": {
+                    "path": "art/originals/milo-parts-v3.png",
+                    "sha256": "84e0abc18797bbeb5224dacc281873cfd7b39ed64d7ef0ac2161947772c63588"
+                  }
+                },
+                "sha256": "5fe4d588920de40dd7beb6574827a405300f42ad28eac36cc63e4eee9dfc67b9",
+                "size": [
+                  144,
+                  78
+                ]
+              },
+              "viewpoint": "front"
+            },
+            "open": {
+              "alpha": "straight",
+              "costume": "everyday",
+              "image": {
+                "path": "art/components/milo/eyes-open.png",
+                "provenance": {
+                  "fixture": false,
+                  "kind": "derived",
+                  "operation": {
+                    "kind": "annotated-crop-register",
+                    "note": "{\"source_pixels_to_character_pixels\": 0.42, \"source_anchor\": [174, 886], \"canvas\": [144, 78], \"pivot\": [72, 39], \"rotation_degrees\": 0, \"resampling\": \"Pillow LANCZOS; straight source alpha\"}",
+                    "rect": [
+                      25,
+                      814,
+                      326,
+                      969
+                    ]
+                  },
+                  "origin": "Hash-bound manual component extraction and fixed family registration.",
+                  "source": {
+                    "path": "art/originals/milo-parts-v3.png",
+                    "sha256": "84e0abc18797bbeb5224dacc281873cfd7b39ed64d7ef0ac2161947772c63588"
+                  }
+                },
+                "sha256": "8fb37168e43be0386b901d86d38e3152f04544cf4e0a3b2e47eb6e006b92897b",
+                "size": [
+                  144,
+                  78
+                ]
+              },
+              "viewpoint": "front"
+            }
+          },
+          "id": "eyes",
+          "mask": null,
+          "offset": [
+            0,
+            0
+          ],
+          "parent": "head",
+          "parent_anchor": "eyes",
+          "pivot": [
+            72,
+            39
+          ],
+          "role": "eyes",
+          "visible": true,
+          "z": 6
+        },
+        {
+          "anchors": {},
+          "default_drawing": "neutral",
+          "drawings": {
+            "neutral": {
+              "alpha": "straight",
+              "costume": "everyday",
+              "image": {
+                "path": "art/components/milo/brows-neutral.png",
+                "provenance": {
+                  "fixture": false,
+                  "kind": "derived",
+                  "operation": {
+                    "kind": "annotated-crop-register",
+                    "note": "{\"source_pixels_to_character_pixels\": 0.39, \"source_anchor\": [1097, 875], \"canvas\": [132, 66], \"pivot\": [66, 38], \"rotation_degrees\": 0, \"resampling\": \"Pillow LANCZOS; straight source alpha\"}",
+                    "rect": [
+                      946,
+                      815,
+                      1248,
+                      936
+                    ]
+                  },
+                  "origin": "Hash-bound manual component extraction and fixed family registration.",
+                  "source": {
+                    "path": "art/originals/milo-parts-v3.png",
+                    "sha256": "84e0abc18797bbeb5224dacc281873cfd7b39ed64d7ef0ac2161947772c63588"
+                  }
+                },
+                "sha256": "552c03c71b28312900b44f3c0d3de474f45cd11eab457403d2a17d0ae27bfdd7",
+                "size": [
+                  132,
+                  66
+                ]
+              },
+              "viewpoint": "front"
+            },
+            "raised": {
+              "alpha": "straight",
+              "costume": "everyday",
+              "image": {
+                "path": "art/components/milo/brows-raised.png",
+                "provenance": {
+                  "fixture": false,
+                  "kind": "derived",
+                  "operation": {
+                    "kind": "annotated-crop-register",
+                    "note": "{\"source_pixels_to_character_pixels\": 0.39, \"source_anchor\": [784, 875], \"canvas\": [132, 66], \"pivot\": [66, 38], \"rotation_degrees\": 0, \"resampling\": \"Pillow LANCZOS; straight source alpha\"}",
+                    "rect": [
+                      648,
+                      815,
+                      922,
+                      936
+                    ]
+                  },
+                  "origin": "Hash-bound manual component extraction and fixed family registration.",
+                  "source": {
+                    "path": "art/originals/milo-parts-v3.png",
+                    "sha256": "84e0abc18797bbeb5224dacc281873cfd7b39ed64d7ef0ac2161947772c63588"
+                  }
+                },
+                "sha256": "461303f6b51b1bb733e01a733d033f85ae08333decb26df0e8e340701c8590c8",
+                "size": [
+                  132,
+                  66
+                ]
+              },
+              "viewpoint": "front"
+            }
+          },
+          "id": "brows",
+          "mask": null,
+          "offset": [
+            0,
+            0
+          ],
+          "parent": "head",
+          "parent_anchor": "brows",
+          "pivot": [
+            66,
+            38
+          ],
+          "role": "brows",
+          "visible": true,
+          "z": 6
+        },
+        {
+          "anchors": {},
+          "default_drawing": "neutral",
+          "drawings": {
+            "a": {
+              "alpha": "straight",
+              "costume": "everyday",
+              "image": {
+                "path": "art/components/milo/mouth-a.png",
+                "provenance": {
+                  "fixture": false,
+                  "kind": "derived",
+                  "operation": {
+                    "kind": "annotated-crop-register",
+                    "note": "{\"source_pixels_to_character_pixels\": 0.51, \"source_anchor\": [471, 1048], \"canvas\": [156, 112], \"pivot\": [78, 30], \"rotation_degrees\": 0, \"resampling\": \"Pillow LANCZOS; straight source alpha\"}",
+                    "rect": [
+                      338,
+                      991,
+                      625,
+                      1213
+                    ]
+                  },
+                  "origin": "Hash-bound manual component extraction and fixed family registration.",
+                  "source": {
+                    "path": "art/originals/milo-parts-v3.png",
+                    "sha256": "84e0abc18797bbeb5224dacc281873cfd7b39ed64d7ef0ac2161947772c63588"
+                  }
+                },
+                "sha256": "34e233633cae5c69e9e9a01d873b16b13be7346178c3c9951fcb0c8c6d35aca2",
+                "size": [
+                  156,
+                  112
+                ]
+              },
+              "viewpoint": "front"
+            },
+            "e": {
+              "alpha": "straight",
+              "costume": "everyday",
+              "image": {
+                "path": "art/components/milo/mouth-e.png",
+                "provenance": {
+                  "fixture": false,
+                  "kind": "derived",
+                  "operation": {
+                    "kind": "annotated-crop-register",
+                    "note": "{\"source_pixels_to_character_pixels\": 0.51, \"source_anchor\": [784, 1048], \"canvas\": [156, 112], \"pivot\": [78, 30], \"rotation_degrees\": 0, \"resampling\": \"Pillow LANCZOS; straight source alpha\"}",
+                    "rect": [
+                      651,
+                      991,
+                      938,
+                      1213
+                    ]
+                  },
+                  "origin": "Hash-bound manual component extraction and fixed family registration.",
+                  "source": {
+                    "path": "art/originals/milo-parts-v3.png",
+                    "sha256": "84e0abc18797bbeb5224dacc281873cfd7b39ed64d7ef0ac2161947772c63588"
+                  }
+                },
+                "sha256": "3092da1ffacf5fe7656e1bb30c10810f428a33c5eb1ebaad6e753ad85007d19c",
+                "size": [
+                  156,
+                  112
+                ]
+              },
+              "viewpoint": "front"
+            },
+            "neutral": {
+              "alpha": "straight",
+              "costume": "everyday",
+              "image": {
+                "path": "art/components/milo/mouth-neutral.png",
+                "provenance": {
+                  "fixture": false,
+                  "kind": "derived",
+                  "operation": {
+                    "kind": "annotated-crop-register",
+                    "note": "{\"source_pixels_to_character_pixels\": 0.51, \"source_anchor\": [175, 1048], \"canvas\": [156, 112], \"pivot\": [78, 30], \"rotation_degrees\": 0, \"resampling\": \"Pillow LANCZOS; straight source alpha\"}",
+                    "rect": [
+                      25,
+                      991,
+                      312,
+                      1213
+                    ]
+                  },
+                  "origin": "Hash-bound manual component extraction and fixed family registration.",
+                  "source": {
+                    "path": "art/originals/milo-parts-v3.png",
+                    "sha256": "84e0abc18797bbeb5224dacc281873cfd7b39ed64d7ef0ac2161947772c63588"
+                  }
+                },
+                "sha256": "f7dd0b2a11c90514f3aab3753e5c21dfd006a606c568258804aa062c0b4bd8c4",
+                "size": [
+                  156,
+                  112
+                ]
+              },
+              "viewpoint": "front"
+            },
+            "o": {
+              "alpha": "straight",
+              "costume": "everyday",
+              "image": {
+                "path": "art/components/milo/mouth-o.png",
+                "provenance": {
+                  "fixture": false,
+                  "kind": "derived",
+                  "operation": {
+                    "kind": "annotated-crop-register",
+                    "note": "{\"source_pixels_to_character_pixels\": 0.51, \"source_anchor\": [1092, 1048], \"canvas\": [156, 112], \"pivot\": [78, 30], \"rotation_degrees\": 0, \"resampling\": \"Pillow LANCZOS; straight source alpha\"}",
+                    "rect": [
+                      964,
+                      991,
+                      1251,
+                      1213
+                    ]
+                  },
+                  "origin": "Hash-bound manual component extraction and fixed family registration.",
+                  "source": {
+                    "path": "art/originals/milo-parts-v3.png",
+                    "sha256": "84e0abc18797bbeb5224dacc281873cfd7b39ed64d7ef0ac2161947772c63588"
+                  }
+                },
+                "sha256": "991cd7169504419e4abb298e7280bba6406de728e6d321d75a75d542bc379816",
+                "size": [
+                  156,
+                  112
+                ]
+              },
+              "viewpoint": "front"
+            }
+          },
+          "id": "mouth",
+          "mask": null,
+          "offset": [
+            0,
+            0
+          ],
+          "parent": "head",
+          "parent_anchor": "mouth",
+          "pivot": [
+            78,
+            30
+          ],
+          "role": "mouth",
+          "visible": true,
+          "z": 6
+        }
+      ],
+      "costumes": [
+        {
+          "differences": [
+            "Original coral scarf"
+          ],
+          "drawings": {},
+          "id": "everyday"
+        }
+      ],
+      "dimensions": {
+        "height": 405,
+        "width": 250
+      },
+      "id": "milo",
+      "identity": {
+        "allowed_facings": [
+          "front"
+        ],
+        "asymmetries": [
+          "coral scarf knot on viewer-right in the front view"
+        ],
+        "forbid_mirror": true,
+        "markings": [
+          "cream muzzle and belly",
+          "small dark brown nose"
+        ],
+        "materials": [
+          "softly painted fur",
+          "matte woven costume"
+        ],
+        "palette": {
+          "cream": "#F3DCB4",
+          "eyes": "#392B26",
+          "fur": "#C88B47",
+          "scarf": "#D96654"
+        },
+        "proportions": {
+          "cast_relative_scale": 1.1,
+          "head_to_body_height": 0.6
+        }
+      },
+      "name": "Milo",
+      "provenance": {
+        "acquisition": {
+          "job": "parts",
+          "model_call": {
+            "id": null,
+            "model": null,
+            "parameters": null,
+            "unavailable_reason": "The handoff did not expose provider call metadata."
+          },
+          "receipt_path": "acquisition/handoffs/milo-parts.json",
+          "receipt_sha256": "44591d1c1f417568b772ed33b4f289f1f59b58a64b9068c597227945478ca747",
+          "run_id": "6269bc5647984cc6bac6581755afec55"
+        },
+        "attribution": "Original character direction by the hatch-pet production demonstration; generated with OpenAI imagegen.",
+        "fixture": false,
+        "kind": "imagegen",
+        "model_call": {
+          "id": null,
+          "model": null,
+          "parameters": null,
+          "unavailable_reason": "The handoff did not expose provider call metadata."
+        },
+        "origin": "Original Milo/Luma artwork generated through the installed imagegen skill for hatch-pet; retained original PNG.",
+        "permissions": "Commissioned in this authorized repository task; no third-party character reference or separately supplied licence.",
+        "source_sha256": "84e0abc18797bbeb5224dacc281873cfd7b39ed64d7ef0ac2161947772c63588"
+      },
+      "references": [
+        {
+          "path": "art/originals/milo-turnaround-v3.png",
+          "sha256": "cb88dd18e162ee7e8d7a40da6b510e7ae4431595458b548fb4414db18eb225da"
+        },
+        {
+          "path": "art/originals/milo-parts-v3.png",
+          "sha256": "84e0abc18797bbeb5224dacc281873cfd7b39ed64d7ef0ac2161947772c63588"
+        }
+      ],
+      "relative_scale": 1.1,
+      "restrictions": [
+        {
+          "reason": "Design references exist; these animated component viewpoints have not been authored.",
+          "when": {
+            "viewpoint": [
+              "side-left",
+              "side-right",
+              "back"
+            ]
+          }
+        }
+      ],
+      "version": "3.0.0",
+      "view_reviews": {
+        "back": {
+          "evidence": [
+            {
+              "path": "art/originals/milo-turnaround-v3.png",
+              "sha256": "cb88dd18e162ee7e8d7a40da6b510e7ae4431595458b548fb4414db18eb225da"
+            }
+          ],
+          "kind": "assistant_visual",
+          "note": "Final source inspection found the scarf knot on viewer-right in both front and back panels. Reconcile the rear knot with the fixed front asymmetry before approving or animating a back view. Retain this original as provenance; the frontal pilot does not use the rear drawing.",
+          "reviewer": "assistant:/root",
+          "status": "rejected"
+        },
+        "front": {
+          "evidence": [
+            {
+              "path": "art/originals/milo-turnaround-v3.png",
+              "sha256": "cb88dd18e162ee7e8d7a40da6b510e7ae4431595458b548fb4414db18eb225da"
+            }
+          ],
+          "kind": "assistant_visual",
+          "note": "Actual original design reference inspected. This decision covers this design view only; component construction and animation need separate dependency-bound reviews. Front is the only authored animation rig.",
+          "reviewer": "assistant:/root",
+          "status": "approved"
+        },
+        "side-left": {
+          "evidence": [
+            {
+              "path": "art/originals/milo-turnaround-v3.png",
+              "sha256": "cb88dd18e162ee7e8d7a40da6b510e7ae4431595458b548fb4414db18eb225da"
+            }
+          ],
+          "kind": "assistant_visual",
+          "note": "Actual original design reference inspected. This decision covers this design view only; component construction and animation need separate dependency-bound reviews. Front is the only authored animation rig.",
+          "reviewer": "assistant:/root",
+          "status": "approved"
+        },
+        "three-quarter-left": {
+          "evidence": [
+            {
+              "path": "art/originals/milo-turnaround-v3.png",
+              "sha256": "cb88dd18e162ee7e8d7a40da6b510e7ae4431595458b548fb4414db18eb225da"
+            }
+          ],
+          "kind": "assistant_visual",
+          "note": "Actual original design reference inspected. This decision covers this design view only; component construction and animation need separate dependency-bound reviews. Front is the only authored animation rig.",
+          "reviewer": "assistant:/root",
+          "status": "approved"
+        }
+      },
+      "views": [
+        "front",
+        "three-quarter-left",
+        "side-left",
+        "back"
+      ]
+    },
+    {
+      "capabilities": {
+        "action": [
+          "idle",
+          "walk",
+          "stop",
+          "reaction",
+          "reach",
+          "grasp",
+          "hold",
+          "release"
+        ],
+        "contact": [
+          "ground",
+          "seed"
+        ],
+        "costume": [
+          "everyday"
+        ],
+        "expression": [
+          "neutral",
+          "warm-surprise",
+          "listening"
+        ],
+        "facing": [
+          "front"
+        ],
+        "gaze": [
+          "partner",
+          "seed"
+        ],
+        "hand": [
+          "open-paw"
+        ],
+        "intensity": [
+          "low",
+          "medium"
+        ],
+        "mouth": [
+          "neutral",
+          "a",
+          "e",
+          "o"
+        ],
+        "pose": [
+          "stand",
+          "walk",
+          "reach",
+          "hold"
+        ],
+        "prop_state": [
+          "carried",
+          "shared",
+          "received"
+        ],
+        "viewpoint": [
+          "front"
+        ]
+      },
+      "components": [
+        {
+          "anchors": {
+            "hip-left": [
+              44,
+              168
+            ],
+            "hip-right": [
+              105,
+              168
+            ],
+            "neck": [
+              73,
+              17
+            ],
+            "shoulder-left": [
+              20,
+              39
+            ],
+            "shoulder-right": [
+              126,
+              39
+            ]
+          },
+          "default_drawing": "default",
+          "drawings": {
+            "default": {
+              "alpha": "straight",
+              "costume": "everyday",
+              "image": {
+                "path": "art/components/luma/torso.png",
+                "provenance": {
+                  "fixture": false,
+                  "kind": "derived",
+                  "operation": {
+                    "kind": "annotated-crop-register",
+                    "note": "{\"source_pixels_to_character_pixels\": 0.47, \"source_anchor\": null, \"canvas\": null, \"pivot\": null, \"rotation_degrees\": 0, \"resampling\": \"Pillow LANCZOS; straight source alpha\"}",
+                    "rect": [
+                      44,
+                      114,
+                      353,
+                      493
+                    ]
+                  },
+                  "origin": "Hash-bound manual component extraction and fixed family registration.",
+                  "source": {
+                    "path": "art/originals/luma-parts-v3.png",
+                    "sha256": "bdfb919fd64776e45014f9654f41cf83d56bd5f34a2d1979b1bb09fd80be32f6"
+                  }
+                },
+                "sha256": "d99f2138b854de10e8d0997a6978951d82311fabe1c419cc168b95e1b8023415",
+                "size": [
+                  145,
+                  178
+                ]
+              },
+              "viewpoint": "front"
+            }
+          },
+          "id": "torso",
+          "mask": null,
+          "offset": [
+            0,
+            -91
+          ],
+          "parent": null,
+          "parent_anchor": null,
+          "pivot": [
+            73,
+            166
+          ],
+          "role": "torso",
+          "visible": true,
+          "z": 0
+        },
+        {
+          "anchors": {
+            "brows": [
+              111,
+              155
+            ],
+            "eyes": [
+              111,
+              178
+            ],
+            "mouth": [
+              111,
+              207
+            ]
+          },
+          "default_drawing": "default",
+          "drawings": {
+            "default": {
+              "alpha": "straight",
+              "costume": "everyday",
+              "image": {
+                "path": "art/components/luma/head.png",
+                "provenance": {
+                  "fixture": false,
+                  "kind": "derived",
+                  "operation": {
+                    "kind": "annotated-crop-register",
+                    "note": "{\"source_pixels_to_character_pixels\": 0.53, \"source_anchor\": null, \"canvas\": null, \"pivot\": null, \"rotation_degrees\": 0, \"resampling\": \"Pillow LANCZOS; straight source alpha\"}",
+                    "rect": [
+                      336,
+                      0,
+                      684,
+                      489
+                    ]
+                  },
+                  "origin": "Hash-bound manual component extraction and fixed family registration.",
+                  "source": {
+                    "path": "art/originals/luma-parts-v3.png",
+                    "sha256": "bdfb919fd64776e45014f9654f41cf83d56bd5f34a2d1979b1bb09fd80be32f6"
+                  }
+                },
+                "sha256": "a625432d1e424e73863bced7424db0e026a12b39eea55670ebd68ea6d03b9515",
+                "size": [
+                  184,
+                  259
+                ]
+              },
+              "viewpoint": "front"
+            }
+          },
+          "id": "head",
+          "mask": null,
+          "offset": [
+            0,
+            0
+          ],
+          "parent": "torso",
+          "parent_anchor": "neck",
+          "pivot": [
+            111,
+            250
+          ],
+          "role": "head",
+          "visible": true,
+          "z": 4
+        },
+        {
+          "anchors": {
+            "wrist": [
+              21.76,
+              86.7
+            ]
+          },
+          "default_drawing": "default",
+          "drawings": {
+            "default": {
+              "alpha": "straight",
+              "costume": "everyday",
+              "image": {
+                "path": "art/components/luma/arm-left.png",
+                "provenance": {
+                  "fixture": false,
+                  "kind": "derived",
+                  "operation": {
+                    "kind": "annotated-crop-register",
+                    "note": "{\"source_pixels_to_character_pixels\": 0.34, \"source_anchor\": [855, 184], \"canvas\": null, \"pivot\": null, \"rotation_degrees\": 0, \"resampling\": \"Pillow LANCZOS; straight source alpha\"}",
+                    "rect": [
+                      678,
+                      140,
+                      916,
+                      402
+                    ]
+                  },
+                  "origin": "Hash-bound manual component extraction and fixed family registration.",
+                  "source": {
+                    "path": "art/originals/luma-parts-v3.png",
+                    "sha256": "bdfb919fd64776e45014f9654f41cf83d56bd5f34a2d1979b1bb09fd80be32f6"
+                  }
+                },
+                "sha256": "365526e96542d07151887c44964911e64addced23b73b3e5c180426734f85aad",
+                "size": [
+                  81,
+                  89
+                ]
+              },
+              "viewpoint": "front"
+            }
+          },
+          "id": "arm-left",
+          "mask": null,
+          "offset": [
+            0,
+            0
+          ],
+          "parent": "torso",
+          "parent_anchor": "shoulder-left",
+          "pivot": [
+            60.18000000000001,
+            14.96
+          ],
+          "role": "limb",
+          "visible": true,
+          "z": -1
+        },
+        {
+          "anchors": {
+            "grip": [
+              41.08,
+              37.16
+            ]
+          },
+          "default_drawing": "default",
+          "drawings": {
+            "default": {
+              "alpha": "straight",
+              "costume": "everyday",
+              "image": {
+                "path": "art/components/luma/hand-left.png",
+                "provenance": {
+                  "fixture": false,
+                  "kind": "derived",
+                  "operation": {
+                    "kind": "annotated-crop-register",
+                    "note": "{\"source_pixels_to_character_pixels\": 0.26, \"source_anchor\": [214, 578], \"canvas\": null, \"pivot\": null, \"rotation_degrees\": 0, \"resampling\": \"Pillow LANCZOS; straight source alpha\"}",
+                    "rect": [
+                      56,
+                      562,
+                      291,
+                      783
+                    ]
+                  },
+                  "origin": "Hash-bound manual component extraction and fixed family registration.",
+                  "source": {
+                    "path": "art/originals/luma-parts-v3.png",
+                    "sha256": "bdfb919fd64776e45014f9654f41cf83d56bd5f34a2d1979b1bb09fd80be32f6"
+                  }
+                },
+                "sha256": "39180c75b466422bf9e769a0c7c76aadf1ff63316ce138b23eea246b6d51e272",
+                "size": [
+                  61,
+                  57
+                ]
+              },
+              "viewpoint": "front"
+            }
+          },
+          "id": "hand-left",
+          "mask": null,
+          "offset": [
+            0,
+            0
+          ],
+          "parent": "arm-left",
+          "parent_anchor": "wrist",
+          "pivot": [
+            41.08,
+            4.16
+          ],
+          "role": "hands",
+          "visible": true,
+          "z": 7
+        },
+        {
+          "anchors": {
+            "sole": [
+              56.16,
+              113.75999999999999
+            ]
+          },
+          "default_drawing": "default",
+          "drawings": {
+            "default": {
+              "alpha": "straight",
+              "costume": "everyday",
+              "image": {
+                "path": "art/components/luma/leg-left.png",
+                "provenance": {
+                  "fixture": false,
+                  "kind": "derived",
+                  "operation": {
+                    "kind": "annotated-crop-register",
+                    "note": "{\"source_pixels_to_character_pixels\": 0.36, \"source_anchor\": [817, 514], \"canvas\": null, \"pivot\": null, \"rotation_degrees\": 0, \"resampling\": \"Pillow LANCZOS; straight source alpha\"}",
+                    "rect": [
+                      661,
+                      470,
+                      919,
+                      815
+                    ]
+                  },
+                  "origin": "Hash-bound manual component extraction and fixed family registration.",
+                  "source": {
+                    "path": "art/originals/luma-parts-v3.png",
+                    "sha256": "bdfb919fd64776e45014f9654f41cf83d56bd5f34a2d1979b1bb09fd80be32f6"
+                  }
+                },
+                "sha256": "55001457a90252b09ed16739d8d7adb24393ce7715b1413b9d6e90b53fd1f5e0",
+                "size": [
+                  93,
+                  124
+                ]
+              },
+              "viewpoint": "front"
+            }
+          },
+          "id": "leg-left",
+          "mask": null,
+          "offset": [
+            0,
+            -8.919999999999987
+          ],
+          "parent": "torso",
+          "parent_anchor": "hip-left",
+          "pivot": [
+            56.16,
+            15.84
+          ],
+          "role": "limb",
+          "visible": true,
+          "z": -2
+        },
+        {
+          "anchors": {
+            "wrist": [
+              61.88,
+              86.7
+            ]
+          },
+          "default_drawing": "default",
+          "drawings": {
+            "default": {
+              "alpha": "straight",
+              "costume": "everyday",
+              "image": {
+                "path": "art/components/luma/arm-right.png",
+                "provenance": {
+                  "fixture": false,
+                  "kind": "derived",
+                  "operation": {
+                    "kind": "annotated-crop-register",
+                    "note": "{\"source_pixels_to_character_pixels\": 0.34, \"source_anchor\": [1061, 184], \"canvas\": null, \"pivot\": null, \"rotation_degrees\": 0, \"resampling\": \"Pillow LANCZOS; straight source alpha\"}",
+                    "rect": [
+                      997,
+                      140,
+                      1253,
+                      402
+                    ]
+                  },
+                  "origin": "Hash-bound manual component extraction and fixed family registration.",
+                  "source": {
+                    "path": "art/originals/luma-parts-v3.png",
+                    "sha256": "bdfb919fd64776e45014f9654f41cf83d56bd5f34a2d1979b1bb09fd80be32f6"
+                  }
+                },
+                "sha256": "f230991e1f46644930cc6d475742b1eb966df2e066fa5ae12b96145c749c673a",
+                "size": [
+                  87,
+                  89
+                ]
+              },
+              "viewpoint": "front"
+            }
+          },
+          "id": "arm-right",
+          "mask": null,
+          "offset": [
+            0,
+            0
+          ],
+          "parent": "torso",
+          "parent_anchor": "shoulder-right",
+          "pivot": [
+            21.76,
+            14.96
+          ],
+          "role": "limb",
+          "visible": true,
+          "z": -1
+        },
+        {
+          "anchors": {
+            "grip": [
+              17.68,
+              37.16
+            ]
+          },
+          "default_drawing": "default",
+          "drawings": {
+            "default": {
+              "alpha": "straight",
+              "costume": "everyday",
+              "image": {
+                "path": "art/components/luma/hand-right.png",
+                "provenance": {
+                  "fixture": false,
+                  "kind": "derived",
+                  "operation": {
+                    "kind": "annotated-crop-register",
+                    "note": "{\"source_pixels_to_character_pixels\": 0.26, \"source_anchor\": [485, 578], \"canvas\": null, \"pivot\": null, \"rotation_degrees\": 0, \"resampling\": \"Pillow LANCZOS; straight source alpha\"}",
+                    "rect": [
+                      417,
+                      562,
+                      656,
+                      786
+                    ]
+                  },
+                  "origin": "Hash-bound manual component extraction and fixed family registration.",
+                  "source": {
+                    "path": "art/originals/luma-parts-v3.png",
+                    "sha256": "bdfb919fd64776e45014f9654f41cf83d56bd5f34a2d1979b1bb09fd80be32f6"
+                  }
+                },
+                "sha256": "9f8d3902cab04713a784e9f323e4712a560046cd8fb1d97974326ed9133b1393",
+                "size": [
+                  62,
+                  58
+                ]
+              },
+              "viewpoint": "front"
+            }
+          },
+          "id": "hand-right",
+          "mask": null,
+          "offset": [
+            0,
+            0
+          ],
+          "parent": "arm-right",
+          "parent_anchor": "wrist",
+          "pivot": [
+            17.68,
+            4.16
+          ],
+          "role": "hands",
+          "visible": true,
+          "z": 7
+        },
+        {
+          "anchors": {
+            "sole": [
+              34.199999999999996,
+              113.75999999999999
+            ]
+          },
+          "default_drawing": "default",
+          "drawings": {
+            "default": {
+              "alpha": "straight",
+              "costume": "everyday",
+              "image": {
+                "path": "art/components/luma/leg-right.png",
+                "provenance": {
+                  "fixture": false,
+                  "kind": "derived",
+                  "operation": {
+                    "kind": "annotated-crop-register",
+                    "note": "{\"source_pixels_to_character_pixels\": 0.36, \"source_anchor\": [1096, 514], \"canvas\": null, \"pivot\": null, \"rotation_degrees\": 0, \"resampling\": \"Pillow LANCZOS; straight source alpha\"}",
+                    "rect": [
+                      1001,
+                      470,
+                      1257,
+                      815
+                    ]
+                  },
+                  "origin": "Hash-bound manual component extraction and fixed family registration.",
+                  "source": {
+                    "path": "art/originals/luma-parts-v3.png",
+                    "sha256": "bdfb919fd64776e45014f9654f41cf83d56bd5f34a2d1979b1bb09fd80be32f6"
+                  }
+                },
+                "sha256": "8638bac0b016c4412adb658fa3fd68e12d738a835d4fce0d2eea0f3864f90c54",
+                "size": [
+                  92,
+                  124
+                ]
+              },
+              "viewpoint": "front"
+            }
+          },
+          "id": "leg-right",
+          "mask": null,
+          "offset": [
+            0,
+            -8.919999999999987
+          ],
+          "parent": "torso",
+          "parent_anchor": "hip-right",
+          "pivot": [
+            34.199999999999996,
+            15.84
+          ],
+          "role": "limb",
+          "visible": true,
+          "z": -2
+        },
+        {
+          "anchors": {},
+          "default_drawing": "open",
+          "drawings": {
+            "blink": {
+              "alpha": "straight",
+              "costume": "everyday",
+              "image": {
+                "path": "art/components/luma/eyes-blink.png",
+                "provenance": {
+                  "fixture": false,
+                  "kind": "derived",
+                  "operation": {
+                    "kind": "annotated-crop-register",
+                    "note": "{\"source_pixels_to_character_pixels\": 0.42, \"source_anchor\": [495, 899], \"canvas\": [144, 78], \"pivot\": [72, 39], \"rotation_degrees\": 0, \"resampling\": \"Pillow LANCZOS; straight source alpha\"}",
+                    "rect": [
+                      344,
+                      814,
+                      653,
+                      987
+                    ]
+                  },
+                  "origin": "Hash-bound manual component extraction and fixed family registration.",
+                  "source": {
+                    "path": "art/originals/luma-parts-v3.png",
+                    "sha256": "bdfb919fd64776e45014f9654f41cf83d56bd5f34a2d1979b1bb09fd80be32f6"
+                  }
+                },
+                "sha256": "e919bb1c776c7521969b61493ba63b668b2548c8373987b097ed42b418107770",
+                "size": [
+                  144,
+                  78
+                ]
+              },
+              "viewpoint": "front"
+            },
+            "open": {
+              "alpha": "straight",
+              "costume": "everyday",
+              "image": {
+                "path": "art/components/luma/eyes-open.png",
+                "provenance": {
+                  "fixture": false,
+                  "kind": "derived",
+                  "operation": {
+                    "kind": "annotated-crop-register",
+                    "note": "{\"source_pixels_to_character_pixels\": 0.42, \"source_anchor\": [178, 899], \"canvas\": [144, 78], \"pivot\": [72, 39], \"rotation_degrees\": 0, \"resampling\": \"Pillow LANCZOS; straight source alpha\"}",
+                    "rect": [
+                      22,
+                      814,
+                      333,
+                      987
+                    ]
+                  },
+                  "origin": "Hash-bound manual component extraction and fixed family registration.",
+                  "source": {
+                    "path": "art/originals/luma-parts-v3.png",
+                    "sha256": "bdfb919fd64776e45014f9654f41cf83d56bd5f34a2d1979b1bb09fd80be32f6"
+                  }
+                },
+                "sha256": "348f289eb88b4ccb2fb7902ba951a3de1580c1ca77e9222ba2598a07e11d57ba",
+                "size": [
+                  144,
+                  78
+                ]
+              },
+              "viewpoint": "front"
+            }
+          },
+          "id": "eyes",
+          "mask": null,
+          "offset": [
+            0,
+            0
+          ],
+          "parent": "head",
+          "parent_anchor": "eyes",
+          "pivot": [
+            72,
+            39
+          ],
+          "role": "eyes",
+          "visible": true,
+          "z": 6
+        },
+        {
+          "anchors": {},
+          "default_drawing": "neutral",
+          "drawings": {
+            "neutral": {
+              "alpha": "straight",
+              "costume": "everyday",
+              "image": {
+                "path": "art/components/luma/brows-neutral.png",
+                "provenance": {
+                  "fixture": false,
+                  "kind": "derived",
+                  "operation": {
+                    "kind": "annotated-crop-register",
+                    "note": "{\"source_pixels_to_character_pixels\": 0.39, \"source_anchor\": [1117, 931], \"canvas\": [132, 66], \"pivot\": [66, 38], \"rotation_degrees\": 0, \"resampling\": \"Pillow LANCZOS; straight source alpha\"}",
+                    "rect": [
+                      974,
+                      826,
+                      1265,
+                      980
+                    ]
+                  },
+                  "origin": "Hash-bound manual component extraction and fixed family registration.",
+                  "source": {
+                    "path": "art/originals/luma-parts-v3.png",
+                    "sha256": "bdfb919fd64776e45014f9654f41cf83d56bd5f34a2d1979b1bb09fd80be32f6"
+                  }
+                },
+                "sha256": "b65a5d0617db07150db2ee0a0e2bced0fccbabc77cd512a3e979f385c5be6f7d",
+                "size": [
+                  132,
+                  66
+                ]
+              },
+              "viewpoint": "front"
+            },
+            "raised": {
+              "alpha": "straight",
+              "costume": "everyday",
+              "image": {
+                "path": "art/components/luma/brows-raised.png",
+                "provenance": {
+                  "fixture": false,
+                  "kind": "derived",
+                  "operation": {
+                    "kind": "annotated-crop-register",
+                    "note": "{\"source_pixels_to_character_pixels\": 0.39, \"source_anchor\": [799, 931], \"canvas\": [132, 66], \"pivot\": [66, 38], \"rotation_degrees\": 0, \"resampling\": \"Pillow LANCZOS; straight source alpha\"}",
+                    "rect": [
+                      647,
+                      823,
+                      952,
+                      980
+                    ]
+                  },
+                  "origin": "Hash-bound manual component extraction and fixed family registration.",
+                  "source": {
+                    "path": "art/originals/luma-parts-v3.png",
+                    "sha256": "bdfb919fd64776e45014f9654f41cf83d56bd5f34a2d1979b1bb09fd80be32f6"
+                  }
+                },
+                "sha256": "3cf3c58a2f06d36a6d8d937c7f5a05dd88064d5a2c09fe7475ff2cad1234708d",
+                "size": [
+                  132,
+                  66
+                ]
+              },
+              "viewpoint": "front"
+            }
+          },
+          "id": "brows",
+          "mask": null,
+          "offset": [
+            0,
+            0
+          ],
+          "parent": "head",
+          "parent_anchor": "brows",
+          "pivot": [
+            66,
+            38
+          ],
+          "role": "brows",
+          "visible": true,
+          "z": 6
+        },
+        {
+          "anchors": {},
+          "default_drawing": "neutral",
+          "drawings": {
+            "a": {
+              "alpha": "straight",
+              "costume": "everyday",
+              "image": {
+                "path": "art/components/luma/mouth-a.png",
+                "provenance": {
+                  "fixture": false,
+                  "kind": "derived",
+                  "operation": {
+                    "kind": "annotated-crop-register",
+                    "note": "{\"source_pixels_to_character_pixels\": 0.4, \"source_anchor\": [510, 1054], \"canvas\": [156, 112], \"pivot\": [78, 30], \"rotation_degrees\": 0, \"resampling\": \"Pillow LANCZOS; straight source alpha\"}",
+                    "rect": [
+                      329,
+                      1000,
+                      646,
+                      1220
+                    ]
+                  },
+                  "origin": "Hash-bound manual component extraction and fixed family registration.",
+                  "source": {
+                    "path": "art/originals/luma-parts-v3.png",
+                    "sha256": "bdfb919fd64776e45014f9654f41cf83d56bd5f34a2d1979b1bb09fd80be32f6"
+                  }
+                },
+                "sha256": "0b09f0c5f7b114274ca35299fd8331b85350bbbd7abc0acc595c31594efe9a16",
+                "size": [
+                  156,
+                  112
+                ]
+              },
+              "viewpoint": "front"
+            },
+            "e": {
+              "alpha": "straight",
+              "costume": "everyday",
+              "image": {
+                "path": "art/components/luma/mouth-e.png",
+                "provenance": {
+                  "fixture": false,
+                  "kind": "derived",
+                  "operation": {
+                    "kind": "annotated-crop-register",
+                    "note": "{\"source_pixels_to_character_pixels\": 0.4, \"source_anchor\": [819, 1054], \"canvas\": [156, 112], \"pivot\": [78, 30], \"rotation_degrees\": 0, \"resampling\": \"Pillow LANCZOS; straight source alpha\"}",
+                    "rect": [
+                      645,
+                      1000,
+                      962,
+                      1220
+                    ]
+                  },
+                  "origin": "Hash-bound manual component extraction and fixed family registration.",
+                  "source": {
+                    "path": "art/originals/luma-parts-v3.png",
+                    "sha256": "bdfb919fd64776e45014f9654f41cf83d56bd5f34a2d1979b1bb09fd80be32f6"
+                  }
+                },
+                "sha256": "d55de559b7b2e85dd4b2ec9cf19d2ca9fa50fd467bf258704a452c6eded451bd",
+                "size": [
+                  156,
+                  112
+                ]
+              },
+              "viewpoint": "front"
+            },
+            "neutral": {
+              "alpha": "straight",
+              "costume": "everyday",
+              "image": {
+                "path": "art/components/luma/mouth-neutral.png",
+                "provenance": {
+                  "fixture": false,
+                  "kind": "derived",
+                  "operation": {
+                    "kind": "annotated-crop-register",
+                    "note": "{\"source_pixels_to_character_pixels\": 0.4, \"source_anchor\": [180, 1080], \"canvas\": [156, 112], \"pivot\": [78, 30], \"rotation_degrees\": 0, \"resampling\": \"Pillow LANCZOS; straight source alpha\"}",
+                    "rect": [
+                      13,
+                      1000,
+                      330,
+                      1220
+                    ]
+                  },
+                  "origin": "Hash-bound manual component extraction and fixed family registration.",
+                  "source": {
+                    "path": "art/originals/luma-parts-v3.png",
+                    "sha256": "bdfb919fd64776e45014f9654f41cf83d56bd5f34a2d1979b1bb09fd80be32f6"
+                  }
+                },
+                "sha256": "418a6fab8923b64582df2e70c2994d68677f737b80957a1bd3df010ad788bf79",
+                "size": [
+                  156,
+                  112
+                ]
+              },
+              "viewpoint": "front"
+            },
+            "o": {
+              "alpha": "straight",
+              "costume": "everyday",
+              "image": {
+                "path": "art/components/luma/mouth-o.png",
+                "provenance": {
+                  "fixture": false,
+                  "kind": "derived",
+                  "operation": {
+                    "kind": "annotated-crop-register",
+                    "note": "{\"source_pixels_to_character_pixels\": 0.4, \"source_anchor\": [1130, 1054], \"canvas\": [156, 112], \"pivot\": [78, 30], \"rotation_degrees\": 0, \"resampling\": \"Pillow LANCZOS; straight source alpha\"}",
+                    "rect": [
+                      961,
+                      1000,
+                      1265,
+                      1220
+                    ]
+                  },
+                  "origin": "Hash-bound manual component extraction and fixed family registration.",
+                  "source": {
+                    "path": "art/originals/luma-parts-v3.png",
+                    "sha256": "bdfb919fd64776e45014f9654f41cf83d56bd5f34a2d1979b1bb09fd80be32f6"
+                  }
+                },
+                "sha256": "e3a1bfc6e04d04bc86c7847f6084a9674765739d7c3deabdc06c109c7b7133c9",
+                "size": [
+                  156,
+                  112
+                ]
+              },
+              "viewpoint": "front"
+            }
+          },
+          "id": "mouth",
+          "mask": null,
+          "offset": [
+            0,
+            0
+          ],
+          "parent": "head",
+          "parent_anchor": "mouth",
+          "pivot": [
+            78,
+            30
+          ],
+          "role": "mouth",
+          "visible": true,
+          "z": 6
+        }
+      ],
+      "costumes": [
+        {
+          "differences": [
+            "Original two-button ochre waistcoat"
+          ],
+          "drawings": {},
+          "id": "everyday"
+        }
+      ],
+      "dimensions": {
+        "height": 530,
+        "width": 250
+      },
+      "id": "luma",
+      "identity": {
+        "allowed_facings": [
+          "front"
+        ],
+        "asymmetries": [],
+        "forbid_mirror": true,
+        "markings": [
+          "cream inner ears and muzzle",
+          "two small waistcoat buttons"
+        ],
+        "materials": [
+          "softly painted fur",
+          "matte woven costume"
+        ],
+        "palette": {
+          "cream": "#E5DDC2",
+          "eyes": "#302D2B",
+          "fur": "#548F8B",
+          "waistcoat": "#C69540"
+        },
+        "proportions": {
+          "cast_relative_scale": 1.0,
+          "head_to_body_height": 0.6
+        }
+      },
+      "name": "Luma",
+      "provenance": {
+        "acquisition": {
+          "job": "parts",
+          "model_call": {
+            "id": null,
+            "model": null,
+            "parameters": null,
+            "unavailable_reason": "The handoff did not expose provider call metadata."
+          },
+          "receipt_path": "acquisition/handoffs/luma-parts.json",
+          "receipt_sha256": "5449929736a9266d7a963d58208714c4c8a3eeb766f2c8a5282db68812123e10",
+          "run_id": "e35092f6bece4078a65dd0eae401b835"
+        },
+        "attribution": "Original character direction by the hatch-pet production demonstration; generated with OpenAI imagegen.",
+        "fixture": false,
+        "kind": "imagegen",
+        "model_call": {
+          "id": null,
+          "model": null,
+          "parameters": null,
+          "unavailable_reason": "The handoff did not expose provider call metadata."
+        },
+        "origin": "Original Milo/Luma artwork generated through the installed imagegen skill for hatch-pet; retained original PNG.",
+        "permissions": "Commissioned in this authorized repository task; no third-party character reference or separately supplied licence.",
+        "source_sha256": "bdfb919fd64776e45014f9654f41cf83d56bd5f34a2d1979b1bb09fd80be32f6"
+      },
+      "references": [
+        {
+          "path": "art/originals/luma-turnaround-v3.png",
+          "sha256": "270eb609c8cc566a61f3081d09c6e2f47390592d7650e9547872a64cb9f1cced"
+        },
+        {
+          "path": "art/originals/luma-parts-v3.png",
+          "sha256": "bdfb919fd64776e45014f9654f41cf83d56bd5f34a2d1979b1bb09fd80be32f6"
+        }
+      ],
+      "relative_scale": 1.0,
+      "restrictions": [
+        {
+          "reason": "Design references exist; these animated component viewpoints have not been authored.",
+          "when": {
+            "viewpoint": [
+              "side-left",
+              "side-right",
+              "back"
+            ]
+          }
+        }
+      ],
+      "version": "3.0.0",
+      "view_reviews": {
+        "back": {
+          "evidence": [
+            {
+              "path": "art/originals/luma-turnaround-v3.png",
+              "sha256": "270eb609c8cc566a61f3081d09c6e2f47390592d7650e9547872a64cb9f1cced"
+            }
+          ],
+          "kind": "assistant_visual",
+          "note": "Actual original design reference inspected. This decision covers this design view only; component construction and animation need separate dependency-bound reviews. Front is the only authored animation rig.",
+          "reviewer": "assistant:/root",
+          "status": "approved"
+        },
+        "front": {
+          "evidence": [
+            {
+              "path": "art/originals/luma-turnaround-v3.png",
+              "sha256": "270eb609c8cc566a61f3081d09c6e2f47390592d7650e9547872a64cb9f1cced"
+            }
+          ],
+          "kind": "assistant_visual",
+          "note": "Actual original design reference inspected. This decision covers this design view only; component construction and animation need separate dependency-bound reviews. Front is the only authored animation rig.",
+          "reviewer": "assistant:/root",
+          "status": "approved"
+        },
+        "side-right": {
+          "evidence": [
+            {
+              "path": "art/originals/luma-turnaround-v3.png",
+              "sha256": "270eb609c8cc566a61f3081d09c6e2f47390592d7650e9547872a64cb9f1cced"
+            }
+          ],
+          "kind": "assistant_visual",
+          "note": "Actual original design reference inspected. This decision covers this design view only; component construction and animation need separate dependency-bound reviews. Front is the only authored animation rig.",
+          "reviewer": "assistant:/root",
+          "status": "approved"
+        },
+        "three-quarter-right": {
+          "evidence": [
+            {
+              "path": "art/originals/luma-turnaround-v3.png",
+              "sha256": "270eb609c8cc566a61f3081d09c6e2f47390592d7650e9547872a64cb9f1cced"
+            }
+          ],
+          "kind": "assistant_visual",
+          "note": "Actual original design reference inspected. This decision covers this design view only; component construction and animation need separate dependency-bound reviews. Front is the only authored animation rig.",
+          "reviewer": "assistant:/root",
+          "status": "approved"
+        }
+      },
+      "views": [
+        "front",
+        "three-quarter-right",
+        "side-right",
+        "back"
+      ]
+    }
+  ],
+  "fixture": false,
+  "id": "milo-luma",
+  "kind": "cast",
+  "props": [
+    {
+      "anchors": {
+        "grip": [
+          17,
+          9
+        ]
+      },
+      "id": "seed-packet",
+      "image": {
+        "path": "art/scenery/seed.png",
+        "provenance": {
+          "attribution": "hatch-pet demonstration authoring",
+          "fixture": false,
+          "kind": "import",
+          "origin": "Original vector-like scenery and seed packet authored in this production recipe; rasterized with Pillow.",
+          "permissions": "Created for this repository task; no external assets."
+        },
+        "sha256": "f4380b1412bbe4f52870d632f17e7d7cc1f49aa9b8663753b867a55cc9b82da4",
+        "size": [
+          34,
+          42
+        ]
+      },
+      "name": "Seed packet",
+      "pivot": [
+        17,
+        9
+      ],
+      "version": "1.0.0"
+    }
+  ],
+  "schema_version": 1,
+  "version": "3.0.0"
+}

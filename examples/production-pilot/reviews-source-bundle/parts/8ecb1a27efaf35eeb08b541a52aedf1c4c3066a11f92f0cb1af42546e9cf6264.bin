@@ -1,0 +1,1369 @@
+de0f23",
+          "shot": "exchange",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "gaze",
+          "value": "partner",
+          "start_frame": 0,
+          "end_frame": 168,
+          "source": "clip"
+        },
+        {
+          "id": "req-abb5137792f9aa3b6dc5",
+          "shot": "exchange",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "gaze",
+          "value": "seed",
+          "start_frame": 0,
+          "end_frame": 168,
+          "source": "clip"
+        },
+        {
+          "id": "req-d4047659dc652ae5abbb",
+          "shot": "exchange",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "hand",
+          "value": "open-paw",
+          "start_frame": 0,
+          "end_frame": 168,
+          "source": "clip"
+        },
+        {
+          "id": "req-6ec17ebf26f879f8b3de",
+          "shot": "exchange",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "pose",
+          "value": "stand",
+          "start_frame": 0,
+          "end_frame": 168,
+          "source": "clip"
+        },
+        {
+          "id": "req-46db94acb94e9494895c",
+          "shot": "exchange",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "pose",
+          "value": "hold",
+          "start_frame": 0,
+          "end_frame": 168,
+          "source": "clip"
+        },
+        {
+          "id": "req-12cb882d907b9976dcce",
+          "shot": "exchange",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "prop_state",
+          "value": "shared",
+          "start_frame": 0,
+          "end_frame": 168,
+          "source": "clip"
+        },
+        {
+          "id": "req-6000bb55ff29583ee7e8",
+          "shot": "exchange",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "mouth",
+          "value": "a",
+          "start_frame": 10,
+          "end_frame": 13,
+          "source": "explicit"
+        },
+        {
+          "id": "req-a196770906226f1b9fc7",
+          "shot": "exchange",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "mouth",
+          "value": "e",
+          "start_frame": 13,
+          "end_frame": 16,
+          "source": "explicit"
+        },
+        {
+          "id": "req-b42112893b592d2b3643",
+          "shot": "exchange",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "mouth",
+          "value": "a",
+          "start_frame": 16,
+          "end_frame": 19,
+          "source": "explicit"
+        },
+        {
+          "id": "req-2fb42656f88902c1dde6",
+          "shot": "exchange",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "mouth",
+          "value": "o",
+          "start_frame": 19,
+          "end_frame": 22,
+          "source": "explicit"
+        },
+        {
+          "id": "req-bc3bb03f5e260083fb64",
+          "shot": "exchange",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "mouth",
+          "value": "e",
+          "start_frame": 22,
+          "end_frame": 25,
+          "source": "explicit"
+        },
+        {
+          "id": "req-e929c427d6701b3dfa1c",
+          "shot": "exchange",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "mouth",
+          "value": "neutral",
+          "start_frame": 25,
+          "end_frame": 28,
+          "source": "explicit"
+        },
+        {
+          "id": "req-e1437a11020d445d9eeb",
+          "shot": "exchange",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "mouth",
+          "value": "a",
+          "start_frame": 28,
+          "end_frame": 31,
+          "source": "explicit"
+        },
+        {
+          "id": "req-d9f86b471d2ec64a0f78",
+          "shot": "exchange",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "mouth",
+          "value": "e",
+          "start_frame": 31,
+          "end_frame": 34,
+          "source": "explicit"
+        },
+        {
+          "id": "req-23c852a459fe75bf7102",
+          "shot": "exchange",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "mouth",
+          "value": "a",
+          "start_frame": 34,
+          "end_frame": 37,
+          "source": "explicit"
+        },
+        {
+          "id": "req-5e2f10add6bd1fca9731",
+          "shot": "exchange",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "mouth",
+          "value": "o",
+          "start_frame": 37,
+          "end_frame": 40,
+          "source": "explicit"
+        },
+        {
+          "id": "req-82319149785dce6cb447",
+          "shot": "exchange",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "mouth",
+          "value": "e",
+          "start_frame": 40,
+          "end_frame": 43,
+          "source": "explicit"
+        },
+        {
+          "id": "req-625e99d7dc4a04051097",
+          "shot": "exchange",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "mouth",
+          "value": "neutral",
+          "start_frame": 43,
+          "end_frame": 46,
+          "source": "explicit"
+        },
+        {
+          "id": "req-2a8f801ca9a09b0306dc",
+          "shot": "exchange",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "mouth",
+          "value": "a",
+          "start_frame": 46,
+          "end_frame": 49,
+          "source": "explicit"
+        },
+        {
+          "id": "req-cf05b24161d19324ab7e",
+          "shot": "exchange",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "mouth",
+          "value": "e",
+          "start_frame": 49,
+          "end_frame": 52,
+          "source": "explicit"
+        },
+        {
+          "id": "req-8e3e8f0cd5169c362ec3",
+          "shot": "exchange",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "mouth",
+          "value": "a",
+          "start_frame": 52,
+          "end_frame": 55,
+          "source": "explicit"
+        },
+        {
+          "id": "req-83262174bfbbfdeab457",
+          "shot": "exchange",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "mouth",
+          "value": "neutral",
+          "start_frame": 55,
+          "end_frame": 56,
+          "source": "explicit"
+        },
+        {
+          "id": "req-ec6a4d5f316b8a2705ef",
+          "shot": "departure",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "viewpoint",
+          "value": "front",
+          "start_frame": 0,
+          "end_frame": 120,
+          "source": "explicit"
+        },
+        {
+          "id": "req-04ab0d81fb4646c249ce",
+          "shot": "departure",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "facing",
+          "value": "front",
+          "start_frame": 0,
+          "end_frame": 120,
+          "source": "explicit"
+        },
+        {
+          "id": "req-58745cb68a1f6e4404cc",
+          "shot": "departure",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "costume",
+          "value": "everyday",
+          "start_frame": 0,
+          "end_frame": 120,
+          "source": "explicit"
+        },
+        {
+          "id": "req-624fd963ed9e9c116eda",
+          "shot": "departure",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "expression",
+          "value": "listening",
+          "start_frame": 0,
+          "end_frame": 120,
+          "source": "explicit"
+        },
+        {
+          "id": "req-77b62c30deb86af773f5",
+          "shot": "departure",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "gaze",
+          "value": "partner",
+          "start_frame": 0,
+          "end_frame": 120,
+          "source": "explicit"
+        },
+        {
+          "id": "req-79e10ab3a3ee522bf182",
+          "shot": "departure",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "intensity",
+          "value": "low",
+          "start_frame": 0,
+          "end_frame": 120,
+          "source": "explicit"
+        },
+        {
+          "id": "req-c17048dbbc85c7621706",
+          "shot": "departure",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "action",
+          "value": "idle",
+          "start_frame": 0,
+          "end_frame": 2,
+          "source": "clip"
+        },
+        {
+          "id": "req-d092ee739c14a9865fe1",
+          "shot": "departure",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "hand",
+          "value": "open-paw",
+          "start_frame": 0,
+          "end_frame": 2,
+          "source": "clip"
+        },
+        {
+          "id": "req-485bf8bbb30592a390aa",
+          "shot": "departure",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "pose",
+          "value": "stand",
+          "start_frame": 0,
+          "end_frame": 2,
+          "source": "clip"
+        },
+        {
+          "id": "req-cdf5e83f59de9a37b5af",
+          "shot": "departure",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "action",
+          "value": "walk",
+          "start_frame": 2,
+          "end_frame": 14,
+          "source": "clip"
+        },
+        {
+          "id": "req-877b2bf71bea1812d168",
+          "shot": "departure",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "contact",
+          "value": "ground",
+          "start_frame": 2,
+          "end_frame": 14,
+          "source": "clip"
+        },
+        {
+          "id": "req-645e6fd54429d1d45a89",
+          "shot": "departure",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "hand",
+          "value": "open-paw",
+          "start_frame": 2,
+          "end_frame": 14,
+          "source": "clip"
+        },
+        {
+          "id": "req-b6f04b24a9e33714e692",
+          "shot": "departure",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "pose",
+          "value": "stand",
+          "start_frame": 2,
+          "end_frame": 14,
+          "source": "clip"
+        },
+        {
+          "id": "req-2eb6b7e44777b51101c2",
+          "shot": "departure",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "pose",
+          "value": "walk",
+          "start_frame": 2,
+          "end_frame": 14,
+          "source": "clip"
+        },
+        {
+          "id": "req-02486c95673349c46610",
+          "shot": "departure",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "action",
+          "value": "walk",
+          "start_frame": 14,
+          "end_frame": 120,
+          "source": "clip"
+        },
+        {
+          "id": "req-176ae3eafdff75b28895",
+          "shot": "departure",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "contact",
+          "value": "ground",
+          "start_frame": 14,
+          "end_frame": 120,
+          "source": "clip"
+        },
+        {
+          "id": "req-d89a8605e9b3ff2c1110",
+          "shot": "departure",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "hand",
+          "value": "open-paw",
+          "start_frame": 14,
+          "end_frame": 120,
+          "source": "clip"
+        },
+        {
+          "id": "req-ffef39916ac26e3692dc",
+          "shot": "departure",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "pose",
+          "value": "walk",
+          "start_frame": 14,
+          "end_frame": 120,
+          "source": "clip"
+        },
+        {
+          "id": "req-ee6da22c1998aa74f629",
+          "shot": "departure",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "mouth",
+          "value": "neutral",
+          "start_frame": 1,
+          "end_frame": 4,
+          "source": "explicit"
+        },
+        {
+          "id": "req-b1dd5abc2e7f4ef065a2",
+          "shot": "departure",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "mouth",
+          "value": "e",
+          "start_frame": 4,
+          "end_frame": 7,
+          "source": "explicit"
+        },
+        {
+          "id": "req-308521e71b1fa2ab2b3c",
+          "shot": "departure",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "mouth",
+          "value": "a",
+          "start_frame": 7,
+          "end_frame": 10,
+          "source": "explicit"
+        },
+        {
+          "id": "req-4464d432772c7503918b",
+          "shot": "departure",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "mouth",
+          "value": "o",
+          "start_frame": 10,
+          "end_frame": 13,
+          "source": "explicit"
+        },
+        {
+          "id": "req-a77a426aa9b4fedc9c8f",
+          "shot": "departure",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "mouth",
+          "value": "e",
+          "start_frame": 13,
+          "end_frame": 16,
+          "source": "explicit"
+        },
+        {
+          "id": "req-cc6d654d6a50c4f119fa",
+          "shot": "departure",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "mouth",
+          "value": "neutral",
+          "start_frame": 16,
+          "end_frame": 19,
+          "source": "explicit"
+        },
+        {
+          "id": "req-4db01996042cee96aeae",
+          "shot": "departure",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "mouth",
+          "value": "a",
+          "start_frame": 19,
+          "end_frame": 22,
+          "source": "explicit"
+        },
+        {
+          "id": "req-e01356ce4bd73ce3adce",
+          "shot": "departure",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "mouth",
+          "value": "e",
+          "start_frame": 22,
+          "end_frame": 25,
+          "source": "explicit"
+        },
+        {
+          "id": "req-aa25363edf84e224608f",
+          "shot": "departure",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "mouth",
+          "value": "a",
+          "start_frame": 25,
+          "end_frame": 28,
+          "source": "explicit"
+        },
+        {
+          "id": "req-18387b3bb1800d90ff31",
+          "shot": "departure",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "mouth",
+          "value": "o",
+          "start_frame": 28,
+          "end_frame": 31,
+          "source": "explicit"
+        },
+        {
+          "id": "req-cf79093fce1602721702",
+          "shot": "departure",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "mouth",
+          "value": "neutral",
+          "start_frame": 31,
+          "end_frame": 32,
+          "source": "explicit"
+        },
+        {
+          "id": "req-817762b0001b24e40ce1",
+          "shot": "garden",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "viewpoint",
+          "value": "front",
+          "start_frame": 0,
+          "end_frame": 144,
+          "source": "explicit"
+        },
+        {
+          "id": "req-39ef9427f5ded529887c",
+          "shot": "garden",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "facing",
+          "value": "front",
+          "start_frame": 0,
+          "end_frame": 144,
+          "source": "explicit"
+        },
+        {
+          "id": "req-ccfe456d86968cf53af8",
+          "shot": "garden",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "costume",
+          "value": "everyday",
+          "start_frame": 0,
+          "end_frame": 144,
+          "source": "explicit"
+        },
+        {
+          "id": "req-223ee14cd23de4fe0c7f",
+          "shot": "garden",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "expression",
+          "value": "listening",
+          "start_frame": 0,
+          "end_frame": 144,
+          "source": "explicit"
+        },
+        {
+          "id": "req-7a67a50eae48d9b9c6c0",
+          "shot": "garden",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "gaze",
+          "value": "partner",
+          "start_frame": 0,
+          "end_frame": 144,
+          "source": "explicit"
+        },
+        {
+          "id": "req-138487a60376a5d70f72",
+          "shot": "garden",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "intensity",
+          "value": "low",
+          "start_frame": 0,
+          "end_frame": 144,
+          "source": "explicit"
+        },
+        {
+          "id": "req-bcac82eeb120ffb4bc2a",
+          "shot": "garden",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "action",
+          "value": "reaction",
+          "start_frame": 0,
+          "end_frame": 24,
+          "source": "clip"
+        },
+        {
+          "id": "req-df91840323f18b2408e2",
+          "shot": "garden",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "expression",
+          "value": "warm-surprise",
+          "start_frame": 0,
+          "end_frame": 24,
+          "source": "clip"
+        },
+        {
+          "id": "req-34984a6906ace9bb00a4",
+          "shot": "garden",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "hand",
+          "value": "open-paw",
+          "start_frame": 0,
+          "end_frame": 24,
+          "source": "clip"
+        },
+        {
+          "id": "req-045d9e20a77a7a12c361",
+          "shot": "garden",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "intensity",
+          "value": "medium",
+          "start_frame": 0,
+          "end_frame": 24,
+          "source": "clip"
+        },
+        {
+          "id": "req-9dac7dd3e3e9a8e2a3c7",
+          "shot": "garden",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "pose",
+          "value": "stand",
+          "start_frame": 0,
+          "end_frame": 24,
+          "source": "clip"
+        },
+        {
+          "id": "req-a4d7f74f9f0dd6aa697e",
+          "shot": "garden",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "action",
+          "value": "idle",
+          "start_frame": 24,
+          "end_frame": 144,
+          "source": "clip"
+        },
+        {
+          "id": "req-d73ae0c7dc4ddadefdb0",
+          "shot": "garden",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "hand",
+          "value": "open-paw",
+          "start_frame": 24,
+          "end_frame": 144,
+          "source": "clip"
+        },
+        {
+          "id": "req-fc0422ce6e84bc91b9cf",
+          "shot": "garden",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "pose",
+          "value": "stand",
+          "start_frame": 24,
+          "end_frame": 144,
+          "source": "clip"
+        },
+        {
+          "id": "req-5efba807ef5ada8125e0",
+          "shot": "tomorrow",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "viewpoint",
+          "value": "front",
+          "start_frame": 0,
+          "end_frame": 120,
+          "source": "explicit"
+        },
+        {
+          "id": "req-eb1312389fd7cee22504",
+          "shot": "tomorrow",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "facing",
+          "value": "front",
+          "start_frame": 0,
+          "end_frame": 120,
+          "source": "explicit"
+        },
+        {
+          "id": "req-ee5e3739a1fac9bf3b1f",
+          "shot": "tomorrow",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "costume",
+          "value": "everyday",
+          "start_frame": 0,
+          "end_frame": 120,
+          "source": "explicit"
+        },
+        {
+          "id": "req-58a1f835212dab0a7576",
+          "shot": "tomorrow",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "expression",
+          "value": "listening",
+          "start_frame": 0,
+          "end_frame": 120,
+          "source": "explicit"
+        },
+        {
+          "id": "req-5f6d88f591c28d4b90f8",
+          "shot": "tomorrow",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "gaze",
+          "value": "partner",
+          "start_frame": 0,
+          "end_frame": 120,
+          "source": "explicit"
+        },
+        {
+          "id": "req-5e8b361ea0690be41cbf",
+          "shot": "tomorrow",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "intensity",
+          "value": "low",
+          "start_frame": 0,
+          "end_frame": 120,
+          "source": "explicit"
+        },
+        {
+          "id": "req-0d9edc3496fbfa39d105",
+          "shot": "tomorrow",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "action",
+          "value": "idle",
+          "start_frame": 0,
+          "end_frame": 84,
+          "source": "clip"
+        },
+        {
+          "id": "req-9179a875512adc6127ec",
+          "shot": "tomorrow",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "hand",
+          "value": "open-paw",
+          "start_frame": 0,
+          "end_frame": 84,
+          "source": "clip"
+        },
+        {
+          "id": "req-aa7ab619f2d5d39c2eb0",
+          "shot": "tomorrow",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "pose",
+          "value": "stand",
+          "start_frame": 0,
+          "end_frame": 84,
+          "source": "clip"
+        },
+        {
+          "id": "req-c27b606dd615225627d2",
+          "shot": "tomorrow",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "action",
+          "value": "reaction",
+          "start_frame": 84,
+          "end_frame": 108,
+          "source": "clip"
+        },
+        {
+          "id": "req-67e546a14fff9465e9f0",
+          "shot": "tomorrow",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "expression",
+          "value": "warm-surprise",
+          "start_frame": 84,
+          "end_frame": 108,
+          "source": "clip"
+        },
+        {
+          "id": "req-99b5657ba0d4a9217ff1",
+          "shot": "tomorrow",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "hand",
+          "value": "open-paw",
+          "start_frame": 84,
+          "end_frame": 108,
+          "source": "clip"
+        },
+        {
+          "id": "req-85fbd3db091fc42d9d36",
+          "shot": "tomorrow",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "intensity",
+          "value": "medium",
+          "start_frame": 84,
+          "end_frame": 108,
+          "source": "clip"
+        },
+        {
+          "id": "req-25561f2cab73b78de127",
+          "shot": "tomorrow",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "pose",
+          "value": "stand",
+          "start_frame": 84,
+          "end_frame": 108,
+          "source": "clip"
+        },
+        {
+          "id": "req-a5a22d4d3a50ac301942",
+          "shot": "tomorrow",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "action",
+          "value": "idle",
+          "start_frame": 108,
+          "end_frame": 120,
+          "source": "clip"
+        },
+        {
+          "id": "req-4632df0a6f1193e0aa4f",
+          "shot": "tomorrow",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "hand",
+          "value": "open-paw",
+          "start_frame": 108,
+          "end_frame": 120,
+          "source": "clip"
+        },
+        {
+          "id": "req-6db961058563e700c668",
+          "shot": "tomorrow",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "pose",
+          "value": "stand",
+          "start_frame": 108,
+          "end_frame": 120,
+          "source": "clip"
+        },
+        {
+          "id": "req-b14e2d43bcd350f9ebb8",
+          "shot": "tomorrow",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "mouth",
+          "value": "a",
+          "start_frame": 12,
+          "end_frame": 15,
+          "source": "explicit"
+        },
+        {
+          "id": "req-f8e1e28ea79b7dcf6017",
+          "shot": "tomorrow",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "mouth",
+          "value": "e",
+          "start_frame": 15,
+          "end_frame": 18,
+          "source": "explicit"
+        },
+        {
+          "id": "req-0273d9f954cbc31cffac",
+          "shot": "tomorrow",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "mouth",
+          "value": "a",
+          "start_frame": 18,
+          "end_frame": 21,
+          "source": "explicit"
+        },
+        {
+          "id": "req-e19bb540983dbfc0df87",
+          "shot": "tomorrow",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "mouth",
+          "value": "o",
+          "start_frame": 21,
+          "end_frame": 24,
+          "source": "explicit"
+        },
+        {
+          "id": "req-079fcb0a55714b5e4f86",
+          "shot": "tomorrow",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "mouth",
+          "value": "e",
+          "start_frame": 24,
+          "end_frame": 27,
+          "source": "explicit"
+        },
+        {
+          "id": "req-1ede4b0fac2bcc788697",
+          "shot": "tomorrow",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "mouth",
+          "value": "neutral",
+          "start_frame": 27,
+          "end_frame": 30,
+          "source": "explicit"
+        },
+        {
+          "id": "req-fe4025799686e898b6b3",
+          "shot": "tomorrow",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "mouth",
+          "value": "a",
+          "start_frame": 30,
+          "end_frame": 33,
+          "source": "explicit"
+        },
+        {
+          "id": "req-7ead92876b11f8419cd7",
+          "shot": "tomorrow",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "mouth",
+          "value": "e",
+          "start_frame": 33,
+          "end_frame": 36,
+          "source": "explicit"
+        },
+        {
+          "id": "req-09d293c86156016cd469",
+          "shot": "tomorrow",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "mouth",
+          "value": "a",
+          "start_frame": 36,
+          "end_frame": 39,
+          "source": "explicit"
+        },
+        {
+          "id": "req-b69463799e13c139f837",
+          "shot": "tomorrow",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "mouth",
+          "value": "o",
+          "start_frame": 39,
+          "end_frame": 42,
+          "source": "explicit"
+        },
+        {
+          "id": "req-cb4101d6184f312686d0",
+          "shot": "tomorrow",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "mouth",
+          "value": "e",
+          "start_frame": 42,
+          "end_frame": 45,
+          "source": "explicit"
+        },
+        {
+          "id": "req-60eda0ae86246875a192",
+          "shot": "tomorrow",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "mouth",
+          "value": "neutral",
+          "start_frame": 45,
+          "end_frame": 48,
+          "source": "explicit"
+        },
+        {
+          "id": "req-e23fb819af10dfdaab2b",
+          "shot": "tomorrow",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "mouth",
+          "value": "a",
+          "start_frame": 48,
+          "end_frame": 51,
+          "source": "explicit"
+        },
+        {
+          "id": "req-9de96394aae3f72f21b5",
+          "shot": "tomorrow",
+          "instance": "luma",
+          "character": "luma@3.0.0",
+          "dimension": "mouth",
+          "value": "neutral",
+          "start_frame": 51,
+          "end_frame": 53,
+          "source": "explicit"
+        }
+      ],
+      "requirements_hash": "4bd061414d362ae644f8e345f6d2c3520de5c944d2b594a5fd7c793b68f05ed4"
+    },
+    {
+      "event": "generation-limits-configured",
+      "time": 1792438519.660245,
+      "limits": {
+        "max_calls": 4,
+        "attempts_per_job": 1,
+        "concurrency": 1
+      }
+    },
+    {
+      "event": "review-recorded",
+      "time": 1792441001.5120225,
+      "target": {
+        "kind": "character",
+        "character_id": "milo",
+        "version": "3.0.0"
+      },
+      "receipt_sha256": "90992c439e5e1a69722831c158aa771ce0b378746cf2b7ad7993978379bd9aca",
+      "reviewer": {
+        "kind": "assistant",
+        "id": "assistant:/root",
+        "name": "ChatGPT, primary production reviewer"
+      }
+    },
+    {
+      "event": "review-recorded",
+      "time": 1792441001.7466936,
+      "target": {
+        "kind": "character",
+        "character_id": "luma",
+        "version": "3.0.0"
+      },
+      "receipt_sha256": "51ddbf7162bebfa22a212b6e59104cafd98a326f9753a439706478143cb61403",
+      "reviewer": {
+        "kind": "assistant",
+        "id": "assistant:/root",
+        "name": "ChatGPT, primary production reviewer"
+      }
+    },
+    {
+      "event": "review-recorded",
+      "time": 1792441002.0138905,
+      "target": {
+        "kind": "clip",
+        "clip_id": "luma-exchange",
+        "version": "3.0.0"
+      },
+      "receipt_sha256": "ca7a81c013001c688fbdf03a92a359d3029a5aba551248425de71b127ba69512",
+      "reviewer": {
+        "kind": "assistant",
+        "id": "assistant:/root",
+        "name": "ChatGPT, primary production reviewer"
+      }
+    },
+    {
+      "event": "review-recorded",
+      "time": 1792441002.3047576,
+      "target": {
+        "kind": "clip",
+        "clip_id": "luma-idle",
+        "version": "3.0.0"
+      },
+      "receipt_sha256": "b843074ed9d5c030fe4afb93d89fe1fe8b1304234f48ada130f781726e77d56d",
+      "reviewer": {
+        "kind": "assistant",
+        "id": "assistant:/root",
+        "name": "ChatGPT, primary production reviewer"
+      }
+    },
+    {
+      "event": "review-recorded",
+      "time": 1792441002.5832691,
+      "target": {
+        "kind": "clip",
+        "clip_id": "luma-reaction",
+        "version": "3.0.0"
+      },
+      "receipt_sha256": "b89cca305708b6858dd40858e5620c56fdd3a9c7f80c56d7e3d9bf5fa6c02d15",
+      "reviewer": {
+        "kind": "assistant",
+        "id": "assistant:/root",
+        "name": "ChatGPT, primary production reviewer"
+      }
+    },
+    {
+      "event": "review-recorded",
+      "time": 1792441002.8186698,
+      "target": {
+        "kind": "clip",
+        "clip_id": "luma-stop",
+        "version": "3.0.0"
+      },
+      "receipt_sha256": "a6c2e474a23651695f6e121e86160b062877e3885c41c2efbeb09d07a7d0df66",
+      "reviewer": {
+        "kind": "assistant",
+        "id": "assistant:/root",
+        "name": "ChatGPT, primary production reviewer"
+      }
+    },
+    {
+      "event": "review-recorded",
+      "time": 1792441003.0476139,
+      "target": {
+        "kind": "clip",
+        "clip_id": "luma-walk-left",
+        "version": "3.0.0"
+      },
+      "receipt_sha256": "0744dbfd1fe0ac14418deaa08676ddda4d510bafce1f52f0c7fbf0bfc1dec6b5",
+      "reviewer": {
+        "kind": "assistant",
+        "id": "assistant:/root",
+        "name": "ChatGPT, primary production reviewer"
+      }
+    },
+    {
+      "event": "review-recorded",
+      "time": 1792441003.3035338,
+      "target": {
+        "kind": "clip",
+        "clip_id": "luma-walk-right",
+        "version": "3.0.0"
+      },
+      "receipt_sha256": "ba1a7e0cf92f624346a11c3b5549bb01e014b2fdbc1903c99a03eaca0b952dea",
+      "reviewer": {
+        "kind": "assistant",
+        "id": "assistant:/root",
+        "name": "ChatGPT, primary production reviewer"
+      }
+    },
+    {
+      "event": "review-recorded",
+      "time": 1792441003.592817,
+      "target": {
+        "kind": "clip",
+        "clip_id": "luma-walk-start",
+        "version": "3.0.0"
+      },
+      "receipt_sha256": "e8786f553fbef5635839fe0f3704bb5008bf4e9f26b972717108ad76c84d5664",
+      "reviewer": {
+        "kind": "assistant",
+        "id": "assistant:/root",
+        "name": "ChatGPT, primary production reviewer"
+      }
+    },
+    {
+      "event": "review-recorded",
+      "time": 1792441003.8269677,
+      "target": {
+        "kind": "clip",
+        "clip_id": "milo-exchange",
+        "version": "3.0.0"
+      },
+      "receipt_sha256": "59ae64a711de8371597f692dcc5df43b28344888ba1feca74f5e9487856e60c4",
+      "reviewer": {
+        "kind": "assistant",
+        "id": "assistant:/root",
+        "name": "ChatGPT, primary production reviewer"
+      }
+    },
+    {
+      "event": "review-recorded",
+      "time": 1792441004.078688,
+      "target": {
+        "kind": "clip",
+        "clip_id": "milo-idle",
+        "version": "3.0.0"
+      },
+      "receipt_sha256": "1a6e1539ac1b1ad6f2160bdd565a533775403336d2a632228c7ee029b8a4c901",
+      "reviewer": {
+        "kind": "assistant",
+        "id": "assistant:/root",
+        "name": "ChatGPT, primary production reviewer"
+      }
+    },
+    {
+      "event": "review-recorded",
+      "time": 1792441004.3313246,
+      "target": {
+        "kind": "clip",
+        "clip_id": "milo-reaction",
+        "version": "3.0.0"
+      },
+      "receipt_sha256": "cdd93cbe317bc1733db2dba549d624e3e48f5273afcea2b48944f1079aa24d8a",
+      "reviewer": {
+        "kind": "assistant",
+        "id": "assistant:/root",
+        "name": "ChatGPT, primary production reviewer"
+      }
+    },
+    {
+      "event": "review-recorded",
+      "time": 1792441004.586233,
+      "target": {
+        "kind": "clip",
+        "clip_id": "milo-stop",
+        "version": "3.0.0"
+      },
+      "receipt_sha256": "55377f7f12e9877e3e02da78d5ad471bea2adb7eb0001ecc80d8a304686a6e47",
+      "reviewer": {
+        "kind": "assistant",
+        "id": "assistant:/root",
+        "name": "ChatGPT, primary production reviewer"
+      }
+    },
+    {
+      "event": "review-recorded",
+      "time": 1792441004.8533812,
+      "target": {
+        "kind": "clip",
+        "clip_id": "milo-walk-right",
+        "version": "3.0.0"
+      },
+      "receipt_sha256": "0ebff29aec247fd57c9d8bdb0ec72310be688b8a044f840b0614e0b586e828a3",
+      "reviewer": {
+        "kind": "assistant",
+        "id": "assistant:/root",
+        "name": "ChatGPT, primary production reviewer"
+      }
+    },
+    {
+      "event": "review-recorded",
+      "time": 1792441005.120612,
+      "target": {
+        "kind": "clip",
+        "clip_id": "milo-walk-start",
+        "version": "3.0.0"
+      },
+      "receipt_sha256": "7e8a2fd6504136255ba2a35de971f3db54f47bb2ced1dbf47915773e3e1e49cf",
+      "reviewer": {
+        "kind": "assistant",
+        "id": "assistant:/root",
+        "name": "ChatGPT, primary production reviewer"
+      }
+    },
+    {
+      "event": "review-recorded",
+      "time": 1792441010.8049679,
+      "target": {
+        "kind": "shot",
+        "scene_id": "seed-exchange",
+        "shot_id": "arrival"
+      },
+      "receipt_sha256": "a35638efa00a5d061fdb790b6322688c6660c7e49df863328f0942bf6a9ad425",
+      "reviewer": {
+        "kind": "assistant",
+        "id": "assistant:/root",
+        "name": "ChatGPT, primary production reviewer"
+      }
+    },
+    {
+      "event": "review-recorded",
+      "time": 1792441016.3153722,
+      "target": {
+        "kind": "shot",
+        "scene_id": "seed-exchange",
+        "shot_id": "exchange"
+      },
+      "receipt_sha256": "b7b21e80ca672bf35d4ee3af371c291d17481f955135d84bde54b721b48dd9a3",
+      "reviewer": {
+        "kind": "assistant",
+        "id": "assistant:/root",
+        "name": "ChatGPT, primary production reviewer"
+      }
+    },
+    {
+      "event": "review-recorded",
+      "time": 1792441020.9326043,
+      "target": {
+        "kind": "shot",
+        "scene_id": "seed-exchange",
+        "shot_id": "departure"
+      },
+      "receipt_sha256": "b84005f074721fc5933cb040fb4074916739c8493a7e2e3cdc9b5ed5f14ecf0b",
+      "reviewer": {
+        "kind": "assistant",
+        "id": "assistant:/root",
+        "name": "ChatGPT, primary production reviewer"
+      }
+    },
+    {
+      "event": "review-recorded",
+      "time": 1792441025.6419373,
+      "target": {
+        "kind": "shot",
+        "scene_id": "garden-promise",
+        "shot_id": "garden"
+      },
+      "receipt_sha256": "7d174402a06a6b3ff5e5f64bacf3ebece5dc3549468f6ad417922cf075110786",
+      "reviewer": {
+        "kind": "assistant",
+        "id": "assistant:/root",
+        "name": "ChatGPT, primary production reviewer"
+      }
+    },
+    {
+      "event": "review-recorded",
+      "time": 1792441029.7128103,
+      "target": {
+        "kind": "shot",
+        "scene_id": "garden-promise",
+        "shot_id": "tomorrow"
+      },
+      "receipt_sha256": "a02a3f5242e6c48a69053961d822f21e38aa7a32ec3d64a81679faa257198934",
+      "reviewer": {
+        "kind": "assistant",
+        "id": "assistant:/root",
+        "name": "ChatGPT, primary production reviewer"
+      }
+    }
+  ]
+}

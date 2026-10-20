@@ -1,0 +1,56 @@
+{
+  "job": "base",
+  "token": "de92b181870a4fbba3f9e447e70a4c98",
+  "generation_skill": "$imagegen",
+  "attempt": 1,
+  "prompt": "/workspace/scratch/368aa013e993/hatch-pet/examples/production-pilot/acquisition/milo/prompts/base-pet.md",
+  "retry_prompt": "/workspace/scratch/368aa013e993/hatch-pet/examples/production-pilot/acquisition/milo/prompts/base-pet.md",
+  "input_images": [],
+  "receipt_template": {
+    "generation_skill": "$imagegen",
+    "input_hashes": {
+      "pet_request.json": "45867ba3eb5e1fd9ea6bddaf1a6e9d36aabf7e1eada147e94cac01c0fc6d0b74",
+      "prompts/base-pet.md": "ca80a3b2283fbd5712fdeb77b986db40e812e1aec162cf054d3d5799da4aaad0",
+      "@generation-profile": "610558d8647dc55d0d08e439a24fd362a2bf438952f58d23bafa204bec16bb41"
+    },
+    "job": "base",
+    "token": "de92b181870a4fbba3f9e447e70a4c98"
+  },
+  "previous_failures": [],
+  "identity": {
+    "schema_version": 1,
+    "markings": [
+      "cream muzzle and belly",
+      "small dark brown nose"
+    ],
+    "palette": {
+      "fur": "#C88B47",
+      "cream": "#F3DCB4",
+      "scarf": "#D96654",
+      "eyes": "#392B26"
+    },
+    "materials": [
+      "softly painted fur",
+      "matte woven costume"
+    ],
+    "proportions": {
+      "head_to_body_height": 0.6
+    },
+    "approved_props": [
+      "coral neckerchief"
+    ],
+    "asymmetries": [
+      "coral scarf knot on viewer-right in the front view"
+    ],
+    "directions": {
+      "parts": "front"
+    },
+    "forbid_mirror": true,
+    "unresolved_conflicts": []
+  },
+  "tool_arguments": {
+    "transparent_background": true
+  },
+  "attachment_rules": "View local inputs before editing. Attach every input using referenced_image_paths when all are local; otherwise num_last_images_to_include (max 5). Never use both. A brand-new text-only base omits both.",
+  "output_rules": "Follow installed imagegen skill, including image output; return selected source and QA note. Do not mutate manifests."
+}

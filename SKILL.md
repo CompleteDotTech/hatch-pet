@@ -1,11 +1,13 @@
 ---
 name: hatch-pet
-description: Create, import, decompose, review, and package Codex pets or reusable raster assets. Turn existing artwork into source-bound editable components, combine character state packs by anatomy, compile profiles and event recipes, or make process illustrations, product variants, printable frames, pictograms, research stimuli, cursors and craft grids. Uses installed imagegen for production generation and a local, resumable validation/export pipeline. Does not install, publish, or certify external integrations implicitly.
+description: Create, import, decompose, animate and review reusable characters, Codex pets or layered 2D casts. Extract source-bound editable components, combine character state packs, compile profiles and event recipes, render scenes, or produce process illustrations, product variants, printable frames, pictograms, research stimuli, cursors and craft grids. Uses installed imagegen, versioned contracts and explicit review. Does not install, publish or certify external integrations implicitly.
 ---
 
 # Hatch Pet
 
 Use `profiles/codex-v1.json` for a Codex pet. Its state order, counts, durations, 192×208 cells, 8 columns, transparency rules and package contract are fixed. Existing `examples/*.json` remain supported. For another purpose, use a validated profile or one of the ten [purpose-specific presets](references/additional-uses.md).
+
+For a cast performing in scenes, use `scripts/production.py` and the separate production schema. Read [production contracts](references/production-contracts.md) before constructing characters or clips, [operations](references/production-operations.md) for exact commands, and [rendering](references/production-rendering.md) for compositor, preview and editor handoff behavior. Follow the [production recipe](references/production-pilot.md) for the retained Milo/Luma sources and two-scene demonstration. Keep legacy millisecond timing separate from integer production frames and rational frame rates.
 
 ## Choose the source and contract
 
@@ -50,6 +52,19 @@ Read compatibility warnings before generation. Adapt glass, light effects, fiber
 5. **Review actual artifacts.** Build `review-ui`, inspect references, sources, extracted frames and actual-size timed playback on multiple backgrounds. Record identity, action, direction, loop, extraction and reduced-motion verdicts plus warning-specific notes. Submit the exact bound receipt. A change to covered artifacts requires fresh review; numerical QA cannot supply a semantic verdict.
 6. **Export/package.** An evaluation export may be unreviewed and must say so. Packaging requires current deterministic validation and passing visual review. Report source origin, fixture status, review status and exact output locations separately from integration status.
 
+## Produce and reuse a cast
+
+1. **Select identities and versions.** Keep one portable cast shared by project scenes. Record dimensions, relative scale, directional restrictions, costumes, approved differences, source permissions/attribution and view evidence. Distinguish approved design references from authored, reviewed animation components. Preserve earlier versions when importing or adopting changed components.
+2. **Construct measured parts.** Declare parent hierarchy, pivots, attachment anchors, draw order, masks, alpha, common drawing viewports and viewpoint compatibility. Retain exact source and crop/registration provenance. Inspect the assembled character; successful extraction or segmentation does not establish anatomy or artistic quality.
+3. **Plan the shot.** Declare explicit and inferred choices separately. Run `coverage` before generation. Resolve missing assets, incompatible combinations and unreviewed clips across independent dimensions; do not generate every combination. Bind acquisition runs to the exact required coverage before further claims. Use the existing hatch claim, failure and repair lifecycle with bounded calls.
+4. **Author performance.** Use reusable clips with entry/exit poses, displacement, contact markers, events and interruption rules. Use explicit transition drawings or clips when bounded numeric interpolation is unsuitable. Keep a planted contact stable in world coordinates and retain intentional root motion and fixed character scale. Never conceal a mismatch by fitting each performance frame independently.
+5. **Layer acting and interaction.** Edit body, face, gaze and mouth tracks independently where the construction supports them. Retain supplied audio or actual local TTS provenance and inspectable dialogue cues. Require one prop owner, explicit attachments and synchronized handoff markers. Check actual hand/object positions; neither aligned timing nor coincident anchors proves convincing acting.
+6. **Render and inspect.** Render PNG/PCM masters, validate exact frame/sample duration, then inspect representative frames, transitions, contact moments, dialogue and complete playback. Use the local preview for scrub/step, layer visibility and comparisons. Browser timing is a preview; offline masters are authoritative. Use the documented Krita PNG/WAV/OpenRaster handoff for drawing edits, and label exported files, adapter roundtrip and real application exercise separately.
+7. **Record scoped decisions.** Use `review-template`, fill actual reviewer identity, verdicts and inspected evidence, then `review`. Review construction, motion, face/dialogue, contacts, composition, continuity, AV timing and final artifacts separately. Bind final reviews to the completed shot manifest and actual rendered frames. Preserve review history; metrics and synthetic receipts cannot stand in for production artwork review.
+8. **Reuse and repair selectively.** Add another scene selecting the same character/clip versions. Use `snapshot`, `impact`, `coverage` and `reviews` to explain changed or stale work; rerender only affected pixels and re-review affected dimensions. Keep exact provenance and required coverage through retries. Archive/restore to a new directory and inspect restoration diagnostics before using cached approvals.
+
+Start a model-free regression project with `python scripts/production_regression_demo.py --output-dir NEW_DIR --movie`. Reproduce retained production sources with the commands in the production recipe. These are different evidence classes; never promote fixture success into production-art acceptance. Use `python scripts/production.py COMMAND --help` for required flags. `--output NEW.json` writes the full report there and prints only its path.
+
 ## Recovery and operational scope
 
 `status` and `resume` reconcile existing claims and explain stale inputs; they never start duplicate model calls. Configure attempt, concurrency and call limits; optional budgets use explicit user estimates, not invented prices. Deterministic calibration changes reuse generation. Use `revise-profile` for controlled playback/extraction/export revisions. See [portability and operations](references/portability-and-operations.md) for migrations, verified archives and restoration.
@@ -72,5 +87,7 @@ When authorized to delegate, one worker may own one existing generation claim or
 - [Ten uses](references/additional-uses.md): inputs, semantics, constraints, commands and external requirements.
 - [Profiles and exports](references/profiles-and-exports.md), [QA rubric](references/qa-rubric.md), [Codex contract](references/codex-pet-contract.md), [default animation table](references/animation-rows.md).
 - [Traceability](references/traceability.md): L01–L10 / I01–I10 / U01–U10 and validation evidence.
+- [Production contracts](references/production-contracts.md), [operations](references/production-operations.md), [rendering and editor handoff](references/production-rendering.md), [pilot recipe and migration](references/production-pilot.md).
+- [Production traceability](references/production-traceability.md): P01–P15; [current validation](references/production-validation.md) and [demonstration index](examples/production-pilot/README.md).
 
 Cleanup affects only exact run-owned files. Preview it first. Keep repair archives, original inputs, external imagegen outputs, failure history and unrelated files. Removing files cannot remove image payloads already embedded in a conversation.

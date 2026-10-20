@@ -1,4 +1,4 @@
 interface:
   display_name: "Hatch Pet"
-  short_description: "Compose states and decompose reusable character assets"
-  default_prompt: "Use $hatch-pet to select character state packs, create, import or decompose artwork, validate provenance and pixels, visually review and export editable layers, a Codex pet or a custom animation profile."
+  short_description: "Build reusable characters, states and 2D scenes"
+  default_prompt: "Use $hatch-pet to select state packs, create, import or decompose characters, animate a layered cast, render scenes, and review exact artifacts before exporting."

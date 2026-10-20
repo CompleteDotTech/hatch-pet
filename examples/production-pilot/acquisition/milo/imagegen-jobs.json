@@ -1,0 +1,325 @@
+{
+  "schema_version": 3,
+  "created_at": "2026-10-19T17:36:50.316035+00:00",
+  "run_dir": "/workspace/scratch/368aa013e993/hatch-pet/examples/production-pilot/acquisition/milo",
+  "primary_generation_skill": "$imagegen",
+  "jobs": [
+    {
+      "id": "base",
+      "kind": "base-pet",
+      "status": "generated",
+      "prompt_file": "prompts/base-pet.md",
+      "input_images": [],
+      "output_path": "decoded/base.png",
+      "depends_on": [],
+      "generation_skill": "$imagegen",
+      "requires_grounded_generation": false,
+      "allow_prompt_only_generation": true,
+      "attempts": 1,
+      "history": [
+        {
+          "event": "claim",
+          "time": 1792431410.8112745,
+          "token": "de92b181870a4fbba3f9e447e70a4c98",
+          "input_hashes": {
+            "pet_request.json": "45867ba3eb5e1fd9ea6bddaf1a6e9d36aabf7e1eada147e94cac01c0fc6d0b74",
+            "prompts/base-pet.md": "ca80a3b2283fbd5712fdeb77b986db40e812e1aec162cf054d3d5799da4aaad0",
+            "@generation-profile": "610558d8647dc55d0d08e439a24fd362a2bf438952f58d23bafa204bec16bb41"
+          },
+          "prompt_snapshot": {
+            "path": "prompts/base-pet.md",
+            "sha256": "ca80a3b2283fbd5712fdeb77b986db40e812e1aec162cf054d3d5799da4aaad0",
+            "utf8": "Create one canonical full-body character reference for `milo` using the installed imagegen skill.\n\nIdentity: a small warm amber bear with rounded ears, cream muzzle and belly, dark brown eyes, short soft limbs and a coral neckerchief whose knot stays on the viewer-right in the front view. Base image: a design turnaround with four full-body views arranged left to right: front, three-quarter, side, back. Consistent relative scale. No text..\nStyle: Pet-safe sprite: compact full-body mascot, readable at the selected profile cell size, clear silhouette, simple face, stable palette/materials, and crisp edges for alpha or selected chroma-key extraction. Style `painterly`: Painterly mascot with simplified brush texture, readable forms, stable palette, and enough edge clarity for clean extraction. User style notes: Polished storybook cut-paper animation artwork, softly painted fur texture, clean readable silhouettes, rounded anatomy, warm light from upper left. True transparent RGBA background. No floor, shadow outside the character, scenery, text, labels, grid lines, watermark or unrelated props..\nPreserve the approved input references. Keep the entire subject visible and readable at 1024x1024.\nReturn a true transparent alpha background. Preserve intentional holes, permitted detached details, and antialiased character edges. Do not draw a checkerboard or a solid background.\n\nProfile requirements:\n- Create the requested original character design and construction artwork. Polished storybook cut-paper animation artwork, softly painted fur texture, clean readable silhouettes, rounded anatomy, warm light from upper left. True transparent RGBA background. No floor, shadow outside the character, scenery, text, labels, grid lines, watermark or unrelated props.\n\nExplicit user requirements and avoidances (preserve across retries):\n{\"require\": [\"original non-fixture production artwork\", \"retain asymmetry and costume\", \"true transparency\"], \"avoid\": [\"text\", \"background\", \"unrelated props\"]}\nInferred brand guidance (subordinate to explicit user instructions; preserve sources and uncertainty):\n{\"guidance\": {\"text\": \"\", \"sources\": [], \"inferred\": true, \"uncertainty\": \"No researched brand guidance supplied.\"}, \"effective_avoid\": [], \"reported_conflicts\": []}\nComplete structured constraints for provenance:\n{\"require\": [\"original non-fixture production artwork\", \"retain asymmetry and costume\", \"true transparency\"], \"avoid\": [\"text\", \"background\", \"unrelated props\"], \"brand_avoid\": [], \"brand_guidance\": {\"text\": \"\", \"sources\": [], \"inferred\": true, \"uncertainty\": \"No researched brand guidance supplied.\"}, \"conflicts\": [], \"effective_brand_avoid\": [], \"identity\": {\"schema_version\": 1, \"markings\": [\"cream muzzle and belly\", \"small dark brown nose\"], \"palette\": {\"fur\": \"#C88B47\", \"cream\": \"#F3DCB4\", \"scarf\": \"#D96654\", \"eyes\": \"#392B26\"}, \"materials\": [\"softly painted fur\", \"matte woven costume\"], \"proportions\": {\"head_to_body_height\": 0.6}, \"approved_props\": [\"coral neckerchief\"], \"asymmetries\": [\"coral scarf knot on viewer-right in the front view\"], \"directions\": {\"parts\": \"front\"}, \"forbid_mirror\": true, \"unresolved_conflicts\": []}}\n"
+          },
+          "input_images": [],
+          "identity": {
+            "schema_version": 1,
+            "markings": [
+              "cream muzzle and belly",
+              "small dark brown nose"
+            ],
+            "palette": {
+              "fur": "#C88B47",
+              "cream": "#F3DCB4",
+              "scarf": "#D96654",
+              "eyes": "#392B26"
+            },
+            "materials": [
+              "softly painted fur",
+              "matte woven costume"
+            ],
+            "proportions": {
+              "head_to_body_height": 0.6
+            },
+            "approved_props": [
+              "coral neckerchief"
+            ],
+            "asymmetries": [
+              "coral scarf knot on viewer-right in the front view"
+            ],
+            "directions": {
+              "parts": "front"
+            },
+            "forbid_mirror": true,
+            "unresolved_conflicts": []
+          }
+        },
+        {
+          "event": "generated",
+          "time": 1792431639.7478263,
+          "source_hash": "cb88dd18e162ee7e8d7a40da6b510e7ae4431595458b548fb4414db18eb225da",
+          "source_path": "/workspace/scratch/368aa013e993/hatch-pet/examples/production-pilot/art/originals/milo-turnaround-v3.png",
+          "output_hash": "29b857963c2d5b3ffceaa0231f49da394aabe897a9a60734cb30d7da0f83c41f",
+          "model_call": {
+            "id": null,
+            "model": null,
+            "parameters": null,
+            "unavailable_reason": "The handoff did not expose provider call metadata."
+          },
+          "generation_receipt": {
+            "generation_skill": "$imagegen",
+            "input_hashes": {
+              "pet_request.json": "45867ba3eb5e1fd9ea6bddaf1a6e9d36aabf7e1eada147e94cac01c0fc6d0b74",
+              "prompts/base-pet.md": "ca80a3b2283fbd5712fdeb77b986db40e812e1aec162cf054d3d5799da4aaad0",
+              "@generation-profile": "610558d8647dc55d0d08e439a24fd362a2bf438952f58d23bafa204bec16bb41"
+            },
+            "job": "base",
+            "token": "de92b181870a4fbba3f9e447e70a4c98"
+          }
+        }
+      ],
+      "input_hashes": {
+        "pet_request.json": "45867ba3eb5e1fd9ea6bddaf1a6e9d36aabf7e1eada147e94cac01c0fc6d0b74",
+        "prompts/base-pet.md": "ca80a3b2283fbd5712fdeb77b986db40e812e1aec162cf054d3d5799da4aaad0",
+        "@generation-profile": "610558d8647dc55d0d08e439a24fd362a2bf438952f58d23bafa204bec16bb41"
+      },
+      "started_at": 1792431410.8111174,
+      "canonical_hash": "29b857963c2d5b3ffceaa0231f49da394aabe897a9a60734cb30d7da0f83c41f",
+      "output_hash": "29b857963c2d5b3ffceaa0231f49da394aabe897a9a60734cb30d7da0f83c41f",
+      "source_hash": "cb88dd18e162ee7e8d7a40da6b510e7ae4431595458b548fb4414db18eb225da",
+      "source_path": "/workspace/scratch/368aa013e993/hatch-pet/examples/production-pilot/art/originals/milo-turnaround-v3.png",
+      "qa_note": "Actual new reference inspected: amber bear, cream muzzle and belly, coral neckerchief knot on viewer-right in front, consistent four design views, transparent background. This replaces lost v2 files; it carries no previous production review.",
+      "generated_at": 1792431639.747818,
+      "generation_receipt": {
+        "generation_skill": "$imagegen",
+        "input_hashes": {
+          "pet_request.json": "45867ba3eb5e1fd9ea6bddaf1a6e9d36aabf7e1eada147e94cac01c0fc6d0b74",
+          "prompts/base-pet.md": "ca80a3b2283fbd5712fdeb77b986db40e812e1aec162cf054d3d5799da4aaad0",
+          "@generation-profile": "610558d8647dc55d0d08e439a24fd362a2bf438952f58d23bafa204bec16bb41"
+        },
+        "job": "base",
+        "token": "de92b181870a4fbba3f9e447e70a4c98"
+      },
+      "source_origin": "imagegen",
+      "model_call": {
+        "id": null,
+        "model": null,
+        "parameters": null,
+        "unavailable_reason": "The handoff did not expose provider call metadata."
+      }
+    },
+    {
+      "id": "parts",
+      "kind": "row-strip",
+      "status": "generated",
+      "prompt_file": "prompts/rows/parts.md",
+      "retry_prompt_file": "prompts/row-retries/parts.md",
+      "input_images": [
+        {
+          "path": "references/layout-guides/parts.png",
+          "role": "layout guide for 1 frame slots; do not copy guide lines"
+        },
+        {
+          "path": "references/canonical-base.png",
+          "role": "canonical identity reference"
+        }
+      ],
+      "output_path": "decoded/parts.png",
+      "depends_on": [
+        "base"
+      ],
+      "generation_skill": "$imagegen",
+      "requires_grounded_generation": true,
+      "allow_prompt_only_generation": false,
+      "identity_reference_paths": [
+        "references/canonical-base.png"
+      ],
+      "parallelizable_after": [
+        "base"
+      ],
+      "derivation_policy": {
+        "may_derive": false,
+        "allowed": [],
+        "requires_explicit_approval": false
+      },
+      "attempts": 1,
+      "history": [
+        {
+          "event": "claim",
+          "time": 1792436203.2171752,
+          "token": "810fba15923143e392d79de36215d601",
+          "input_hashes": {
+            "pet_request.json": "45867ba3eb5e1fd9ea6bddaf1a6e9d36aabf7e1eada147e94cac01c0fc6d0b74",
+            "prompts/rows/parts.md": "4878bcd95ab8e60441730f966be5c2311f2aaf4250c48159f8577f44e0177294",
+            "prompts/row-retries/parts.md": "eebe834efff80501ed9524dfded73ef2e6b66d6d21c2ab156ff40b68b581c111",
+            "references/layout-guides/parts.png": "12b10c983aff1f94e0b3d27191dac8688e38f1f2d54e0238e734fe5b1372c7e1",
+            "references/canonical-base.png": "29b857963c2d5b3ffceaa0231f49da394aabe897a9a60734cb30d7da0f83c41f",
+            "@generation-profile": "3fa027552a822ea67a0c3b57cd03062daafc2ab5d2289991ad23a06dc0426392"
+          },
+          "prompt_snapshot": {
+            "path": "prompts/rows/parts.md",
+            "sha256": "4878bcd95ab8e60441730f966be5c2311f2aaf4250c48159f8577f44e0177294",
+            "utf8": "Create one horizontal animation strip for `milo`, state `parts`, using the installed imagegen skill.\n\nAttach every identity and layout input listed in this job, including the canonical base and all original references. Use the layout guide for slot geometry only; never draw its lines or labels.\nOutput exactly 1 complete poses in left-to-right playback order, one pose in each equal-width slot, with clear gutters and no overlap or clipping.\nIdentity: a small warm amber bear with rounded ears, cream muzzle and belly, dark brown eyes, short soft limbs and a coral neckerchief whose knot stays on the viewer-right in the front view. Base image: a design turnaround with four full-body views arranged left to right: front, three-quarter, side, back. Consistent relative scale. No text.. Preserve the same face, proportions, markings, palette, material, style, and approved props in every frame except explicitly approved state differences.\nStyle: Pet-safe sprite: compact full-body mascot, readable at the selected profile cell size, clear silhouette, simple face, stable palette/materials, and crisp edges for alpha or selected chroma-key extraction. Style `painterly`: Painterly mascot with simplified brush texture, readable forms, stable palette, and enough edge clarity for clean extraction. User style notes: Polished storybook cut-paper animation artwork, softly painted fur texture, clean readable silhouettes, rounded anatomy, warm light from upper left. True transparent RGBA background. No floor, shadow outside the character, scenery, text, labels, grid lines, watermark or unrelated props..\nAction: One layered construction sheet for manual hash-bound part extraction\nMotion policy: static. Preserve intentional vertical motion, including jump height. Maintain one consistent source viewport and apparent character scale across the row; a wider or taller pose must not be drawn at a different scale.\nExtraction alignment: {\"coordinate_policy\": \"slot\", \"scale_policy\": \"row\", \"padding\": 5, \"anchor\": [0.5, 0.5]}. This describes extraction; do not draw anchors or guides.\nDetached character details are permitted by this profile when semantically intended.\nReturn a true transparent alpha background. Preserve intentional holes, permitted detached details, and antialiased character edges. Do not draw a checkerboard or a solid background.\n\nProfile requirements:\n- Create the requested original character design and construction artwork. Polished storybook cut-paper animation artwork, softly painted fur texture, clean readable silhouettes, rounded anatomy, warm light from upper left. True transparent RGBA background. No floor, shadow outside the character, scenery, text, labels, grid lines, watermark or unrelated props.\n- Create ONE animation construction sheet in an exact 4-column by 4-row grid of equally sized invisible cells. Every separate item is centered with generous transparent margins within its own cell; nothing crosses a cell boundary. Front view only, consistent scale and palette. These are reusable drawings, not sixteen complete characters. Row 1 left to right: torso with costume, no head or arms or legs; whole head including ears and muzzle and nose but NO eyes, eyebrows or mouth; viewer-left upper arm ending at wrist, no hand; viewer-right upper arm ending at wrist, no hand. Row 2: viewer-left open paw; viewer-right open paw; viewer-left entire short leg with foot; viewer-right entire short leg with foot. Row 3: a pair of open eyes only; a pair of closed blinking eyes only; a pair of raised friendly eyebrows only; a pair of neutral eyebrows only. Row 4: closed neutral smiling mouth only; open A speaking mouth only; E speaking mouth only; round O speaking mouth only. Do not include any eye socket, background patch or duplicate muzzle around facial drawings. Torso and limbs have full rounded overlapping joint ends for a cutout rig. Keep the torso roughly 220px high and head roughly 210px wide within a cell, except the rabbit head with ears can be tall. All four mouth shapes share the same center and scale, all eye pairs share the same spacing. Preserve identity, costume details and upper-left lighting from the attached canonical four-view reference. The second attachment is the required overall layout safety guide: keep all artwork inside the square; use the explicit 4x4 arrangement described here, and do not copy visible guide marks.\n\nExplicit user requirements and avoidances (preserve across retries):\n{\"require\": [\"original non-fixture production artwork\", \"retain asymmetry and costume\", \"true transparency\"], \"avoid\": [\"text\", \"background\", \"unrelated props\"]}\nInferred brand guidance (subordinate to explicit user instructions; preserve sources and uncertainty):\n{\"guidance\": {\"text\": \"\", \"sources\": [], \"inferred\": true, \"uncertainty\": \"No researched brand guidance supplied.\"}, \"effective_avoid\": [], \"reported_conflicts\": []}\nComplete structured constraints for provenance:\n{\"require\": [\"original non-fixture production artwork\", \"retain asymmetry and costume\", \"true transparency\"], \"avoid\": [\"text\", \"background\", \"unrelated props\"], \"brand_avoid\": [], \"brand_guidance\": {\"text\": \"\", \"sources\": [], \"inferred\": true, \"uncertainty\": \"No researched brand guidance supplied.\"}, \"conflicts\": [], \"effective_brand_avoid\": [], \"identity\": {\"schema_version\": 1, \"markings\": [\"cream muzzle and belly\", \"small dark brown nose\"], \"palette\": {\"fur\": \"#C88B47\", \"cream\": \"#F3DCB4\", \"scarf\": \"#D96654\", \"eyes\": \"#392B26\"}, \"materials\": [\"softly painted fur\", \"matte woven costume\"], \"proportions\": {\"head_to_body_height\": 0.6}, \"approved_props\": [\"coral neckerchief\"], \"asymmetries\": [\"coral scarf knot on viewer-right in the front view\"], \"directions\": {\"parts\": \"front\"}, \"forbid_mirror\": true, \"unresolved_conflicts\": []}}\n"
+          },
+          "input_images": [
+            {
+              "path": "references/layout-guides/parts.png",
+              "role": "layout guide for 1 frame slots; do not copy guide lines"
+            },
+            {
+              "path": "references/canonical-base.png",
+              "role": "canonical identity reference"
+            }
+          ],
+          "identity": {
+            "schema_version": 1,
+            "markings": [
+              "cream muzzle and belly",
+              "small dark brown nose"
+            ],
+            "palette": {
+              "fur": "#C88B47",
+              "cream": "#F3DCB4",
+              "scarf": "#D96654",
+              "eyes": "#392B26"
+            },
+            "materials": [
+              "softly painted fur",
+              "matte woven costume"
+            ],
+            "proportions": {
+              "head_to_body_height": 0.6
+            },
+            "approved_props": [
+              "coral neckerchief"
+            ],
+            "asymmetries": [
+              "coral scarf knot on viewer-right in the front view"
+            ],
+            "directions": {
+              "parts": "front"
+            },
+            "forbid_mirror": true,
+            "unresolved_conflicts": []
+          }
+        },
+        {
+          "event": "generated",
+          "time": 1792436300.9835968,
+          "source_hash": "84e0abc18797bbeb5224dacc281873cfd7b39ed64d7ef0ac2161947772c63588",
+          "source_path": "/workspace/scratch/368aa013e993/hatch-pet/examples/production-pilot/art/originals/milo-parts-v3.png",
+          "output_hash": "73e2ba30660d48a00bac035874c9d0b31ae7fe3f770f3bf699c7c8851216dd56",
+          "model_call": {
+            "id": null,
+            "model": null,
+            "parameters": null,
+            "unavailable_reason": "The handoff did not expose provider call metadata."
+          },
+          "generation_receipt": {
+            "generation_skill": "$imagegen",
+            "input_hashes": {
+              "pet_request.json": "45867ba3eb5e1fd9ea6bddaf1a6e9d36aabf7e1eada147e94cac01c0fc6d0b74",
+              "prompts/rows/parts.md": "4878bcd95ab8e60441730f966be5c2311f2aaf4250c48159f8577f44e0177294",
+              "prompts/row-retries/parts.md": "eebe834efff80501ed9524dfded73ef2e6b66d6d21c2ab156ff40b68b581c111",
+              "references/layout-guides/parts.png": "12b10c983aff1f94e0b3d27191dac8688e38f1f2d54e0238e734fe5b1372c7e1",
+              "references/canonical-base.png": "29b857963c2d5b3ffceaa0231f49da394aabe897a9a60734cb30d7da0f83c41f",
+              "@generation-profile": "3fa027552a822ea67a0c3b57cd03062daafc2ab5d2289991ad23a06dc0426392"
+            },
+            "job": "parts",
+            "token": "810fba15923143e392d79de36215d601"
+          }
+        }
+      ],
+      "prompt_settings_hash": "7e5723f66ecbcf117cfe3e22928d90ec70b219b44a584c7af89ff20e8f9b9063",
+      "input_hashes": {
+        "pet_request.json": "45867ba3eb5e1fd9ea6bddaf1a6e9d36aabf7e1eada147e94cac01c0fc6d0b74",
+        "prompts/rows/parts.md": "4878bcd95ab8e60441730f966be5c2311f2aaf4250c48159f8577f44e0177294",
+        "prompts/row-retries/parts.md": "eebe834efff80501ed9524dfded73ef2e6b66d6d21c2ab156ff40b68b581c111",
+        "references/layout-guides/parts.png": "12b10c983aff1f94e0b3d27191dac8688e38f1f2d54e0238e734fe5b1372c7e1",
+        "references/canonical-base.png": "29b857963c2d5b3ffceaa0231f49da394aabe897a9a60734cb30d7da0f83c41f",
+        "@generation-profile": "3fa027552a822ea67a0c3b57cd03062daafc2ab5d2289991ad23a06dc0426392"
+      },
+      "started_at": 1792436203.2170591,
+      "output_hash": "73e2ba30660d48a00bac035874c9d0b31ae7fe3f770f3bf699c7c8851216dd56",
+      "source_hash": "84e0abc18797bbeb5224dacc281873cfd7b39ed64d7ef0ac2161947772c63588",
+      "source_path": "/workspace/scratch/368aa013e993/hatch-pet/examples/production-pilot/art/originals/milo-parts-v3.png",
+      "qa_note": "Actual generated construction sheet inspected. The mouth row includes complete muzzle/nose patches despite the requested mouth-only drawings; extraction will register replacement muzzle drawings to the common nose anchor. Torso side silhouettes require construction masks and joint review. Successful acquisition is not construction or motion approval.",
+      "generated_at": 1792436300.9835868,
+      "generation_receipt": {
+        "generation_skill": "$imagegen",
+        "input_hashes": {
+          "pet_request.json": "45867ba3eb5e1fd9ea6bddaf1a6e9d36aabf7e1eada147e94cac01c0fc6d0b74",
+          "prompts/rows/parts.md": "4878bcd95ab8e60441730f966be5c2311f2aaf4250c48159f8577f44e0177294",
+          "prompts/row-retries/parts.md": "eebe834efff80501ed9524dfded73ef2e6b66d6d21c2ab156ff40b68b581c111",
+          "references/layout-guides/parts.png": "12b10c983aff1f94e0b3d27191dac8688e38f1f2d54e0238e734fe5b1372c7e1",
+          "references/canonical-base.png": "29b857963c2d5b3ffceaa0231f49da394aabe897a9a60734cb30d7da0f83c41f",
+          "@generation-profile": "3fa027552a822ea67a0c3b57cd03062daafc2ab5d2289991ad23a06dc0426392"
+        },
+        "job": "parts",
+        "token": "810fba15923143e392d79de36215d601"
+      },
+      "source_origin": "imagegen",
+      "model_call": {
+        "id": null,
+        "model": null,
+        "parameters": null,
+        "unavailable_reason": "The handoff did not expose provider call metadata."
+      }
+    }
+  ],
+  "run_id": "6269bc5647984cc6bac6581755afec55",
+  "gates": {},
+  "history": [],
+  "fixture_mode": false,
+  "previous_run_id": null,
+  "versions": {
+    "hatch": "2.0.0",
+    "run_schema": 3,
+    "profile_schemas": [
+      1,
+      2
+    ],
+    "source_schema": 1,
+    "python": "3.12.14",
+    "pillow": "13.0.0",
+    "platform": "Linux-6.18.55-x86_64-with-glibc2.39",
+    "code_sha256": "669858632b5df2884e558c41bca8c3dce25134672386dbc0cb032921fa45da7e",
+    "consumer_assets": {
+      "playback.html": "531e6407405be8d7e7db23d72a095269dac08908751d3b2d402ace1e415eacde",
+      "playback.js": "078d218c82fbc41653bd346f932b7c30f873b9e44a2b2078cef909773c347b21",
+      "production-preview.html": "3d5fce3fa06ad46fcbf0dba48008a001e02a355c751295fd16402ce5f81f3efa",
+      "production-preview.js": "23bba7db4ad716bbcb16c7311f5cf8889c19bcc49738ddf9d4771bdf9dc9a3b0",
+      "review.html": "f4cf831b82819f4e4d3b3641d1082c5274908b3665d90384205a11cb12359db8"
+    },
+    "model_call": {
+      "id": null,
+      "model": null,
+      "parameters": null,
+      "unavailable_reason": "No model call is performed by the deterministic controller."
+    }
+  },
+  "limits": {
+    "attempts_per_job": 1,
+    "concurrency": 1,
+    "generation_calls": 2,
+    "estimated_units_per_call": null,
+    "unit_budget": null
+  },
+  "base_review": {
+    "canonical_hash": "29b857963c2d5b3ffceaa0231f49da394aabe897a9a60734cb30d7da0f83c41f",
+    "settings_hash": "7e5723f66ecbcf117cfe3e22928d90ec70b219b44a584c7af89ff20e8f9b9063",
+    "time": 1792431640.2244234,
+    "note": "Assistant inspected actual four-view design and alpha diagnostics; identity reference accepted for constructing parts. Future anatomy, joint placement and motion require separate inspection.",
+    "accepted_color_warning": false
+  }
+}

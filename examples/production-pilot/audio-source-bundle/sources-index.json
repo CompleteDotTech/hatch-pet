@@ -1,0 +1,371 @@
+{
+  "files": [
+    {
+      "bytes": 16340,
+      "parts": [
+        "parts/77d13a5e6cbe7277b4721033f9ad15707241c2832baa8c74ec823c9ee5ebf71c.bin"
+      ],
+      "path": "audio/original/flite-package-copyright.txt",
+      "sha256": "77d13a5e6cbe7277b4721033f9ad15707241c2832baa8c74ec823c9ee5ebf71c"
+    },
+    {
+      "bytes": 677,
+      "parts": [
+        "parts/a30a8083a4fe0d541cac1b55171f0b6c5fe68b5ada7cb0786ce63319b580f737.bin"
+      ],
+      "path": "audio/original/line-01.json",
+      "sha256": "a30a8083a4fe0d541cac1b55171f0b6c5fe68b5ada7cb0786ce63319b580f737"
+    },
+    {
+      "bytes": 47,
+      "parts": [
+        "parts/7afd1a41ca68e22f62f38033cf00bd3ac91316e9324f49de653e116766679238.bin"
+      ],
+      "path": "audio/original/line-01.txt",
+      "sha256": "7afd1a41ca68e22f62f38033cf00bd3ac91316e9324f49de653e116766679238"
+    },
+    {
+      "bytes": 368718,
+      "parts": [
+        "parts/e557b6222b9ef3670b25fc487125c94e3e73e3addb3be05f153120a4bccf733c.bin",
+        "parts/50f25f1cc0fb5ac58331c10a2f1bedcbd1be9e14450507897ce8ee863599bf38.bin",
+        "parts/16260721c679ee2670f37c2a389082b4507683ae3462b8bec570db5ba21d1bba.bin",
+        "parts/654db8c057ca1619046c8bef5129d8e134e2144a7d9e11971f65cb567306a5af.bin",
+        "parts/b6b00b2fbf64517d99151ff6a299fa218e928be059c6d13cc5a49b31adce9cb4.bin",
+        "parts/fb85eef16eeb76d9ae54c50e7ca8f13526218f4c4b470b58ff244293ae29f5bf.bin"
+      ],
+      "path": "audio/original/line-01.wav",
+      "sha256": "a4708107a7733e700c5b3fc678bcf85356cde23c92259b16b6c5802de296976d"
+    },
+    {
+      "bytes": 677,
+      "parts": [
+        "parts/d062dfca74ec74dd3993f416cf88cf38aca3f3710b202d87c0f6f96a8e06700e.bin"
+      ],
+      "path": "audio/original/line-02.json",
+      "sha256": "d062dfca74ec74dd3993f416cf88cf38aca3f3710b202d87c0f6f96a8e06700e"
+    },
+    {
+      "bytes": 59,
+      "parts": [
+        "parts/34243cd0cbf6c8396613078a21746c69bb9dab2a36a6aca34ad074013d6732d6.bin"
+      ],
+      "path": "audio/original/line-02.txt",
+      "sha256": "34243cd0cbf6c8396613078a21746c69bb9dab2a36a6aca34ad074013d6732d6"
+    },
+    {
+      "bytes": 363918,
+      "parts": [
+        "parts/825bd6b4f30e817c290ef445ece570f281919e5e39647d36607639f3fea73fd7.bin",
+        "parts/9df15b8dd5dfb3a5ae4cc59c78b04866d9c4f49ec6e26c50542241089bc0e5ba.bin",
+        "parts/17ba6c50c1e6370af1013a0ddaad76edc9b025b94b2e5e162cc29905fb2d7cfa.bin",
+        "parts/ae9ed270f421a06a3c8c7e631ae672f451110125dcd54fad992a507b9e8a7810.bin",
+        "parts/68706698289b6d261cad0b75438d71a9d207da26768e507fdeae2c8ab8a0000d.bin",
+        "parts/b6a5cce5c1a572e2e544f3926154836768c4c7f0a16520656161aa675253a9fb.bin"
+      ],
+      "path": "audio/original/line-02.wav",
+      "sha256": "13b81a46167a5af8230347a63ed01abfb32f2fa675c3c13c9c6059ff94cf5468"
+    },
+    {
+      "bytes": 677,
+      "parts": [
+        "parts/e7cb4c8996469d489623298fceab93d7b66009d7302b9cce996f81683b8ffe2c.bin"
+      ],
+      "path": "audio/original/line-03.json",
+      "sha256": "e7cb4c8996469d489623298fceab93d7b66009d7302b9cce996f81683b8ffe2c"
+    },
+    {
+      "bytes": 36,
+      "parts": [
+        "parts/8fc297b4dc3a27c6cee20e3639f0e69ff0bc7038540015348dc0bc8011d00005.bin"
+      ],
+      "path": "audio/original/line-03.txt",
+      "sha256": "8fc297b4dc3a27c6cee20e3639f0e69ff0bc7038540015348dc0bc8011d00005"
+    },
+    {
+      "bytes": 241518,
+      "parts": [
+        "parts/162f1150757cd4765e82941eba9f90a42aeac3781c8076800c54a36ee2049bf2.bin",
+        "parts/310069e8ebdc41b89d5bca5b48c6339b5efdaca252180ccaf260696fdc40964a.bin",
+        "parts/ef5ac002bd81cf964dc482325731285a2f60606bd3ab15d0c831f6f5e60fa7a8.bin",
+        "parts/948cd355d537ddbcd9eecf496d7579a475b0b9406ea2a793693de4fa5058dbc4.bin"
+      ],
+      "path": "audio/original/line-03.wav",
+      "sha256": "286a4889d6fbd114b999cd9fd8af8f861bf8b822028279172d5a9991b4fe6cb4"
+    },
+    {
+      "bytes": 677,
+      "parts": [
+        "parts/d403c87f698e31c6ed8478fa95e1882a2f8748934bba6f6d9464c6399d4f90e3.bin"
+      ],
+      "path": "audio/original/line-04.json",
+      "sha256": "d403c87f698e31c6ed8478fa95e1882a2f8748934bba6f6d9464c6399d4f90e3"
+    },
+    {
+      "bytes": 61,
+      "parts": [
+        "parts/c8960d50ee533fdf8e77b07549c593ea8de9a5d51346690f385130506abb3403.bin"
+      ],
+      "path": "audio/original/line-04.txt",
+      "sha256": "c8960d50ee533fdf8e77b07549c593ea8de9a5d51346690f385130506abb3403"
+    },
+    {
+      "bytes": 396558,
+      "parts": [
+        "parts/effaf98725fa8b19899349c8de9ca490198ca9b9faa9319851644401c95b0212.bin",
+        "parts/5f883cd0006bd0b0bce27e0876c7f92f3f7d931f90d6f6d84181c5cb02b099fd.bin",
+        "parts/f418ca8a77c060e0d2455acbfbcade979f8fdb5e71c60970787428c5d47d737f.bin",
+        "parts/dce8aeaa9fc7b2dbb014c2c16f30e333f17b651287d35f38149109087ad77c24.bin",
+        "parts/244194be73ef26a3af2fb8e8b1058e9982877a3a766054a4fb99ffe1d92c71e4.bin",
+        "parts/4c0c66baccc47f995fcd963e1f99e2e9585df85e0ce3a42e18657f8c9785fa77.bin",
+        "parts/70b169b5983702eee87972bd6e0ad80a5bd598bb845c6b026c5689db7326869f.bin"
+      ],
+      "path": "audio/original/line-04.wav",
+      "sha256": "888526242317fa61d0adebe5d44df97144c72c39643b19686fad020addd195eb"
+    },
+    {
+      "bytes": 677,
+      "parts": [
+        "parts/5426619b3b60319c573e37223d3f51ee0199462ed28e84ce5a407e9dde3a109f.bin"
+      ],
+      "path": "audio/original/line-05.json",
+      "sha256": "5426619b3b60319c573e37223d3f51ee0199462ed28e84ce5a407e9dde3a109f"
+    },
+    {
+      "bytes": 53,
+      "parts": [
+        "parts/06e0c98c9c60b4830d11653c4762cb66e0b9fdf8408e16db72a9ddfa1d927945.bin"
+      ],
+      "path": "audio/original/line-05.txt",
+      "sha256": "06e0c98c9c60b4830d11653c4762cb66e0b9fdf8408e16db72a9ddfa1d927945"
+    },
+    {
+      "bytes": 324558,
+      "parts": [
+        "parts/4518ae42660a61bbba177ed564516d851a91f28219fc2bf0bc5320836aad45b5.bin",
+        "parts/6c111c2614eefbd173d583290f59dfafb6cfc0a564f0ec0cec109e8e0b44d4ec.bin",
+        "parts/ef61311775e7c9d0f9528bcde5b292378d668cc2570a3646ef2871f032846474.bin",
+        "parts/a7e1e994206c36c4ebb9885bb13b3bcec680cb6c23d29efe134e6aeae1db91c8.bin",
+        "parts/4ff05c01087abc71b0568c7ba5a2ad3ac1a3965545a51dfe62470cbceabb979b.bin"
+      ],
+      "path": "audio/original/line-05.wav",
+      "sha256": "dabca8103d29ce60d1ee9986b199ce328bc35aa1c954972da1890dd99002c8fe"
+    }
+  ],
+  "fixture": false,
+  "kind": "hatch-production-sources",
+  "origin": "Exact retained original local FFmpeg Flite speech, author-written dialogue, actual TTS receipts and installed engine attribution. No model calls.",
+  "parts": [
+    {
+      "bytes": 53,
+      "path": "parts/06e0c98c9c60b4830d11653c4762cb66e0b9fdf8408e16db72a9ddfa1d927945.bin",
+      "sha256": "06e0c98c9c60b4830d11653c4762cb66e0b9fdf8408e16db72a9ddfa1d927945"
+    },
+    {
+      "bytes": 65535,
+      "path": "parts/16260721c679ee2670f37c2a389082b4507683ae3462b8bec570db5ba21d1bba.bin",
+      "sha256": "16260721c679ee2670f37c2a389082b4507683ae3462b8bec570db5ba21d1bba"
+    },
+    {
+      "bytes": 65535,
+      "path": "parts/162f1150757cd4765e82941eba9f90a42aeac3781c8076800c54a36ee2049bf2.bin",
+      "sha256": "162f1150757cd4765e82941eba9f90a42aeac3781c8076800c54a36ee2049bf2"
+    },
+    {
+      "bytes": 65535,
+      "path": "parts/17ba6c50c1e6370af1013a0ddaad76edc9b025b94b2e5e162cc29905fb2d7cfa.bin",
+      "sha256": "17ba6c50c1e6370af1013a0ddaad76edc9b025b94b2e5e162cc29905fb2d7cfa"
+    },
+    {
+      "bytes": 65535,
+      "path": "parts/244194be73ef26a3af2fb8e8b1058e9982877a3a766054a4fb99ffe1d92c71e4.bin",
+      "sha256": "244194be73ef26a3af2fb8e8b1058e9982877a3a766054a4fb99ffe1d92c71e4"
+    },
+    {
+      "bytes": 65535,
+      "path": "parts/310069e8ebdc41b89d5bca5b48c6339b5efdaca252180ccaf260696fdc40964a.bin",
+      "sha256": "310069e8ebdc41b89d5bca5b48c6339b5efdaca252180ccaf260696fdc40964a"
+    },
+    {
+      "bytes": 59,
+      "path": "parts/34243cd0cbf6c8396613078a21746c69bb9dab2a36a6aca34ad074013d6732d6.bin",
+      "sha256": "34243cd0cbf6c8396613078a21746c69bb9dab2a36a6aca34ad074013d6732d6"
+    },
+    {
+      "bytes": 65535,
+      "path": "parts/4518ae42660a61bbba177ed564516d851a91f28219fc2bf0bc5320836aad45b5.bin",
+      "sha256": "4518ae42660a61bbba177ed564516d851a91f28219fc2bf0bc5320836aad45b5"
+    },
+    {
+      "bytes": 65535,
+      "path": "parts/4c0c66baccc47f995fcd963e1f99e2e9585df85e0ce3a42e18657f8c9785fa77.bin",
+      "sha256": "4c0c66baccc47f995fcd963e1f99e2e9585df85e0ce3a42e18657f8c9785fa77"
+    },
+    {
+      "bytes": 62418,
+      "path": "parts/4ff05c01087abc71b0568c7ba5a2ad3ac1a3965545a51dfe62470cbceabb979b.bin",
+      "sha256": "4ff05c01087abc71b0568c7ba5a2ad3ac1a3965545a51dfe62470cbceabb979b"
+    },
+    {
+      "bytes": 65535,
+      "path": "parts/50f25f1cc0fb5ac58331c10a2f1bedcbd1be9e14450507897ce8ee863599bf38.bin",
+      "sha256": "50f25f1cc0fb5ac58331c10a2f1bedcbd1be9e14450507897ce8ee863599bf38"
+    },
+    {
+      "bytes": 677,
+      "path": "parts/5426619b3b60319c573e37223d3f51ee0199462ed28e84ce5a407e9dde3a109f.bin",
+      "sha256": "5426619b3b60319c573e37223d3f51ee0199462ed28e84ce5a407e9dde3a109f"
+    },
+    {
+      "bytes": 65535,
+      "path": "parts/5f883cd0006bd0b0bce27e0876c7f92f3f7d931f90d6f6d84181c5cb02b099fd.bin",
+      "sha256": "5f883cd0006bd0b0bce27e0876c7f92f3f7d931f90d6f6d84181c5cb02b099fd"
+    },
+    {
+      "bytes": 65535,
+      "path": "parts/654db8c057ca1619046c8bef5129d8e134e2144a7d9e11971f65cb567306a5af.bin",
+      "sha256": "654db8c057ca1619046c8bef5129d8e134e2144a7d9e11971f65cb567306a5af"
+    },
+    {
+      "bytes": 65535,
+      "path": "parts/68706698289b6d261cad0b75438d71a9d207da26768e507fdeae2c8ab8a0000d.bin",
+      "sha256": "68706698289b6d261cad0b75438d71a9d207da26768e507fdeae2c8ab8a0000d"
+    },
+    {
+      "bytes": 65535,
+      "path": "parts/6c111c2614eefbd173d583290f59dfafb6cfc0a564f0ec0cec109e8e0b44d4ec.bin",
+      "sha256": "6c111c2614eefbd173d583290f59dfafb6cfc0a564f0ec0cec109e8e0b44d4ec"
+    },
+    {
+      "bytes": 3348,
+      "path": "parts/70b169b5983702eee87972bd6e0ad80a5bd598bb845c6b026c5689db7326869f.bin",
+      "sha256": "70b169b5983702eee87972bd6e0ad80a5bd598bb845c6b026c5689db7326869f"
+    },
+    {
+      "bytes": 16340,
+      "path": "parts/77d13a5e6cbe7277b4721033f9ad15707241c2832baa8c74ec823c9ee5ebf71c.bin",
+      "sha256": "77d13a5e6cbe7277b4721033f9ad15707241c2832baa8c74ec823c9ee5ebf71c"
+    },
+    {
+      "bytes": 47,
+      "path": "parts/7afd1a41ca68e22f62f38033cf00bd3ac91316e9324f49de653e116766679238.bin",
+      "sha256": "7afd1a41ca68e22f62f38033cf00bd3ac91316e9324f49de653e116766679238"
+    },
+    {
+      "bytes": 65535,
+      "path": "parts/825bd6b4f30e817c290ef445ece570f281919e5e39647d36607639f3fea73fd7.bin",
+      "sha256": "825bd6b4f30e817c290ef445ece570f281919e5e39647d36607639f3fea73fd7"
+    },
+    {
+      "bytes": 36,
+      "path": "parts/8fc297b4dc3a27c6cee20e3639f0e69ff0bc7038540015348dc0bc8011d00005.bin",
+      "sha256": "8fc297b4dc3a27c6cee20e3639f0e69ff0bc7038540015348dc0bc8011d00005"
+    },
+    {
+      "bytes": 44913,
+      "path": "parts/948cd355d537ddbcd9eecf496d7579a475b0b9406ea2a793693de4fa5058dbc4.bin",
+      "sha256": "948cd355d537ddbcd9eecf496d7579a475b0b9406ea2a793693de4fa5058dbc4"
+    },
+    {
+      "bytes": 65535,
+      "path": "parts/9df15b8dd5dfb3a5ae4cc59c78b04866d9c4f49ec6e26c50542241089bc0e5ba.bin",
+      "sha256": "9df15b8dd5dfb3a5ae4cc59c78b04866d9c4f49ec6e26c50542241089bc0e5ba"
+    },
+    {
+      "bytes": 677,
+      "path": "parts/a30a8083a4fe0d541cac1b55171f0b6c5fe68b5ada7cb0786ce63319b580f737.bin",
+      "sha256": "a30a8083a4fe0d541cac1b55171f0b6c5fe68b5ada7cb0786ce63319b580f737"
+    },
+    {
+      "bytes": 65535,
+      "path": "parts/a7e1e994206c36c4ebb9885bb13b3bcec680cb6c23d29efe134e6aeae1db91c8.bin",
+      "sha256": "a7e1e994206c36c4ebb9885bb13b3bcec680cb6c23d29efe134e6aeae1db91c8"
+    },
+    {
+      "bytes": 65535,
+      "path": "parts/ae9ed270f421a06a3c8c7e631ae672f451110125dcd54fad992a507b9e8a7810.bin",
+      "sha256": "ae9ed270f421a06a3c8c7e631ae672f451110125dcd54fad992a507b9e8a7810"
+    },
+    {
+      "bytes": 36243,
+      "path": "parts/b6a5cce5c1a572e2e544f3926154836768c4c7f0a16520656161aa675253a9fb.bin",
+      "sha256": "b6a5cce5c1a572e2e544f3926154836768c4c7f0a16520656161aa675253a9fb"
+    },
+    {
+      "bytes": 65535,
+      "path": "parts/b6b00b2fbf64517d99151ff6a299fa218e928be059c6d13cc5a49b31adce9cb4.bin",
+      "sha256": "b6b00b2fbf64517d99151ff6a299fa218e928be059c6d13cc5a49b31adce9cb4"
+    },
+    {
+      "bytes": 61,
+      "path": "parts/c8960d50ee533fdf8e77b07549c593ea8de9a5d51346690f385130506abb3403.bin",
+      "sha256": "c8960d50ee533fdf8e77b07549c593ea8de9a5d51346690f385130506abb3403"
+    },
+    {
+      "bytes": 677,
+      "path": "parts/d062dfca74ec74dd3993f416cf88cf38aca3f3710b202d87c0f6f96a8e06700e.bin",
+      "sha256": "d062dfca74ec74dd3993f416cf88cf38aca3f3710b202d87c0f6f96a8e06700e"
+    },
+    {
+      "bytes": 677,
+      "path": "parts/d403c87f698e31c6ed8478fa95e1882a2f8748934bba6f6d9464c6399d4f90e3.bin",
+      "sha256": "d403c87f698e31c6ed8478fa95e1882a2f8748934bba6f6d9464c6399d4f90e3"
+    },
+    {
+      "bytes": 65535,
+      "path": "parts/dce8aeaa9fc7b2dbb014c2c16f30e333f17b651287d35f38149109087ad77c24.bin",
+      "sha256": "dce8aeaa9fc7b2dbb014c2c16f30e333f17b651287d35f38149109087ad77c24"
+    },
+    {
+      "bytes": 65535,
+      "path": "parts/e557b6222b9ef3670b25fc487125c94e3e73e3addb3be05f153120a4bccf733c.bin",
+      "sha256": "e557b6222b9ef3670b25fc487125c94e3e73e3addb3be05f153120a4bccf733c"
+    },
+    {
+      "bytes": 677,
+      "path": "parts/e7cb4c8996469d489623298fceab93d7b66009d7302b9cce996f81683b8ffe2c.bin",
+      "sha256": "e7cb4c8996469d489623298fceab93d7b66009d7302b9cce996f81683b8ffe2c"
+    },
+    {
+      "bytes": 65535,
+      "path": "parts/ef5ac002bd81cf964dc482325731285a2f60606bd3ab15d0c831f6f5e60fa7a8.bin",
+      "sha256": "ef5ac002bd81cf964dc482325731285a2f60606bd3ab15d0c831f6f5e60fa7a8"
+    },
+    {
+      "bytes": 65535,
+      "path": "parts/ef61311775e7c9d0f9528bcde5b292378d668cc2570a3646ef2871f032846474.bin",
+      "sha256": "ef61311775e7c9d0f9528bcde5b292378d668cc2570a3646ef2871f032846474"
+    },
+    {
+      "bytes": 65535,
+      "path": "parts/effaf98725fa8b19899349c8de9ca490198ca9b9faa9319851644401c95b0212.bin",
+      "sha256": "effaf98725fa8b19899349c8de9ca490198ca9b9faa9319851644401c95b0212"
+    },
+    {
+      "bytes": 65535,
+      "path": "parts/f418ca8a77c060e0d2455acbfbcade979f8fdb5e71c60970787428c5d47d737f.bin",
+      "sha256": "f418ca8a77c060e0d2455acbfbcade979f8fdb5e71c60970787428c5d47d737f"
+    },
+    {
+      "bytes": 41043,
+      "path": "parts/fb85eef16eeb76d9ae54c50e7ca8f13526218f4c4b470b58ff244293ae29f5bf.bin",
+      "sha256": "fb85eef16eeb76d9ae54c50e7ca8f13526218f4c4b470b58ff244293ae29f5bf"
+    }
+  ],
+  "provenance_paths": [
+    "audio/original/flite-package-copyright.txt",
+    "audio/original/line-01.json",
+    "audio/original/line-01.txt",
+    "audio/original/line-02.json",
+    "audio/original/line-02.txt",
+    "audio/original/line-03.json",
+    "audio/original/line-03.txt",
+    "audio/original/line-04.json",
+    "audio/original/line-04.txt",
+    "audio/original/line-05.json",
+    "audio/original/line-05.txt"
+  ],
+  "schema_version": 1,
+  "total_bytes": 1715251,
+  "unique_part_bytes": 1715251
+}

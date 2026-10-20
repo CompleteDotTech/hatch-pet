@@ -1,0 +1,194 @@
+{
+  "schema_version": 1,
+  "fixture": true,
+  "production_art_acceptance": false,
+  "locomotion": {
+    "frames": [
+      0,
+      30,
+      48,
+      59
+    ],
+    "positions": [
+      [
+        80,
+        170
+      ],
+      [
+        104,
+        170
+      ],
+      [
+        134,
+        170
+      ],
+      [
+        134,
+        170
+      ]
+    ],
+    "planted_contacts": [
+      {
+        "start_frame": 18,
+        "end_frame": 24,
+        "component": "left-leg",
+        "world_anchor": [
+          72.0,
+          186.0
+        ],
+        "max_drift_pixels": 0.0
+      },
+      {
+        "start_frame": 24,
+        "end_frame": 30,
+        "component": "right-leg",
+        "world_anchor": [
+          100.0,
+          186.0
+        ],
+        "max_drift_pixels": 0.0
+      },
+      {
+        "start_frame": 30,
+        "end_frame": 36,
+        "component": "left-leg",
+        "world_anchor": [
+          96.0,
+          186.0
+        ],
+        "max_drift_pixels": 0.0
+      },
+      {
+        "start_frame": 36,
+        "end_frame": 42,
+        "component": "right-leg",
+        "world_anchor": [
+          124.0,
+          186.0
+        ],
+        "max_drift_pixels": 0.0
+      }
+    ]
+  },
+  "sit_stand": {
+    "frames": [
+      0,
+      24,
+      48
+    ],
+    "body_offsets": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        12
+      ],
+      [
+        0,
+        0
+      ]
+    ]
+  },
+  "grasp_release": {
+    "frames": [
+      23,
+      24,
+      41,
+      42
+    ],
+    "owners": [
+      null,
+      "a",
+      "a",
+      null
+    ],
+    "contacts": [
+      [
+        {
+          "id": "pickup",
+          "position": [
+            160,
+            130
+          ],
+          "participants": [
+            {
+              "instance": "a",
+              "point": [
+                160.0,
+                130.0
+              ],
+              "distance": 0.0
+            }
+          ]
+        }
+      ],
+      [
+        {
+          "id": "putdown",
+          "position": [
+            160,
+            130
+          ],
+          "participants": [
+            {
+              "instance": "a",
+              "point": [
+                160.0,
+                130.0
+              ],
+              "distance": 0.0
+            }
+          ]
+        }
+      ]
+    ]
+  },
+  "expression": {
+    "frames": [
+      0,
+      21,
+      44
+    ],
+    "brow_drawings": [
+      "default",
+      "happy",
+      "default"
+    ],
+    "frame_21": {
+      "gaze_offset": [
+        1,
+        0
+      ],
+      "mouth": "open",
+      "head_rotation": -1.25
+    }
+  },
+  "full_frame_override": {
+    "frames": [
+      0,
+      15,
+      21,
+      30
+    ],
+    "character_layer_counts": [
+      9,
+      1,
+      1,
+      9
+    ]
+  },
+  "audio": {
+    "kind": "deterministic PCM square-wave fixture cues",
+    "spoken_dialogue": false,
+    "tracks": [
+      "audio/fixture-a.wav",
+      "audio/fixture-b.wav"
+    ]
+  },
+  "limitations": [
+    "Geometry and PCM checks are synthetic regression evidence.",
+    "No production artwork, spoken dialogue, auditory review or human review is claimed."
+  ]
+}

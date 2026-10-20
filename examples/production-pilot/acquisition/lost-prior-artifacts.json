@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "kind": "acquisition-loss-audit",
+  "fixture": false,
+  "recorded_by": "chatgpt-gpt-6-astra-pro-root",
+  "reason": "Automatic workspace maintenance removed the unpublished checkout, generated image originals, acquisition runs and renders before they reached GitHub.",
+  "evidence_basis": "Retained conversation and agent summaries; original bytes and complete historical receipts are unavailable. This is a disclosure, not a recreated claim history or a review receipt.",
+  "earlier_observed_calls": 8,
+  "earlier_artifact_status": "lost; not accepted as current evidence",
+  "current_acquisition_call_cap": 4,
+  "combined_observed_and_current_cap": 12,
+  "previous_characters": [
+    "milo@1.0.0",
+    "luma@1.0.0"
+  ],
+  "replacement_characters": [
+    "milo@3.0.0",
+    "luma@3.0.0"
+  ],
+  "prior_approvals_carried_forward": false,
+  "earlier_provider_ids": null,
+  "provider_id_status": "not exposed by the tool; local output names and hatch tokens are not provider identifiers",
+  "historical_outputs": [
+    {
+      "character": "milo",
+      "kind": "turnaround",
+      "local_output_name": "exec-b385dfa2-5b8a-46b2-9339-27c54fb499ae.png",
+      "observed_sha256": "c0a935fa776bc81fc110456c4766c0c6f37e653a1e85fc26f56197c175e765a4"
+    },
+    {
+      "character": "luma",
+      "kind": "turnaround",
+      "local_output_name": "exec-52dc4444-3910-4df1-8d84-2914e21ac2da.png"
+    },
+    {
+      "character": "milo",
+      "kind": "parts",
+      "local_output_name": "exec-fb132bea-a974-494c-a9df-89fc56b25a9d.png"
+    },
+    {
+      "character": "luma",
+      "kind": "parts",
+      "local_output_name": "exec-b1215db5-29c9-4221-9163-ba325a0bf386.png"
+    }
+  ],
+  "subsequent_loss": {
+    "observed_on": "2026-10-19T17:23:14Z",
+    "reason": "The task workspace was reset during an interrupted session before the four replacement images and their complete acquisition runs reached the remote. The source setup and first loss disclosure survived on the feature branch.",
+    "affected_characters": [
+      "milo@2.0.0",
+      "luma@2.0.0"
+    ],
+    "known_calls": [
+      {
+        "character": "milo",
+        "job": "base",
+        "output_name": "exec-cd945ad9-7c55-4dd4-aaf5-8dd4e683afbe.png"
+      },
+      {
+        "character": "luma",
+        "job": "base",
+        "output_name": "exec-4642ac84-c16b-40fb-9025-a36e573f8c8c.png"
+      },
+      {
+        "character": "milo",
+        "job": "parts",
+        "output_name": "exec-471fe080-be9e-4637-9ed2-47a820202f4e.png"
+      },
+      {
+        "character": "luma",
+        "job": "parts",
+        "output_name": "exec-e2678cd9-fee9-4e2a-8b9d-4ec8579e2026.png"
+      }
+    ],
+    "full_receipts_available": false,
+    "old_approvals_reused": false,
+    "historical_claim_ids_published": false
+  }
+}

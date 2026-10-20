@@ -1,0 +1,120 @@
+{
+  "character": "luma@3.0.0",
+  "completion": "loop",
+  "contacts": [],
+  "displacement": [
+    0,
+    0
+  ],
+  "duration_frames": 24,
+  "end_pose": "stand",
+  "entry_points": [
+    {
+      "frame": 0,
+      "pose": "stand"
+    }
+  ],
+  "events": [],
+  "exit_points": [
+    {
+      "frame": 23,
+      "pose": "stand"
+    }
+  ],
+  "facing": "front",
+  "full_frames": [],
+  "id": "luma-idle",
+  "interpolation": {
+    "max_frames": 12,
+    "max_offset_per_frame": 20,
+    "max_rotation_per_frame": 20
+  },
+  "interruptions": {
+    "cancel_pose": "stand",
+    "frames": [
+      0,
+      2,
+      8,
+      12,
+      23
+    ],
+    "max_transition_frames": 12,
+    "policy": "at-markers"
+  },
+  "kind": "clip",
+  "mode": "loop",
+  "requirements": {
+    "action": [
+      "idle"
+    ],
+    "hand": [
+      "open-paw"
+    ],
+    "pose": [
+      "stand"
+    ]
+  },
+  "root": {
+    "offset": {
+      "interpolation": "linear",
+      "keys": [
+        {
+          "frame": 0,
+          "value": [
+            0,
+            0
+          ]
+        }
+      ]
+    }
+  },
+  "schema_version": 1,
+  "start_pose": "stand",
+  "tracks": {
+    "body": {},
+    "face": {
+      "eyes": {
+        "drawing": {
+          "interpolation": "step",
+          "keys": [
+            {
+              "frame": 0,
+              "value": "open"
+            },
+            {
+              "frame": 17,
+              "value": "blink"
+            },
+            {
+              "frame": 19,
+              "value": "open"
+            }
+          ]
+        }
+      },
+      "head": {
+        "rotation": {
+          "interpolation": "linear",
+          "keys": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 12,
+              "value": 1.2
+            },
+            {
+              "frame": 24,
+              "value": 0
+            }
+          ]
+        }
+      }
+    },
+    "gaze": {},
+    "mouth": {}
+  },
+  "version": "3.0.0",
+  "viewpoint": "front"
+}

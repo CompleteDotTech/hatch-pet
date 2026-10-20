@@ -1,0 +1,43 @@
+=== Final skill validation result ===
+{
+  "PyYAML": {
+    "module_path": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/yaml/__init__.py",
+    "version": "6.0.3"
+  },
+  "command": [
+    "/workspace/scratch/368aa013e993/hatch-runtime/bin/python",
+    "/tmp/hatch-skill-creator/quick_validate.py",
+    "/workspace/scratch/368aa013e993/hatch-pet"
+  ],
+  "command_ended_at_utc": "2026-10-19T20:10:06.063815+00:00",
+  "command_started_at_utc": "2026-10-19T20:10:06.030415+00:00",
+  "dependency_resolution": "Initial direct invocation reported ModuleNotFoundError: No module named yaml. Final invocation uses the existing primary runtime PyYAML through explicit PYTHONPATH; no package installation or code change.",
+  "environment": {
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONPATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages"
+  },
+  "hashes_after": {
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/yaml/__init__.py": "b19dfcc333d6a75dfd73073901164507252f271b41d3b5f7d85510033a0547a7",
+    "/tmp/hatch-skill-creator/quick_validate.py": "6fe29dd01a30abac05ef2999cdf8b962cd065cb23b5f7631981ab15544215efb",
+    "SKILL.md": "ad2121faffe0d64542d646730fd31897c8d028f2c04314f78fc57e64bc51854c"
+  },
+  "hashes_before": {
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/yaml/__init__.py": "b19dfcc333d6a75dfd73073901164507252f271b41d3b5f7d85510033a0547a7",
+    "/tmp/hatch-skill-creator/quick_validate.py": "6fe29dd01a30abac05ef2999cdf8b962cd065cb23b5f7631981ab15544215efb",
+    "SKILL.md": "ad2121faffe0d64542d646730fd31897c8d028f2c04314f78fc57e64bc51854c"
+  },
+  "python_version": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "result": "PASS",
+  "returncode": 0,
+  "scope": "Installed quick_validate.py frontmatter/name/description validation only; no generation, live installation, new tests, or Git mutation.",
+  "source_unchanged": true,
+  "wall_runtime_seconds": 0.0333724819975032,
+  "working_directory": "/workspace/scratch/368aa013e993/hatch-pet"
+}
+=== Exact stdout bytes begin ===
+Skill is valid!
+
+=== Exact stdout bytes end ===
+=== Exact stderr bytes begin ===
+
+=== Exact stderr bytes end ===
