@@ -1,0 +1,34 @@
+{
+  "path": "preview/pose-sheet.png",
+  "sha256": "8dd57257fec1191b51bd2e72c61f17c3ea9ed3167abc23fbb89f4aba9a04ec27",
+  "rig_sha256": "64ce161905c700b026d3def05a1fabf6cc80d32cefbfdebcd05ed85c8dd40151",
+  "samples": [
+    {
+      "clip": "blink-expression",
+      "time": 0.75
+    },
+    {
+      "clip": "crouch",
+      "time": 1.0
+    },
+    {
+      "clip": "neutral",
+      "time": 1.0
+    },
+    {
+      "clip": "reach",
+      "time": 1.0
+    },
+    {
+      "clip": "walk",
+      "time": 0.65
+    },
+    {
+      "clip": "wave",
+      "time": 1.0
+    }
+  ],
+  "renderer": "CPU z-buffer over native skinned triangles",
+  "texture_shading": "base-color-only",
+  "visual_review": "pending"
+}

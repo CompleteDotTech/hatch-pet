@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "format": "glb",
+  "path": "exports/character.glb",
+  "sha256": "2370fb09870c33a157c6dabbeb8179fe74d00969cb80a149e54c0fac1b3b2e31",
+  "rig_sha256": "06f4bd0e04d2b4f02027acc8420762d999493a09a7bb46a6be7933960c38559f",
+  "vertices": 3276,
+  "skins": 28,
+  "joints": 37,
+  "animations": [
+    "combined",
+    "gaze",
+    "neutral",
+    "tail-curl",
+    "walk",
+    "wing-flap"
+  ],
+  "keyframes": 1294,
+  "independently_verified": false
+}

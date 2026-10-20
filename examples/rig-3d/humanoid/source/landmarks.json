@@ -1,0 +1,917 @@
+{
+  "source_sha256": "5219e0e6fecbef659a106f7013a663dc94bbb7a38e211a74f77268391f4c990a",
+  "landmarks": {
+    "root": {
+      "head": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "tail": [
+        0.0,
+        0.1,
+        0.0
+      ],
+      "approved": true,
+      "source": "procedural-fixture",
+      "confidence": 1.0,
+      "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks."
+    },
+    "pelvis": {
+      "head": [
+        0.0,
+        0.93,
+        0.0
+      ],
+      "tail": [
+        0.0,
+        1.13,
+        0.0
+      ],
+      "approved": true,
+      "source": "procedural-fixture",
+      "confidence": 1.0,
+      "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks."
+    },
+    "spine": {
+      "head": [
+        0.0,
+        1.08,
+        0.0
+      ],
+      "tail": [
+        0.0,
+        1.31,
+        0.0
+      ],
+      "approved": true,
+      "source": "procedural-fixture",
+      "confidence": 1.0,
+      "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks."
+    },
+    "chest": {
+      "head": [
+        0.0,
+        1.31,
+        0.0
+      ],
+      "tail": [
+        0.0,
+        1.49,
+        0.0
+      ],
+      "approved": true,
+      "source": "procedural-fixture",
+      "confidence": 1.0,
+      "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks."
+    },
+    "neck": {
+      "head": [
+        0.0,
+        1.49,
+        0.0
+      ],
+      "tail": [
+        0.0,
+        1.63,
+        0.0
+      ],
+      "approved": true,
+      "source": "procedural-fixture",
+      "confidence": 1.0,
+      "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks."
+    },
+    "head": {
+      "head": [
+        0.0,
+        1.63,
+        0.0
+      ],
+      "tail": [
+        0.0,
+        1.94,
+        0.0
+      ],
+      "approved": true,
+      "source": "procedural-fixture",
+      "confidence": 1.0,
+      "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks."
+    },
+    "jaw": {
+      "head": [
+        0.0,
+        1.66,
+        0.18
+      ],
+      "tail": [
+        0.0,
+        1.6,
+        0.25
+      ],
+      "approved": true,
+      "source": "procedural-fixture",
+      "confidence": 1.0,
+      "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks."
+    },
+    "clavicle.left": {
+      "head": [
+        -0.07,
+        1.44,
+        0.0
+      ],
+      "tail": [
+        -0.24,
+        1.43,
+        0.0
+      ],
+      "approved": true,
+      "source": "procedural-fixture",
+      "confidence": 1.0,
+      "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks."
+    },
+    "upper-arm.left": {
+      "head": [
+        -0.24,
+        1.43,
+        0.0
+      ],
+      "tail": [
+        -0.49,
+        1.17,
+        0.015
+      ],
+      "approved": true,
+      "source": "procedural-fixture",
+      "confidence": 1.0,
+      "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks."
+    },
+    "forearm.left": {
+      "head": [
+        -0.49,
+        1.17,
+        0.015
+      ],
+      "tail": [
+        -0.69,
+        0.98,
+        0.035
+      ],
+      "approved": true,
+      "source": "procedural-fixture",
+      "confidence": 1.0,
+      "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks."
+    },
+    "hand.left": {
+      "head": [
+        -0.69,
+        0.98,
+        0.035
+      ],
+      "tail": [
+        -0.76,
+        0.91,
+        0.035
+      ],
+      "approved": true,
+      "source": "procedural-fixture",
+      "confidence": 1.0,
+      "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks."
+    },
+    "thigh.left": {
+      "head": [
+        -0.14,
+        0.93,
+        0.0
+      ],
+      "tail": [
+        -0.15,
+        0.52,
+        0.04
+      ],
+      "approved": true,
+      "source": "procedural-fixture",
+      "confidence": 1.0,
+      "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks."
+    },
+    "shin.left": {
+      "head": [
+        -0.15,
+        0.52,
+        0.04
+      ],
+      "tail": [
+        -0.15,
+        0.12,
+        0.0
+      ],
+      "approved": true,
+      "source": "procedural-fixture",
+      "confidence": 1.0,
+      "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks."
+    },
+    "foot.left": {
+      "head": [
+        -0.15,
+        0.12,
+        0.0
+      ],
+      "tail": [
+        -0.15,
+        0.09,
+        0.18
+      ],
+      "approved": true,
+      "source": "procedural-fixture",
+      "confidence": 1.0,
+      "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks."
+    },
+    "toe.left": {
+      "head": [
+        -0.15,
+        0.09,
+        0.18
+      ],
+      "tail": [
+        -0.15,
+        0.075,
+        0.25
+      ],
+      "approved": true,
+      "source": "procedural-fixture",
+      "confidence": 1.0,
+      "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks."
+    },
+    "eye.left": {
+      "head": [
+        -0.105,
+        1.79,
+        0.218
+      ],
+      "tail": [
+        -0.105,
+        1.79,
+        0.29
+      ],
+      "approved": true,
+      "source": "procedural-fixture",
+      "confidence": 1.0,
+      "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks."
+    },
+    "ear.left": {
+      "head": [
+        -0.245,
+        1.77,
+        0.0
+      ],
+      "tail": [
+        -0.3,
+        1.8,
+        0.0
+      ],
+      "approved": true,
+      "source": "procedural-fixture",
+      "confidence": 1.0,
+      "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks."
+    },
+    "thumb.1.left": {
+      "head": [
+        -0.745,
+        0.94,
+        -0.0049999999999999975
+      ],
+      "tail": [
+        -0.773,
+        0.911,
+        -0.0049999999999999975
+      ],
+      "approved": true,
+      "source": "procedural-fixture",
+      "confidence": 1.0,
+      "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks."
+    },
+    "thumb.2.left": {
+      "head": [
+        -0.773,
+        0.9109999999999999,
+        -0.0049999999999999975
+      ],
+      "tail": [
+        -0.801,
+        0.882,
+        -0.0049999999999999975
+      ],
+      "approved": true,
+      "source": "procedural-fixture",
+      "confidence": 1.0,
+      "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks."
+    },
+    "thumb.3.left": {
+      "head": [
+        -0.801,
+        0.8819999999999999,
+        -0.0049999999999999975
+      ],
+      "tail": [
+        -0.8290000000000001,
+        0.853,
+        -0.0049999999999999975
+      ],
+      "approved": true,
+      "source": "procedural-fixture",
+      "confidence": 1.0,
+      "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks."
+    },
+    "index.1.left": {
+      "head": [
+        -0.745,
+        0.94,
+        0.015000000000000003
+      ],
+      "tail": [
+        -0.773,
+        0.911,
+        0.015000000000000003
+      ],
+      "approved": true,
+      "source": "procedural-fixture",
+      "confidence": 1.0,
+      "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks."
+    },
+    "index.2.left": {
+      "head": [
+        -0.773,
+        0.9109999999999999,
+        0.015000000000000003
+      ],
+      "tail": [
+        -0.801,
+        0.882,
+        0.015000000000000003
+      ],
+      "approved": true,
+      "source": "procedural-fixture",
+      "confidence": 1.0,
+      "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks."
+    },
+    "index.3.left": {
+      "head": [
+        -0.801,
+        0.8819999999999999,
+        0.015000000000000003
+      ],
+      "tail": [
+        -0.8290000000000001,
+        0.853,
+        0.015000000000000003
+      ],
+      "approved": true,
+      "source": "procedural-fixture",
+      "confidence": 1.0,
+      "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks."
+    },
+    "middle.1.left": {
+      "head": [
+        -0.745,
+        0.94,
+        0.035
+      ],
+      "tail": [
+        -0.773,
+        0.911,
+        0.035
+      ],
+      "approved": true,
+      "source": "procedural-fixture",
+      "confidence": 1.0,
+      "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks."
+    },
+    "middle.2.left": {
+      "head": [
+        -0.773,
+        0.9109999999999999,
+        0.035
+      ],
+      "tail": [
+        -0.801,
+        0.882,
+        0.035
+      ],
+      "approved": true,
+      "source": "procedural-fixture",
+      "confidence": 1.0,
+      "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks."
+    },
+    "middle.3.left": {
+      "head": [
+        -0.801,
+        0.8819999999999999,
+        0.035
+      ],
+      "tail": [
+        -0.8290000000000001,
+        0.853,
+        0.035
+      ],
+      "approved": true,
+      "source": "procedural-fixture",
+      "confidence": 1.0,
+      "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks."
+    },
+    "ring.1.left": {
+      "head": [
+        -0.745,
+        0.94,
+        0.05500000000000001
+      ],
+      "tail": [
+        -0.773,
+        0.911,
+        0.05500000000000001
+      ],
+      "approved": true,
+      "source": "procedural-fixture",
+      "confidence": 1.0,
+      "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks."
+    },
+    "ring.2.left": {
+      "head": [
+        -0.773,
+        0.9109999999999999,
+        0.05500000000000001
+      ],
+      "tail": [
+        -0.801,
+        0.882,
+        0.05500000000000001
+      ],
+      "approved": true,
+      "source": "procedural-fixture",
+      "confidence": 1.0,
+      "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks."
+    },
+    "ring.3.left": {
+      "head": [
+        -0.801,
+        0.8819999999999999,
+        0.05500000000000001
+      ],
+      "tail": [
+        -0.8290000000000001,
+        0.853,
+        0.05500000000000001
+      ],
+      "approved": true,
+      "source": "procedural-fixture",
+      "confidence": 1.0,
+      "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks."
+    },
+    "pinky.1.left": {
+      "head": [
+        -0.745,
+        0.94,
+        0.07500000000000001
+      ],
+      "tail": [
+        -0.773,
+        0.911,
+        0.07500000000000001
+      ],
+      "approved": true,
+      "source": "procedural-fixture",
+      "confidence": 1.0,
+      "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks."
+    },
+    "pinky.2.left": {
+      "head": [
+        -0.773,
+        0.9109999999999999,
+        0.07500000000000001
+      ],
+      "tail": [
+        -0.801,
+        0.882,
+        0.07500000000000001
+      ],
+      "approved": true,
+      "source": "procedural-fixture",
+      "confidence": 1.0,
+      "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks."
+    },
+    "pinky.3.left": {
+      "head": [
+        -0.801,
+        0.8819999999999999,
+        0.07500000000000001
+      ],
+      "tail": [
+        -0.8290000000000001,
+        0.853,
+        0.07500000000000001
+      ],
+      "approved": true,
+      "source": "procedural-fixture",
+      "confidence": 1.0,
+      "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks."
+    },
+    "clavicle.right": {
+      "head": [
+        0.07,
+        1.44,
+        0.0
+      ],
+      "tail": [
+        0.24,
+        1.43,
+        0.0
+      ],
+      "approved": true,
+      "source": "procedural-fixture",
+      "confidence": 1.0,
+      "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks."
+    },
+    "upper-arm.right": {
+      "head": [
+        0.24,
+        1.43,
+        0.0
+      ],
+      "tail": [
+        0.49,
+        1.17,
+        0.015
+      ],
+      "approved": true,
+      "source": "procedural-fixture",
+      "confidence": 1.0,
+      "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks."
+    },
+    "forearm.right": {
+      "head": [
+        0.49,
+        1.17,
+        0.015
+      ],
+      "tail": [
+        0.69,
+        0.98,
+        0.035
+      ],
+      "approved": true,
+      "source": "procedural-fixture",
+      "confidence": 1.0,
+      "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks."
+    },
+    "hand.right": {
+      "head": [
+        0.69,
+        0.98,
+        0.035
+      ],
+      "tail": [
+        0.76,
+        0.91,
+        0.035
+      ],
+      "approved": true,
+      "source": "procedural-fixture",
+      "confidence": 1.0,
+      "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks."
+    },
+    "thigh.right": {
+      "head": [
+        0.14,
+        0.93,
+        0.0
+      ],
+      "tail": [
+        0.15,
+        0.52,
+        0.04
+      ],
+      "approved": true,
+      "source": "procedural-fixture",
+      "confidence": 1.0,
+      "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks."
+    },
+    "shin.right": {
+      "head": [
+        0.15,
+        0.52,
+        0.04
+      ],
+      "tail": [
+        0.15,
+        0.12,
+        0.0
+      ],
+      "approved": true,
+      "source": "procedural-fixture",
+      "confidence": 1.0,
+      "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks."
+    },
+    "foot.right": {
+      "head": [
+        0.15,
+        0.12,
+        0.0
+      ],
+      "tail": [
+        0.15,
+        0.09,
+        0.18
+      ],
+      "approved": true,
+      "source": "procedural-fixture",
+      "confidence": 1.0,
+      "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks."
+    },
+    "toe.right": {
+      "head": [
+        0.15,
+        0.09,
+        0.18
+      ],
+      "tail": [
+        0.15,
+        0.075,
+        0.25
+      ],
+      "approved": true,
+      "source": "procedural-fixture",
+      "confidence": 1.0,
+      "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks."
+    },
+    "eye.right": {
+      "head": [
+        0.105,
+        1.79,
+        0.218
+      ],
+      "tail": [
+        0.105,
+        1.79,
+        0.29
+      ],
+      "approved": true,
+      "source": "procedural-fixture",
+      "confidence": 1.0,
+      "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks."
+    },
+    "ear.right": {
+      "head": [
+        0.245,
+        1.77,
+        0.0
+      ],
+      "tail": [
+        0.3,
+        1.8,
+        0.0
+      ],
+      "approved": true,
+      "source": "procedural-fixture",
+      "confidence": 1.0,
+      "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks."
+    },
+    "thumb.1.right": {
+      "head": [
+        0.745,
+        0.94,
+        -0.0049999999999999975
+      ],
+      "tail": [
+        0.773,
+        0.911,
+        -0.0049999999999999975
+      ],
+      "approved": true,
+      "source": "procedural-fixture",
+      "confidence": 1.0,
+      "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks."
+    },
+    "thumb.2.right": {
+      "head": [
+        0.773,
+        0.9109999999999999,
+        -0.0049999999999999975
+      ],
+      "tail": [
+        0.801,
+        0.882,
+        -0.0049999999999999975
+      ],
+      "approved": true,
+      "source": "procedural-fixture",
+      "confidence": 1.0,
+      "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks."
+    },
+    "thumb.3.right": {
+      "head": [
+        0.801,
+        0.8819999999999999,
+        -0.0049999999999999975
+      ],
+      "tail": [
+        0.8290000000000001,
+        0.853,
+        -0.0049999999999999975
+      ],
+      "approved": true,
+      "source": "procedural-fixture",
+      "confidence": 1.0,
+      "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks."
+    },
+    "index.1.right": {
+      "head": [
+        0.745,
+        0.94,
+        0.015000000000000003
+      ],
+      "tail": [
+        0.773,
+        0.911,
+        0.015000000000000003
+      ],
+      "approved": true,
+      "source": "procedural-fixture",
+      "confidence": 1.0,
+      "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks."
+    },
+    "index.2.right": {
+      "head": [
+        0.773,
+        0.9109999999999999,
+        0.015000000000000003
+      ],
+      "tail": [
+        0.801,
+        0.882,
+        0.015000000000000003
+      ],
+      "approved": true,
+      "source": "procedural-fixture",
+      "confidence": 1.0,
+      "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks."
+    },
+    "index.3.right": {
+      "head": [
+        0.801,
+        0.8819999999999999,
+        0.015000000000000003
+      ],
+      "tail": [
+        0.8290000000000001,
+        0.853,
+        0.015000000000000003
+      ],
+      "approved": true,
+      "source": "procedural-fixture",
+      "confidence": 1.0,
+      "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks."
+    },
+    "middle.1.right": {
+      "head": [
+        0.745,
+        0.94,
+        0.035
+      ],
+      "tail": [
+        0.773,
+        0.911,
+        0.035
+      ],
+      "approved": true,
+      "source": "procedural-fixture",
+      "confidence": 1.0,
+      "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks."
+    },
+    "middle.2.right": {
+      "head": [
+        0.773,
+        0.9109999999999999,
+        0.035
+      ],
+      "tail": [
+        0.801,
+        0.882,
+        0.035
+      ],
+      "approved": true,
+      "source": "procedural-fixture",
+      "confidence": 1.0,
+      "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks."
+    },
+    "middle.3.right": {
+      "head": [
+        0.801,
+        0.8819999999999999,
+        0.035
+      ],
+      "tail": [
+        0.8290000000000001,
+        0.853,
+        0.035
+      ],
+      "approved": true,
+      "source": "procedural-fixture",
+      "confidence": 1.0,
+      "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks."
+    },
+    "ring.1.right": {
+      "head": [
+        0.745,
+        0.94,
+        0.05500000000000001
+      ],
+      "tail": [
+        0.773,
+        0.911,
+        0.05500000000000001
+      ],
+      "approved": true,
+      "source": "procedural-fixture",
+      "confidence": 1.0,
+      "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks."
+    },
+    "ring.2.right": {
+      "head": [
+        0.773,
+        0.9109999999999999,
+        0.05500000000000001
+      ],
+      "tail": [
+        0.801,
+        0.882,
+        0.05500000000000001
+      ],
+      "approved": true,
+      "source": "procedural-fixture",
+      "confidence": 1.0,
+      "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks."
+    },
+    "ring.3.right": {
+      "head": [
+        0.801,
+        0.8819999999999999,
+        0.05500000000000001
+      ],
+      "tail": [
+        0.8290000000000001,
+        0.853,
+        0.05500000000000001
+      ],
+      "approved": true,
+      "source": "procedural-fixture",
+      "confidence": 1.0,
+      "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks."
+    },
+    "pinky.1.right": {
+      "head": [
+        0.745,
+        0.94,
+        0.07500000000000001
+      ],
+      "tail": [
+        0.773,
+        0.911,
+        0.07500000000000001
+      ],
+      "approved": true,
+      "source": "procedural-fixture",
+      "confidence": 1.0,
+      "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks."
+    },
+    "pinky.2.right": {
+      "head": [
+        0.773,
+        0.9109999999999999,
+        0.07500000000000001
+      ],
+      "tail": [
+        0.801,
+        0.882,
+        0.07500000000000001
+      ],
+      "approved": true,
+      "source": "procedural-fixture",
+      "confidence": 1.0,
+      "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks."
+    },
+    "pinky.3.right": {
+      "head": [
+        0.801,
+        0.8819999999999999,
+        0.07500000000000001
+      ],
+      "tail": [
+        0.8290000000000001,
+        0.853,
+        0.07500000000000001
+      ],
+      "approved": true,
+      "source": "procedural-fixture",
+      "confidence": 1.0,
+      "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks."
+    }
+  }
+}

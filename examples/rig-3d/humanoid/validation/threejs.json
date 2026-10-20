@@ -1,0 +1,113 @@
+{
+  "reader": "Three.js",
+  "version": "0.180.0",
+  "browser": "140.0.7339.16",
+  "independent": true,
+  "ok": true,
+  "rig_sha256": "64ce161905c700b026d3def05a1fabf6cc80d32cefbfdebcd05ed85c8dd40151",
+  "max_vertex_error_m": 0.0005234898623566898,
+  "tolerance_m": 0.01,
+  "compared_vertices": 8928,
+  "clips": [
+    {
+      "clip": "blink-expression",
+      "time": 0.0,
+      "max_vertex_error_m": 9.835273532577495e-08
+    },
+    {
+      "clip": "blink-expression",
+      "time": 0.74,
+      "max_vertex_error_m": 9.835198907343124e-08
+    },
+    {
+      "clip": "blink-expression",
+      "time": 1.46,
+      "max_vertex_error_m": 9.835527482204954e-08
+    },
+    {
+      "clip": "crouch",
+      "time": 0.0,
+      "max_vertex_error_m": 9.835305638704424e-08
+    },
+    {
+      "clip": "crouch",
+      "time": 0.74,
+      "max_vertex_error_m": 9.120475268542678e-05
+    },
+    {
+      "clip": "crouch",
+      "time": 1.46,
+      "max_vertex_error_m": 0.0005234898623566898
+    },
+    {
+      "clip": "neutral",
+      "time": 0.0,
+      "max_vertex_error_m": 9.835305638704424e-08
+    },
+    {
+      "clip": "neutral",
+      "time": 0.74,
+      "max_vertex_error_m": 9.835305638704424e-08
+    },
+    {
+      "clip": "neutral",
+      "time": 1.46,
+      "max_vertex_error_m": 9.835305638704424e-08
+    },
+    {
+      "clip": "reach",
+      "time": 0.0,
+      "max_vertex_error_m": 9.835305638704424e-08
+    },
+    {
+      "clip": "reach",
+      "time": 0.74,
+      "max_vertex_error_m": 1.6681531829794616e-07
+    },
+    {
+      "clip": "reach",
+      "time": 1.46,
+      "max_vertex_error_m": 9.835305638704424e-08
+    },
+    {
+      "clip": "walk",
+      "time": 0.0,
+      "max_vertex_error_m": 1.0241356052974534e-07
+    },
+    {
+      "clip": "walk",
+      "time": 0.74,
+      "max_vertex_error_m": 1.82878210978752e-05
+    },
+    {
+      "clip": "walk",
+      "time": 1.46,
+      "max_vertex_error_m": 4.1882157472716334e-05
+    },
+    {
+      "clip": "wave",
+      "time": 0.0,
+      "max_vertex_error_m": 9.835305638704424e-08
+    },
+    {
+      "clip": "wave",
+      "time": 0.74,
+      "max_vertex_error_m": 9.835305638704424e-08
+    },
+    {
+      "clip": "wave",
+      "time": 1.46,
+      "max_vertex_error_m": 1.0643891491579439e-07
+    }
+  ],
+  "ui_playback": true,
+  "ui_frame_step": true,
+  "ui_skeleton": true,
+  "ui_weights": true,
+  "ui_ik": true,
+  "ui_expressions": true,
+  "ui_reduced_motion": true,
+  "errors": [],
+  "asset_sha256": "806901b9f412d2b5e6dd7b7099cd04adf81b57221f78527a01b811cadd95af2f",
+  "screenshot_sha256": "140d4926b1089e6c78c54a352309b0cb3ead64f3a7200f060a5a6170c4921d66"
+}

@@ -1,0 +1,34 @@
+{
+  "path": "preview/pose-sheet.png",
+  "sha256": "a4c22c3dfb03f1cb55a397d087832f13dd499da34af7878675edfd2352b4c548",
+  "rig_sha256": "06f4bd0e04d2b4f02027acc8420762d999493a09a7bb46a6be7933960c38559f",
+  "samples": [
+    {
+      "clip": "combined",
+      "time": 1.0
+    },
+    {
+      "clip": "gaze",
+      "time": 0.5
+    },
+    {
+      "clip": "neutral",
+      "time": 1.0
+    },
+    {
+      "clip": "tail-curl",
+      "time": 1.0
+    },
+    {
+      "clip": "walk",
+      "time": 0.65
+    },
+    {
+      "clip": "wing-flap",
+      "time": 0.32
+    }
+  ],
+  "renderer": "CPU z-buffer over native skinned triangles",
+  "texture_shading": "base-color-only",
+  "visual_review": "pending"
+}

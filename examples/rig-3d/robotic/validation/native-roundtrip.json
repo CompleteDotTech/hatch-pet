@@ -1,0 +1,8 @@
+{
+  "independent": false,
+  "reader": "hatch-native",
+  "max_vertex_error_m": 8.65779877438876e-08,
+  "mesh_samples": 99,
+  "tolerance_m": 0.01,
+  "ok": true
+}

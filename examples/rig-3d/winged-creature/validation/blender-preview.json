@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "blender_version": "4.5.3 LTS",
+  "engine": "Cycles CPU",
+  "samples": 16,
+  "rig_sha256": "06f4bd0e04d2b4f02027acc8420762d999493a09a7bb46a6be7933960c38559f",
+  "source_sha256": "b0cb3ae3cbe5e4a68f667ceb0705c2adb94fab624a982cfb00c4e2fb5fc47f72",
+  "blend_sha256": "ad3b04ec5570cf8b3fde180105d45f7e91636f4b86759a9176d45c07d34a0e62",
+  "fixture": true,
+  "clip": "walk",
+  "camera": "three-quarter",
+  "width": 256,
+  "height": 256,
+  "transparent": true,
+  "review_status": "pending",
+  "frames": [
+    {
+      "path": "preview/blender/frame-0000.png",
+      "time": 0.0,
+      "sha256": "a3484649e4bd389eb394dfc62074e098c6ca9394d868ddb9edd046a6fb403804"
+    },
+    {
+      "path": "preview/blender/frame-0001.png",
+      "time": 0.65,
+      "sha256": "8f44b305d27eab7737674c23701d0f4680efdc9c591edbaab8e57133866d3491"
+    }
+  ]
+}

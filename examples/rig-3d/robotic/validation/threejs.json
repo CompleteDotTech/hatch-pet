@@ -1,0 +1,68 @@
+{
+  "reader": "Three.js",
+  "version": "0.180.0",
+  "browser": "140.0.7339.16",
+  "independent": true,
+  "ok": true,
+  "rig_sha256": "51c8c585e97b259883e5c3535421ec90fbb7bf6b74da20994b0622a0e5a9d089",
+  "max_vertex_error_m": 5.289800520483335e-08,
+  "tolerance_m": 0.01,
+  "compared_vertices": 1584,
+  "clips": [
+    {
+      "clip": "gripper-slide",
+      "time": 0.0,
+      "max_vertex_error_m": 4.851342666749435e-08
+    },
+    {
+      "clip": "gripper-slide",
+      "time": 0.74,
+      "max_vertex_error_m": 1.803154109027419e-08
+    },
+    {
+      "clip": "gripper-slide",
+      "time": 1.46,
+      "max_vertex_error_m": 3.369745422615256e-08
+    },
+    {
+      "clip": "hinge-sweep",
+      "time": 0.0,
+      "max_vertex_error_m": 5.289800520483335e-08
+    },
+    {
+      "clip": "hinge-sweep",
+      "time": 0.74,
+      "max_vertex_error_m": 1.803154109027419e-08
+    },
+    {
+      "clip": "hinge-sweep",
+      "time": 1.46,
+      "max_vertex_error_m": 3.1525429405354936e-08
+    },
+    {
+      "clip": "neutral",
+      "time": 0.0,
+      "max_vertex_error_m": 2.0819007094145957e-08
+    },
+    {
+      "clip": "neutral",
+      "time": 0.74,
+      "max_vertex_error_m": 2.0819007094145957e-08
+    },
+    {
+      "clip": "neutral",
+      "time": 1.46,
+      "max_vertex_error_m": 2.0819007094145957e-08
+    }
+  ],
+  "ui_playback": true,
+  "ui_frame_step": true,
+  "ui_skeleton": true,
+  "ui_weights": true,
+  "ui_ik": true,
+  "ui_expressions": false,
+  "ui_reduced_motion": true,
+  "errors": [],
+  "asset_sha256": "38c95ce549f58bdef2f06ce4652ac2026ca99c744f9593f348d0d1696131296e",
+  "screenshot_sha256": "2fcc9ed845dd6d94ea7699f1eeafd86908d7e59671de38df9719b8dc1c799180"
+}

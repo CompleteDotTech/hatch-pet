@@ -1,0 +1,294 @@
+{
+  "ik": [
+    {
+      "schema_version": 1,
+      "id": "leg.front.left",
+      "bones": [
+        "upper-leg.front.left",
+        "lower-leg.front.left",
+        "paw.front.left"
+      ],
+      "solver": "two-bone",
+      "pole": [
+        -0.24,
+        0.4,
+        1.12
+      ],
+      "tolerance": 1.1799999475479127e-05,
+      "iterations": 64
+    },
+    {
+      "schema_version": 1,
+      "id": "leg.front.right",
+      "bones": [
+        "upper-leg.front.right",
+        "lower-leg.front.right",
+        "paw.front.right"
+      ],
+      "solver": "two-bone",
+      "pole": [
+        0.24,
+        0.4,
+        1.12
+      ],
+      "tolerance": 1.1799999475479127e-05,
+      "iterations": 64
+    },
+    {
+      "schema_version": 1,
+      "id": "leg.rear.left",
+      "bones": [
+        "upper-leg.rear.left",
+        "lower-leg.rear.left",
+        "paw.rear.left"
+      ],
+      "solver": "two-bone",
+      "pole": [
+        -0.24,
+        0.4,
+        0.46
+      ],
+      "tolerance": 1.1799999475479127e-05,
+      "iterations": 64
+    },
+    {
+      "schema_version": 1,
+      "id": "leg.rear.right",
+      "bones": [
+        "upper-leg.rear.right",
+        "lower-leg.rear.right",
+        "paw.rear.right"
+      ],
+      "solver": "two-bone",
+      "pole": [
+        0.24,
+        0.4,
+        0.46
+      ],
+      "tolerance": 1.1799999475479127e-05,
+      "iterations": 64
+    },
+    {
+      "schema_version": 1,
+      "id": "tail-target",
+      "bones": [
+        "tail.1",
+        "tail.2",
+        "tail.3",
+        "tail.4"
+      ],
+      "solver": "fabrik",
+      "pole": [
+        0.0,
+        1.5,
+        -1.0
+      ],
+      "tolerance": 1.1799999475479127e-05,
+      "iterations": 64
+    },
+    {
+      "schema_version": 1,
+      "id": "leg.middle.left",
+      "bones": [
+        "upper-leg.middle.left",
+        "lower-leg.middle.left",
+        "paw.middle.left"
+      ],
+      "solver": "two-bone",
+      "pole": [
+        -0.5,
+        0.4,
+        0.8
+      ],
+      "tolerance": 1.1799999475479127e-05,
+      "iterations": 64
+    },
+    {
+      "schema_version": 1,
+      "id": "leg.middle.right",
+      "bones": [
+        "upper-leg.middle.right",
+        "lower-leg.middle.right",
+        "paw.middle.right"
+      ],
+      "solver": "two-bone",
+      "pole": [
+        0.5,
+        0.4,
+        0.8
+      ],
+      "tolerance": 1.1799999475479127e-05,
+      "iterations": 64
+    }
+  ],
+  "constraints": [
+    {
+      "schema_version": 1,
+      "id": "upper-leg.front.left-limit",
+      "bone": "upper-leg.front.left",
+      "type": "ball",
+      "swing": 2.7
+    },
+    {
+      "schema_version": 1,
+      "id": "lower-leg.front.left-limit",
+      "bone": "lower-leg.front.left",
+      "type": "ball",
+      "swing": 2.7
+    },
+    {
+      "schema_version": 1,
+      "id": "upper-leg.front.right-limit",
+      "bone": "upper-leg.front.right",
+      "type": "ball",
+      "swing": 2.7
+    },
+    {
+      "schema_version": 1,
+      "id": "lower-leg.front.right-limit",
+      "bone": "lower-leg.front.right",
+      "type": "ball",
+      "swing": 2.7
+    },
+    {
+      "schema_version": 1,
+      "id": "upper-leg.rear.left-limit",
+      "bone": "upper-leg.rear.left",
+      "type": "ball",
+      "swing": 2.7
+    },
+    {
+      "schema_version": 1,
+      "id": "lower-leg.rear.left-limit",
+      "bone": "lower-leg.rear.left",
+      "type": "ball",
+      "swing": 2.7
+    },
+    {
+      "schema_version": 1,
+      "id": "upper-leg.rear.right-limit",
+      "bone": "upper-leg.rear.right",
+      "type": "ball",
+      "swing": 2.7
+    },
+    {
+      "schema_version": 1,
+      "id": "lower-leg.rear.right-limit",
+      "bone": "lower-leg.rear.right",
+      "type": "ball",
+      "swing": 2.7
+    },
+    {
+      "schema_version": 1,
+      "id": "tail.1-limit",
+      "bone": "tail.1",
+      "type": "ball",
+      "swing": 1.0
+    },
+    {
+      "schema_version": 1,
+      "id": "tail.2-limit",
+      "bone": "tail.2",
+      "type": "ball",
+      "swing": 1.0
+    },
+    {
+      "schema_version": 1,
+      "id": "tail.3-limit",
+      "bone": "tail.3",
+      "type": "ball",
+      "swing": 1.0
+    },
+    {
+      "schema_version": 1,
+      "id": "tail.4-limit",
+      "bone": "tail.4",
+      "type": "ball",
+      "swing": 1.0
+    },
+    {
+      "schema_version": 1,
+      "id": "eye.left-limit",
+      "bone": "eye.left",
+      "type": "ball",
+      "swing": 0.65
+    },
+    {
+      "schema_version": 1,
+      "id": "eye.right-limit",
+      "bone": "eye.right",
+      "type": "ball",
+      "swing": 0.65
+    },
+    {
+      "schema_version": 1,
+      "id": "upper-leg.middle.left-limit",
+      "bone": "upper-leg.middle.left",
+      "type": "ball",
+      "swing": 2.7
+    },
+    {
+      "schema_version": 1,
+      "id": "lower-leg.middle.left-limit",
+      "bone": "lower-leg.middle.left",
+      "type": "ball",
+      "swing": 2.7
+    },
+    {
+      "schema_version": 1,
+      "id": "paw.middle.left-limit",
+      "bone": "paw.middle.left",
+      "type": "ball",
+      "swing": 2.7
+    },
+    {
+      "schema_version": 1,
+      "id": "wing-root.left-limit",
+      "bone": "wing-root.left",
+      "type": "ball",
+      "swing": 1.5
+    },
+    {
+      "schema_version": 1,
+      "id": "wing-tip.left-limit",
+      "bone": "wing-tip.left",
+      "type": "ball",
+      "swing": 1.5
+    },
+    {
+      "schema_version": 1,
+      "id": "upper-leg.middle.right-limit",
+      "bone": "upper-leg.middle.right",
+      "type": "ball",
+      "swing": 2.7
+    },
+    {
+      "schema_version": 1,
+      "id": "lower-leg.middle.right-limit",
+      "bone": "lower-leg.middle.right",
+      "type": "ball",
+      "swing": 2.7
+    },
+    {
+      "schema_version": 1,
+      "id": "paw.middle.right-limit",
+      "bone": "paw.middle.right",
+      "type": "ball",
+      "swing": 2.7
+    },
+    {
+      "schema_version": 1,
+      "id": "wing-root.right-limit",
+      "bone": "wing-root.right",
+      "type": "ball",
+      "swing": 1.5
+    },
+    {
+      "schema_version": 1,
+      "id": "wing-tip.right-limit",
+      "bone": "wing-tip.right",
+      "type": "ball",
+      "swing": 1.5
+    }
+  ]
+}

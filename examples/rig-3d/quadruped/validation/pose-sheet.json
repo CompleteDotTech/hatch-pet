@@ -1,0 +1,34 @@
+{
+  "path": "preview/pose-sheet.png",
+  "sha256": "cc546c36a8629f34f1b47a392f2ac6835938531d3269bcb1b4e58cc3737560f8",
+  "rig_sha256": "8e32b2f67e563e5de61d97175493ac9b5a8c48ab2b75374e5a6fd60fea0d043c",
+  "samples": [
+    {
+      "clip": "head-turn",
+      "time": 0.5
+    },
+    {
+      "clip": "neutral",
+      "time": 1.0
+    },
+    {
+      "clip": "sit",
+      "time": 1.0
+    },
+    {
+      "clip": "tail-wag",
+      "time": 0.65
+    },
+    {
+      "clip": "trot",
+      "time": 0.65
+    },
+    {
+      "clip": "walk",
+      "time": 0.65
+    }
+  ],
+  "renderer": "CPU z-buffer over native skinned triangles",
+  "texture_shading": "base-color-only",
+  "visual_review": "pending"
+}

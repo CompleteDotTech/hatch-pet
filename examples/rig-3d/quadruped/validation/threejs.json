@@ -1,0 +1,113 @@
+{
+  "reader": "Three.js",
+  "version": "0.180.0",
+  "browser": "140.0.7339.16",
+  "independent": true,
+  "ok": true,
+  "rig_sha256": "8e32b2f67e563e5de61d97175493ac9b5a8c48ab2b75374e5a6fd60fea0d043c",
+  "max_vertex_error_m": 0.00023818658471021936,
+  "tolerance_m": 0.01,
+  "compared_vertices": 5760,
+  "clips": [
+    {
+      "clip": "head-turn",
+      "time": 0.0,
+      "max_vertex_error_m": 5.192132666131193e-08
+    },
+    {
+      "clip": "head-turn",
+      "time": 0.74,
+      "max_vertex_error_m": 2.0206293172193644e-07
+    },
+    {
+      "clip": "head-turn",
+      "time": 1.46,
+      "max_vertex_error_m": 5.192132666131193e-08
+    },
+    {
+      "clip": "neutral",
+      "time": 0.0,
+      "max_vertex_error_m": 5.192132666131193e-08
+    },
+    {
+      "clip": "neutral",
+      "time": 0.74,
+      "max_vertex_error_m": 5.192132666131193e-08
+    },
+    {
+      "clip": "neutral",
+      "time": 1.46,
+      "max_vertex_error_m": 5.192132666131193e-08
+    },
+    {
+      "clip": "sit",
+      "time": 0.0,
+      "max_vertex_error_m": 5.981353900959318e-08
+    },
+    {
+      "clip": "sit",
+      "time": 0.74,
+      "max_vertex_error_m": 1.5096154054215919e-07
+    },
+    {
+      "clip": "sit",
+      "time": 1.46,
+      "max_vertex_error_m": 5.2065977887568537e-08
+    },
+    {
+      "clip": "tail-wag",
+      "time": 0.0,
+      "max_vertex_error_m": 5.7109858278411307e-08
+    },
+    {
+      "clip": "tail-wag",
+      "time": 0.74,
+      "max_vertex_error_m": 1.8864405490702873e-07
+    },
+    {
+      "clip": "tail-wag",
+      "time": 1.46,
+      "max_vertex_error_m": 5.853186786218243e-08
+    },
+    {
+      "clip": "trot",
+      "time": 0.0,
+      "max_vertex_error_m": 5.604791465515752e-08
+    },
+    {
+      "clip": "trot",
+      "time": 0.74,
+      "max_vertex_error_m": 0.0001005333915248406
+    },
+    {
+      "clip": "trot",
+      "time": 1.46,
+      "max_vertex_error_m": 0.00023818658471021936
+    },
+    {
+      "clip": "walk",
+      "time": 0.0,
+      "max_vertex_error_m": 7.694788052933694e-08
+    },
+    {
+      "clip": "walk",
+      "time": 0.74,
+      "max_vertex_error_m": 3.9878654009687674e-05
+    },
+    {
+      "clip": "walk",
+      "time": 1.46,
+      "max_vertex_error_m": 8.836771415161445e-05
+    }
+  ],
+  "ui_playback": true,
+  "ui_frame_step": true,
+  "ui_skeleton": true,
+  "ui_weights": true,
+  "ui_ik": true,
+  "ui_expressions": true,
+  "ui_reduced_motion": true,
+  "errors": [],
+  "asset_sha256": "86a37d874c0820d753653b5a1825f9f5c6e610fa2d710be4a75daa283d27629d",
+  "screenshot_sha256": "4a9895ea6932295ec9509294b23baf84d09c7ac993d1c144215382acbd000685"
+}

@@ -1,0 +1,742 @@
+{
+  "report": {
+    "schema_version": 1,
+    "kind": "hatch-3d-motion-range",
+    "rig_sha256": "64ce161905c700b026d3def05a1fabf6cc80d32cefbfdebcd05ed85c8dd40151",
+    "ok": true,
+    "metrics": {
+      "tested_range_poses": 88,
+      "nonfinite_poses": 0,
+      "max_edge_stretch": 1.5776790096388487,
+      "max_vertex_displacement_m": 1.8220805351143354
+    },
+    "checks": [
+      {
+        "name": "range-finiteness",
+        "status": "passed",
+        "message": "Real geometry was evaluated at the declared representative joint limits.",
+        "value": 0
+      },
+      {
+        "name": "stretch-review",
+        "status": "passed",
+        "message": "Extreme range stretching requires visual review; it is measured, not hidden.",
+        "value": 1.5776790096388487
+      },
+      {
+        "name": "surface-intersections",
+        "status": "unavailable",
+        "message": "Robust arbitrary mesh self-intersection analysis is unavailable in the bounded core.",
+        "value": null
+      }
+    ],
+    "artifacts": [],
+    "created_at": "2026-10-20T10:55:31Z"
+  },
+  "poses": [
+    {
+      "constraint": "thumb.1.left-limit",
+      "value": -1.8,
+      "finite": true,
+      "max_edge_stretch": 1.0000000000000597,
+      "max_vertex_displacement_m": 0.19055303813361132,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "thumb.1.left-limit",
+      "value": 1.8,
+      "finite": true,
+      "max_edge_stretch": 1.0000000000000533,
+      "max_vertex_displacement_m": 0.19055303813361132,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "thumb.2.left-limit",
+      "value": -1.8,
+      "finite": true,
+      "max_edge_stretch": 1.5100616334774462,
+      "max_vertex_displacement_m": 0.12793907819164244,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "thumb.2.left-limit",
+      "value": 1.8,
+      "finite": true,
+      "max_edge_stretch": 1.5100617007993704,
+      "max_vertex_displacement_m": 0.12793907819164235,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "thumb.3.left-limit",
+      "value": -1.8,
+      "finite": true,
+      "max_edge_stretch": 1.5100618571533153,
+      "max_vertex_displacement_m": 0.0646107029968588,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "thumb.3.left-limit",
+      "value": 1.8,
+      "finite": true,
+      "max_edge_stretch": 1.5100618408974629,
+      "max_vertex_displacement_m": 0.06461070299685877,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "index.1.left-limit",
+      "value": -1.8,
+      "finite": true,
+      "max_edge_stretch": 1.0000000000000586,
+      "max_vertex_displacement_m": 0.19055303821470318,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "index.1.left-limit",
+      "value": 1.8,
+      "finite": true,
+      "max_edge_stretch": 1.0000000000000684,
+      "max_vertex_displacement_m": 0.19055303821470307,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "index.2.left-limit",
+      "value": -1.8,
+      "finite": true,
+      "max_edge_stretch": 1.5100616385973435,
+      "max_vertex_displacement_m": 0.12793907831242074,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "index.2.left-limit",
+      "value": 1.8,
+      "finite": true,
+      "max_edge_stretch": 1.5100617079869145,
+      "max_vertex_displacement_m": 0.12793907831242077,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "index.3.left-limit",
+      "value": -1.8,
+      "finite": true,
+      "max_edge_stretch": 1.510061862273216,
+      "max_vertex_displacement_m": 0.06461070322359916,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "index.3.left-limit",
+      "value": 1.8,
+      "finite": true,
+      "max_edge_stretch": 1.5100618480850103,
+      "max_vertex_displacement_m": 0.06461070322359906,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "middle.1.left-limit",
+      "value": -1.8,
+      "finite": true,
+      "max_edge_stretch": 1.0000000000000455,
+      "max_vertex_displacement_m": 0.19055303813984914,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "middle.1.left-limit",
+      "value": 1.8,
+      "finite": true,
+      "max_edge_stretch": 1.0000000000000586,
+      "max_vertex_displacement_m": 0.19055303813984922,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "middle.2.left-limit",
+      "value": -1.8,
+      "finite": true,
+      "max_edge_stretch": 1.5100616338712771,
+      "max_vertex_displacement_m": 0.12793907820093314,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "middle.2.left-limit",
+      "value": 1.8,
+      "finite": true,
+      "max_edge_stretch": 1.510061710251491,
+      "max_vertex_displacement_m": 0.1279390782009329,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "middle.3.left-limit",
+      "value": -1.8,
+      "finite": true,
+      "max_edge_stretch": 1.5100618575471563,
+      "max_vertex_displacement_m": 0.0646107030143005,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "middle.3.left-limit",
+      "value": 1.8,
+      "finite": true,
+      "max_edge_stretch": 1.510061850349584,
+      "max_vertex_displacement_m": 0.0646107030143002,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "ring.1.left-limit",
+      "value": -1.8,
+      "finite": true,
+      "max_edge_stretch": 1.0000000000000515,
+      "max_vertex_displacement_m": 0.1905530386887784,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "ring.1.left-limit",
+      "value": 1.8,
+      "finite": true,
+      "max_edge_stretch": 1.0000000000000597,
+      "max_vertex_displacement_m": 0.1905530386887786,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "ring.2.left-limit",
+      "value": -1.8,
+      "finite": true,
+      "max_edge_stretch": 1.510061668529067,
+      "max_vertex_displacement_m": 0.12793907901851,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "ring.2.left-limit",
+      "value": 1.8,
+      "finite": true,
+      "max_edge_stretch": 1.5100617149775513,
+      "max_vertex_displacement_m": 0.1279390790185099,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "ring.3.left-limit",
+      "value": -1.8,
+      "finite": true,
+      "max_edge_stretch": 1.5100618922049374,
+      "max_vertex_displacement_m": 0.06461070454915803,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "ring.3.left-limit",
+      "value": 1.8,
+      "finite": true,
+      "max_edge_stretch": 1.5100618550756417,
+      "max_vertex_displacement_m": 0.06461070454915786,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "pinky.1.left-limit",
+      "value": -1.8,
+      "finite": true,
+      "max_edge_stretch": 1.0000000000000517,
+      "max_vertex_displacement_m": 0.1905530382396545,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "pinky.1.left-limit",
+      "value": 1.8,
+      "finite": true,
+      "max_edge_stretch": 1.0000000000000595,
+      "max_vertex_displacement_m": 0.19055303823965444,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "pinky.2.left-limit",
+      "value": -1.8,
+      "finite": true,
+      "max_edge_stretch": 1.5100616244191565,
+      "max_vertex_displacement_m": 0.1279390783495832,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "pinky.2.left-limit",
+      "value": 1.8,
+      "finite": true,
+      "max_edge_stretch": 1.510061719703618,
+      "max_vertex_displacement_m": 0.1279390783495834,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "pinky.3.left-limit",
+      "value": -1.8,
+      "finite": true,
+      "max_edge_stretch": 1.510061848095031,
+      "max_vertex_displacement_m": 0.0646107032933652,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "pinky.3.left-limit",
+      "value": 1.8,
+      "finite": true,
+      "max_edge_stretch": 1.5100618598017075,
+      "max_vertex_displacement_m": 0.06461070329336543,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "upper-arm.left-limit",
+      "value": -2.7,
+      "finite": true,
+      "max_edge_stretch": 1.0000000000000782,
+      "max_vertex_displacement_m": 1.6171024793973159,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "upper-arm.left-limit",
+      "value": 2.7,
+      "finite": true,
+      "max_edge_stretch": 1.0000000000000677,
+      "max_vertex_displacement_m": 1.6171024793973159,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "forearm.left-limit",
+      "value": -2.7,
+      "finite": true,
+      "max_edge_stretch": 1.577676565186989,
+      "max_vertex_displacement_m": 0.9166303294895723,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "forearm.left-limit",
+      "value": 2.7,
+      "finite": true,
+      "max_edge_stretch": 1.5776790096388487,
+      "max_vertex_displacement_m": 0.9166303294895726,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "thigh.left-limit",
+      "value": -2.7,
+      "finite": true,
+      "max_edge_stretch": 1.0000000000000455,
+      "max_vertex_displacement_m": 1.8220805351143352,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "thigh.left-limit",
+      "value": 2.7,
+      "finite": true,
+      "max_edge_stretch": 1.0000000000000455,
+      "max_vertex_displacement_m": 1.8220805351143354,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "shin.left-limit",
+      "value": -2.7,
+      "finite": true,
+      "max_edge_stretch": 1.4976140145587318,
+      "max_vertex_displacement_m": 1.0311234435369554,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "shin.left-limit",
+      "value": 2.7,
+      "finite": true,
+      "max_edge_stretch": 1.497617392472461,
+      "max_vertex_displacement_m": 1.0311234435369554,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "eye.left-limit",
+      "value": -0.65,
+      "finite": true,
+      "max_edge_stretch": 1.0000000000000455,
+      "max_vertex_displacement_m": 0.04661910526934964,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "eye.left-limit",
+      "value": 0.65,
+      "finite": true,
+      "max_edge_stretch": 1.0000000000000475,
+      "max_vertex_displacement_m": 0.04661910526934952,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "thumb.1.right-limit",
+      "value": -1.8,
+      "finite": true,
+      "max_edge_stretch": 1.0000000000000495,
+      "max_vertex_displacement_m": 0.19055303813361132,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "thumb.1.right-limit",
+      "value": 1.8,
+      "finite": true,
+      "max_edge_stretch": 1.0000000000000455,
+      "max_vertex_displacement_m": 0.19055303813361132,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "thumb.2.right-limit",
+      "value": -1.8,
+      "finite": true,
+      "max_edge_stretch": 1.5100617130083553,
+      "max_vertex_displacement_m": 0.12793907819164244,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "thumb.2.right-limit",
+      "value": 1.8,
+      "finite": true,
+      "max_edge_stretch": 1.5100616212684492,
+      "max_vertex_displacement_m": 0.12793907819164235,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "thumb.3.right-limit",
+      "value": -1.8,
+      "finite": true,
+      "max_edge_stretch": 1.5100618531064482,
+      "max_vertex_displacement_m": 0.0646107029968588,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "thumb.3.right-limit",
+      "value": 1.8,
+      "finite": true,
+      "max_edge_stretch": 1.5100618449443295,
+      "max_vertex_displacement_m": 0.06461070299685877,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "index.1.right-limit",
+      "value": -1.8,
+      "finite": true,
+      "max_edge_stretch": 1.0000000000000495,
+      "max_vertex_displacement_m": 0.19055303821470318,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "index.1.right-limit",
+      "value": 1.8,
+      "finite": true,
+      "max_edge_stretch": 1.000000000000052,
+      "max_vertex_displacement_m": 0.19055303821470307,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "index.2.right-limit",
+      "value": -1.8,
+      "finite": true,
+      "max_edge_stretch": 1.5100617181282585,
+      "max_vertex_displacement_m": 0.12793907831242074,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "index.2.right-limit",
+      "value": 1.8,
+      "finite": true,
+      "max_edge_stretch": 1.5100616284559933,
+      "max_vertex_displacement_m": 0.12793907831242077,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "index.3.right-limit",
+      "value": -1.8,
+      "finite": true,
+      "max_edge_stretch": 1.5100618582263488,
+      "max_vertex_displacement_m": 0.06461070322359916,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "index.3.right-limit",
+      "value": 1.8,
+      "finite": true,
+      "max_edge_stretch": 1.510061852131875,
+      "max_vertex_displacement_m": 0.06461070322359906,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "middle.1.right-limit",
+      "value": -1.8,
+      "finite": true,
+      "max_edge_stretch": 1.0000000000000455,
+      "max_vertex_displacement_m": 0.19055303813984914,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "middle.1.right-limit",
+      "value": 1.8,
+      "finite": true,
+      "max_edge_stretch": 1.0000000000000469,
+      "max_vertex_displacement_m": 0.19055303813984922,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "middle.2.right-limit",
+      "value": -1.8,
+      "finite": true,
+      "max_edge_stretch": 1.5100617134021923,
+      "max_vertex_displacement_m": 0.12793907820093314,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "middle.2.right-limit",
+      "value": 1.8,
+      "finite": true,
+      "max_edge_stretch": 1.5100616307205703,
+      "max_vertex_displacement_m": 0.1279390782009329,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "middle.3.right-limit",
+      "value": -1.8,
+      "finite": true,
+      "max_edge_stretch": 1.510061853500289,
+      "max_vertex_displacement_m": 0.0646107030143005,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "middle.3.right-limit",
+      "value": 1.8,
+      "finite": true,
+      "max_edge_stretch": 1.51006185439645,
+      "max_vertex_displacement_m": 0.0646107030143002,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "ring.1.right-limit",
+      "value": -1.8,
+      "finite": true,
+      "max_edge_stretch": 1.0000000000000597,
+      "max_vertex_displacement_m": 0.1905530386887784,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "ring.1.right-limit",
+      "value": 1.8,
+      "finite": true,
+      "max_edge_stretch": 1.0000000000000517,
+      "max_vertex_displacement_m": 0.1905530386887786,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "ring.2.right-limit",
+      "value": -1.8,
+      "finite": true,
+      "max_edge_stretch": 1.510061748059993,
+      "max_vertex_displacement_m": 0.12793907901851,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "ring.2.right-limit",
+      "value": 1.8,
+      "finite": true,
+      "max_edge_stretch": 1.5100616354466367,
+      "max_vertex_displacement_m": 0.1279390790185099,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "ring.3.right-limit",
+      "value": -1.8,
+      "finite": true,
+      "max_edge_stretch": 1.5100618881580696,
+      "max_vertex_displacement_m": 0.06461070454915803,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "ring.3.right-limit",
+      "value": 1.8,
+      "finite": true,
+      "max_edge_stretch": 1.510061859122508,
+      "max_vertex_displacement_m": 0.06461070454915786,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "pinky.1.right-limit",
+      "value": -1.8,
+      "finite": true,
+      "max_edge_stretch": 1.0000000000000455,
+      "max_vertex_displacement_m": 0.1905530382396545,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "pinky.1.right-limit",
+      "value": 1.8,
+      "finite": true,
+      "max_edge_stretch": 1.0000000000000517,
+      "max_vertex_displacement_m": 0.19055303823965444,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "pinky.2.right-limit",
+      "value": -1.8,
+      "finite": true,
+      "max_edge_stretch": 1.5100617039500714,
+      "max_vertex_displacement_m": 0.1279390783495832,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "pinky.2.right-limit",
+      "value": 1.8,
+      "finite": true,
+      "max_edge_stretch": 1.5100616401727032,
+      "max_vertex_displacement_m": 0.1279390783495834,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "pinky.3.right-limit",
+      "value": -1.8,
+      "finite": true,
+      "max_edge_stretch": 1.5100618440481657,
+      "max_vertex_displacement_m": 0.0646107032933652,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "pinky.3.right-limit",
+      "value": 1.8,
+      "finite": true,
+      "max_edge_stretch": 1.5100618638485734,
+      "max_vertex_displacement_m": 0.06461070329336543,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "upper-arm.right-limit",
+      "value": -2.7,
+      "finite": true,
+      "max_edge_stretch": 1.0000000000001044,
+      "max_vertex_displacement_m": 1.6171024793973159,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "upper-arm.right-limit",
+      "value": 2.7,
+      "finite": true,
+      "max_edge_stretch": 1.0000000000000595,
+      "max_vertex_displacement_m": 1.6171024793973159,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "forearm.right-limit",
+      "value": -2.7,
+      "finite": true,
+      "max_edge_stretch": 1.5776787015440035,
+      "max_vertex_displacement_m": 0.9166303294895723,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "forearm.right-limit",
+      "value": 2.7,
+      "finite": true,
+      "max_edge_stretch": 1.577678535456448,
+      "max_vertex_displacement_m": 0.9166303294895726,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "thigh.right-limit",
+      "value": -2.7,
+      "finite": true,
+      "max_edge_stretch": 1.0000000000000455,
+      "max_vertex_displacement_m": 1.8220805351143352,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "thigh.right-limit",
+      "value": 2.7,
+      "finite": true,
+      "max_edge_stretch": 1.0000000000000455,
+      "max_vertex_displacement_m": 1.8220805351143354,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "shin.right-limit",
+      "value": -2.7,
+      "finite": true,
+      "max_edge_stretch": 1.4976145482550154,
+      "max_vertex_displacement_m": 1.0311234435369554,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "shin.right-limit",
+      "value": 2.7,
+      "finite": true,
+      "max_edge_stretch": 1.4976173588325972,
+      "max_vertex_displacement_m": 1.0311234435369554,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "eye.right-limit",
+      "value": -0.65,
+      "finite": true,
+      "max_edge_stretch": 1.0000000000000455,
+      "max_vertex_displacement_m": 0.04661910526934964,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "eye.right-limit",
+      "value": 0.65,
+      "finite": true,
+      "max_edge_stretch": 1.0000000000000475,
+      "max_vertex_displacement_m": 0.04661910526934952,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "spine-limit",
+      "value": -0.8,
+      "finite": true,
+      "max_edge_stretch": 1.2819163557685702,
+      "max_vertex_displacement_m": 0.7633493083973425,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "spine-limit",
+      "value": 0.8,
+      "finite": true,
+      "max_edge_stretch": 1.2819163557685702,
+      "max_vertex_displacement_m": 0.7633493083973422,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "chest-limit",
+      "value": -0.8,
+      "finite": true,
+      "max_edge_stretch": 1.3392919973506219,
+      "max_vertex_displacement_m": 0.5842442827237506,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "chest-limit",
+      "value": 0.8,
+      "finite": true,
+      "max_edge_stretch": 1.3392919973506219,
+      "max_vertex_displacement_m": 0.5842442827237504,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "neck-limit",
+      "value": -0.8,
+      "finite": true,
+      "max_edge_stretch": 1.0000000000000455,
+      "max_vertex_displacement_m": 0.4440905568377483,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "neck-limit",
+      "value": 0.8,
+      "finite": true,
+      "max_edge_stretch": 1.0000000000000455,
+      "max_vertex_displacement_m": 0.44409055683774806,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "head-limit",
+      "value": -0.8,
+      "finite": true,
+      "max_edge_stretch": 1.0000000000000455,
+      "max_vertex_displacement_m": 0.3351034332981881,
+      "newly_degenerate_triangles": 0
+    },
+    {
+      "constraint": "head-limit",
+      "value": 0.8,
+      "finite": true,
+      "max_edge_stretch": 1.0000000000000455,
+      "max_vertex_displacement_m": 0.33510343329818787,
+      "newly_degenerate_triangles": 0
+    }
+  ]
+}

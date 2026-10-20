@@ -1,0 +1,63 @@
+{
+  "body-mesh": [
+    "pelvis",
+    "spine",
+    "chest"
+  ],
+  "neck-mesh": [
+    "neck",
+    "chest"
+  ],
+  "leg-front.left": [
+    "upper-leg.front.left",
+    "lower-leg.front.left"
+  ],
+  "leg-front.right": [
+    "upper-leg.front.right",
+    "lower-leg.front.right"
+  ],
+  "leg-rear.left": [
+    "upper-leg.rear.left",
+    "lower-leg.rear.left"
+  ],
+  "leg-rear.right": [
+    "upper-leg.rear.right",
+    "lower-leg.rear.right"
+  ],
+  "leg-middle.left": [
+    "upper-leg.middle.left",
+    "lower-leg.middle.left"
+  ],
+  "leg-middle.right": [
+    "upper-leg.middle.right",
+    "lower-leg.middle.right"
+  ],
+  "tail-mesh": [
+    "tail.1",
+    "tail.2",
+    "tail.3",
+    "tail.4"
+  ],
+  "ear-left": [
+    "ear.left"
+  ],
+  "ear-right": [
+    "ear.right"
+  ],
+  "wing-membrane-left": [
+    "wing-root.left",
+    "wing-tip.left"
+  ],
+  "wing-strut-left": [
+    "wing-root.left",
+    "wing-tip.left"
+  ],
+  "wing-membrane-right": [
+    "wing-root.right",
+    "wing-tip.right"
+  ],
+  "wing-strut-right": [
+    "wing-root.right",
+    "wing-tip.right"
+  ]
+}

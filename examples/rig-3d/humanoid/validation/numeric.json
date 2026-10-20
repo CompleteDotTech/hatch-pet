@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "kind": "hatch-3d-rig-validation",
+  "rig_sha256": "64ce161905c700b026d3def05a1fabf6cc80d32cefbfdebcd05ed85c8dd40151",
+  "ok": true,
+  "metrics": {
+    "hierarchy_cycles": 0,
+    "invalid_joint_references": 0,
+    "bones": 57,
+    "vertices": 3830,
+    "triangles": 7536,
+    "weight_sum_max_error": 2.220446049250313e-16,
+    "bind_pose_max_error_m": 4.440892098500626e-16,
+    "nonfinite_vertices": 0,
+    "max_vertex_displacement_m": 1.0320521315577698,
+    "distinct_sampled_poses": 24,
+    "clips": 6,
+    "contact_tolerance_m": 0.01,
+    "max_contact_error_m": 5.575456304969596e-16,
+    "max_planted_drift_m": 6.71891344611886e-16
+  },
+  "checks": [
+    {
+      "name": "structure",
+      "status": "passed",
+      "message": "Finite acyclic skeleton, geometry and controller graph.",
+      "value": 0
+    },
+    {
+      "name": "skin",
+      "status": "passed",
+      "message": "Every vertex has normalized real bone weights.",
+      "value": 2.220446049250313e-16
+    },
+    {
+      "name": "bind-pose",
+      "status": "passed",
+      "message": "Canonical bind-pose vertex reconstruction (meters).",
+      "value": 4.440892098500626e-16
+    },
+    {
+      "name": "clip:blink-expression",
+      "status": "passed",
+      "message": "Channel evaluation produces finite real mesh positions.",
+      "value": 7
+    },
+    {
+      "name": "clip:crouch",
+      "status": "passed",
+      "message": "Channel evaluation produces finite real mesh positions.",
+      "value": 8
+    },
+    {
+      "name": "clip:neutral",
+      "status": "passed",
+      "message": "Channel evaluation produces finite real mesh positions.",
+      "value": 1
+    },
+    {
+      "name": "clip:reach",
+      "status": "passed",
+      "message": "Channel evaluation produces finite real mesh positions.",
+      "value": 17
+    },
+    {
+      "name": "clip:walk",
+      "status": "passed",
+      "message": "Channel evaluation produces finite real mesh positions.",
+      "value": 9
+    },
+    {
+      "name": "clip:wave",
+      "status": "passed",
+      "message": "Channel evaluation produces finite real mesh positions.",
+      "value": 17
+    },
+    {
+      "name": "key-budget",
+      "status": "passed",
+      "message": "Total authored keyframe budget.",
+      "value": 1452
+    },
+    {
+      "name": "contacts",
+      "status": "passed",
+      "message": "Measured IK endpoint error and planted world-space drift.",
+      "value": 6.71891344611886e-16
+    },
+    {
+      "name": "animated-geometry",
+      "status": "passed",
+      "message": "Acceptance requires executable channels and distinct deformed vertices.",
+      "value": 1.0320521315577698
+    },
+    {
+      "name": "visual-review",
+      "status": "unavailable",
+      "message": "Numerical validation does not establish artistic or anatomical approval.",
+      "value": "pending"
+    }
+  ],
+  "artifacts": [],
+  "created_at": "2026-10-20T10:55:28Z"
+}

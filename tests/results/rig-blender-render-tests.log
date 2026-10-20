@@ -1,0 +1,6 @@
+test_blender_cpu_preview_renders_distinct_transparent_poses (test_rig_interop.RigExternalIntegrationTests.test_blender_cpu_preview_renders_distinct_transparent_poses) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 2.262s
+
+OK
