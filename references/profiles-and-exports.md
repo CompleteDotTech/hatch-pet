@@ -29,7 +29,13 @@ Top-level `validation.require_provenance` must be true; weaker acceptance is uns
 
 Reports include measured values, thresholds, pairwise comparisons, cross-row area measurements, and uncertainty. These are review signals; changed visible surfaces can affect area and color without identity drift. Suspicious ordering uses an adjacent-transition outlier heuristic. None can prove action semantics, direction, identity, or good animation.
 
-`export.formats` supports `frames`, `atlas`, `gif`, `webp` (animated), `browser`, `cards`, `flipbook`, `board`, `stimuli`, `cursor`, and `craft`; `static_state` and `static_frame` select the overall still alternative. Other states use their first frame as their still. `events` maps application event names to stable state IDs.
+`export.formats` supports `frames`, `atlas`, `gif`, `webp` (animated), `browser`, `cards`, `flipbook`, `board`, `stimuli`, `cursor`, and `craft`; `static_state` and `static_frame` select the overall still alternative. Other states default to their first frame. An explicit state `playback.reduced_motion_frame` overrides that state's still selection. `events` maps application event names to stable state IDs. GIF and WebP exports honor loop/once/hold behavior; cross-state completion and event rules execute only in the browser runtime.
+
+## Catalog-generated character profiles
+
+Use `python scripts/hatch.py states` to search canonical states, inspect anatomy/prop requirements, compose packs and compile selected definitions. The [character state library](character-states.md) produces ordinary validated character profiles and separate `.selection.json` evidence. It does not add catalog-only keys to this strict runtime schema. Compiled profiles use `codex_compatible: false`; the fixed Codex consumer still supports exactly its nine original rows.
+
+Preparation discovers an adjacent selection manifest or accepts `--state-selection`. It validates the profile binding and required identity props before creating the run. The original selection becomes hash-bound run evidence and accompanies review, archives and exports. Permitted later profile revisions retain that original selection as historical provenance; exported metadata reports whether the current profile is an exact match. Compile a new selection into a new run when changing state order/membership.
 
 ## Export and preview
 

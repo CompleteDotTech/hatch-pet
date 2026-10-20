@@ -22,6 +22,7 @@ View the canonical reference, labeled contact sheet, and timed playback of every
 - Motion and loop transitions read correctly. Intentional holds may duplicate frames; static profiles may be still. Quiet idle permits low-amplitude breathing/blinking; directional states need a readable facing and gait; jumping needs retained rise/peak/land displacement.
 - State semantics match the profile purpose. In Codex, `running` means active task work, distinct from directional locomotion. `waiting`, `review`, and `failed` must be distinguishable.
 - The selected still frame works for reduced motion. The default uses idle frame zero.
+- For a catalog profile, inspect its selected action phases, expression, orientation, anatomy, prop dependencies and semantic review criteria. The review desk displays these generation requirements. Similar emotions must have the distinct posture, cadence and expression specified; names alone do not prove distinguishable animation. Per-state static alternatives must communicate their intended feedback without motion.
 - Detached effects obey the profile. The Codex profile excludes detached decorations, shadows, text, scenery, dust, glows and trails. Small attached details should survive extraction.
 - A mirrored row preserves identity, asymmetric details, prop side, marks and lighting, and retains temporal order. Only a declared, explicitly approved derivation is valid.
 
@@ -30,3 +31,5 @@ Use `hatch.py review-ui` or `review-template`, then record verdicts and evidence
 ## Reporting boundaries
 
 Fixture reviews test gate behavior only. A fixture receipt cannot establish production artwork quality. Package verification establishes file integrity, not app integration. Do not claim Codex selection, OBS Program output, engine import, device playback, or delivery to a messaging platform unless that integration was actually exercised and separately recorded. Local exports and example event mappings are useful without such a claim.
+
+Catalog records, validated compiled profiles, imported/generated source assets, passing deterministic fixtures and reviewed production animations are separate evidence levels. A catalog selection manifest always records `definitions-only` and `not-performed` production review. The original manifest remains unchanged after generation; actual artwork provenance and current visual review belong to the run/export receipts.

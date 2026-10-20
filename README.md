@@ -107,6 +107,31 @@ python scripts/validate_atlas.py assets/pet/spritesheet.webp
 
 That check does not recreate generation provenance or prove current app integration. New runs use the review and packaging gates described in [the workflow](references/workflow.md).
 
+## Character state library
+
+Build custom character profiles from **416 canonical states across 16 categories**, with 408 aliases, sixteen composable packs, fifteen archetype presets, nine animation recipes and nine event/transition recipes. Discover states by action, emotion, family or tags, inspect their key poses and generation requirements, then compile only the states you need. The fixed Codex atlas above remains byte-for-byte unchanged; additional states are for custom profiles and exported consumers.
+
+```bash
+python scripts/hatch.py states list
+python scripts/hatch.py states search curious
+python scripts/hatch.py states packs
+python scripts/hatch.py states show running-left
+python scripts/hatch.py states compile --selection examples/state-selections/expressive-cat.json --output output/cat-profile.json
+```
+
+Compilation produces a strict runtime profile and a separate hash-bound selection manifest, with state/frame counts, raster resource estimates, baseline model-call estimates, dependencies, substitutions and omissions. It performs no model calls. The ordinary prepare → acquire/import → extract → validate → review → export workflow consumes that profile. The manifest accompanies the run, archive and exported assets.
+
+Use an archetype as a starting point, then match its capabilities to the approved reference. Characters without hands, legs, tails, wings or expressive faces can use explicit alternatives. Required props must also appear in the independently supplied identity contract. Directional variants are generated independently; catalog selection never grants mirroring permission.
+
+Worked selections cover a **cat with 25 expressive states**, a comprehensive coding assistant, a game NPC, an OBS mascot, accessible feedback and a reference-based character studio subset. [Character states](references/character-states.md) documents commands, pack composition, custom definitions, recipes and operational limits. [Validation and acceptance](references/character-state-validation.md) distinguishes definitions, fixture workflows, reviewed production art and external integrations.
+
+```bash
+python scripts/hatch.py states preview curious
+python scripts/demonstrate_states.py --all --output-dir output/state-demos
+```
+
+The first command reports that artwork is unavailable unless you supply an existing run or export. The second builds explicitly synthetic integration fixtures with inspectable browser previews and review desks. It never presents the fixtures as production character performances.
+
 <br>
 
 ## 🎨 Any style, as long as it's pet-safe
@@ -190,6 +215,8 @@ flowchart LR
 | --- | --- |
 | `scripts/hatch.py` | Locked lifecycle, imagegen/import handoffs, identity, review, archives, budgets, packaging and optional install/rollback |
 | `scripts/profile_spec.py` | Validates the single versioned animation contract |
+| `scripts/state_catalog.py` | Searches definitions and packs, checks anatomy/props, and compiles bounded custom profiles and recipes |
+| `scripts/state_selection.py` | Binds original catalog selection evidence to preparation, review and exports |
 | `scripts/prepare_pet_run.py` | Prepares profile-driven prompts, constraints, layout guides and jobs |
 | `scripts/derive_running_left_from_running_right.py` | Compatibility wrapper for approved controller mirroring |
 | `scripts/extract_strip_frames.py` | Conservative slots, shared viewport/scale, masking and hash provenance |
@@ -200,7 +227,8 @@ flowchart LR
 | `scripts/render_animation_previews.py` | Renders one GIF per row so motion can be judged |
 | `scripts/export_assets.py` | Frames, atlas, stills, GIF/WebP and bounded browser state-machine playback |
 | `scripts/asset_exporters.py` | Printable cards, flipbooks, boards, stimuli, Xcursor and craft grids |
-| `scripts/demonstrate.py` | Ten labeled deterministic demonstrations and acceptance checks |
+| `scripts/demonstrate.py` | Original capability demonstrations plus selected character-state fixture workflows |
+| `scripts/demonstrate_states.py` | Five catalog-to-profile import, extraction, review and export demonstrations |
 
 **Design principles**
 
