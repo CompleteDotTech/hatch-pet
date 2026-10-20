@@ -2,6 +2,8 @@
 
 Use Python 3.10+ and Pillow 10.1+. Commands work in PowerShell and POSIX shells. Paths below are local examples. `python scripts/doctor.py` diagnoses missing Pillow before importing the pipeline. Production generation is a handoff to the installed imagegen skill, not an API client.
 
+The `hatch.py` and `state_catalog.py` command-line entrypoints emit UTF-8 on stdout and stderr, including redirected output. Subprocess consumers should decode those streams as UTF-8.
+
 ## Prepare and acquire sources
 
 Discover visual techniques with `python scripts/hatch.py styles`, inspect one with `style --style-preset ID`, and list separate themes with `style-modifiers`. Add `--json` for full metadata. Preparation supports aliases, repeated `--style-modifier` and user refinements through `--style-notes`; inspect [style compatibility](style-catalog.md) before calling imagegen. Every run freezes the selected instructions and catalog version/hash.

@@ -161,7 +161,10 @@ class StatePlaybackRuntime(unittest.TestCase):
         source = (ROOT / 'assets/playback.js').read_text(encoding='utf-8')
         runner = DOM_CLOCK + '\nconst metadata=' + json.dumps(runtime_metadata(profile)) + ';\n'
         runner += 'location.search=' + json.dumps(search) + ';\n' + source + '\n' + script
-        result = subprocess.run([NODE, '-e', runner], text=True, capture_output=True, timeout=20)
+        # Large real catalog recipes exceed Windows' process-argument limit.
+        # Feed the same exported engine and assertions through Node's stdin.
+        result = subprocess.run([NODE, '-'], input=runner, text=True, encoding='utf-8',
+                                capture_output=True, timeout=20)
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
     def test_exact_nine_row_codex_timing_and_legacy_working_event(self):

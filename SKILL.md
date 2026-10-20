@@ -1,6 +1,6 @@
 ---
 name: hatch-pet
-description: Create, import, animate, review and reuse layered 2D casts across scenes, or produce Codex pets and reusable raster sequences. Combine character state packs by anatomy, compile profiles and event recipes, or make process illustrations, product variants, printable frames, pictograms, research stimuli, cursors and craft grids. Uses installed imagegen, versioned cast and clip contracts, deterministic rendering and explicit review. Does not install, publish or certify external integrations implicitly.
+description: Create, import, decompose, animate and review reusable characters, Codex pets or layered 2D casts. Extract source-bound editable components, combine character state packs, compile profiles and event recipes, render scenes, or produce process illustrations, product variants, printable frames, pictograms, research stimuli, cursors and craft grids. Uses installed imagegen, versioned contracts and explicit review. Does not install, publish or certify external integrations implicitly.
 ---
 
 # Hatch Pet
@@ -13,6 +13,7 @@ For a cast performing in scenes, use `scripts/production.py` and the separate pr
 
 - **Generate artwork:** read the installed `$imagegen` skill and use it for every production model call. Hatch-pet has no alternate generation backend. Follow its attachment, transparency, output-display and save-path rules. Only an unreferenced base may be text-only. Every image in a claimed handoff must actually be attached, including original references, canonical identity and the layout guide. Preserve explicit constraints on every retry and repair.
 - **Import existing artwork:** use `import-source` with an explicit origin and ordered image, strip or frame source. Imports never become imagegen output. Validate and visually review them. See [sources and identity](references/sources-and-identity.md) for the complete import-and-review recipe, reference roles and structured identity specification.
+- **Decompose one existing character:** read [character decomposition](references/character-decomposition.md). Use `decompose` for immutable image import, foreground analysis and exact visible-pixel extraction; supply semantic annotations or correct the local review desk. Automatic geometry does not establish component meaning. Preserve unassigned regions, anatomical uncertainty and review status. Enable assisted reconstruction explicitly and retain original extracted pixels; never label inferred artwork as source evidence. Export this format separately from the fixed Codex pet package, and use `decompose-prepare` to carry identity and selected component references into an ordinary generation run.
 - **Develop/test:** use labeled synthetic fixtures. A fixture receipt tests the gate; it is not production artwork acceptance. Never relabel fixtures as user artwork or model output.
 
 Run `python scripts/hatch.py doctor` before unfamiliar workflows; `capabilities` lists bounded interfaces. Use [workflow](references/workflow.md) for lifecycle commands. Unsupported formats, policies and excessive allocations must fail clearly.
@@ -78,6 +79,7 @@ When authorized to delegate, one worker may own one existing generation claim or
 - [Style catalog](references/style-catalog.md): complete IDs, aliases, thematic modifiers, materials, compatibility, frozen specifications and extension schema.
 - [Sources and identity](references/sources-and-identity.md): schemas and complete import recipe.
 - [Extraction and review](references/extraction-and-review.md): annotations, filters, calibration and evidence UI.
+- [Character decomposition](references/character-decomposition.md): reverse image-to-layers workflow, semantic masks, correction, reconstruction, portable packages and forward reuse; includes fixture and real-image acceptance requirements.
 - [Portability and operations](references/portability-and-operations.md): limits, stale work, schema migration, archives and restore.
 - [Playback and extensions](references/playback-and-extensions.md): state-machine and exporter/consumer contracts.
 - [Character states](references/character-states.md): versioned catalog, composable packs, anatomy rules, compilation, selective generation and migration.

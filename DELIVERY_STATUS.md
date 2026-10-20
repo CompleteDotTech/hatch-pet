@@ -8,6 +8,10 @@ The integration repair preserves the merged style catalog and character-state li
 
 The retained-pilot test remains enabled and fails at exact source-inventory verification. Restore the original complete source/audio bundles, verify them with `production_sources.py verify`, and rerun the complete suite before merging. No replacement artwork, synthetic substitute, fabricated review, or skipped pilot check has been introduced.
 
+After integration with main `66b759039a4ce4685d1265750e3ad28f02fd4ee0`, the complete combined Linux suite ran **764 tests in 331.379 seconds**, with **zero test failures, one retained-pilot setup error and two optional capability skips**. Thirteen retained-pilot cases could not start because their original source bundle is incomplete. The skipped capabilities were native Krita and FFmpeg/ffprobe; a separate Windows run passed all five selected movie/PCM/path tests, including actual FFmpeg encoding. Node, actual Chromium playback and decomposition editing ran in the combined suite. Its source copy was byte-verified and unchanged throughout.
+
+The standalone synthetic demonstration successfully rendered and validated all three scenes (300 frames), recorded explicitly synthetic review evidence, and verified reuse. Its performance storyboard was inspected. The archive repair also rejects original ZIP/OpenRaster names that Python would otherwise normalize before validation; targeted Windows and POSIX path checks pass. Generated schemas, compilation and the installed skill metadata validator pass. No native Krita integration or production-art acceptance is claimed.
+
 ## Earlier author validation
 
 The feature branch implements versioned casts, layered components, reusable motion and facial tracks, dialogue and coordinated props, scene/camera contracts, deterministic rendering, local previews, scoped review, dependency tracking, portable archives and an OpenRaster handoff. Existing Codex asset contracts remain unchanged.

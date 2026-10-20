@@ -2,6 +2,10 @@
 
 **Current repair audit:** the historical passing result below used the author's retained assets. A fresh checkout is missing 113 source parts and 39 audio parts, so the retained-pilot setup currently fails. The test has not been disabled. See [current delivery status](../DELIVERY_STATUS.md) for the exact outstanding condition and portability fixes.
 
+The current combined regression against merged main `66b7590` ran 764 tests in 331.379 seconds: zero test failures, one retained-pilot setup error and two optional capability skips. The missing bundle prevented 13 additional pilot tests from starting. Separate Windows checks passed five movie/PCM/path cases, including actual encoding. These results supersede the historical result below for the public branch's present readiness.
+
+## Historical author-environment result
+
 The final local suite ran **299 tests: 298 passed, one skipped, zero failures or errors**. The [exact public test output](../tests/results/production-final-public.log) records the command, UTC interval, test results and the 91 implementation/test/configuration hashes that remained unchanged throughout the run. It contains no production source payload or render/review dependency inventory.
 
 ## What was verified

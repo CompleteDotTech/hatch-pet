@@ -10,6 +10,7 @@ from __future__ import annotations
 import argparse
 import copy
 import json
+import sys
 import re
 from pathlib import Path
 
@@ -1164,4 +1165,7 @@ def main(argv=None):
 
 
 if __name__ == '__main__':
+    for stream in (sys.stdout, sys.stderr):
+        if hasattr(stream, 'reconfigure'):
+            stream.reconfigure(encoding='utf-8')
     raise SystemExit(main())

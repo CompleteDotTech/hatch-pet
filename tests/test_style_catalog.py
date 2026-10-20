@@ -387,8 +387,8 @@ class StyleResolutionTests(unittest.TestCase):
             self.assertNotIn(request['resolved_style']['resolved_id'], {'watercolor', 'flat-vector'})
             self.assertTrue({'watercolour', 'flat-vector'} <= set(request['constraints']['avoid']))
             for path in (root / 'prompts').rglob('*.md'):
-                assert_prompt_instructions(self, path.read_text(), request['resolved_style'])
-                self.assertIn('watercolour', path.read_text())
+                assert_prompt_instructions(self, path.read_text(encoding="utf-8"), request['resolved_style'])
+                self.assertIn('watercolour', path.read_text(encoding="utf-8"))
             rejected = Path(td) / 'rejected'
             with self.assertRaisesRegex(ValueError, 'explicit avoidance'):
                 run_preparer(rejected, 'watercolor', extra=('--avoid', 'watercolour'))
@@ -461,7 +461,7 @@ class StyleResolutionTests(unittest.TestCase):
                 patch.object(registry, '_installed_catalog', return_value=catalog):
             request, _, _ = run_preparer(Path(td) / 'run', new['id'])
             self.assertEqual(request['resolved_style']['style'], new)
-            assert_prompt_instructions(self, (Path(td) / 'run/prompts/base-pet.md').read_text(),
+            assert_prompt_instructions(self, (Path(td) / 'run/prompts/base-pet.md').read_text(encoding="utf-8"),
                                        request['resolved_style'])
 
 
@@ -603,6 +603,19 @@ class ProfileStyleCompatibilityTests(unittest.TestCase):
 
 
 class StyleDiscoveryTests(unittest.TestCase):
+    def test_cli_outputs_utf8_with_a_legacy_host_encoding(self):
+        env = dict(os.environ, PYTHONIOENCODING='cp1252')
+        for arguments in (('styles', '--json'), ('style', '--style-preset', 'watercolor')):
+            with self.subTest(arguments=arguments):
+                result = subprocess.run([sys.executable, str(ROOT / 'scripts/hatch.py'), *arguments],
+                                        capture_output=True, env=env, timeout=30)
+                self.assertEqual(result.returncode, 0, result.stderr.decode('utf-8'))
+                text = result.stdout.decode('utf-8')
+                if arguments[0] == 'styles':
+                    self.assertEqual(json.loads(text)['styles'], registry.load_catalog()['styles'])
+                else:
+                    self.assertIn('Watercolor', text)
+
     def cli(self, *args, good=True):
         result = subprocess.run([sys.executable, str(ROOT / 'scripts/hatch.py'), *args],
                                 capture_output=True, text=True, encoding='utf-8')
@@ -720,7 +733,7 @@ class FrozenStyleLifecycleTests(unittest.TestCase):
             second = hatch.claim(self.root, data, 'jump')
             self.assertEqual(second['resolved_style'], snapshot)
             self.assertIn('row-retries', second['prompt'])
-            assert_prompt_instructions(self, Path(second['prompt']).read_text(), snapshot)
+            assert_prompt_instructions(self, Path(second['prompt']).read_text(encoding="utf-8"), snapshot)
             resumed = hatch.resume(self.root, data)
             self.assertEqual(resumed['claims'][0]['token'], second['token'])
             self.assertEqual(hatch.job_for(data, 'jump')['history'][-1]['resolved_style'], snapshot)
@@ -780,7 +793,7 @@ class FrozenStyleLifecycleTests(unittest.TestCase):
         self.assertEqual(json.loads(result.stdout)['sha256'], snapshot['sha256'])
         self.assertEqual((self.root / 'pet_request.json').read_bytes(), original)
         for path in (self.root / 'prompts').rglob('*.md'):
-            assert_prompt_instructions(self, path.read_text(), snapshot)
+            assert_prompt_instructions(self, path.read_text(encoding="utf-8"), snapshot)
 
     def test_configure_and_generation_profile_revisions_keep_frozen_contract_and_user_constraints(self):
         data = build_run(self.root, validate=False)
@@ -798,7 +811,7 @@ class FrozenStyleLifecycleTests(unittest.TestCase):
             hatch.revise_profile(self.root, data, revised)
         self.assertEqual((self.root / 'pet_request.json').read_bytes(), original)
         for folder in ('rows', 'row-retries'):
-            prompt = (self.root / f'prompts/{folder}/jump.md').read_text()
+            prompt = (self.root / f'prompts/{folder}/jump.md').read_text(encoding="utf-8")
             assert_prompt_instructions(self, prompt, snapshot)
             for value in ('red body', 'glitter', 'Retain the left ear', '#0000FF', 'original approved landing pose'):
                 self.assertIn(value, prompt)
@@ -838,7 +851,7 @@ class FrozenStyleLifecycleTests(unittest.TestCase):
             preparation.regenerate_prompts(self.root, request, load_profile(), request['extraction'], include_base=True)
         self.assertEqual((self.root / 'pet_request.json').read_bytes(), original)
         for path in (self.root / 'prompts').rglob('*.md'):
-            self.assertIn(request['style_contract'], path.read_text())
+            self.assertIn(request['style_contract'], path.read_text(encoding="utf-8"))
 
     def test_historical_controller_manifest_without_style_metadata_still_resumes(self):
         hatch.prepare(self.root, argparse.Namespace(replace_inputs=False, fixture_mode=True,
@@ -883,7 +896,7 @@ class FrozenStyleLifecycleTests(unittest.TestCase):
             with Image.open(source) as before, Image.open(self.root / job['output_path']) as after:
                 self.assertEqual(before.convert('RGBA').tobytes(), after.convert('RGBA').tobytes())
             if name == 'base':
-                prompt = (self.root / 'prompts/rows/rest.md').read_text().lower()
+                prompt = (self.root / 'prompts/rows/rest.md').read_text(encoding="utf-8").lower()
                 self.assertIn('import', prompt)
                 hatch.record_base_review(self.root, data, 'Synthetic imported base review gate exercise only.', True)
         hashes = {j['id']: hatch.digest(self.root / j['output_path']) for j in data['jobs']}

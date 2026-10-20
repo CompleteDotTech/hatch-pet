@@ -1,4 +1,4 @@
 interface:
   display_name: "Hatch Pet"
-  short_description: "Compose character states and animate reusable 2D casts"
-  default_prompt: "Use $hatch-pet to select state packs, create or import a layered cast, plan and animate performances, render scenes, and record exact review evidence before exporting."
+  short_description: "Build reusable characters, states and 2D scenes"
+  default_prompt: "Use $hatch-pet to select state packs, create, import or decompose characters, animate a layered cast, render scenes, and review exact artifacts before exporting."

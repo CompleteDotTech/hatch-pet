@@ -4,6 +4,12 @@ from pathlib import Path
 import shutil
 
 
+def build_decomposition_review(root, destination):
+    """The same offline, bound-receipt review desk for reverse character work."""
+    from decomposition_review import build_review as build_decomposition
+    return build_decomposition(root, destination)
+
+
 def build_review(root, data, destination):
     import hatch
     from export_assets import export_assets
