@@ -56,7 +56,68 @@ def _manifest(pilot):
 
 def _same_file(path, record):
     return (path.is_file() and not path.is_symlink()
+            and path.stat().st_size == record['bytes']
             and sources._hash_bounded(path, record['bytes']) == record['sha256'])
+
+
+def _model_differences(pilot, project, records):
+    """Expose bounded byte/pixel diagnostics without accepting a changed model."""
+    from PIL import Image, features
+
+    def first_difference(expected, actual, at='$'):
+        if type(expected) is not type(actual):
+            return {'field': at, 'expected': expected, 'actual': actual}
+        if isinstance(expected, dict):
+            if set(expected) != set(actual):
+                return {'field': at, 'expected_keys': sorted(expected), 'actual_keys': sorted(actual)}
+            for key in sorted(expected):
+                found = first_difference(expected[key], actual[key], at + '.' + key)
+                if found is not None:
+                    return found
+        elif isinstance(expected, list):
+            if len(expected) != len(actual):
+                return {'field': at, 'expected_length': len(expected), 'actual_length': len(actual)}
+            for number, (left, right) in enumerate(zip(expected, actual)):
+                found = first_difference(left, right, at + '[' + str(number) + ']')
+                if found is not None:
+                    return found
+        elif expected != actual:
+            return {'field': at, 'expected': expected, 'actual': actual}
+        return None
+
+    def references(value):
+        if isinstance(value, dict):
+            if isinstance(value.get('path'), str) and isinstance(value.get('sha256'), str):
+                yield value
+            for child in value.values():
+                yield from references(child)
+        elif isinstance(value, list):
+            for child in value:
+                yield from references(child)
+
+    changed, images = [], {}
+    for record in records:
+        path = sources._path(project, record['path'])
+        if _same_file(path, record):
+            continue
+        expected, actual = _read(sources._path(pilot, record['path'])), _read(path)
+        changed.append({'path': record['path'], 'expected_sha256': record['sha256'],
+                        'actual_sha256': sources._hash_bounded(path, path.stat().st_size),
+                        'first_difference': first_difference(expected, actual)})
+        for reference in references(expected):
+            relative = reference['path']
+            if not relative.endswith('.png') or relative in images or len(images) >= 8:
+                continue
+            image_path = sources._path(project, relative)
+            if not image_path.is_file():
+                continue
+            digest = sources._hash_bounded(image_path, image_path.stat().st_size)
+            if digest != reference['sha256']:
+                with Image.open(image_path) as image:
+                    rgba = image.convert('RGBA')
+                    images[relative] = {'expected_sha256': reference['sha256'], 'actual_sha256': digest,
+                        'size': list(rgba.size), 'rgba_sha256': hashlib.sha256(rgba.tobytes()).hexdigest()}
+    return {'files': changed, 'images': images, 'pillow_zlib': features.version('zlib')}
 
 
 def _bundle_bytes(bundle, index, relative):
@@ -183,10 +244,10 @@ def restore_pilot(pilot, destination):
         from production_demo import build_pilot
         from production_contracts import load_project
         built = build_pilot(project)
-        for item in manifest['project_files']:
-            if not _same_file(sources._path(project, item['path']), item):
-                raise ValueError('reconstructed model differs from the retained project: ' + item['path']
-                                 + '; install requirements-delivery.txt for the recorded raster environment')
+        differences = _model_differences(pilot, project, manifest['project_files'])
+        if differences['files']:
+            raise ValueError('reconstructed model differs from the retained project; '
+                             + json.dumps(differences, sort_keys=True))
         for item in manifest['supporting_files']:
             target = sources._path(project, item['path'])
             if target.exists():

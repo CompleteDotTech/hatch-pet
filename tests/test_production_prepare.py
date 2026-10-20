@@ -104,7 +104,7 @@ class ProductionPrepareTests(unittest.TestCase):
         self.assertEqual(before, snapshot(self.root))
 
     def test_input_created_after_preflight_is_not_overwritten(self):
-        identity = self.root / 'milo-identity.json'
+        identity = (self.root / 'milo-identity.json').resolve()
         original_open = Path.open
 
         def concurrent_open(path, mode='r', *args, **kwargs):
@@ -154,7 +154,7 @@ class ProductionPrepareTests(unittest.TestCase):
                 manifest = hatch.manifest(destination)
                 request = hatch.read(destination / 'pet_request.json')
                 profile = hatch.read(destination / 'profile.json')
-                self.assertEqual(str(destination), result['run'])
+                self.assertEqual(str(destination.resolve()), result['run'])
                 self.assertIsNone(result['previous'])
                 self.assertEqual(result['run_id'], manifest['run_id'])
                 self.assertFalse(manifest['fixture_mode'])

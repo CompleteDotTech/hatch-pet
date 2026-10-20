@@ -496,7 +496,7 @@ class ProductionWorkflowTests(unittest.TestCase):
         destination = self.home / 'clone'
         output = self.home / 'created.json'
         stdout = self.run_cli('create', '--from-project', self.root, '--destination', destination, '--output', output)
-        self.assertEqual(stdout, {'output': str(output)})
+        self.assertEqual(stdout, {'output': str(output.resolve())})
         report = hatch.read(output)
         self.assertTrue(report['identity_preserved'])
         self.assertEqual(workflow.dependency_snapshot(destination), workflow.dependency_snapshot(self.root))

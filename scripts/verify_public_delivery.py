@@ -210,17 +210,17 @@ def main():
         print('Verifying all public bundles, provenance and historical evidence.', flush=True)
         report['inventory'] = verify_delivery(PILOT)
         write_json(report_path, report)
+        print('Restoring the production project and verifying portable archive roundtrip.', flush=True)
+        project = destination / 'project'
+        report['restoration'] = restore_pilot(PILOT, project)
+        report['archive'] = archive_roundtrip(project, destination)
+        write_json(report_path, report)
         if args.tests:
             print('Running the complete regression suite; detailed progress is in tests.log.', flush=True)
             report['tests'] = run_tests(destination)
             write_json(report_path, report)
             if not report['tests']['ok']:
                 raise ValueError('required regression failed or skipped; inspect report.json and tests.log')
-        print('Restoring the production project and verifying portable archive roundtrip.', flush=True)
-        project = destination / 'project'
-        report['restoration'] = restore_pilot(PILOT, project)
-        report['archive'] = archive_roundtrip(project, destination)
-        write_json(report_path, report)
         if args.render:
             def checkpoint(scenes):
                 report['scenes'] = scenes
