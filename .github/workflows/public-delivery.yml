@@ -1,0 +1,87 @@
+name: Public production delivery
+
+on:
+  push:
+    branches: [main, 'fix/public-production-delivery']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: public-delivery-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  delivery:
+    name: Delivery (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
+    env:
+      PYTHONUTF8: '1'
+      HATCH_DECOMPOSITION_BROWSER_TEST: '1'
+    steps:
+      - name: Fresh public checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Recorded Python raster environment
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: '3.12'
+      - name: Install declared dependencies and actual Chromium
+        run: |
+          python -m pip install -r requirements-delivery.txt
+          python -m playwright install --with-deps chromium
+      - name: Install FFmpeg on Linux if absent
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          if ! command -v ffmpeg >/dev/null || ! command -v ffprobe >/dev/null; then
+            sudo apt-get update
+            sudo apt-get install -y ffmpeg
+          fi
+      - name: Install FFmpeg on macOS if absent
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          if ! command -v ffmpeg >/dev/null || ! command -v ffprobe >/dev/null; then
+            brew install ffmpeg
+          fi
+      - name: Install FFmpeg on Windows if absent
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          if (!(Get-Command ffmpeg -ErrorAction SilentlyContinue) -or !(Get-Command ffprobe -ErrorAction SilentlyContinue)) {
+            choco install ffmpeg --no-progress -y
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          }
+      - name: Required runtime versions
+        run: |
+          python --version
+          node --version
+          git --version
+          ffmpeg -version
+          ffprobe -version
+      - name: Verify inventory, all regressions, reconstruction, both films and editor handoffs
+        run: python scripts/verify_public_delivery.py --destination delivery-verification --tests --render --video
+      - name: Retain actual validation evidence
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: public-delivery-${{ runner.os }}-${{ github.sha }}
+          if-no-files-found: error
+          retention-days: 30
+          path: |
+            delivery-verification/report.json
+            delivery-verification/tests.log
+            delivery-verification/portable-project.zip
+            delivery-verification/evidence/
+            delivery-verification/editor-handoffs/*/handoff.json
+            delivery-verification/editor-handoffs/*/drawings/

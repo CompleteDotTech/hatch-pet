@@ -5,6 +5,7 @@ import tempfile
 import unittest
 
 from fixture_workflow import build_run, hatch
+from browser_runtime import launch_chromium
 
 
 @unittest.skipUnless(importlib.util.find_spec('playwright'), 'optional local Playwright is not installed')
@@ -18,10 +19,7 @@ class BrowserExportTests(unittest.TestCase):
             hatch.export(root, data, exported)
             metadata = hatch.read(exported / 'animation.json')
             with sync_playwright() as runtime:
-                try:
-                    browser = runtime.chromium.launch(headless=True)
-                except Exception as exc:
-                    self.skipTest('local Chromium is unavailable: ' + str(exc).splitlines()[0])
+                browser = launch_chromium(runtime)
                 try:
                     page = browser.new_page(reduced_motion='no-preference')
                     errors = []

@@ -215,7 +215,30 @@ The production workflow adds versioned projects and casts, layered character con
 
 Start with the [production recipe](references/production-pilot.md) to restore the exact artwork and original speech, reconstruct the editable project, render both scenes, inspect them, review changes and export the editor handoff. The [demonstration index](examples/production-pilot/README.md) separates source provenance, actual artwork inspection, offline timing, adapter verification and application integration. [Public validation summary](references/production-public-validation.md) records the current results and limitations; [P01–P15 traceability](references/production-traceability.md) maps the requirements to code, tests and evidence.
 
-**Current delivery limitation:** the prior author reported local validation of both films and the complete project, but the public source and audio transports remain incomplete and the review-history index is absent. Fresh-clone reconstruction requires the original missing payload; [delivery status](DELIVERY_STATUS.md) records the current repair audit and recovery requirements. The synthetic workflow below uses no model calls or pilot media.
+The delivery contains the original artwork, original speech, the unmodified 20-record assistant review history, and its hash-verified supporting inspection images. [Delivery status](DELIVERY_STATUS.md) records recovery, publication and validation separately. The four source transports are ordinary Git files; Git LFS, private storage and a model account are unnecessary for reconstruction.
+
+From a fresh clone, use Python 3.12 and a **new** destination:
+
+```bash
+python -m pip install -r requirements-delivery.txt
+python scripts/production_sources.py verify-delivery
+python scripts/production_sources.py restore-pilot --destination output/milo-luma
+python scripts/production.py validate --project output/milo-luma
+python scripts/production.py render --project output/milo-luma --scene seed-exchange --destination output/milo-luma/renders/seed-exchange
+python scripts/production.py render --project output/milo-luma --scene garden-promise --destination output/milo-luma/renders/garden-promise
+python -m http.server 8765 --bind 127.0.0.1 --directory output/milo-luma
+```
+
+Open `/renders/seed-exchange/preview.html` or `/renders/garden-promise/preview.html` on the local server. Add `--video` to a render command when FFmpeg and ffprobe are installed. Original acquisition records and speech bytes are preserved; missing originals fail instead of triggering new synthesis. Historical assistant decisions are not human signoff or automatic acceptance of a changed renderer.
+
+The complete delivery gate runs every regression, restores a portable archive, renders all 696 frames and both PCM masters, verifies unchanged-frame reuse, and exports both editor handoffs:
+
+```bash
+python -m playwright install --with-deps chromium
+python scripts/verify_public_delivery.py --destination delivery-verification --tests --render --video
+```
+
+This gate requires Git, Node, Chromium, FFmpeg and ffprobe. Native Krita is optional and reported separately. The [validation reference](references/production-public-validation.md) explains strict skip accounting and retained reports. Windows, Linux and macOS use the same commands and pinned dependencies.
 
 For a complete model-free regression demonstration:
 

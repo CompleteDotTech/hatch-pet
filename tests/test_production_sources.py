@@ -112,18 +112,25 @@ class ProductionSourcesTests(unittest.TestCase):
         for name, data in payloads.items():
             (original / name).write_bytes(data)
         expected, bundles = {}, []
-        for name in ('source-bundle', 'audio-source-bundle', 'reviews-source-bundle'):
+        for name in ('source-bundle', 'audio-source-bundle', 'reviews-source-bundle', 'evidence-source-bundle'):
             bundle = checkout / 'examples/production-pilot' / name
             sources.create_source_bundle(original, list(payloads), bundle,
                 fixture=True, origin='Synthetic Git checkout fixture.', provenance_paths=['receipt.json'])
             index = json.loads((bundle / sources.SOURCE_INDEX).read_text(encoding="utf-8"))
             bundles.append(bundle)
+            index_path = bundle / sources.SOURCE_INDEX
+            expected[index_path.relative_to(checkout).as_posix()] = index_path.read_bytes()
             for part in index['parts']:
                 path = bundle / part['path']
                 relative = path.relative_to(checkout).as_posix()
                 data = path.read_bytes()
                 self.assertEqual(part['path'], 'parts/' + hashlib.sha256(data).hexdigest() + '.bin')
                 expected[relative] = data
+        for name in ('delivery-manifest.json', 'evidence/inspection-and-repairs.md', 'evidence/review.json'):
+            path = checkout / 'examples/production-pilot' / name
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(b'Original metadata line one\nLine two\n')
+            expected[path.relative_to(checkout).as_posix()] = path.read_bytes()
         self.assertTrue(any(len(data) == sources.MAX_PART_BYTES and data.endswith(b'\t\n')
                             for data in expected.values()))
         control = checkout / 'unprotected-control.txt'
@@ -141,7 +148,8 @@ class ProductionSourcesTests(unittest.TestCase):
             with self.subTest(path=relative, phase='checkout'):
                 actual = (checkout / relative).read_bytes()
                 self.assertEqual(actual, data)
-                self.assertEqual(Path(relative).stem, hashlib.sha256(actual).hexdigest())
+                if Path(relative).suffix == '.bin':
+                    self.assertEqual(Path(relative).stem, hashlib.sha256(actual).hexdigest())
         for bundle in bundles:
             with self.subTest(bundle=bundle.name):
                 verified = sources.verify_source_bundle(bundle)
@@ -287,6 +295,60 @@ class ProductionSourcesTests(unittest.TestCase):
                                          fixture=True, origin='Synthetic source mutation gate.')
         self.assertFalse(destination.exists())
         self.assertFalse(list(self.home.glob('.hatch-source-parts-*')))
+
+    def test_windows_reserved_names_controls_and_case_aliases_fail_on_every_host(self):
+        original = self.read()
+        for relative in ('CON', 'dir/NUL.txt', 'aux.png', 'com1.wav', 'LPT².txt',
+                         'trailing.', 'trailing ', 'dir/bad?.png', 'dir/bad\x00.png', 'dir/bad\n.png'):
+            value = copy.deepcopy(original)
+            value['files'][0]['path'] = relative
+            self.write(value)
+            with self.subTest(path=relative), self.assertRaisesRegex(ValueError, 'portable'):
+                sources.restore_source_bundle(self.index, self.home / 'restored')
+            self.assert_no_destination()
+        for first, second in [('Art/a.png', 'art/b.png'), ('same', 'SAME'),
+                              ('caf\u00e9.png', 'cafe\u0301.png'), ('Parent', 'parent/child')]:
+            value = copy.deepcopy(original)
+            value['files'][0]['path'], value['files'][1]['path'] = first, second
+            self.write(value)
+            with self.subTest(paths=(first, second)), self.assertRaisesRegex(ValueError, 'alias'):
+                sources.restore_source_bundle(self.index, self.home / 'restored')
+            self.assert_no_destination()
+
+    def test_destination_appearing_during_staging_is_preserved(self):
+        destination = self.home / 'restored'
+        original_copy = sources._copy_and_verify
+        def other_writer(*args, **kwargs):
+            original_copy(*args, **kwargs)
+            destination.mkdir()
+            (destination / 'keep.txt').write_bytes(b'Independent writer')
+        with patch.object(sources, '_copy_and_verify', side_effect=other_writer):
+            with self.assertRaisesRegex(ValueError, 'must not exist'):
+                sources.restore_source_bundle(self.index, destination)
+        self.assertEqual((destination / 'keep.txt').read_bytes(), b'Independent writer')
+        self.assertFalse(list(self.home.glob('.hatch-source-restore-*')))
+
+    def test_index_symlink_cannot_hide_an_external_inventory(self):
+        outside = self.home / 'outside-index.json'
+        self.index.rename(outside)
+        self.index.symlink_to(outside)
+        with self.assertRaisesRegex(ValueError, 'symlink'):
+            sources.verify_source_bundle(self.parts)
+
+    def test_empty_destination_racing_the_atomic_publish_is_never_replaced(self):
+        destination = self.home / 'restored'
+        original_publish = sources._rename_no_replace
+        created = []
+        def race(stage, target):
+            target.mkdir()
+            created.append(target.stat().st_ino)
+            return original_publish(stage, target)
+        with patch.object(sources, '_rename_no_replace', side_effect=race):
+            with self.assertRaises(FileExistsError):
+                sources.restore_source_bundle(self.index, destination)
+        self.assertEqual(destination.stat().st_ino, created[0])
+        self.assertEqual(list(destination.iterdir()), [])
+        self.assertFalse(list(self.home.glob('.hatch-source-restore-*')))
 
     def test_empty_selected_file_is_preserved_without_invented_parts(self):
         empty = self.original / 'empty.txt'

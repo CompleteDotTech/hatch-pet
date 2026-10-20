@@ -1,29 +1,48 @@
-# Public production validation summary
+# Public production validation
 
-**Current repair audit:** the historical passing result below used the author's retained assets. A fresh checkout is missing 113 source parts and 39 audio parts, so the retained-pilot setup currently fails. The test has not been disabled. See [current delivery status](../DELIVERY_STATUS.md) for the exact outstanding condition and portability fixes.
+## Current delivery contract
 
-The current combined regression against merged main `66b7590` ran 764 tests in 331.379 seconds: zero test failures, one retained-pilot setup error and two optional capability skips. The missing bundle prevented 13 additional pilot tests from starting. Separate Windows checks passed five movie/PCM/path cases, including actual encoding. These results supersede the historical result below for the public branch's present readiness.
+The October 20 recovery restored every missing artwork/audio fragment and the original review index from preservation commit `ebdb5d64a0d36e6a2fd6fbf5cb574fc6968f4404`. The [recovery audit](public-asset-recovery.json) records exact object identities and bytes. [Delivery status](../DELIVERY_STATUS.md) records publication and merge state independently of local implementation.
 
-## Historical author-environment result
+`production_sources.py verify-delivery` verifies all 63 logical transported files, 370 unique transport parts, four original imagegen acquisitions, five original speech recordings, 20 historical assistant decisions and all 13 distinct referenced supporting artifacts. The four bundle index hashes are pinned in [delivery-manifest.json](../examples/production-pilot/delivery-manifest.json). Ten historical inspection PNGs match their pre-existing hashes; no new artistic decision is inferred.
 
-The final local suite ran **299 tests: 298 passed, one skipped, zero failures or errors**. The [exact public test output](../tests/results/production-final-public.log) records the command, UTC interval, test results and the 91 implementation/test/configuration hashes that remained unchanged throughout the run. It contains no production source payload or render/review dependency inventory.
+## Reproduce the complete gate
 
-## What was verified
+Use a fresh clone, Python 3.12, Git, Node, FFmpeg/ffprobe, and the pinned dependencies:
 
-The fresh original baseline passed all 123 cases. The final full run, after the acquisition-input preservation and Git transport portability fixes, retained all 123 passes and completed all 11 actual-browser tests, all 13 retained-pilot tests, and all 11 new preparation-preservation tests. The complete suite took 160.239 seconds under unittest and exited successfully. The actual browser was Chrome 155.0.8059.84; Python was 3.12.14 and Pillow 13.0.0.
+```bash
+python -m pip install -r requirements-delivery.txt
+python -m playwright install --with-deps chromium
+python scripts/verify_public_delivery.py --destination delivery-verification --tests --render --video
+```
 
-The only skip was the unavailable Krita application. Structural and pixel-roundtrip tests of the OpenRaster handoff passed independently. Neither those tests nor browser playback constitute a verified native editor timeline integration or human production-art acceptance.
+The destination must not exist. Unset `HATCH_PRODUCTION_PILOT` and `HATCH_PRODUCTION_PILOT_ROOT`; the runner refuses private-source overrides. `HATCH_BROWSER_EXECUTABLE` may identify an already installed compatible Chromium executable. Browser launch failures remain failures. Native Krita may be supplied through `HATCH_KRITA_EXECUTABLE`; it is the only optional application integration. Windows additionally reports its unavailable POSIX named-pipe test as platform-inapplicable.
 
-The preservation fix rejects existing acquisition destinations, sibling input collisions, symlinks and recovery journals before writes; exclusive creation and ownership-aware cleanup preserve other writers' data. Its eleven regressions exercise both failures and real model-free preparation for new characters.
+The command checks:
 
-The final Git transport regression exercises all three content-addressed bundle paths with `core.autocrlf=true`. It checks exact index blobs, actual checkout bytes, part hashes and complete bundle verification, while an unprotected text control proves conversion is active. The repository marks only those immutable `.bin` fragments as binary. A separate isolated negative control without the copied attributes failed as expected; no original payload was reformatted.
+1. Every fragment, assembled source, pinned project file, acquisition receipt and historical evidence hash.
+2. The complete regression suite, including legacy Codex atlas, styles, character states, decomposition, actual Chromium playback, retained production art, malicious transports and FFmpeg.
+3. Full two-character/20-clip reconstruction with original speech and the unmodified review ledger.
+4. Portable project archive/restore, preserving every review record and explicitly appending the restore event.
+5. Both complete 640×360 RGBA films at 12 fps: 432 frames/36 seconds and 264 frames/22 seconds, with 1,728,000 and 1,056,000 audio sample frames at 48 kHz.
+6. Repeated rendering that reuses every verified frame and preserves the complete manifest and frame hashes.
+7. Actual H.264/AAC stream/frame/timing validation when `--video` is requested, and complete PNG/WAV/OpenRaster editor handoffs with pixel-exact drawing roundtrips.
+8. An unchanged checkout throughout the run, recorded by per-file SHA-256 rather than an uncommitted tree being represented solely by its base commit.
 
-## Compatibility and migration
+`report.json` contains structured results, exact input hashes, scene frame hashes, audio hashes, test counts and any errors. `tests.log` preserves the actual regression output. `portable-project.zip`, `evidence/`, `project/renders/` and `editor-handoffs/` contain inspectable artifacts. An interrupted or failed run retains its partial report and exits unsuccessfully.
 
-The default Codex profile, state order, frames, millisecond timing, dimensions, transparency and package compatibility remain unchanged. Production projects use a separate versioned project/cast/clip/scene contract with integer-frame or rational timing. Existing pet runs remain pet runs; migration and archive restoration retain identities and history and report stale dependencies. No live installation, settings change or WSL shutdown was performed.
+`--compact` validates every frame and PCM sample duration, saves reports/storyboards/movies and one real layered production drawing per scene, then removes completed frame trees. It reports `complete_delivery_gate: false` because the complete editor handoffs belong to normal mode. CI always uses normal mode on Linux, Windows and macOS.
 
-## Public delivery boundary
+## Current execution evidence
 
-See [delivery status](../DELIVERY_STATUS.md). Automatic approval review has blocked further production media and derived evidence publication. The complete local project, demonstrations, reviews and detailed reports are retained, but the public source transports remain incomplete. Consequently this local passing result is not a claim that a fresh public clone can restore the pilot or pass its retained-source tests yet. The pull request must remain unmerged until the publication blocker is resolved and the complete public snapshot is verified.
+The frozen local regression ran **786 tests in 267.596 seconds**, with **zero failures, zero errors and one native Krita skip**. Its [actual log](../tests/results/public-delivery-local-tests.log) and [input hashes/report](../tests/results/public-delivery-local.json) are retained. After that run, the added checkpoint-preservation regression passed with all six delivery tests, and all 17 transport cases passed, including all four bundles and pinned metadata under forced Git newline conversion. These targeted logs are also retained in `tests/results/`.
 
-A [synthetic demonstration](../examples/production-fixture/README.md) remains reproducible without model calls or pilot media. The detailed local production validation and traceability reports distinguish fixture metrics, actual assistant visual decisions, offline timing, adapter roundtrips and unavailable external integration. Those detailed records are held with the blocked evidence rather than republished through this summary.
+The earlier sandbox-only integration exposed Chromium kernel restrictions and one legacy review invalidated by concurrent source edits. Those issues were resolved for the frozen 786-test pass above; required browser checks were not skipped. The following render attempt exhausted the shared workstation disk while writing scene audio. A later full-gate attempt was also interrupted by shared disk exhaustion. Atomic report replacement now preserves the previous checkpoint on a failed write. The final complete **787-test**, layered-render and editor-handoff gate remains required on fresh CI runners before merge; no disk failure is classified as an optional skip.
+
+## Historical records remain historical
+
+The original author-environment result was **299 tests: 298 passed and one native Krita skip**, with its exact log at [production-final-public.log](../tests/results/production-final-public.log). The earlier integration repair ran 764 tests with one missing-pilot setup error. These records describe their own checkouts and do not establish the current public branch's readiness.
+
+[Original production validation](production-validation.md), [P01–P15 traceability](production-traceability.md), and the recovered `examples/production-pilot/evidence/` records preserve original inspection outcomes, repair notes and limits. They are not rewritten to confer current acceptance. The 20 retained reviews identify `assistant:/root`; human review remains false. New renderer evidence, assistant artistic inspection, auditory listening and external editor execution are separate claims.
+
+The default Codex profile, state order, frame counts, millisecond timings, dimensions, transparency, package/install behavior and state/style catalogs remain under their existing regression contracts. No live pet installation or application settings change is part of this delivery.
