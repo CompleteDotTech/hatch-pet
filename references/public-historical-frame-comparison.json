@@ -1,0 +1,25 @@
+{
+  "kind": "historical-production-frame-comparison",
+  "fixture": false,
+  "new_approval_recorded": false,
+  "source_run": "https://github.com/CompleteDotTech/hatch-pet/actions/runs/39405174981",
+  "revision": "3b5955cf3ea75e40b8e46562d9ff7c532721ea03",
+  "historical_ledger_sha256": "cce42c52460d4525f18eb00f7525f8df8d99ebda9e31b3d875dccba6d93220d4",
+  "scenes": [
+    {
+      "id": "seed-exchange",
+      "manifest_sha256": "4a6d5bef2a90a387fa41c564bcd568d7d7c9e8fc454cdf58985787171426bf95",
+      "frame_count": 432,
+      "exact_historical_frame_matches": 432,
+      "frame_mismatches": []
+    },
+    {
+      "id": "garden-promise",
+      "manifest_sha256": "2035d9699c0e59315f189fe017090ab71fcfbe8e9fa8ecc6febfa76404558f32",
+      "frame_count": 264,
+      "exact_historical_frame_matches": 264,
+      "frame_mismatches": []
+    }
+  ],
+  "scope": "Exact frame-byte comparison against the pre-existing final shot review dependencies. New environment/renderer manifests do not inherit historical approval; visual sampling and automated render checks are separate evidence."
+}

@@ -217,6 +217,8 @@ Start with the [production recipe](references/production-pilot.md) to restore th
 
 The delivery contains the original artwork, original speech, the unmodified 20-record assistant review history, and its hash-verified supporting inspection images. [Delivery status](DELIVERY_STATUS.md) records recovery, publication and validation separately. The five source transports are ordinary Git files; Git LFS, private storage and a model account are unnecessary for reconstruction.
 
+Watch the public [36-second seed-exchange MP4](examples/production-pilot/media/seed-exchange.mp4) and [22-second garden-promise MP4](examples/production-pilot/media/garden-promise.mp4), or inspect their [storyboards and layered drawings](examples/production-pilot/README.md#completed-films-and-inspectable-outputs). These are actual verified public-CI renders of the retained production artwork.
+
 From a fresh clone, use Python 3.12 and a **new** destination:
 
 ```bash

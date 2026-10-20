@@ -38,7 +38,7 @@ def _manifest(pilot):
             or value.get('fixture') is not False or value.get('project_id') != 'milo-luma-pilot'
             or set(value.get('bundles', {})) != set(BUNDLES)):
         raise ValueError('unsupported or incomplete public production delivery manifest')
-    for section in ('project_files', 'supporting_files'):
+    for section in ('project_files', 'supporting_files', 'public_files'):
         items = value.get(section)
         if not isinstance(items, list) or not 1 <= len(items) <= sources.MAX_FILES:
             raise ValueError('delivery requires a bounded ' + section + ' inventory')
@@ -188,6 +188,10 @@ def verify_delivery(pilot):
             raise ValueError('public metadata differs from its immutable source transport')
         originals[item['path']] = item
 
+    for item in manifest['public_files']:
+        if not _same_file(sources._path(pilot, item['path']), item):
+            raise ValueError('pinned public demonstration file differs: ' + item['path'])
+
     # Every dependency in the original serialized model must resolve to exact
     # transported bytes, including its original derived PNG and padded PCM files.
     from production_contracts import _walk_refs
@@ -232,6 +236,7 @@ def verify_delivery(pilot):
             'version': manifest['version'], 'fixture': False, 'bundles': reports,
             'acquisitions': acquisitions, 'original_audio_recordings': 5,
             'history': {**history, 'supporting_evidence_files': len(evidence), 'evidence_verified': True},
+            'public_files_verified': len(manifest['public_files']),
             'provider_called': False, 'tts_called': False, 'visual_review_performed': False,
             'new_approval_recorded': False,
             'scope': 'Original byte integrity, provenance and historical evidence; current render acceptance remains separately scoped.'}

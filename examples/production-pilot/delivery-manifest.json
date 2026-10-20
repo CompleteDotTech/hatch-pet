@@ -175,6 +175,43 @@
     }
   ],
   "project_id": "milo-luma-pilot",
+  "public_files": [
+    {
+      "bytes": 372456,
+      "path": "media/garden-promise-frame-144.ora",
+      "sha256": "356ca2bb57294ea8e57b1d6c9ba32f198865d97ba6b9a14ddf46ce3d8295bda0"
+    },
+    {
+      "bytes": 654462,
+      "path": "media/garden-promise.mp4",
+      "sha256": "14a1e89e4bd6a2d135abd3870a98428372848a3b82146af8c5cc0151f9ef450d"
+    },
+    {
+      "bytes": 367696,
+      "path": "media/garden-promise.png",
+      "sha256": "949d08944b46792e97030f855f20d131dc6d03dfc6d00471031df6808fe97613"
+    },
+    {
+      "bytes": 3386,
+      "path": "media/provenance.json",
+      "sha256": "524d42eb1efff305428ec790d1317be86c6eb42a32aa1c0b9ace649fd165bde6"
+    },
+    {
+      "bytes": 394163,
+      "path": "media/seed-exchange-frame-144.ora",
+      "sha256": "020b225c63c85a8074790a8304c7ea517a456ced45f6019b3d84945d1da6bfc2"
+    },
+    {
+      "bytes": 1311636,
+      "path": "media/seed-exchange.mp4",
+      "sha256": "c929a03c4d700f39e5212afc7d592ac0bccd3731188d81da08ac4a756524c4cb"
+    },
+    {
+      "bytes": 380275,
+      "path": "media/seed-exchange.png",
+      "sha256": "3196e9e7649e6334f9ac602712ce92b4d2a6c46facd8ad9841445e4e42e50d15"
+    }
+  ],
   "recovery_commit": "ebdb5d64a0d36e6a2fd6fbf5cb574fc6968f4404",
   "scenes": [
     {

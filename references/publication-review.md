@@ -48,3 +48,9 @@ The public commits are [25453d3](https://github.com/CompleteDotTech/hatch-pet/co
 The original 20-record assistant ledger and its supporting metadata are recovered originals. Ten historical inspection PNGs match pre-existing hashes exactly. Newly executed tests, render validation, previews and editor-format checks are labeled with their actual environment and scope; they do not append artistic approvals or human signoff to the historical chain.
 
 Historical private master ZIP receipts remain original records, even where those ZIP downloads were unavailable. The public delivery reconstructs complete production renders from the original inputs and exposes actual verification artifacts. It does not relabel a new ZIP as the historical ZIP or claim a matching archive hash without checking it.
+
+## Additional exact sources and public demonstration media
+
+The project transport preserves 42 original derived files and 24 serialized model files, all bound to pre-existing original project hashes; [recovery proof](public-derived-recovery.json) records the exact successful public-CI source. This avoids substituting platform-dependent reauthoring for original bytes.
+
+The [public media payload](../examples/production-pilot/media/provenance.json) contains two actual rendered MP4s, two sampled PNG storyboards and two OpenRaster drawings from the successful public Linux gate. It totals 3,480,688 bytes before the provenance JSON. The fictional characters and original licensed/attributed speech are unchanged. Public media hashes are mandatory delivery inventory checks. These outputs are new renders of original production inputs, with their own provenance; no private conversation, provider credential, fresh synthesis, historical-archive identity or new human approval is claimed. The same normal GitHub approval and complete-tree publication checks apply to these payloads.

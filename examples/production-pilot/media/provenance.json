@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "kind": "public-production-render-evidence",
+  "fixture": false,
+  "source_run": "https://github.com/CompleteDotTech/hatch-pet/actions/runs/39405174981",
+  "source_job": "https://github.com/CompleteDotTech/hatch-pet/actions/runs/39405174981/job/118569242079",
+  "source_commit": "51d0e5a951465993d2ebf3556ef4eb870bc4d640",
+  "checkout_revision": "3b5955cf3ea75e40b8e46562d9ff7c532721ea03",
+  "artifact_id": 12257845569,
+  "artifact_zip_sha256": "189a2ca9133ab321887d4027221eda1820ca7c4952d4f4ad809d63b2bfab0c6f",
+  "report_sha256": "eb4633b27410295dc7a71957f61c1a2d78269153a2121dbd3202c39b8862efc7",
+  "files": [
+    {
+      "path": "examples/production-pilot/media/seed-exchange.mp4",
+      "bytes": 1311636,
+      "sha256": "c929a03c4d700f39e5212afc7d592ac0bccd3731188d81da08ac4a756524c4cb"
+    },
+    {
+      "path": "examples/production-pilot/media/seed-exchange.png",
+      "bytes": 380275,
+      "sha256": "3196e9e7649e6334f9ac602712ce92b4d2a6c46facd8ad9841445e4e42e50d15"
+    },
+    {
+      "path": "examples/production-pilot/media/garden-promise.mp4",
+      "bytes": 654462,
+      "sha256": "14a1e89e4bd6a2d135abd3870a98428372848a3b82146af8c5cc0151f9ef450d"
+    },
+    {
+      "path": "examples/production-pilot/media/garden-promise.png",
+      "bytes": 367696,
+      "sha256": "949d08944b46792e97030f855f20d131dc6d03dfc6d00471031df6808fe97613"
+    },
+    {
+      "path": "examples/production-pilot/media/seed-exchange-frame-144.ora",
+      "source_artifact_path": "editor-handoffs/seed-exchange/drawings/frame-000144.ora",
+      "bytes": 394163,
+      "sha256": "020b225c63c85a8074790a8304c7ea517a456ced45f6019b3d84945d1da6bfc2"
+    },
+    {
+      "path": "examples/production-pilot/media/garden-promise-frame-144.ora",
+      "source_artifact_path": "editor-handoffs/garden-promise/drawings/frame-000144.ora",
+      "bytes": 372456,
+      "sha256": "356ca2bb57294ea8e57b1d6c9ba32f198865d97ba6b9a14ddf46ce3d8295bda0"
+    }
+  ],
+  "automated_scope": "Complete 432/264-frame scene rendering, PCM duration, exact repeat reuse, FFmpeg/ffprobe video validation, complete PNG/WAV/OpenRaster handoff validation. 787 tests: zero failures/errors, one optional native Krita skip.",
+  "inspection": {
+    "reviewer": "assistant:/root",
+    "human_review": false,
+    "method": "Visual inspection of both 16-frame sampled storyboards from the actual CI output.",
+    "observations": [
+      "Seed-exchange sampling shows entrances, the two original characters, mouth and pose changes, shared seed packet, and exits.",
+      "Garden-promise sampling shows the same cast and packet, facial changes, a closer camera and garden scenery.",
+      "The samples contain no evident missing artwork or corrupt frame blocks."
+    ],
+    "limitations": [
+      "Sampled-frame inspection is not continuous-video inspection.",
+      "No auditory listening or native editor execution is claimed.",
+      "Limited mouth drawings and frontal cutout rigs retain their documented artistic limits."
+    ]
+  },
+  "historical_frame_comparison": "../../../references/public-historical-frame-comparison.json",
+  "new_historical_approval_recorded": false,
+  "provider_called": false,
+  "tts_called": false,
+  "scope": "Actual new public-CI media reconstructed from original retained production sources. Not the inaccessible historical master ZIP, synthetic test art or human approval."
+}

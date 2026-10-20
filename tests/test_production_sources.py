@@ -127,7 +127,8 @@ class ProductionSourcesTests(unittest.TestCase):
                 data = path.read_bytes()
                 self.assertEqual(part['path'], 'parts/' + hashlib.sha256(data).hexdigest() + '.bin')
                 expected[relative] = data
-        for name in ('delivery-manifest.json', 'evidence/inspection-and-repairs.md', 'evidence/review.json'):
+        for name in ('delivery-manifest.json', 'evidence/inspection-and-repairs.md', 'evidence/review.json',
+                     'media/provenance.json', 'media/film.mp4', 'media/storyboard.png', 'media/drawing.ora'):
             path = checkout / 'examples/production-pilot' / name
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_bytes(b'Original metadata line one\nLine two\n')

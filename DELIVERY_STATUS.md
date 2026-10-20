@@ -33,6 +33,10 @@ Use Python 3.12 and a new destination. The pinned raster environment is Pillow 1
 
 Restoration verifies every required bundle before publishing a complete staged directory. It rejects missing/corrupt fragments, duplicate JSON keys, traversal, symlinks, Windows reserved names, case/Unicode path aliases, conflicting inventories and existing destinations. Exclusive native renames preserve even an empty destination created by a racing writer. Unsupported exclusive-renaming filesystems fail safely. Git attributes and binary I/O preserve source bytes under Windows newline conversion. Missing original audio fails instead of resynthesizing speech.
 
+## Public production previews
+
+Both complete review films, sampled storyboards and two OpenRaster drawings are available in [the public media index](examples/production-pilot/README.md#completed-films-and-inspectable-outputs). Their [provenance and hashes](examples/production-pilot/media/provenance.json) identify the successful public Linux render. Every media file is pinned and verified alongside the source transports. All 696 Linux scene-frame hashes match the pre-existing original shot-review dependencies; this byte comparison preserves the distinction between historical decisions and new render inspection.
+
 ## Verification and review gates
 
 The automated gate is:
@@ -44,7 +48,7 @@ python scripts/verify_public_delivery.py --destination delivery-verification --t
 
 Git, Node, FFmpeg and ffprobe are required for that complete command. The runner verifies the checkout inventory, full regression suite, portable archive roundtrip, both complete scenes, exact PCM duration, repeat rendering and complete PNG/WAV/OpenRaster editor handoffs. It records hashes of the checkout before/after validation and rejects private pilot overrides or unexpected skips. The only optional application check is native Krita; a Windows-only named-pipe test is inapplicable because that OS lacks `os.mkfifo`. All production, browser and FFmpeg tests are required.
 
-The frozen local suite passed **786 tests** with zero failures/errors and one native Krita skip. Subsequent targeted suites passed all **17 transport** and **6 restoration/checkpoint** cases. Shared disk exhaustion interrupted complete rendering and a subsequent full-gate attempt. The public Linux [full CI gate](https://github.com/CompleteDotTech/hatch-pet/actions/runs/39405174981) then passed all 787 tests, both complete renders, video checks and full editor handoffs. Mac and Windows exposed path-alias bugs and native encoding/math differences. The repairs preserve exact original model/asset bytes and record renderer platform/backend identity. All three platforms must pass the resulting 788-test gate before merge; no required failure becomes an optional skip.
+The frozen local suite passed **786 tests** with zero failures/errors and one native Krita skip. Subsequent targeted suites passed all **17 transport** and **6 restoration/checkpoint** cases. Shared disk exhaustion interrupted complete rendering and a subsequent full-gate attempt. The public Linux [full CI gate](https://github.com/CompleteDotTech/hatch-pet/actions/runs/39405174981) then passed all 787 tests, both complete renders, video checks and full editor handoffs. Mac and Windows exposed path-alias bugs and native encoding/math differences. The repairs preserve exact original model/asset bytes and record renderer platform/backend identity. All three platforms must pass the resulting 790-test gate before merge; no required failure becomes an optional skip.
 
 [CI](.github/workflows/public-delivery.yml) runs the complete gate from fresh Linux, Windows and macOS checkouts with read-only repository permissions. It retains actual reports, logs, portable project, storyboards, movies and drawing snapshots. The [validation reference](references/production-public-validation.md) separates current results from the preserved historical reports.
 
@@ -63,3 +67,5 @@ The previous automatic approval rejection concerned an opaque upload whose exact
 - The v3 characters have frontal production rigs. Milo's rear design remains rejected because of scarf asymmetry. Side/back/three-quarter animation rigs are not supplied.
 - Earlier artwork lost before the retained v3 acquisition remains lost; the original disclosure records eight earlier observed calls. Those assets are not substituted into or claimed as part of this v3 delivery.
 - Historical private master ZIP names remain documented in their original receipts. Their archive transfer was unavailable in this session; exact required inspection PNGs were recovered independently, and the public recipe renders the complete films without those private ZIPs.
+
+The Windows runner additionally exposed a mandatory acquisition-lock byte being included in portable archives. The repair excludes only the exact runtime locks held by the archive operation, preserving all acquisition metadata. Archive creation and project restoration now share exclusive publication, with regressions proving that racing files and empty directories survive unchanged.

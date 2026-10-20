@@ -25,6 +25,17 @@ The current pilot has two original, non-fixture imagegen characters, **20 reusab
 
 Both films are 640 × 360. Exact RGBA PNG frames, per-track layers, integer-frame manifests and 48 kHz PCM masters are authoritative. H.264/AAC MP4 files are flattened review copies. The local previews provide scrubbing, frame stepping, timing/source inspection, layer visibility and pinned comparison.
 
+### Public downloads
+
+| Scene | Review movie | Sampled storyboard | Layered drawing |
+| --- | --- | --- | --- |
+| Seed exchange | [36-second MP4](media/seed-exchange.mp4) | [16 sampled frames](media/seed-exchange.png) | [Frame 144 OpenRaster](media/seed-exchange-frame-144.ora) |
+| Garden promise | [22-second MP4](media/garden-promise.mp4) | [16 sampled frames](media/garden-promise.png) | [Frame 144 OpenRaster](media/garden-promise-frame-144.ora) |
+
+These files come from the successful Linux job in [public CI run 39405174981](https://github.com/CompleteDotTech/hatch-pet/actions/runs/39405174981/job/118569242079). The [media provenance](media/provenance.json) records their exact hashes, acquisition, automated validation and limited visual inspection. Every file is pinned by the delivery manifest and checked by `verify-delivery`. All **696 rendered frame hashes** match the original final-shot review dependencies; the [comparison record](../../references/public-historical-frame-comparison.json) preserves that check. This does not make the old review current for a changed renderer or establish human approval. Full PNG/PCM masters, browser previews and complete handoffs are reproduced with the commands below.
+
+### Historical package records
+
 The original private delivery used the following package names. Their historical sizes, hashes and inventories remain in [render delivery](evidence/render-delivery.json). These names are not public download links. The public reconstruction commands produce complete current renders, previews and editor handoffs directly from the retained inputs; CI retains its actual reports, portable project, storyboards, review movies and OpenRaster snapshots as run artifacts.
 
 | File | Contents |

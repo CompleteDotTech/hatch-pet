@@ -24,6 +24,7 @@ class ProductionDeliveryTests(unittest.TestCase):
         self.assertEqual(result['bundles']['artwork']['file_count'], 36)
         self.assertEqual(result['bundles']['audio']['file_count'], 16)
         self.assertEqual(result['bundles']['reconstruction']['file_count'], 66)
+        self.assertEqual(result['public_files_verified'], 7)
         self.assertEqual(result['history']['records'], 20)
         self.assertEqual(result['history']['supporting_evidence_files'], 13)
         self.assertTrue(result['history']['evidence_verified'])
@@ -80,6 +81,11 @@ class ProductionDeliveryTests(unittest.TestCase):
                     self.assertFalse(destination.exists())
                     self.assertFalse(list(Path(temporary).glob('.hatch-pilot-build-*')))
                     part.write_bytes(raw)
+            media = source / 'media/seed-exchange.mp4'
+            media.write_bytes(b'corrupted public demonstration')
+            with self.assertRaisesRegex(ValueError, 'public demonstration file differs'):
+                delivery.restore_pilot(source, destination)
+            self.assertFalse(destination.exists())
 
     def test_altered_historical_chain_cannot_be_relabelled_as_authentic(self):
         with tempfile.TemporaryDirectory(prefix='hatch-history-test-') as temporary:
