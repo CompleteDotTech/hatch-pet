@@ -1,0 +1,68 @@
+{
+  "job": "parts",
+  "token": "810fba15923143e392d79de36215d601",
+  "generation_skill": "$imagegen",
+  "attempt": 1,
+  "prompt": "/workspace/scratch/368aa013e993/hatch-pet/examples/production-pilot/acquisition/milo/prompts/rows/parts.md",
+  "retry_prompt": "/workspace/scratch/368aa013e993/hatch-pet/examples/production-pilot/acquisition/milo/prompts/row-retries/parts.md",
+  "input_images": [
+    {
+      "path": "/workspace/scratch/368aa013e993/hatch-pet/examples/production-pilot/acquisition/milo/references/layout-guides/parts.png",
+      "role": "layout guide for 1 frame slots; do not copy guide lines"
+    },
+    {
+      "path": "/workspace/scratch/368aa013e993/hatch-pet/examples/production-pilot/acquisition/milo/references/canonical-base.png",
+      "role": "canonical identity reference"
+    }
+  ],
+  "receipt_template": {
+    "generation_skill": "$imagegen",
+    "input_hashes": {
+      "pet_request.json": "45867ba3eb5e1fd9ea6bddaf1a6e9d36aabf7e1eada147e94cac01c0fc6d0b74",
+      "prompts/rows/parts.md": "4878bcd95ab8e60441730f966be5c2311f2aaf4250c48159f8577f44e0177294",
+      "prompts/row-retries/parts.md": "eebe834efff80501ed9524dfded73ef2e6b66d6d21c2ab156ff40b68b581c111",
+      "references/layout-guides/parts.png": "12b10c983aff1f94e0b3d27191dac8688e38f1f2d54e0238e734fe5b1372c7e1",
+      "references/canonical-base.png": "29b857963c2d5b3ffceaa0231f49da394aabe897a9a60734cb30d7da0f83c41f",
+      "@generation-profile": "3fa027552a822ea67a0c3b57cd03062daafc2ab5d2289991ad23a06dc0426392"
+    },
+    "job": "parts",
+    "token": "810fba15923143e392d79de36215d601"
+  },
+  "previous_failures": [],
+  "identity": {
+    "schema_version": 1,
+    "markings": [
+      "cream muzzle and belly",
+      "small dark brown nose"
+    ],
+    "palette": {
+      "fur": "#C88B47",
+      "cream": "#F3DCB4",
+      "scarf": "#D96654",
+      "eyes": "#392B26"
+    },
+    "materials": [
+      "softly painted fur",
+      "matte woven costume"
+    ],
+    "proportions": {
+      "head_to_body_height": 0.6
+    },
+    "approved_props": [
+      "coral neckerchief"
+    ],
+    "asymmetries": [
+      "coral scarf knot on viewer-right in the front view"
+    ],
+    "directions": {
+      "parts": "front"
+    },
+    "forbid_mirror": true,
+    "unresolved_conflicts": []
+  },
+  "tool_arguments": {
+    "transparent_background": true
+  },
+  "attachment_rules": "View local inputs before editing. Attach every input using referenced_image_paths when all are local; otherwise num_last_images_to_include (max 5). Never use both. A brand-new text-only base omits both.",
+  "output_rules": "Follow installed imagegen skill, including image output; return selected source and QA note. Do not mutate manifests."
+}

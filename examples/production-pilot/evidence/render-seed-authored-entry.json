@@ -1,0 +1,46 @@
+{
+  "manifest": "/workspace/scratch/368aa013e993/hatch-pet/examples/production-pilot/renders/seed-exchange/render-manifest.json",
+  "status": "complete",
+  "fixture": false,
+  "frame_count": 432,
+  "completed_frames": 432,
+  "operation": {
+    "rendered_frames": 117,
+    "reused_frames": 315
+  },
+  "validation": {
+    "ok": true,
+    "kind": "offline-frame-and-pcm-validation",
+    "frame_count": 432,
+    "fps": {
+      "denominator": 1,
+      "numerator": 12
+    },
+    "duration": {
+      "numerator": 36,
+      "denominator": 1
+    },
+    "sample_count": 1728000,
+    "render_manifest_sha256": "89ad2e6b174714ba3060caacc7273a19136574094891d4d30dc33f6d6d8d8213",
+    "visual_review": "not-performed",
+    "application_integration": "not-performed"
+  },
+  "visual_review_performed": false,
+  "video": {
+    "schema_version": 1,
+    "kind": "local-review-mux",
+    "path": "review.mp4",
+    "sha256": "c929a03c4d700f39e5212afc7d592ac0bccd3731188d81da08ac4a756524c4cb",
+    "source_manifest_sha256": "89ad2e6b174714ba3060caacc7273a19136574094891d4d30dc33f6d6d8d8213",
+    "frame_count": 432,
+    "fps": {
+      "denominator": 1,
+      "numerator": 12
+    },
+    "audio_duration_seconds": 36.0,
+    "audio_packet_tolerance_seconds": 0.021343333333333332,
+    "alpha": "flattened for H.264 review; use PNG master for RGBA",
+    "offline_master_validation": "passed",
+    "application_integration": "not-performed"
+  }
+}

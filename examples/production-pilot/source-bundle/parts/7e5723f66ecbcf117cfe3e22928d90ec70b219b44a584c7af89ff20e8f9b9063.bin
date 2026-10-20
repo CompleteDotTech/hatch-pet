@@ -1,0 +1,54 @@
+{
+  "background": "alpha",
+  "chroma_key": {
+    "hex": "#FF00FF",
+    "rgb": [
+      255,
+      0,
+      255
+    ],
+    "name": "magenta",
+    "selection": "fallback"
+  },
+  "key_threshold": 48,
+  "shared_scale": null,
+  "schema_version": 1,
+  "holes": "preserve",
+  "edge_cleanup": true,
+  "canonical_hash": "29b857963c2d5b3ffceaa0231f49da394aabe897a9a60734cb30d7da0f83c41f",
+  "key_collision_pixels": 0,
+  "sampled_foreground": 23635,
+  "candidates": [
+    {
+      "name": "magenta",
+      "hex": "#FF00FF",
+      "collision_pixels": 0
+    },
+    {
+      "name": "cyan",
+      "hex": "#00FFFF",
+      "collision_pixels": 0
+    },
+    {
+      "name": "yellow",
+      "hex": "#FFFF00",
+      "collision_pixels": 0
+    },
+    {
+      "name": "blue",
+      "hex": "#0000FF",
+      "collision_pixels": 0
+    },
+    {
+      "name": "orange",
+      "hex": "#FF7F00",
+      "collision_pixels": 0
+    },
+    {
+      "name": "green",
+      "hex": "#00FF00",
+      "collision_pixels": 0
+    }
+  ],
+  "warnings": []
+}

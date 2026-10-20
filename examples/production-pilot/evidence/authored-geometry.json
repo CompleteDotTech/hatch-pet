@@ -1,0 +1,25 @@
+{
+  "angles": {
+    "luma": 33.522254386749935,
+    "milo": -66.22628848822447
+  },
+  "method": "Authored rigid reach from measured construction anchors; lower circle intersection. No runtime IK or invented pose.",
+  "position": [
+    329.99086559199554,
+    240.93649227224293
+  ],
+  "reach_radii": [
+    72.34749542478994,
+    62.475935130256346
+  ],
+  "shoulders": [
+    [
+      259.568,
+      224.35999999999999
+    ],
+    [
+      380.32,
+      203.92
+    ]
+  ]
+}

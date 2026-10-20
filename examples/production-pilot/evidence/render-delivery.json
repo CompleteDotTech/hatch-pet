@@ -1,0 +1,73 @@
+{
+  "all_local_metadata_applied": true,
+  "kind": "final-render-output-packages",
+  "library_saved": true,
+  "outputs": [
+    {
+      "bytes": 1311636,
+      "filename": "Milo-Luma_Seed-Exchange.mp4",
+      "kind": "review-movie",
+      "path": "/workspace/scratch/368aa013e993/hatch-delivery/Milo-Luma_Seed-Exchange.mp4",
+      "sha256": "c929a03c4d700f39e5212afc7d592ac0bccd3731188d81da08ac4a756524c4cb"
+    },
+    {
+      "archive_crc_and_all_file_hashes_verified": true,
+      "bytes": 143357200,
+      "file_count": 6776,
+      "filename": "Milo-Luma_Seed-Exchange_Masters.zip",
+      "original_acquisition_sources_included": false,
+      "path": "/workspace/scratch/368aa013e993/hatch-delivery/Milo-Luma_Seed-Exchange_Masters.zip",
+      "sha256": "7913dd7541d5b8ae3b2f4a6aec429afd79e7411562dc5b4f9f946e7bfc287c2f",
+      "source_code_included": false
+    },
+    {
+      "bytes": 654462,
+      "filename": "Milo-Luma_Garden-Promise.mp4",
+      "kind": "review-movie",
+      "path": "/workspace/scratch/368aa013e993/hatch-delivery/Milo-Luma_Garden-Promise.mp4",
+      "sha256": "14a1e89e4bd6a2d135abd3870a98428372848a3b82146af8c5cc0151f9ef450d"
+    },
+    {
+      "archive_crc_and_all_file_hashes_verified": true,
+      "bytes": 79677423,
+      "file_count": 1363,
+      "filename": "Milo-Luma_Garden-Promise_Masters.zip",
+      "original_acquisition_sources_included": false,
+      "path": "/workspace/scratch/368aa013e993/hatch-delivery/Milo-Luma_Garden-Promise_Masters.zip",
+      "sha256": "de9c5389ad52839bf99d21e810a9b312d8d6c077fe78b518e136d3ec489f76b0",
+      "source_code_included": false
+    },
+    {
+      "archive_crc_and_all_file_hashes_verified": true,
+      "bytes": 26584130,
+      "file_count": 178,
+      "filename": "Milo-Luma_Editor-Handoff.zip",
+      "original_acquisition_sources_included": false,
+      "path": "/workspace/scratch/368aa013e993/hatch-delivery/Milo-Luma_Editor-Handoff.zip",
+      "sha256": "c9b936b5a0de7a671ff1c518b5f3be17acaad1dba84dcc62f6b767cddd60db65",
+      "source_code_included": false
+    },
+    {
+      "archive_crc_and_all_file_hashes_verified": true,
+      "bytes": 2979768,
+      "file_count": 1364,
+      "filename": "Hatch_Synthetic-Regression_Masters.zip",
+      "original_acquisition_sources_included": false,
+      "path": "/workspace/scratch/368aa013e993/hatch-delivery/Hatch_Synthetic-Regression_Masters.zip",
+      "sha256": "62e62e4124299594d8e2e03fe0677f2a9a19d447429d220f2230f8f0b0785c4d",
+      "source_code_included": false
+    },
+    {
+      "bytes": 84315,
+      "filename": "Hatch_Synthetic-Performances.mp4",
+      "fixture": true,
+      "kind": "fixture-review-movie",
+      "path": "/workspace/scratch/368aa013e993/hatch-delivery/Hatch_Synthetic-Performances.mp4",
+      "sha256": "af268821a21b452633b6b0142fae8fd756599dc1a0e4f37fd7a0843ee1a675f0"
+    }
+  ],
+  "public_github_media_publication": "blocked-pending-explicit-approval",
+  "purpose": "Final compiled output artifacts for private user review; these packages do not publish missing source/audio chunks to GitHub.",
+  "save_scope": "Seven compiled output deliverables successfully saved for the user; this does not complete public GitHub source or audio transport.",
+  "saved_output_count": 7
+}

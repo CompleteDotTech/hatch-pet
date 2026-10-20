@@ -1,0 +1,477 @@
+{
+  "actionable_findings": [
+    {
+      "id": "prepare-existing-input-preservation",
+      "isolated_probe_directory": "/tmp/hatch-prepare-preservation-audit-9n058hv7",
+      "lines": [
+        64,
+        78
+      ],
+      "observed": {
+        "existing_run_marker_unchanged": true,
+        "existing_run_rejected": true,
+        "provider_or_subprocess_called": false,
+        "sibling_identity_changed": true,
+        "sibling_profile_changed": true,
+        "source_project_touched": false
+      },
+      "original_observation_scope": "The problem, line numbers and isolated probe above describe the pre-repair helper. The original probe is retained without rewriting its files.",
+      "path": "scripts/prepare_production_art.py",
+      "problem": "The helper atomically overwrites sibling character profile and identity files before calling hatch.prepare, whose existing-run guard then rejects. A rejected helper invocation can therefore change retained input files outside the existing run.",
+      "repair": {
+        "behavior": [
+          "Reject existing populated or empty destinations, files and symlinks before resolving the destination leaf.",
+          "Reject either sibling profile/identity collision and any retained prepare journal, including dangling symlinks, before writes.",
+          "Reject destination/input aliases.",
+          "Exclusively create sibling inputs so a file or symlink introduced after preflight cannot be overwritten.",
+          "Recheck destination and recovery journal before invoking legacy preparation.",
+          "On failure, remove only the sibling files exclusively created by this invocation and still bearing the same file identity; preserve replacements and leave hatch.prepare in charge of run transaction recovery.",
+          "Keep character/style/profile prompts, original non-fixture labeling and the generation call limits unchanged."
+        ],
+        "completed_at_utc": "2026-10-19T20:59:59.471360+00:00",
+        "final_verification": {
+          "log": "tests/results/production-complete-regression.log",
+          "optional_krita_skip": 1,
+          "original_legacy_tests_passed": 123,
+          "passed": 297,
+          "preparation_regression_tests_passed": 11,
+          "sha256": "48875ba393d39205e6b87b7863fa32a6cf32c26f87025d269856cee0754df3a3",
+          "total_tests": 298,
+          "verified_at_utc": "2026-10-19T21:03:30.677792+00:00"
+        },
+        "focused_verification": {
+          "command": [
+            "env",
+            "PYTHONDONTWRITEBYTECODE=1",
+            "/workspace/scratch/368aa013e993/hatch-runtime/bin/python",
+            "-m",
+            "unittest",
+            "discover",
+            "-s",
+            "tests",
+            "-p",
+            "test_production_prepare.py",
+            "-v"
+          ],
+          "errors": 0,
+          "evidence_source": "Completed exec_command result 4c9277; all 11 verbose test cases reported ok.",
+          "exit_code": 0,
+          "failures": 0,
+          "generation_performed": false,
+          "passed": 11,
+          "real_local_prepare_verified_for": [
+            "milo",
+            "luma"
+          ],
+          "skipped": 0,
+          "tests": 11,
+          "unittest_seconds": 0.277
+        },
+        "implementation": "scripts/prepare_production_art.py",
+        "source_sha256": {
+          "scripts/prepare_production_art.py": "e7ae991f52df86a25b968e07f5c34a03c9b60fd3bc0ab654bfbce33601c17981",
+          "tests/test_production_prepare.py": "bfe8fc15825d1257b706971516c335bb4bad95dd1f711319801e6030df0300c4"
+        },
+        "tests": "tests/test_production_prepare.py"
+      },
+      "requested_resolution": "Reject existing destination, sibling inputs and recovery journal before any writes; use exclusive input creation and preserve prior files on rejected preparation.",
+      "severity": "medium",
+      "status": "repaired_and_verified_in_final_full_suite"
+    }
+  ],
+  "archive_snapshot_chronology": {
+    "archive_sha256": "c7ced7e76a08be61abef766f8a1131c75175bb56619676fd02c54bc2889e7e00",
+    "audit_observation_timing_note": "The current-file hashes in this archive comparison were captured at the initial review timestamp. Later documentation and this final audit report are outside the frozen archive; the archive is not rebuilt to include those later reports.",
+    "files": {
+      "README.md": {
+        "archived_sha256": null,
+        "current_exists": true,
+        "current_sha256": "ba2ed55c7890a655b98ef2f67e1ae60b0fbd7b3dc7166444f467e9e5515263d1",
+        "in_archive": false
+      },
+      "evidence/archive-restore-final.json": {
+        "archived_sha256": null,
+        "current_exists": true,
+        "current_sha256": "f1303dd8945b5a4e684fcdfd07d492e7d202d522416d5c46661d3806cfbee104",
+        "in_archive": false
+      },
+      "evidence/inspection-and-repairs.md": {
+        "archived_sha256": null,
+        "current_exists": true,
+        "current_sha256": "9f6b7cfb85cfe5e2d3530c91fa228c3bbf73c7a8873a05df700c1576c8560bd9",
+        "in_archive": false
+      },
+      "evidence/render-delivery.json": {
+        "archived_sha256": "4c6fc61ea08b811cae552555e989e06cb41e5fd220a76be8254472ed0f5fa5e9",
+        "current_exists": true,
+        "current_sha256": "83a97e43d8dbdaccac86ddc43b48afb1a4fd6d30637851cae7f68f1b5fcc3ffc",
+        "in_archive": true
+      }
+    },
+    "observation": "The 3016-byte render-delivery.json was included in the verified archive. Pilot README and inspection-and-repairs.md were added later; archive-restore-final.json is post-archive evidence. Later documentation does not change archived source bytes or require rebuilding a valid archive."
+  },
+  "baseline_commit": "857791b9503f9ff54b118751eea640866688000a",
+  "delivery_status": "Public source-image, audio, review-history and selected derived-evidence metadata transport remain blocked and incomplete; local validation and archive restoration do not claim completed Git publication, PR merge, human/auditory approval or unavailable Krita integration. Exact rejected actions and reasons are retained in examples/production-pilot/evidence/delivery-blockers.json.",
+  "documentation_checks": {
+    "changes_made_by_this_review": [
+      "references/production-rendering.md: corrected the requirements-test.txt link label after root corrected its target."
+    ],
+    "document_sha256_at_final_link_check": {
+      "README.md": "488a75b2f23ccc4070cee33a72545e9fcb0c22c6228d2e654f726a3b9c8fb470",
+      "SKILL.md": "ad2121faffe0d64542d646730fd31897c8d028f2c04314f78fc57e64bc51854c",
+      "examples/production-fixture/README.md": "dc8c2c68ec35a4063100cfba887e73645517e54c6d770f7161a68d30d2b05d04",
+      "examples/production-pilot/README.md": "ba2ed55c7890a655b98ef2f67e1ae60b0fbd7b3dc7166444f467e9e5515263d1",
+      "examples/production-pilot/acquisition/README.md": "3962f8a518030393965fcdac9a53789dbaff333a80b56c5c421d0773aeaef381",
+      "examples/production-pilot/evidence/inspection-and-repairs.md": "9f6b7cfb85cfe5e2d3530c91fa228c3bbf73c7a8873a05df700c1576c8560bd9",
+      "references/production-contracts.md": "4397a3873e61e32205d42dbd93ab8906db1e598c6c36a91cf94fa53ff0071d5e",
+      "references/production-operations.md": "2b657c61f713253d73855f79e8958e9e1eb0861f82e11f63b33f55de26616aa0",
+      "references/production-pilot.md": "a9d026140f9558bd729b1a234b8ff5fd2750e2a2d6325a6559b38739af9b5359",
+      "references/production-public-validation.md": "183e54c3b6990414899f35635b65a7cf178a77173f607b795d95d163dfec29d4",
+      "references/production-rendering.md": "4fbb0b4733d6154c8fa5f4f77572b166ee84b83312486066aa9bf18627a86795",
+      "references/production-traceability.md": "141c950d9de45ea0cc860724db064f162311a6a28d33a030a4104995d32a4ae2",
+      "references/production-validation.md": "6402692ee0b412675d7ae6d61fc1839dcd966b6780b6e721cce6cabbe8954c4b"
+    },
+    "documents": 13,
+    "gitignored_link_targets_requiring_explicit_inventory_or_documentation_resolution": [],
+    "missing_local_targets": [],
+    "missing_markdown_heading_anchors": [],
+    "rechecked_after_documentation_repairs_at_utc": "2026-10-19T21:04:54.726209+00:00",
+    "relative_links_and_anchors_checked": 302,
+    "resolved_during_review": [
+      "Root wrote evidence/delivery-blockers.json and qualified the recipe/root README about incomplete public source/audio transport.",
+      "The documentation owner replaced the raw workflow link with retained review-history/archive evidence and replaced twelve fixture generated-file links with the retained generator and two evidence JSONs. Fresh check: 298 links/anchors, no missing or Git-ignored targets."
+    ],
+    "resolved_ignored_link_findings_at_initial_review": [
+      {
+        "document": "references/production-validation.md",
+        "line": 82,
+        "link": "../examples/production-pilot/production-workflow.json",
+        "target": "examples/production-pilot/production-workflow.json"
+      },
+      {
+        "document": "examples/production-fixture/README.md",
+        "line": 30,
+        "link": "project.json",
+        "target": "examples/production-fixture/project.json"
+      },
+      {
+        "document": "examples/production-fixture/README.md",
+        "line": 30,
+        "link": "cast.json",
+        "target": "examples/production-fixture/cast.json"
+      },
+      {
+        "document": "examples/production-fixture/README.md",
+        "line": 31,
+        "link": "first-scene.json",
+        "target": "examples/production-fixture/first-scene.json"
+      },
+      {
+        "document": "examples/production-fixture/README.md",
+        "line": 31,
+        "link": "second-scene.json",
+        "target": "examples/production-fixture/second-scene.json"
+      },
+      {
+        "document": "examples/production-fixture/README.md",
+        "line": 31,
+        "link": "regression-scene.json",
+        "target": "examples/production-fixture/regression-scene.json"
+      },
+      {
+        "document": "examples/production-fixture/README.md",
+        "line": 32,
+        "link": "reg-walk.json",
+        "target": "examples/production-fixture/reg-walk.json"
+      },
+      {
+        "document": "examples/production-fixture/README.md",
+        "line": 32,
+        "link": "reg-sit.json",
+        "target": "examples/production-fixture/reg-sit.json"
+      },
+      {
+        "document": "examples/production-fixture/README.md",
+        "line": 32,
+        "link": "reg-grasp.json",
+        "target": "examples/production-fixture/reg-grasp.json"
+      },
+      {
+        "document": "examples/production-fixture/README.md",
+        "line": 32,
+        "link": "reg-full-frame.json",
+        "target": "examples/production-fixture/reg-full-frame.json"
+      },
+      {
+        "document": "examples/production-fixture/README.md",
+        "line": 33,
+        "link": "coverage-report.json",
+        "target": "examples/production-fixture/coverage-report.json"
+      },
+      {
+        "document": "examples/production-fixture/README.md",
+        "line": 35,
+        "link": "production-workflow.json",
+        "target": "examples/production-fixture/production-workflow.json"
+      },
+      {
+        "document": "examples/production-fixture/README.md",
+        "line": 35,
+        "link": "dependency-snapshot.json",
+        "target": "examples/production-fixture/dependency-snapshot.json"
+      }
+    ],
+    "scope_note": "Local path and Markdown heading checks do not prove that an untracked or ignored target has been published. Root and the documentation owner control the final explicit Git inventory."
+  },
+  "git_mutations": false,
+  "implementation_modified_by_this_review": true,
+  "kind": "local-working-tree-diff-and-evidence-review",
+  "last_updated_at_utc": "2026-10-19T21:04:54.726209+00:00",
+  "legacy_preservation": {
+    "changed_existing_code_or_contract_paths": [
+      "scripts/portable_runs.py"
+    ],
+    "counts": {
+      "examples_total": 10,
+      "examples_unchanged": 10,
+      "presets_total": 11,
+      "presets_unchanged": 11,
+      "profiles_total": 3,
+      "profiles_unchanged": 3,
+      "scripts_total": 21,
+      "scripts_unchanged": 20,
+      "tests_total": 11,
+      "tests_unchanged": 11
+    },
+    "profile_and_preset_hashes": {
+      "presets/assembly.json": {
+        "baseline_sha256": "e02d7791237f9f5c2490e4f635bf05546480cb6dd8d6cefea34b060b8321a723",
+        "current_sha256": "e02d7791237f9f5c2490e4f635bf05546480cb6dd8d6cefea34b060b8321a723",
+        "identical": true
+      },
+      "presets/catalog.json": {
+        "baseline_sha256": "18487899e63243f2d4d33e7379ad87ba67a5c255406b74584d2c37485653e81e",
+        "current_sha256": "18487899e63243f2d4d33e7379ad87ba67a5c255406b74584d2c37485653e81e",
+        "identical": true
+      },
+      "presets/communication.json": {
+        "baseline_sha256": "39662ac457bc540cfdf9100ea3259d1b0ab71e296b0ba4647a6c2167c020e1f6",
+        "current_sha256": "39662ac457bc540cfdf9100ea3259d1b0ab71e296b0ba4647a6c2167c020e1f6",
+        "identical": true
+      },
+      "presets/configurator.json": {
+        "baseline_sha256": "0ccce402e9df0fdaa62ba57b5a563690e7445fda351fb505fb8aa3eed26cc86d",
+        "current_sha256": "0ccce402e9df0fdaa62ba57b5a563690e7445fda351fb505fb8aa3eed26cc86d",
+        "identical": true
+      },
+      "presets/craft.json": {
+        "baseline_sha256": "e0177f8772086d06e82ca300cb946506179ee67b6695d3ab7eca5808c7cc2754",
+        "current_sha256": "e0177f8772086d06e82ca300cb946506179ee67b6695d3ab7eca5808c7cc2754",
+        "identical": true
+      },
+      "presets/cursor.json": {
+        "baseline_sha256": "94fd50854fc83a6a0b6c13657952c92f9456d27d215ac038abe5e15f114a3e0a",
+        "current_sha256": "94fd50854fc83a6a0b6c13657952c92f9456d27d215ac038abe5e15f114a3e0a",
+        "identical": true
+      },
+      "presets/flipbook.json": {
+        "baseline_sha256": "25af06736442fd78f3c66fb6a08a5a5994d524818ba8014676025c2d387110d6",
+        "current_sha256": "25af06736442fd78f3c66fb6a08a5a5994d524818ba8014676025c2d387110d6",
+        "identical": true
+      },
+      "presets/perception.json": {
+        "baseline_sha256": "b1b7d66b5bbff107c7147b066f52deead10b9938e26615ef24bd178b680d7f0c",
+        "current_sha256": "b1b7d66b5bbff107c7147b066f52deead10b9938e26615ef24bd178b680d7f0c",
+        "identical": true
+      },
+      "presets/process.json": {
+        "baseline_sha256": "8bc6638ba0b3d591f2fd806d06441f5cffdbc2cc4bedf605392236cc92839637",
+        "current_sha256": "8bc6638ba0b3d591f2fd806d06441f5cffdbc2cc4bedf605392236cc92839637",
+        "identical": true
+      },
+      "presets/protocol.json": {
+        "baseline_sha256": "527095adcf45fafbfc583b100b4a20771f03e39a7455553bd1981872de299414",
+        "current_sha256": "527095adcf45fafbfc583b100b4a20771f03e39a7455553bd1981872de299414",
+        "identical": true
+      },
+      "presets/regression.json": {
+        "baseline_sha256": "5f76a3a5d86eb66de934452e5b3fc27dce0a2aa73361e4dd555355f0698776f6",
+        "current_sha256": "5f76a3a5d86eb66de934452e5b3fc27dce0a2aa73361e4dd555355f0698776f6",
+        "identical": true
+      },
+      "profiles/asset-inputs.schema.json": {
+        "baseline_sha256": "ffb9709040d6c528b50bf1a0c9533706ada117b55f5f6e1249284c367a41973e",
+        "current_sha256": "ffb9709040d6c528b50bf1a0c9533706ada117b55f5f6e1249284c367a41973e",
+        "identical": true
+      },
+      "profiles/codex-v1.json": {
+        "baseline_sha256": "f4e0279f8634ea53ef544ecb49b9a71ec2565c61ec5b8e63163ecc5ead478a6b",
+        "current_sha256": "f4e0279f8634ea53ef544ecb49b9a71ec2565c61ec5b8e63163ecc5ead478a6b",
+        "identical": true
+      },
+      "profiles/profile.schema.json": {
+        "baseline_sha256": "acc8b09ae2a7ac6746025f13768cc29c05136d1b982b2488b37d31fa079b2c85",
+        "current_sha256": "acc8b09ae2a7ac6746025f13768cc29c05136d1b982b2488b37d31fa079b2c85",
+        "identical": true
+      }
+    },
+    "shared_portable_archive_delta": "Only archive receipt parsing and canonical path validation changed: duplicate JSON keys, non-object receipts and noncanonical member aliases are rejected. Existing 1 GiB/10000-entry bounds, exact inventory checks, run identity, new-destination restoration and external-install receipt handling remain.",
+    "skill_review": "Existing Codex-v1 fixed state/count/millisecond timing/cell/atlas/alpha/package contracts and legacy workflow/generation/review/install/rollback restrictions remain; a separate production-schema workflow was added.",
+    "specific_added_guard_test": "tests/test_production_bundle.py::ProductionBundleTests.test_shared_legacy_archive_guard_rejects_noncanonical_names_and_duplicate_receipt_keys"
+  },
+  "measured_regression_evidence": {
+    "baseline_missing_from_final": [],
+    "baseline_nonpassing_in_final": {},
+    "baseline_tests": 123,
+    "command_ended_at_utc": "2026-10-19T21:01:36.667515+00:00",
+    "command_started_at_utc": "2026-10-19T20:59:06.381753+00:00",
+    "current_differences": {},
+    "current_matching_count": 90,
+    "errors": 0,
+    "exact_stderr_bytes": 50001,
+    "exact_stderr_sha256": "8c51e887994b5c9f99bd7aa2364f52a95cf4b0bf7776f2975c0a7f1c6db53194",
+    "exact_stdout_bytes": 49,
+    "exact_stdout_sha256": "3d61428b7339ed922d2a273b3d5c3ea9145e4be9c2d2d11728eada99b1d56d1c",
+    "executed_by": "assistant:/root/final_validation_current",
+    "failures": 0,
+    "independently_verified_by_this_reviewer_at_utc": "2026-10-19T21:03:30.677792+00:00",
+    "log": "tests/results/production-complete-regression.log",
+    "log_bytes": 90542,
+    "log_sha256": "48875ba393d39205e6b87b7863fa32a6cf32c26f87025d269856cee0754df3a3",
+    "recorded_passing": 297,
+    "recorded_skips": [
+      {
+        "id": "test_production_adapter.ProductionAdapterTests.test_actual_local_krita_import_export_and_layer_roundtrip",
+        "name": "test_actual_local_krita_import_export_and_layer_roundtrip",
+        "status": "skipped 'Krita not available; adapter tests remain separate from integration'"
+      }
+    ],
+    "recorded_source_count": 90,
+    "recorded_source_hashes_sha256": "48ff7e859436c54684bc49a811bd34997db5a91f78b06d14ffe391d4d5d0c85d",
+    "recorded_total_tests": 298,
+    "source_hash_comparison": "The final log contains exact before/after manifests for all 90 selected files. They match each other and all 90 current working files at this independent read. The helper and its added test are the only selected changes since the preserved 89-file checkpoint.",
+    "status": "final post-repair full suite passed",
+    "test_subsets": {
+      "actual_browser": {
+        "passed": 11,
+        "total": 11
+      },
+      "production_art_preparation": {
+        "passed": 11,
+        "total": 11
+      },
+      "retained_production_pilot": {
+        "passed": 13,
+        "total": 13
+      }
+    },
+    "unittest_reported_runtime_seconds": 149.929,
+    "wall_runtime_seconds": 150.28574102499988
+  },
+  "post_repair_verification": {
+    "all_retained_render_identities_match_current": true,
+    "final_log": "tests/results/production-complete-regression.log",
+    "legacy_hatch_py_unchanged_sha256": "9e36fe530f71cb0d8c57c553acf7b29b62508c782dcb1055cbc0b7c61e0a552a",
+    "renderer_identity_implication": "Neither changed file participates in renderer_identity. The full-suite owner verified all seven complete existing manifests match the current renderer, with all seven manifest byte hashes and the review ledger unchanged.",
+    "renderer_identity_input_paths": [
+      "scripts/production_render.py",
+      "scripts/production_performance.py",
+      "scripts/production_contracts.py"
+    ],
+    "renderer_identity_unchanged": true,
+    "retained_complete_render_manifest_count": 7,
+    "retained_render_manifest_changes": [],
+    "retained_render_manifests_unchanged": true,
+    "retained_review_ledger_sha256": "cce42c52460d4525f18eb00f7525f8df8d99ebda9e31b3d875dccba6d93220d4",
+    "retained_review_ledger_unchanged": true,
+    "selected_source_count": 90,
+    "source_changes_since_prior_89_file_checkpoint": {
+      "scripts/prepare_production_art.py": "e7ae991f52df86a25b968e07f5c34a03c9b60fd3bc0ab654bfbce33601c17981",
+      "tests/test_production_prepare.py": "bfe8fc15825d1257b706971516c335bb4bad95dd1f711319801e6030df0300c4"
+    },
+    "status": "focused regression and final full suite passed"
+  },
+  "review_scope": "Current working files including new untracked production files; local feature HEAD is not the authority. Legacy contracts, task-related scope, shared archive guard, documentation links/claims and regression evidence. The initial read reused the 287-test checkpoint. The later authorized preservation repair changed only the new artwork preparation helper and added its own focused test module. The independent validation owner reran the complete 298-test suite; this reviewer verified its exact log and all 90 current source hashes.",
+  "reviewed_at_utc": "2026-10-19T20:52:25.211534+00:00",
+  "reviewer": {
+    "id": "assistant:/root/persistence",
+    "kind": "assistant"
+  },
+  "schema_version": 1,
+  "superseded_regression_evidence": {
+    "baseline_missing_from_final": [],
+    "baseline_nonpassing_in_final": {},
+    "baseline_tests": 123,
+    "current_differences": {},
+    "current_hash_measurement_scope": "These 89/89 matching hashes were measured before the preservation repair. They describe the superseded checkpoint, not the subsequently changed helper or added test module.",
+    "current_matching_count": 89,
+    "log": "tests/results/production-complete-regression-superseded-287.log",
+    "log_sha256": "5e2290ff4333b50ef6d15980b98ee22a5a0e72b2ff0572b2a41a43074d54f572",
+    "no_suite_rerun_performed": true,
+    "original_log_path_at_first_review": "tests/results/production-complete-regression.log",
+    "recorded_passing": 286,
+    "recorded_skips": {
+      "test_actual_local_krita_import_export_and_layer_roundtrip (test_production_adapter.ProductionAdapterTests.test_actual_local_krita_import_export_and_layer_roundtrip)": "skipped 'Krita not available; adapter tests remain separate from integration'"
+    },
+    "recorded_source_count": 89,
+    "recorded_source_hashes_sha256": "b9763e6fac058d55b9e282475c1a7204ebe25e6c698ce90d8c61a731d64bc131",
+    "recorded_total_tests": 287,
+    "status": "superseded by the verified post-repair 298-test full-suite run"
+  },
+  "task_source_scope": {
+    "baseline_diff_name_status": [
+      "M\t.gitignore",
+      "M\tREADME.md",
+      "M\tSKILL.md",
+      "M\tagents/openai.yaml",
+      "A\texamples/production-pilot/acquisition/lost-prior-artifacts.json",
+      "M\tscripts/portable_runs.py",
+      "A\tscripts/prepare_production_art.py"
+    ],
+    "inventory_timing_note": "The file-count inventory below is the initial audit snapshot, before this review added its evidence JSON and the preparation regression module; it is task-scope evidence, not the final Git publication inventory.",
+    "new_production_schemas": [
+      "profiles/production-cast.schema.json",
+      "profiles/production-clip.schema.json",
+      "profiles/production-project.schema.json",
+      "profiles/production-scene.schema.json",
+      "profiles/production-shot.schema.json"
+    ],
+    "new_production_scripts": [
+      "scripts/production.py",
+      "scripts/production_adapter.py",
+      "scripts/production_bundle.py",
+      "scripts/production_contracts.py",
+      "scripts/production_demo.py",
+      "scripts/production_fixture.py",
+      "scripts/production_performance.py",
+      "scripts/production_regression_demo.py",
+      "scripts/production_render.py",
+      "scripts/production_sources.py",
+      "scripts/production_workflow.py"
+    ],
+    "new_production_tests": [
+      "tests/test_production_adapter.py",
+      "tests/test_production_bundle.py",
+      "tests/test_production_contracts.py",
+      "tests/test_production_performance.py",
+      "tests/test_production_pilot.py",
+      "tests/test_production_preview.py",
+      "tests/test_production_provenance.py",
+      "tests/test_production_render.py",
+      "tests/test_production_review_regressions.py",
+      "tests/test_production_sources.py",
+      "tests/test_production_workflow.py"
+    ],
+    "observation": "New modules, schemas, preview assets, examples, exact source transports, focused tests and evidence are task-related. A seven-file git diff statistic alone omits the untracked production implementation. Generated media and exact transports must remain distinct from complete public delivery.",
+    "untracked_by_top_level": {
+      "assets": 3,
+      "examples": 434,
+      "profiles": 5,
+      "references": 6,
+      "scripts": 11,
+      "tests": 24
+    },
+    "untracked_nonignored_count_before_this_report": 483
+  },
+  "uploads": false
+}

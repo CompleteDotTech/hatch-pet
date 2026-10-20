@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-10-19T20:12:20.293369+00:00",
+  "project_id": "milo-luma-pilot",
+  "fixture": false,
+  "original_declared_inputs_unchanged": true,
+  "live_workflow_file_modified_by_this_operation": false,
+  "baseline_snapshot": "evidence/dependency-impact/baseline.json",
+  "baseline_sha256": "746732bf028c80b4e828dfff4596f9c73e502ac2348e05793ffce6b2efa10656",
+  "cases": [
+    {
+      "case": "camera",
+      "evidence": "evidence/dependency-impact/camera.json",
+      "sha256": "884a75ecf348b2e3c5bdf60897d050d41fb995dec4181af340746a2fc5d0c1a6",
+      "mutation": {
+        "target": "seed-exchange/exchange",
+        "field": "camera.position.keys[0].value",
+        "before": [
+          35,
+          24
+        ],
+        "after": [
+          36,
+          24
+        ],
+        "purpose": "One-pixel camera framing revision in an isolated copy."
+      },
+      "affected_shots": [
+        "seed-exchange/exchange"
+      ],
+      "unaffected_shots": [
+        "garden-promise/garden",
+        "garden-promise/tomorrow",
+        "seed-exchange/arrival",
+        "seed-exchange/departure"
+      ],
+      "required_actions": [
+        "rerender",
+        "review_changed_dimensions"
+      ]
+    },
+    {
+      "case": "component",
+      "evidence": "evidence/dependency-impact/component.json",
+      "sha256": "236682e42b904409dcd7eccd9d8c019b4cca24709656d36877541d49ee432e24",
+      "mutation": {
+        "target": "milo@3.0.0/mouth",
+        "field": "component.offset",
+        "before": [
+          0,
+          0
+        ],
+        "after": [
+          1,
+          0
+        ],
+        "purpose": "One-pixel rest attachment revision to a shared component in an isolated copy."
+      },
+      "affected_shots": [
+        "garden-promise/garden",
+        "garden-promise/tomorrow",
+        "seed-exchange/arrival",
+        "seed-exchange/departure",
+        "seed-exchange/exchange"
+      ],
+      "unaffected_shots": [],
+      "required_actions": [
+        "rerender",
+        "review_changed_dimensions"
+      ]
+    },
+    {
+      "case": "clip",
+      "evidence": "evidence/dependency-impact/clip.json",
+      "sha256": "c5cf966347de9b97e212549d5b033bc81e6a1145463373722e3c5edb7d3e5e3a",
+      "mutation": {
+        "target": "milo-reaction@3.0.0",
+        "field": "tracks.face.head.rotation.keys[1].value",
+        "key_frame": 8,
+        "before": -4,
+        "after": -5,
+        "purpose": "One-degree authored reaction change in an isolated copy."
+      },
+      "affected_shots": [
+        "garden-promise/garden",
+        "garden-promise/tomorrow"
+      ],
+      "unaffected_shots": [
+        "seed-exchange/arrival",
+        "seed-exchange/departure",
+        "seed-exchange/exchange"
+      ],
+      "required_actions": [
+        "rerender",
+        "review_changed_dimensions"
+      ]
+    }
+  ],
+  "provider_called": false,
+  "production_review_recorded": false
+}

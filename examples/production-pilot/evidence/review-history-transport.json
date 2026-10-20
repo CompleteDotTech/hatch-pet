@@ -1,0 +1,64 @@
+{
+  "bundle": {
+    "bundle": "/workspace/scratch/368aa013e993/hatch-pet/examples/production-pilot/reviews-source-bundle/sources-index.json",
+    "bundle_sha256": "454bfdb6daad191cdcf1c20ea8dfe487dae0bb7a3576d2258cbe6c8b4f99c5dc",
+    "created": true,
+    "file_count": 1,
+    "files": [
+      {
+        "bytes": 4167150,
+        "path": "production-workflow.json",
+        "sha256": "cce42c52460d4525f18eb00f7525f8df8d99ebda9e31b3d875dccba6d93220d4"
+      }
+    ],
+    "fixture": false,
+    "origin": "Verbatim actual assistant-scoped pilot review history as inspectable UTF-8 JSON bytes. Exact source, renderer and rendered-artifact bindings remain mandatory; this transport never grants approval.",
+    "production_art_acceptance": false,
+    "provenance_paths": [],
+    "provider_called": false,
+    "scope": "Exact selected source and provenance bytes; complete project and artwork review are separate.",
+    "total_bytes": 4167150,
+    "unique_part_bytes": 4167150,
+    "unique_part_count": 64,
+    "verified": true,
+    "visual_review_performed": false
+  },
+  "compression": "none; exact UTF-8 JSON",
+  "decoded_bytes_exact": true,
+  "freshness_requirement": "Restored receipts require the exact dependency versions, renderer, rendered frames/layers/audio and inspected evidence. Fresh reconstruction never recreates approval.",
+  "history_bytes": 4167150,
+  "history_path": "production-workflow.json",
+  "history_sha256": "cce42c52460d4525f18eb00f7525f8df8d99ebda9e31b3d875dccba6d93220d4",
+  "human_review": false,
+  "kind": "actual-review-history-transport",
+  "last_review_sha256": "a02a3f5242e6c48a69053961d822f21e38aa7a32ec3d64a81679faa257198934",
+  "restoration": {
+    "bundle": "/workspace/scratch/368aa013e993/hatch-pet/examples/production-pilot/reviews-source-bundle/sources-index.json",
+    "bundle_sha256": "454bfdb6daad191cdcf1c20ea8dfe487dae0bb7a3576d2258cbe6c8b4f99c5dc",
+    "file_count": 1,
+    "files": [
+      {
+        "bytes": 4167150,
+        "path": "production-workflow.json",
+        "sha256": "cce42c52460d4525f18eb00f7525f8df8d99ebda9e31b3d875dccba6d93220d4"
+      }
+    ],
+    "fixture": false,
+    "origin": "Verbatim actual assistant-scoped pilot review history as inspectable UTF-8 JSON bytes. Exact source, renderer and rendered-artifact bindings remain mandatory; this transport never grants approval.",
+    "production_art_acceptance": false,
+    "provenance_paths": [],
+    "provider_called": false,
+    "restored": "/tmp/hatch-review-json-exact-restore",
+    "scope": "Exact selected source and provenance bytes; complete project and artwork review are separate.",
+    "total_bytes": 4167150,
+    "unique_part_bytes": 4167150,
+    "unique_part_count": 64,
+    "verified": true,
+    "visual_review_performed": false
+  },
+  "review_records": 20,
+  "reviewer_kinds": [
+    "assistant"
+  ],
+  "schema_version": 1
+}

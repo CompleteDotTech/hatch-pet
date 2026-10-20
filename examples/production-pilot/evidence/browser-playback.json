@@ -1,0 +1,406 @@
+{
+  "kind": "actual-local-browser-playback",
+  "auditory_inspection": false,
+  "human_review": false,
+  "production_art_acceptance": false,
+  "scenes": [
+    {
+      "scene": "seed-exchange",
+      "render_manifest_sha256": "bd5a6b6a92eb8fafb650861553f48517e8ad29ad8c5b96b001e8c52804741ca8",
+      "frame_count": 432,
+      "completed": true,
+      "state": {
+        "frame": 431,
+        "renderedFrame": 431,
+        "audioTime": 36,
+        "audioDuration": 36,
+        "audioEnded": true,
+        "playing": false,
+        "cachedImages": 36
+      },
+      "wall_seconds": 36.35,
+      "scrub_step_comparison_and_track_visibility": "passed",
+      "errors": [],
+      "observations": [
+        {
+          "frame": 11,
+          "renderedFrame": 11,
+          "audioTime": 0.974725,
+          "error": ""
+        },
+        {
+          "frame": 23,
+          "renderedFrame": 23,
+          "audioTime": 1.993759,
+          "error": ""
+        },
+        {
+          "frame": 36,
+          "renderedFrame": 36,
+          "audioTime": 3.063966,
+          "error": ""
+        },
+        {
+          "frame": 48,
+          "renderedFrame": 48,
+          "audioTime": 4.070471,
+          "error": ""
+        },
+        {
+          "frame": 60,
+          "renderedFrame": 60,
+          "audioTime": 5.078545,
+          "error": ""
+        },
+        {
+          "frame": 72,
+          "renderedFrame": 72,
+          "audioTime": 6.082895,
+          "error": ""
+        },
+        {
+          "frame": 84,
+          "renderedFrame": 84,
+          "audioTime": 7.087338,
+          "error": ""
+        },
+        {
+          "frame": 97,
+          "renderedFrame": 97,
+          "audioTime": 8.096776,
+          "error": ""
+        },
+        {
+          "frame": 109,
+          "renderedFrame": 109,
+          "audioTime": 9.101792,
+          "error": ""
+        },
+        {
+          "frame": 121,
+          "renderedFrame": 121,
+          "audioTime": 10.10869,
+          "error": ""
+        },
+        {
+          "frame": 133,
+          "renderedFrame": 133,
+          "audioTime": 11.115263,
+          "error": ""
+        },
+        {
+          "frame": 145,
+          "renderedFrame": 145,
+          "audioTime": 12.119371,
+          "error": ""
+        },
+        {
+          "frame": 157,
+          "renderedFrame": 157,
+          "audioTime": 13.125654,
+          "error": ""
+        },
+        {
+          "frame": 169,
+          "renderedFrame": 169,
+          "audioTime": 14.132357,
+          "error": ""
+        },
+        {
+          "frame": 181,
+          "renderedFrame": 181,
+          "audioTime": 15.138216,
+          "error": ""
+        },
+        {
+          "frame": 193,
+          "renderedFrame": 193,
+          "audioTime": 16.145945,
+          "error": ""
+        },
+        {
+          "frame": 205,
+          "renderedFrame": 205,
+          "audioTime": 17.160828,
+          "error": ""
+        },
+        {
+          "frame": 217,
+          "renderedFrame": 217,
+          "audioTime": 18.167786,
+          "error": ""
+        },
+        {
+          "frame": 230,
+          "renderedFrame": 228,
+          "audioTime": 19.194816,
+          "error": ""
+        },
+        {
+          "frame": 242,
+          "renderedFrame": 242,
+          "audioTime": 20.215291,
+          "error": ""
+        },
+        {
+          "frame": 254,
+          "renderedFrame": 254,
+          "audioTime": 21.222423,
+          "error": ""
+        },
+        {
+          "frame": 266,
+          "renderedFrame": 266,
+          "audioTime": 22.227216,
+          "error": ""
+        },
+        {
+          "frame": 278,
+          "renderedFrame": 278,
+          "audioTime": 23.233208,
+          "error": ""
+        },
+        {
+          "frame": 290,
+          "renderedFrame": 290,
+          "audioTime": 24.237486,
+          "error": ""
+        },
+        {
+          "frame": 302,
+          "renderedFrame": 302,
+          "audioTime": 25.241481,
+          "error": ""
+        },
+        {
+          "frame": 314,
+          "renderedFrame": 314,
+          "audioTime": 26.245491,
+          "error": ""
+        },
+        {
+          "frame": 326,
+          "renderedFrame": 326,
+          "audioTime": 27.250279,
+          "error": ""
+        },
+        {
+          "frame": 338,
+          "renderedFrame": 338,
+          "audioTime": 28.254521,
+          "error": ""
+        },
+        {
+          "frame": 351,
+          "renderedFrame": 351,
+          "audioTime": 29.260051,
+          "error": ""
+        },
+        {
+          "frame": 363,
+          "renderedFrame": 363,
+          "audioTime": 30.263609,
+          "error": ""
+        },
+        {
+          "frame": 375,
+          "renderedFrame": 375,
+          "audioTime": 31.267738,
+          "error": ""
+        },
+        {
+          "frame": 387,
+          "renderedFrame": 387,
+          "audioTime": 32.273606,
+          "error": ""
+        },
+        {
+          "frame": 398,
+          "renderedFrame": 398,
+          "audioTime": 33.239187,
+          "error": ""
+        },
+        {
+          "frame": 410,
+          "renderedFrame": 410,
+          "audioTime": 34.246935,
+          "error": ""
+        },
+        {
+          "frame": 422,
+          "renderedFrame": 422,
+          "audioTime": 35.252045,
+          "error": ""
+        },
+        {
+          "frame": 431,
+          "renderedFrame": 431,
+          "audioTime": 36,
+          "error": ""
+        }
+      ],
+      "screenshot": {
+        "path": "evidence/seed-exchange-browser-inspection.png",
+        "sha256": "0fbc7aebdb9bf4116ae8d61b09b0cdf12518bfaab6932981443bb7d6c956d485"
+      }
+    },
+    {
+      "scene": "garden-promise",
+      "render_manifest_sha256": "d42f084c2a3f4ac67c7e641d15477d39b9d93de3d340d469629af26e64864423",
+      "frame_count": 264,
+      "completed": true,
+      "state": {
+        "frame": 263,
+        "renderedFrame": 263,
+        "audioTime": 22,
+        "audioDuration": 22,
+        "audioEnded": false,
+        "playing": false,
+        "cachedImages": 36
+      },
+      "wall_seconds": 22.468,
+      "scrub_step_comparison_and_track_visibility": "passed",
+      "errors": [],
+      "observations": [
+        {
+          "frame": 11,
+          "renderedFrame": 11,
+          "audioTime": 0.969335,
+          "error": ""
+        },
+        {
+          "frame": 23,
+          "renderedFrame": 23,
+          "audioTime": 1.97361,
+          "error": ""
+        },
+        {
+          "frame": 35,
+          "renderedFrame": 35,
+          "audioTime": 2.981173,
+          "error": ""
+        },
+        {
+          "frame": 47,
+          "renderedFrame": 47,
+          "audioTime": 3.986915,
+          "error": ""
+        },
+        {
+          "frame": 59,
+          "renderedFrame": 59,
+          "audioTime": 4.992026,
+          "error": ""
+        },
+        {
+          "frame": 72,
+          "renderedFrame": 72,
+          "audioTime": 6.045465,
+          "error": ""
+        },
+        {
+          "frame": 84,
+          "renderedFrame": 84,
+          "audioTime": 7.054445,
+          "error": ""
+        },
+        {
+          "frame": 96,
+          "renderedFrame": 96,
+          "audioTime": 8.05929,
+          "error": ""
+        },
+        {
+          "frame": 108,
+          "renderedFrame": 108,
+          "audioTime": 9.063818,
+          "error": ""
+        },
+        {
+          "frame": 120,
+          "renderedFrame": 120,
+          "audioTime": 10.069366,
+          "error": ""
+        },
+        {
+          "frame": 132,
+          "renderedFrame": 132,
+          "audioTime": 11.073404,
+          "error": ""
+        },
+        {
+          "frame": 144,
+          "renderedFrame": 144,
+          "audioTime": 12.076513,
+          "error": ""
+        },
+        {
+          "frame": 156,
+          "renderedFrame": 156,
+          "audioTime": 13.080678,
+          "error": ""
+        },
+        {
+          "frame": 168,
+          "renderedFrame": 168,
+          "audioTime": 14.084928,
+          "error": ""
+        },
+        {
+          "frame": 181,
+          "renderedFrame": 181,
+          "audioTime": 15.098719,
+          "error": ""
+        },
+        {
+          "frame": 193,
+          "renderedFrame": 193,
+          "audioTime": 16.125807,
+          "error": ""
+        },
+        {
+          "frame": 205,
+          "renderedFrame": 204,
+          "audioTime": 17.152554,
+          "error": ""
+        },
+        {
+          "frame": 219,
+          "renderedFrame": 218,
+          "audioTime": 18.256284,
+          "error": ""
+        },
+        {
+          "frame": 231,
+          "renderedFrame": 230,
+          "audioTime": 19.269687,
+          "error": ""
+        },
+        {
+          "frame": 243,
+          "renderedFrame": 243,
+          "audioTime": 20.326657,
+          "error": ""
+        },
+        {
+          "frame": 256,
+          "renderedFrame": 255,
+          "audioTime": 21.342229,
+          "error": ""
+        },
+        {
+          "frame": 263,
+          "renderedFrame": 263,
+          "audioTime": 22,
+          "error": ""
+        }
+      ],
+      "screenshot": {
+        "path": "evidence/garden-promise-browser-inspection.png",
+        "sha256": "1703346e2ac40c3f2e34fe98e3f69fdae592d45ec7c0491940ecef41b41f3b69"
+      }
+    }
+  ],
+  "browser_version": "155.0.8059.84",
+  "completed": true
+}

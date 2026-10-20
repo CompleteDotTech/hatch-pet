@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "markings": [
+    "cream inner ears and muzzle",
+    "two small waistcoat buttons"
+  ],
+  "palette": {
+    "fur": "#548F8B",
+    "cream": "#E5DDC2",
+    "waistcoat": "#C69540",
+    "eyes": "#302D2B"
+  },
+  "materials": [
+    "softly painted fur",
+    "matte woven costume"
+  ],
+  "proportions": {
+    "head_to_body_height": 0.6
+  },
+  "approved_props": [
+    "ochre waistcoat"
+  ],
+  "asymmetries": [],
+  "directions": {
+    "parts": "front"
+  },
+  "forbid_mirror": true,
+  "unresolved_conflicts": []
+}
