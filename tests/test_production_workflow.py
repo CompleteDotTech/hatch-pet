@@ -411,6 +411,54 @@ class ProductionWorkflowTests(unittest.TestCase):
         self.assertTrue(workflow.review_status(destination, self.character_target)['current_pass'])
         self.assertFalse(result['external_integration_verified'])
 
+    def test_archive_preserves_acquisition_records_without_reading_runtime_locks(self):
+        run, _ = self.acquisition()
+        lock = run.parent / ('.' + run.name + '.hatch.lock')
+        unrelated = self.root / 'notes.hatch.lock'
+        unrelated.write_bytes(b'Ordinary project evidence; not a runtime lock.')
+        original_hash = workflow.file_hash
+        def mandatory_lock(path):
+            if Path(path) == lock:
+                raise PermissionError('Simulated Windows mandatory lock byte')
+            return original_hash(path)
+        archive = self.home / 'acquisition.zip'
+        with patch.object(workflow, 'file_hash', side_effect=mandatory_lock):
+            workflow.archive_project(self.root, archive)
+        receipt = workflow.verify_project_archive(archive)
+        self.assertNotIn(lock.relative_to(self.root).as_posix(), receipt['files'])
+        self.assertIn(unrelated.name, receipt['files'])
+        for path in run.rglob('*'):
+            if path.is_file():
+                self.assertEqual(receipt['files'][path.relative_to(self.root).as_posix()], original_hash(path))
+        workflow.restore_project(archive, self.home / 'acquisition-restored')
+
+    def test_archive_and_restore_preserve_destinations_created_during_publish(self):
+        import production_sources as sources
+        archive = self.home / 'original.zip'
+        workflow.archive_project(self.root, archive)
+        original_rename = sources._rename_no_replace
+        for action in ('archive', 'restore'):
+            with self.subTest(action=action):
+                destination = self.home / ('racing-' + action)
+                def race(stage, target):
+                    if action == 'archive':
+                        target.write_bytes(b'Independent archive')
+                    else:
+                        target.mkdir()
+                    return original_rename(stage, target)
+                with patch.object(sources, '_rename_no_replace', side_effect=race):
+                    with self.assertRaises(FileExistsError):
+                        if action == 'archive':
+                            workflow.archive_project(self.root, destination)
+                        else:
+                            workflow.restore_project(archive, destination)
+                if action == 'archive':
+                    self.assertEqual(destination.read_bytes(), b'Independent archive')
+                else:
+                    self.assertEqual(list(destination.iterdir()), [])
+        self.assertFalse(list(self.home.glob('*.incoming')))
+        self.assertFalse(list(self.home.glob('.hatch-production-restore-*')))
+
     def test_archive_rejects_active_bound_and_unbound_tokens(self):
         run, _ = self.acquisition()
         handoff = workflow.claim_generation(self.root, 'a', 'base')
