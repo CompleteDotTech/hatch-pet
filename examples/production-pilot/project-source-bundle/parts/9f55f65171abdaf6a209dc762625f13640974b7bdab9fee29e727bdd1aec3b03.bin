@@ -1,0 +1,94 @@
+{
+  "character": "luma@3.0.0",
+  "completion": "hold",
+  "contacts": [],
+  "displacement": [
+    -10,
+    0
+  ],
+  "duration_frames": 12,
+  "end_pose": "stand",
+  "entry_points": [
+    {
+      "frame": 0,
+      "pose": "walk"
+    }
+  ],
+  "events": [],
+  "exit_points": [
+    {
+      "frame": 11,
+      "pose": "stand"
+    }
+  ],
+  "facing": "front",
+  "full_frames": [],
+  "id": "luma-stop",
+  "interpolation": {
+    "max_frames": 12,
+    "max_offset_per_frame": 20,
+    "max_rotation_per_frame": 20
+  },
+  "interruptions": {
+    "cancel_pose": "stand",
+    "frames": [
+      0,
+      6,
+      11
+    ],
+    "max_transition_frames": 12,
+    "policy": "at-markers"
+  },
+  "kind": "clip",
+  "mode": "once",
+  "requirements": {
+    "action": [
+      "stop"
+    ],
+    "hand": [
+      "open-paw"
+    ],
+    "pose": [
+      "walk",
+      "stand"
+    ]
+  },
+  "root": {
+    "offset": {
+      "interpolation": "linear",
+      "keys": [
+        {
+          "frame": 0,
+          "value": [
+            0,
+            0
+          ]
+        },
+        {
+          "frame": 6,
+          "value": [
+            -8,
+            0
+          ]
+        },
+        {
+          "frame": 12,
+          "value": [
+            -10,
+            0
+          ]
+        }
+      ]
+    }
+  },
+  "schema_version": 1,
+  "start_pose": "walk",
+  "tracks": {
+    "body": {},
+    "face": {},
+    "gaze": {},
+    "mouth": {}
+  },
+  "version": "3.0.0",
+  "viewpoint": "front"
+}

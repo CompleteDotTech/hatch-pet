@@ -16,6 +16,7 @@ import hashlib
 import json
 import math
 import os
+import platform
 from pathlib import Path
 import shutil
 import subprocess
@@ -23,9 +24,9 @@ import sys
 import tempfile
 import wave
 
-from PIL import Image, ImageChops, ImageDraw, PngImagePlugin, __version__ as PILLOW_VERSION
+from PIL import Image, ImageChops, ImageDraw, PngImagePlugin, features, __version__ as PILLOW_VERSION
 
-RENDERER_VERSION = "1.0.0"
+RENDERER_VERSION = "1.0.1"
 MAX_FRAME_PIXELS = 4096 * 2160
 MAX_SOURCE_BYTES = 64 * 1024 * 1024
 MAX_CACHE_BYTES = 64 * 1024 * 1024
@@ -71,6 +72,8 @@ def renderer_identity():
     return {"id": "hatch-reference-rgba", "version": RENDERER_VERSION,
             "code_sha256": object_hash(implementation), "implementation": implementation,
             "pillow": PILLOW_VERSION, "python": sys.version.split()[0],
+            "png_backend": features.version("zlib"),
+            "platform": {"system": platform.system(), "machine": platform.machine()},
             "compositing": "8-bit encoded-srgb source-over; straight output alpha",
             "filtering": "premultiplied-alpha affine except exact nearest"}
 

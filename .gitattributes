@@ -5,6 +5,7 @@ examples/production-pilot/source-bundle/parts/*.bin binary
 examples/production-pilot/audio-source-bundle/parts/*.bin binary
 examples/production-pilot/reviews-source-bundle/parts/*.bin binary
 examples/production-pilot/evidence-source-bundle/parts/*.bin binary
+examples/production-pilot/project-source-bundle/parts/*.bin binary
 # Index, provenance and historical evidence hashes bind encoded bytes too.
 examples/production-pilot/**/*.json -text
 examples/production-pilot/**/*.txt -text

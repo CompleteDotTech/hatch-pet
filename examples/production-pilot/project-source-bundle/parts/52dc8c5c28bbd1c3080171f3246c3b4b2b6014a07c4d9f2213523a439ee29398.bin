@@ -1,0 +1,94 @@
+{
+  "character": "luma@3.0.0",
+  "completion": "hold",
+  "contacts": [],
+  "displacement": [
+    0,
+    0
+  ],
+  "duration_frames": 48,
+  "end_pose": "hold",
+  "entry_points": [
+    {
+      "frame": 0,
+      "pose": "hold"
+    }
+  ],
+  "events": [],
+  "exit_points": [
+    {
+      "frame": 47,
+      "pose": "hold"
+    }
+  ],
+  "facing": "front",
+  "full_frames": [],
+  "id": "luma-hold",
+  "interpolation": {
+    "max_frames": 12,
+    "max_offset_per_frame": 20,
+    "max_rotation_per_frame": 20
+  },
+  "interruptions": {
+    "cancel_pose": "hold",
+    "frames": [
+      0,
+      24,
+      47
+    ],
+    "max_transition_frames": 12,
+    "policy": "at-markers"
+  },
+  "kind": "clip",
+  "mode": "hold",
+  "requirements": {
+    "action": [
+      "hold"
+    ],
+    "hand": [
+      "open-paw"
+    ],
+    "pose": [
+      "hold"
+    ],
+    "prop_state": [
+      "received"
+    ]
+  },
+  "root": {
+    "offset": {
+      "interpolation": "linear",
+      "keys": [
+        {
+          "frame": 0,
+          "value": [
+            0,
+            0
+          ]
+        }
+      ]
+    }
+  },
+  "schema_version": 1,
+  "start_pose": "hold",
+  "tracks": {
+    "body": {
+      "arm-left": {
+        "rotation": {
+          "interpolation": "linear",
+          "keys": [
+            {
+              "frame": 0,
+              "value": 33.522254386749935
+            }
+          ]
+        }
+      }
+    },
+    "face": {},
+    "gaze": {},
+    "mouth": {}
+  },
+  "version": "3.0.0",
+  "viewpoint": "front"
+}

@@ -112,7 +112,8 @@ class ProductionSourcesTests(unittest.TestCase):
         for name, data in payloads.items():
             (original / name).write_bytes(data)
         expected, bundles = {}, []
-        for name in ('source-bundle', 'audio-source-bundle', 'reviews-source-bundle', 'evidence-source-bundle'):
+        for name in ('source-bundle', 'audio-source-bundle', 'reviews-source-bundle',
+                     'evidence-source-bundle', 'project-source-bundle'):
             bundle = checkout / 'examples/production-pilot' / name
             sources.create_source_bundle(original, list(payloads), bundle,
                 fixture=True, origin='Synthetic Git checkout fixture.', provenance_paths=['receipt.json'])

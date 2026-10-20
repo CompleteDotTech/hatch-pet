@@ -20,6 +20,7 @@ BUNDLES = {
     'audio': 'audio-source-bundle',
     'reviews': 'reviews-source-bundle',
     'evidence': 'evidence-source-bundle',
+    'reconstruction': 'project-source-bundle',
 }
 
 
@@ -187,6 +188,14 @@ def verify_delivery(pilot):
             raise ValueError('public metadata differs from its immutable source transport')
         originals[item['path']] = item
 
+    # Every dependency in the original serialized model must resolve to exact
+    # transported bytes, including its original derived PNG and padded PCM files.
+    from production_contracts import _walk_refs
+    for item in manifest['project_files']:
+        for reference, label in _walk_refs(_read(pilot / item['path']), item['path']):
+            if originals.get(reference['path'], {}).get('sha256') != reference['sha256']:
+                raise ValueError('original model dependency is missing or differs: ' + label)
+
     def metadata(role, path):
         return json.loads(_bundle_bytes(pilot / BUNDLES[role], indexes[role], path),
                           object_pairs_hook=sources._unique_object)
@@ -238,12 +247,20 @@ def restore_pilot(pilot, destination):
         stage = Path(temporary)
         project = stage / 'project'
         sources.restore_source_bundle(pilot / BUNDLES['artwork'], project)
-        for role in ('audio', 'reviews', 'evidence'):
+        for role in ('audio', 'reviews', 'evidence', 'reconstruction'):
             sources.restore_source_bundle(pilot / BUNDLES[role], stage / role)
         shutil.copytree(stage / 'audio/audio', project / 'audio')
-        from production_demo import build_pilot
         from production_contracts import load_project
-        built = build_pilot(project)
+        # Restore the original serialized model and derived asset bytes. Native
+        # PNG encoders and libm authoring results vary by platform; reauthoring
+        # them would change the very hashes the historical records preserve.
+        reconstruction = _read(pilot / BUNDLES['reconstruction'] / sources.SOURCE_INDEX)
+        for item in reconstruction['files']:
+            target = sources._path(project, item['path'])
+            if target.exists():
+                raise ValueError('original project transport conflicts with another source: ' + item['path'])
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(sources._path(stage / 'reconstruction', item['path']), target)
         differences = _model_differences(pilot, project, manifest['project_files'])
         if differences['files']:
             raise ValueError('reconstructed model differs from the retained project; '
@@ -269,16 +286,20 @@ def restore_pilot(pilot, destination):
             target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(sources._path(stage / 'evidence', item['path']), target)
             mapping[item['path']] = relative
-        # Construction may only add derived files, never change restored sources.
-        for role in ('artwork', 'audio', 'reviews'):
+        # Recheck every original after staging; publication must never alter source bytes.
+        for role in ('artwork', 'audio', 'reviews', 'reconstruction'):
             index = _read(pilot / BUNDLES[role] / sources.SOURCE_INDEX)
             for item in index['files']:
                 if not _same_file(sources._path(project, item['path']), item):
                     raise ValueError('reconstruction changed an immutable original: ' + item['path'])
         bundle = load_project(project)
         sources.workflow._state(project, bundle)
-        report = {**verified, 'reconstructed': True, 'characters': built['characters'],
-                  'clips': built['clips'], 'scenes': built['scenes'],
+        report = {**verified, 'reconstructed': True, 'characters': len(bundle['characters']),
+                  'clips': len(bundle['clips']),
+                  'scenes': [{'id': scene['id'], 'frames': sum(shot['duration_frames'] for shot in scene['shots'])}
+                             for scene in bundle['scenes']],
+                  'recipe_reauthored': False,
+                  'reconstruction_method': 'Exact original model and derived assets from pinned transports; no native PNG re-encoding or floating-point authoring.',
                   'historical_artifact_paths': mapping,
                   'review_freshness': 'Original ledger retained verbatim. Historical sampled frames are separate; final render reviews must be revalidated against the current renderer and complete outputs.'}
         (project / 'delivery-restoration.json').write_bytes(

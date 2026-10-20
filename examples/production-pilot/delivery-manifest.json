@@ -24,6 +24,14 @@
       "unique_part_bytes": 3560571,
       "unique_part_count": 60
     },
+    "reconstruction": {
+      "bundle_sha256": "59757fc164dd4538d6bc8593b55010ec01b194ec0c6f1e5781c9249528d5ccf1",
+      "file_count": 66,
+      "path": "project-source-bundle",
+      "total_bytes": 2506254,
+      "unique_part_bytes": 2506254,
+      "unique_part_count": 92
+    },
     "reviews": {
       "bundle_sha256": "454bfdb6daad191cdcf1c20ea8dfe487dae0bb7a3576d2258cbe6c8b4f99c5dc",
       "file_count": 1,

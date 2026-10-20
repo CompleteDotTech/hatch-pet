@@ -1,0 +1,508 @@
+{
+  "artifact_id": 12257845569,
+  "artifact_zip_sha256": "189a2ca9133ab321887d4027221eda1820ca7c4952d4f4ad809d63b2bfab0c6f",
+  "bundle": {
+    "bundle_sha256": "59757fc164dd4538d6bc8593b55010ec01b194ec0c6f1e5781c9249528d5ccf1",
+    "file_count": 66,
+    "path": "project-source-bundle",
+    "total_bytes": 2506254,
+    "unique_part_bytes": 2506254,
+    "unique_part_count": 92
+  },
+  "ci_report_sha256": "eb4633b27410295dc7a71957f61c1a2d78269153a2121dbd3202c39b8862efc7",
+  "ci_run": "https://github.com/CompleteDotTech/hatch-pet/actions/runs/39405174981",
+  "fixture": false,
+  "kind": "exact-derived-production-recovery",
+  "method": "Recover only bytes matching pre-existing file hashes in the original pinned model; restore the serialized original model instead of recomputing host-dependent PNG encoding or floating-point authoring.",
+  "new_approval_recorded": false,
+  "original_model_files": [
+    {
+      "bytes": 3687,
+      "path": "project.json",
+      "sha256": "26a87f4a6d0f4e7ea5ea3f27967a0ed72387e0063ab35342a0200b8a7cf20f0a"
+    },
+    {
+      "bytes": 70878,
+      "path": "cast.json",
+      "sha256": "cbeb179e22574fbac903b703be72d38a0de41ecdc37c2e00dffeca4efcde9048"
+    },
+    {
+      "bytes": 2848,
+      "path": "clips/luma-exchange.json",
+      "sha256": "bf94331910247118dfe14ea08031baeb46d7f4d4886d0783d586a482801e3ae3"
+    },
+    {
+      "bytes": 1485,
+      "path": "clips/luma-hold.json",
+      "sha256": "52dc8c5c28bbd1c3080171f3246c3b4b2b6014a07c4d9f2213523a439ee29398"
+    },
+    {
+      "bytes": 1988,
+      "path": "clips/luma-idle.json",
+      "sha256": "91768304f80d3b4bc9134453dc5886bac739a6f4c90ff7f8dfa7e506480eeea3"
+    },
+    {
+      "bytes": 1683,
+      "path": "clips/luma-reach.json",
+      "sha256": "7d8d25a031f2a42258cf040bf0e901bf4eee7cb3e77dc7d41ad6158a9749763d"
+    },
+    {
+      "bytes": 2153,
+      "path": "clips/luma-reaction.json",
+      "sha256": "5377670b0b66071cf3b3d1d5a9d2459c8435240bcb125a346a00ee86b0148aa3"
+    },
+    {
+      "bytes": 1688,
+      "path": "clips/luma-release.json",
+      "sha256": "fcb825c43333655ea37ff65ba4973199e0e36bc4dc11c48a4ae10185c0b02eb9"
+    },
+    {
+      "bytes": 1444,
+      "path": "clips/luma-stop.json",
+      "sha256": "9f55f65171abdaf6a209dc762625f13640974b7bdab9fee29e727bdd1aec3b03"
+    },
+    {
+      "bytes": 19463,
+      "path": "clips/luma-walk-left.json",
+      "sha256": "8ae21873760bec89eb828ae8625b210ad00cfe95b180bea44b3dff5da5da7363"
+    },
+    {
+      "bytes": 19462,
+      "path": "clips/luma-walk-right.json",
+      "sha256": "6ea3b6e8871460ec198e3a200f03b5742161bf4c9041ed3cfd686d9ee3549188"
+    },
+    {
+      "bytes": 9706,
+      "path": "clips/luma-walk-start.json",
+      "sha256": "b8d053345008184b27647b11d5d9fd349925b66f3a8c8bad563850bc77c2eeb9"
+    },
+    {
+      "bytes": 2850,
+      "path": "clips/milo-exchange.json",
+      "sha256": "befbebff6ea1685d8ec6dd2b20258ef78bf649f0a844761905a78d41ca031b91"
+    },
+    {
+      "bytes": 1485,
+      "path": "clips/milo-hold.json",
+      "sha256": "a088ac41ffbf88f4dee0350f56e7522a950c7b8c910a0d2dc9af00468107d34f"
+    },
+    {
+      "bytes": 1988,
+      "path": "clips/milo-idle.json",
+      "sha256": "727a3552144e080c54d7c4365c3d8a64e4a4a31c4328b0bb87715ba2ea544ea7"
+    },
+    {
+      "bytes": 1683,
+      "path": "clips/milo-reach.json",
+      "sha256": "5053485ef865048cb90adc65db6d72677bd66416cd250168313a09c8e8a31fa8"
+    },
+    {
+      "bytes": 2154,
+      "path": "clips/milo-reaction.json",
+      "sha256": "82c79823c7ed302d4c2672b0e3e14be3ef2c51dd3ab144519c009b182a1bf02a"
+    },
+    {
+      "bytes": 1688,
+      "path": "clips/milo-release.json",
+      "sha256": "11346241719c4bb215e3b2711fdc921c957559c1167d2f31e8158a49bf87ea49"
+    },
+    {
+      "bytes": 1441,
+      "path": "clips/milo-stop.json",
+      "sha256": "7495a8d2dbdb4b2777a8d1e8434baaf805215e38453f47d48bdbf89ac0127204"
+    },
+    {
+      "bytes": 19511,
+      "path": "clips/milo-walk-left.json",
+      "sha256": "0dfd05c14078589699ab15fb0a2c1dc760ef3ed6010a9c14545d46b6fbf0383a"
+    },
+    {
+      "bytes": 19509,
+      "path": "clips/milo-walk-right.json",
+      "sha256": "6889534c307441df74b78353bc21aaa3da28c2e76cc83adbec288997beb1f0ae"
+    },
+    {
+      "bytes": 9702,
+      "path": "clips/milo-walk-start.json",
+      "sha256": "5fda371277c10abbbbda4d77ae780fcfabe18190cfbcfae56a56af8b09726443"
+    },
+    {
+      "bytes": 27300,
+      "path": "scenes/garden-promise.json",
+      "sha256": "9f783134708d1185a93212f6cc8c52895f6635b2a201695ea99a1faa8284c99b"
+    },
+    {
+      "bytes": 42683,
+      "path": "scenes/seed-exchange.json",
+      "sha256": "0656fc260521c2d6d6efd5863f4cf59c094d47ceedd3b584896094b1b0b05d5a"
+    }
+  ],
+  "original_model_preservation_commit": "ebdb5d64a0d36e6a2fd6fbf5cb574fc6968f4404",
+  "portability_findings": {
+    "authored_numeric_examples": [
+      {
+        "actual_sha256": "918da4123dc068271107c10ad0d5d069e707d4a7d54d08f0bfb941f0612054fb",
+        "expected_sha256": "8ae21873760bec89eb828ae8625b210ad00cfe95b180bea44b3dff5da5da7363",
+        "first_difference": {
+          "actual": 3.9999999999999982,
+          "expected": 3.999999999999998,
+          "field": "$.tracks.body.arm-left.rotation.keys[14].value"
+        },
+        "path": "clips/luma-walk-left.json"
+      },
+      {
+        "actual_sha256": "eecca19b5359ccdbf302fe50ed27317fb7d05f99e13965d587128f2c25fc25df",
+        "expected_sha256": "6ea3b6e8871460ec198e3a200f03b5742161bf4c9041ed3cfd686d9ee3549188",
+        "first_difference": {
+          "actual": 3.9999999999999982,
+          "expected": 3.999999999999998,
+          "field": "$.tracks.body.arm-left.rotation.keys[14].value"
+        },
+        "path": "clips/luma-walk-right.json"
+      },
+      {
+        "actual_sha256": "5271cbe5a91157702f3616bd35a07e6e90ec7eb9beebaf7e82c6f784000a55c9",
+        "expected_sha256": "0dfd05c14078589699ab15fb0a2c1dc760ef3ed6010a9c14545d46b6fbf0383a",
+        "first_difference": {
+          "actual": 3.9999999999999982,
+          "expected": 3.999999999999998,
+          "field": "$.tracks.body.arm-left.rotation.keys[14].value"
+        },
+        "path": "clips/milo-walk-left.json"
+      },
+      {
+        "actual_sha256": "f89d6b9f0bc47170e276d72125861898f855679d3d98332af1871dd7f1048066",
+        "expected_sha256": "6889534c307441df74b78353bc21aaa3da28c2e76cc83adbec288997beb1f0ae",
+        "first_difference": {
+          "actual": 3.9999999999999982,
+          "expected": 3.999999999999998,
+          "field": "$.tracks.body.arm-left.rotation.keys[14].value"
+        },
+        "path": "clips/milo-walk-right.json"
+      }
+    ],
+    "macos_pillow_zlib": "1.3.1.zlib-ng",
+    "macos_run": "https://github.com/CompleteDotTech/hatch-pet/actions/runs/39406973813",
+    "png_comparisons": [
+      {
+        "macos_png_sha256": "494ceb832db5bc87cdca9fdc0c4505eaeccfb82f53596ea35f47242008ea627f",
+        "macos_rgba_sha256": "c7d11111565d8551e0f85817036a5b0c18a1066c9a2c5845492de45aa31db231",
+        "original_png_sha256": "e075d9c7b16e977149aea3a4a7530962f8554c165f51db0e3170d0971663fcd4",
+        "path": "art/components/milo/arm-left.png",
+        "pixel_exact": true,
+        "rgba_sha256": "c7d11111565d8551e0f85817036a5b0c18a1066c9a2c5845492de45aa31db231"
+      },
+      {
+        "macos_png_sha256": "9375af0e46aba0b7ab9fccd9f25f7c29ec6d19834c591e76496f8ffe10f4a800",
+        "macos_rgba_sha256": "a5f18e6c8db52b52666de025e6a658d944b31ca1e5bb94a77bed7d47081883f7",
+        "original_png_sha256": "6e938c5ab2bd329bab6f32669100ac24336660c00c418f57a3b2d85c5fdd3f71",
+        "path": "art/components/milo/arm-right.png",
+        "pixel_exact": true,
+        "rgba_sha256": "a5f18e6c8db52b52666de025e6a658d944b31ca1e5bb94a77bed7d47081883f7"
+      },
+      {
+        "macos_png_sha256": "422dfd076c68d6e61d283fd7aa9c63142555cc7322f2f1e0d2af707cbbeaa547",
+        "macos_rgba_sha256": "d7491988df8aba9b4b94fd95b63799b6a15a8d1f547f2b38c4312a3b8b342b04",
+        "original_png_sha256": "876faeedd14fdf57e1c6714d28b72a4696da9d4d454ebef971a64d69b3f7985d",
+        "path": "art/components/milo/hand-left.png",
+        "pixel_exact": true,
+        "rgba_sha256": "d7491988df8aba9b4b94fd95b63799b6a15a8d1f547f2b38c4312a3b8b342b04"
+      },
+      {
+        "macos_png_sha256": "f212328b3ec5a294017067da8ec43af742f7d362db579524b2ff11774d408189",
+        "macos_rgba_sha256": "cf31b5d0cbc8a50b7461a5495144513991441a5b7dc7d0e6e4cea002d07a9fc2",
+        "original_png_sha256": "18f7c3b12867b18e0412beb7b8b11afa6aa8f8338368a2c4be9db6d021c6345c",
+        "path": "art/components/milo/hand-right.png",
+        "pixel_exact": true,
+        "rgba_sha256": "cf31b5d0cbc8a50b7461a5495144513991441a5b7dc7d0e6e4cea002d07a9fc2"
+      },
+      {
+        "macos_png_sha256": "5f0fe7353d17903ca1ee3cff6badb6765810004f34a54a873126a9739d0214d8",
+        "macos_rgba_sha256": "befc10da900beefeb36260ae2a6b5acb8d245197c02f51a84b2d98f6ab4ace66",
+        "original_png_sha256": "f52ab1e98007dde1b949f65eb1a1eb265f2769a11c3d540845cd7aa2f3562710",
+        "path": "art/components/milo/head.png",
+        "pixel_exact": true,
+        "rgba_sha256": "befc10da900beefeb36260ae2a6b5acb8d245197c02f51a84b2d98f6ab4ace66"
+      },
+      {
+        "macos_png_sha256": "0611890f2eb657d8432f96b40fbdea2cce9c258d19b8a0e3ca516590a1ebf322",
+        "macos_rgba_sha256": "316bc62d955f3ea5020cd5d1277118006ad2ac1b9eca9eceb244731abc8fbcb4",
+        "original_png_sha256": "343fbdbbae5b25acba14bc7af0d15f6c593850a5560171f865c5567aa06cae12",
+        "path": "art/components/milo/leg-left.png",
+        "pixel_exact": true,
+        "rgba_sha256": "316bc62d955f3ea5020cd5d1277118006ad2ac1b9eca9eceb244731abc8fbcb4"
+      },
+      {
+        "macos_png_sha256": "8ba2b6dd6457185bed980822ee12fc2b1084af48f84dbd6d89926d545b884c32",
+        "macos_rgba_sha256": "b226189e1282d91bf191764652a64a1b74d1dc90e5ee3587739614aa1a7da4c6",
+        "original_png_sha256": "41a9e7ef46eceaef030c4ceaa91713686fb9aaa3d4589dc5ffa3ca0006abb226",
+        "path": "art/components/milo/torso-mask.png",
+        "pixel_exact": true,
+        "rgba_sha256": "b226189e1282d91bf191764652a64a1b74d1dc90e5ee3587739614aa1a7da4c6"
+      },
+      {
+        "macos_png_sha256": "04019a03f70b540c6eb2f9f56bfd75b22002123e3f24b4b4e5878d64fcf1bdf5",
+        "macos_rgba_sha256": "aea653cfa38442fc6a88ec0bbfd17cc84e2e566e47e49d390d02f96fbbb8f1ec",
+        "original_png_sha256": "4dbfdecf0c78f4a2f21011592a9a569c645510a2fc9b7dc86875e52b67e357c0",
+        "path": "art/components/milo/torso.png",
+        "pixel_exact": true,
+        "rgba_sha256": "aea653cfa38442fc6a88ec0bbfd17cc84e2e566e47e49d390d02f96fbbb8f1ec"
+      }
+    ]
+  },
+  "portable_project_sha256": "42b630188a360221658ea1f78ea0bba7bc0c82b63eb4bf7cd6e964b6c914044f",
+  "provider_called": false,
+  "public_source_head": "51d0e5a951465993d2ebf3556ef4eb870bc4d640",
+  "recovered_derived_files": [
+    {
+      "bytes": 9767,
+      "path": "art/components/luma/arm-left.png",
+      "rgba_sha256": "f036c1953a5ccb0741c872d1f4c8fe271568bcd4ce5e53dcc4a18a0cd4c0f616",
+      "sha256": "365526e96542d07151887c44964911e64addced23b73b3e5c180426734f85aad"
+    },
+    {
+      "bytes": 9608,
+      "path": "art/components/luma/arm-right.png",
+      "rgba_sha256": "d84dc03b8e33afbed4a64dfd10521d5c10ad3a98d3481536a97d5ba35f36922d",
+      "sha256": "f230991e1f46644930cc6d475742b1eb966df2e066fa5ae12b96145c749c673a"
+    },
+    {
+      "bytes": 4204,
+      "path": "art/components/luma/brows-neutral.png",
+      "rgba_sha256": "f321ea1200105e5b67f3c262e8ca53a864aa0e1387bbe761a998da5f86d68215",
+      "sha256": "b65a5d0617db07150db2ee0a0e2bced0fccbabc77cd512a3e979f385c5be6f7d"
+    },
+    {
+      "bytes": 4746,
+      "path": "art/components/luma/brows-raised.png",
+      "rgba_sha256": "681c3322b567c88c69590527905a6db1d867638d1ba7d149abd30e7a7db45a6d",
+      "sha256": "3cf3c58a2f06d36a6d8d937c7f5a05dd88064d5a2c09fe7475ff2cad1234708d"
+    },
+    {
+      "bytes": 10151,
+      "path": "art/components/luma/eyes-blink.png",
+      "rgba_sha256": "4d3bfd21f85f6fb547eaa0527381f45e9e7d078b97fc6eb4254120fd13871a78",
+      "sha256": "e919bb1c776c7521969b61493ba63b668b2548c8373987b097ed42b418107770"
+    },
+    {
+      "bytes": 11165,
+      "path": "art/components/luma/eyes-open.png",
+      "rgba_sha256": "485321ad7a5a6e9769583e84e55c826e08c2c3de9101e31d013427e68ea52c00",
+      "sha256": "348f289eb88b4ccb2fb7902ba951a3de1580c1ca77e9222ba2598a07e11d57ba"
+    },
+    {
+      "bytes": 6066,
+      "path": "art/components/luma/hand-left.png",
+      "rgba_sha256": "824a9ca1c15414f773ff100b656e1d0c17fbd89c86d070cbf414d51ec66d097b",
+      "sha256": "39180c75b466422bf9e769a0c7c76aadf1ff63316ce138b23eea246b6d51e272"
+    },
+    {
+      "bytes": 6250,
+      "path": "art/components/luma/hand-right.png",
+      "rgba_sha256": "5f41a7242303b2246caf9a976311d8328f9b362a646e8a6102662ef45aa4c675",
+      "sha256": "9f8d3902cab04713a784e9f323e4712a560046cd8fb1d97974326ed9133b1393"
+    },
+    {
+      "bytes": 80626,
+      "path": "art/components/luma/head.png",
+      "rgba_sha256": "2d93f8b614763658f00fdae354031b11ad3c55312af181068d66f507340a8509",
+      "sha256": "a625432d1e424e73863bced7424db0e026a12b39eea55670ebd68ea6d03b9515"
+    },
+    {
+      "bytes": 14145,
+      "path": "art/components/luma/leg-left.png",
+      "rgba_sha256": "f31a2e462931231fc12d5f6d55dc210cad45622e424031a4062d46a2e8902097",
+      "sha256": "55001457a90252b09ed16739d8d7adb24393ce7715b1413b9d6e90b53fd1f5e0"
+    },
+    {
+      "bytes": 13740,
+      "path": "art/components/luma/leg-right.png",
+      "rgba_sha256": "e548224f1db0d347dce1dd2a57895e638ab411732be328f4815d0ba643ae09db",
+      "sha256": "8638bac0b016c4412adb658fa3fd68e12d738a835d4fce0d2eea0f3864f90c54"
+    },
+    {
+      "bytes": 15053,
+      "path": "art/components/luma/mouth-a.png",
+      "rgba_sha256": "9f919af5d705d6cf5df57b00d69849213b74466a14133d21357f8a76a985965b",
+      "sha256": "0b09f0c5f7b114274ca35299fd8331b85350bbbd7abc0acc595c31594efe9a16"
+    },
+    {
+      "bytes": 14730,
+      "path": "art/components/luma/mouth-e.png",
+      "rgba_sha256": "ec076c9625f2fe1cd9c79b404176fedc9aec575a64e1f0da644781c493944562",
+      "sha256": "d55de559b7b2e85dd4b2ec9cf19d2ca9fa50fd467bf258704a452c6eded451bd"
+    },
+    {
+      "bytes": 13005,
+      "path": "art/components/luma/mouth-neutral.png",
+      "rgba_sha256": "179d21590a0deff790f22bbe02067bbb6c381a99cf01e35a2fb54f3a12256677",
+      "sha256": "418a6fab8923b64582df2e70c2994d68677f737b80957a1bd3df010ad788bf79"
+    },
+    {
+      "bytes": 13558,
+      "path": "art/components/luma/mouth-o.png",
+      "rgba_sha256": "8ea7e2e930cdd117298e64eddaa40dbe7549376914d2bc6cfb0a919a71bfb404",
+      "sha256": "e3a1bfc6e04d04bc86c7847f6084a9674765739d7c3deabdc06c109c7b7133c9"
+    },
+    {
+      "bytes": 42819,
+      "path": "art/components/luma/torso.png",
+      "rgba_sha256": "ca6a0e3c8789cbfb9ffd211c4eef4aad6d233ac6f02ea5d0ca26dfa04b6c9872",
+      "sha256": "d99f2138b854de10e8d0997a6978951d82311fabe1c419cc168b95e1b8023415"
+    },
+    {
+      "bytes": 11337,
+      "path": "art/components/milo/arm-left.png",
+      "rgba_sha256": "c7d11111565d8551e0f85817036a5b0c18a1066c9a2c5845492de45aa31db231",
+      "sha256": "e075d9c7b16e977149aea3a4a7530962f8554c165f51db0e3170d0971663fcd4"
+    },
+    {
+      "bytes": 10841,
+      "path": "art/components/milo/arm-right.png",
+      "rgba_sha256": "a5f18e6c8db52b52666de025e6a658d944b31ca1e5bb94a77bed7d47081883f7",
+      "sha256": "6e938c5ab2bd329bab6f32669100ac24336660c00c418f57a3b2d85c5fdd3f71"
+    },
+    {
+      "bytes": 2192,
+      "path": "art/components/milo/brows-neutral.png",
+      "rgba_sha256": "22ac2f34ba7c1713ce0450a922da40da99ec67a583453b3c51aea1d99ef980d6",
+      "sha256": "552c03c71b28312900b44f3c0d3de474f45cd11eab457403d2a17d0ae27bfdd7"
+    },
+    {
+      "bytes": 2372,
+      "path": "art/components/milo/brows-raised.png",
+      "rgba_sha256": "33707bf54781eba5c4a13a185fd871e8f286348295a075bb53da2ac4246c4bfc",
+      "sha256": "461303f6b51b1bb733e01a733d033f85ae08333decb26df0e8e340701c8590c8"
+    },
+    {
+      "bytes": 3428,
+      "path": "art/components/milo/eyes-blink.png",
+      "rgba_sha256": "d32969e3283984fd2b84af096396ba4699d034b4ed33b46b3267ffb38ddf7329",
+      "sha256": "5fe4d588920de40dd7beb6574827a405300f42ad28eac36cc63e4eee9dfc67b9"
+    },
+    {
+      "bytes": 8970,
+      "path": "art/components/milo/eyes-open.png",
+      "rgba_sha256": "72b741e5e2d833c2fb2c31ec38efd516178911cc1696077f9c08c55e119f4a94",
+      "sha256": "8fb37168e43be0386b901d86d38e3152f04544cf4e0a3b2e47eb6e006b92897b"
+    },
+    {
+      "bytes": 5007,
+      "path": "art/components/milo/hand-left.png",
+      "rgba_sha256": "d7491988df8aba9b4b94fd95b63799b6a15a8d1f547f2b38c4312a3b8b342b04",
+      "sha256": "876faeedd14fdf57e1c6714d28b72a4696da9d4d454ebef971a64d69b3f7985d"
+    },
+    {
+      "bytes": 5136,
+      "path": "art/components/milo/hand-right.png",
+      "rgba_sha256": "cf31b5d0cbc8a50b7461a5495144513991441a5b7dc7d0e6e4cea002d07a9fc2",
+      "sha256": "18f7c3b12867b18e0412beb7b8b11afa6aa8f8338368a2c4be9db6d021c6345c"
+    },
+    {
+      "bytes": 65187,
+      "path": "art/components/milo/head.png",
+      "rgba_sha256": "befc10da900beefeb36260ae2a6b5acb8d245197c02f51a84b2d98f6ab4ace66",
+      "sha256": "f52ab1e98007dde1b949f65eb1a1eb265f2769a11c3d540845cd7aa2f3562710"
+    },
+    {
+      "bytes": 11604,
+      "path": "art/components/milo/leg-left.png",
+      "rgba_sha256": "316bc62d955f3ea5020cd5d1277118006ad2ac1b9eca9eceb244731abc8fbcb4",
+      "sha256": "343fbdbbae5b25acba14bc7af0d15f6c593850a5560171f865c5567aa06cae12"
+    },
+    {
+      "bytes": 10876,
+      "path": "art/components/milo/leg-right.png",
+      "rgba_sha256": "b34a98ebc258d1784d3debf10f8e972b60c58b1ca82e79636f92e9bdf8ca0fc9",
+      "sha256": "feed293405eb977dfe730c233ffca644921f99363b526ef35f798559f44e373d"
+    },
+    {
+      "bytes": 16100,
+      "path": "art/components/milo/mouth-a.png",
+      "rgba_sha256": "17481cd9831ba0cbaa4963750f0bfa1a982ab04c6625049b71f65333bbc45a56",
+      "sha256": "34e233633cae5c69e9e9a01d873b16b13be7346178c3c9951fcb0c8c6d35aca2"
+    },
+    {
+      "bytes": 15818,
+      "path": "art/components/milo/mouth-e.png",
+      "rgba_sha256": "ea09151b1310ca23d492bd96ce094a4c193bf8bca9cc0078c32278839d825c1b",
+      "sha256": "3092da1ffacf5fe7656e1bb30c10810f428a33c5eb1ebaad6e753ad85007d19c"
+    },
+    {
+      "bytes": 14969,
+      "path": "art/components/milo/mouth-neutral.png",
+      "rgba_sha256": "e66710118ac4aad755ad29b8a7415d7d1b45631cd9296a06e2804a0671238356",
+      "sha256": "f7dd0b2a11c90514f3aab3753e5c21dfd006a606c568258804aa062c0b4bd8c4"
+    },
+    {
+      "bytes": 15082,
+      "path": "art/components/milo/mouth-o.png",
+      "rgba_sha256": "11e8358f85834d4a3adbf4d6600d15e542dc3260eb8b687a92a9f1abf59263ea",
+      "sha256": "991cd7169504419e4abb298e7280bba6406de728e6d321d75a75d542bc379816"
+    },
+    {
+      "bytes": 838,
+      "path": "art/components/milo/torso-mask.png",
+      "rgba_sha256": "b226189e1282d91bf191764652a64a1b74d1dc90e5ee3587739614aa1a7da4c6",
+      "sha256": "41a9e7ef46eceaef030c4ceaa91713686fb9aaa3d4589dc5ffa3ca0006abb226"
+    },
+    {
+      "bytes": 40059,
+      "path": "art/components/milo/torso.png",
+      "rgba_sha256": "aea653cfa38442fc6a88ec0bbfd17cc84e2e566e47e49d390d02f96fbbb8f1ec",
+      "sha256": "4dbfdecf0c78f4a2f21011592a9a569c645510a2fc9b7dc86875e52b67e357c0"
+    },
+    {
+      "bytes": 1450,
+      "path": "art/scenery/foreground.png",
+      "rgba_sha256": "7450a112d2b4ddbe34530da96bc673fdeb933f22c1f6f35988946d1298cc0d11",
+      "sha256": "b4b1abad48aedf362428edb2464016c80e1dd8975015a8ea4a664048cbe19fbc"
+    },
+    {
+      "bytes": 3095,
+      "path": "art/scenery/garden.png",
+      "rgba_sha256": "3444b8db9a37cbbc59e0c247d6231ecb15446dbb1cb1ae10412d0adafed4bb10",
+      "sha256": "60750c80a09c4aa6d2b2f763e07ac2181b73fb344f5da3079bb1ea811e9f43b9"
+    },
+    {
+      "bytes": 3274,
+      "path": "art/scenery/path.png",
+      "rgba_sha256": "51e029403796dd0578d6b8492a4da8f4d41a792948858aa76246398e51b04c70",
+      "sha256": "247228f0d3329fa8496cf88d0bfe953c0961b9c30a1c4e4d0739fd6833a9ec07"
+    },
+    {
+      "bytes": 287,
+      "path": "art/scenery/seed.png",
+      "rgba_sha256": "635afbbdb7e443f5fefc632f44ec68a3de34d832662d451f6d8fd9c8d8d72321",
+      "sha256": "f4380b1412bbe4f52870d632f17e7d7cc1f49aa9b8663753b867a55cc9b82da4"
+    },
+    {
+      "bytes": 376044,
+      "path": "audio/line-01.wav",
+      "sha256": "4f9e08ea76d23c7184a03f7e0af6eb09720b01639ce41f9efa2925a485716d15"
+    },
+    {
+      "bytes": 368044,
+      "path": "audio/line-02.wav",
+      "sha256": "06c0a40a240aecf47a8cbb20b8a197c3e704cba1b52ad4cdc37d495ec2f2cf25"
+    },
+    {
+      "bytes": 248044,
+      "path": "audio/line-03.wav",
+      "sha256": "5c36796006503df51a46caa4062bfb5bd9fa9b98da413ef5ee45a567aebed0f1"
+    },
+    {
+      "bytes": 400044,
+      "path": "audio/line-04.wav",
+      "sha256": "644daa056685cf09d6033405f1915d2641a03fb04317013d847db86d2561a265"
+    },
+    {
+      "bytes": 328044,
+      "path": "audio/line-05.wav",
+      "sha256": "326f978bdd9e223f47004e0b3b252553637c73bdae76e8208a0f093c7d89a9b9"
+    }
+  ],
+  "schema_version": 1,
+  "tested_revision": "3b5955cf3ea75e40b8e46562d9ff7c532721ea03",
+  "tts_called": false
+}

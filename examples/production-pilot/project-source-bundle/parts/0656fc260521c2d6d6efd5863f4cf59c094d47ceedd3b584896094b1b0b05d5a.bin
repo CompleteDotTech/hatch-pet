@@ -1,0 +1,1500 @@
+{
+  "continuity": [
+    {
+      "characters": [
+        "milo@3.0.0",
+        "luma@3.0.0"
+      ],
+      "from_shot": "arrival",
+      "note": "Same exact cast and prop identity across this cut.",
+      "requirements": [
+        "costume",
+        "scale",
+        "prop_ownership",
+        "position"
+      ],
+      "to_shot": "exchange"
+    },
+    {
+      "characters": [
+        "milo@3.0.0",
+        "luma@3.0.0"
+      ],
+      "from_shot": "exchange",
+      "note": "Same exact cast and prop identity across this cut.",
+      "requirements": [
+        "costume",
+        "scale",
+        "prop_ownership",
+        "position"
+      ],
+      "to_shot": "departure"
+    }
+  ],
+  "id": "seed-exchange",
+  "kind": "scene",
+  "schema_version": 1,
+  "shots": [
+    {
+      "audio": [
+        {
+          "duration_frames": 47,
+          "file": {
+            "path": "audio/line-01.wav",
+            "sha256": "4f9e08ea76d23c7184a03f7e0af6eb09720b01639ce41f9efa2925a485716d15"
+          },
+          "gain": 1,
+          "id": "line-01",
+          "mouth_cues": [
+            {
+              "end_frame": 89,
+              "shape": "a",
+              "start_frame": 86
+            },
+            {
+              "end_frame": 92,
+              "shape": "e",
+              "start_frame": 89
+            },
+            {
+              "end_frame": 95,
+              "shape": "a",
+              "start_frame": 92
+            },
+            {
+              "end_frame": 98,
+              "shape": "o",
+              "start_frame": 95
+            },
+            {
+              "end_frame": 101,
+              "shape": "e",
+              "start_frame": 98
+            },
+            {
+              "end_frame": 104,
+              "shape": "neutral",
+              "start_frame": 101
+            },
+            {
+              "end_frame": 107,
+              "shape": "a",
+              "start_frame": 104
+            },
+            {
+              "end_frame": 110,
+              "shape": "e",
+              "start_frame": 107
+            },
+            {
+              "end_frame": 113,
+              "shape": "a",
+              "start_frame": 110
+            },
+            {
+              "end_frame": 116,
+              "shape": "o",
+              "start_frame": 113
+            },
+            {
+              "end_frame": 119,
+              "shape": "e",
+              "start_frame": 116
+            },
+            {
+              "end_frame": 122,
+              "shape": "neutral",
+              "start_frame": 119
+            },
+            {
+              "end_frame": 125,
+              "shape": "a",
+              "start_frame": 122
+            },
+            {
+              "end_frame": 128,
+              "shape": "e",
+              "start_frame": 125
+            },
+            {
+              "end_frame": 131,
+              "shape": "a",
+              "start_frame": 128
+            },
+            {
+              "end_frame": 133,
+              "shape": "neutral",
+              "start_frame": 131
+            }
+          ],
+          "provenance": {
+            "attribution": "Original script authored for the Milo/Luma pilot; local Flite voice rms",
+            "fixture": false,
+            "kind": "import",
+            "operation": {
+              "kind": "pcm-frame-padding",
+              "note": "{\"engine\": \"ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers\", \"tts_receipt\": {\"path\": \"audio/original/line-01.json\", \"sha256\": \"a30a8083a4fe0d541cac1b55171f0b6c5fe68b5ada7cb0786ce63319b580f737\"}, \"voice\": \"rms\", \"source_samples\": 184320, \"output_samples\": 188000, \"sample_rate\": 48000, \"channels\": 1, \"text\": {\"path\": \"audio/original/line-01.txt\", \"sha256\": \"7afd1a41ca68e22f62f38033cf00bd3ac91316e9324f49de653e116766679238\"}, \"mouth_timing\": \"Editable amplitude-gated rhythmic approximation; not phoneme alignment or acting acceptance.\"}"
+            },
+            "origin": "Original short dialogue synthesized locally by FFmpeg Flite, voice rms.",
+            "permissions": "No supplied third-party recording. TTS engine and bundled voice remain subject to their distributed licences.",
+            "references": [
+              {
+                "path": "audio/original/line-01.json",
+                "sha256": "a30a8083a4fe0d541cac1b55171f0b6c5fe68b5ada7cb0786ce63319b580f737"
+              },
+              {
+                "path": "audio/original/line-01.txt",
+                "sha256": "7afd1a41ca68e22f62f38033cf00bd3ac91316e9324f49de653e116766679238"
+              }
+            ],
+            "source": {
+              "path": "audio/original/line-01.wav",
+              "sha256": "a4708107a7733e700c5b3fc678bcf85356cde23c92259b16b6c5802de296976d"
+            }
+          },
+          "speaker": "milo",
+          "start_frame": 86,
+          "text": "Luma, I found a seed. Can you help me plant it?"
+        }
+      ],
+      "camera": {
+        "bounds": {
+          "max_pan_per_frame": 2,
+          "max_zoom": 1.15,
+          "min_zoom": 1
+        },
+        "position": {
+          "interpolation": "linear",
+          "keys": [
+            {
+              "frame": 0,
+              "value": [
+                0,
+                0
+              ]
+            }
+          ]
+        },
+        "zoom": {
+          "interpolation": "linear",
+          "keys": [
+            {
+              "frame": 0,
+              "value": 1
+            }
+          ]
+        }
+      },
+      "cast_scale": 0.56,
+      "duration_frames": 144,
+      "explicit_requirements": [
+        "Use the same versioned cast, fixed relative scale, declared audio and ownership across the sequence."
+      ],
+      "id": "arrival",
+      "inferred_choices": [
+        "Original seed-exchange story, warm path/garden scenery and audience-facing cutout performances chosen for this pilot.",
+        "Front artwork supports screen-space locomotion; sideways or back-facing animation is not inferred from the design turnaround."
+      ],
+      "instances": [
+        {
+          "bindings": {
+            "partner": "luma",
+            "seed": "seed-packet"
+          },
+          "character": "milo@3.0.0",
+          "clips": [
+            {
+              "clip": "milo-walk-right@3.0.0",
+              "end_frame": 72,
+              "start_frame": 0,
+              "transition": {
+                "frames": 0,
+                "kind": "cut"
+              }
+            },
+            {
+              "clip": "milo-stop@3.0.0",
+              "end_frame": 84,
+              "start_frame": 72,
+              "transition": {
+                "frames": 6,
+                "kind": "interpolate"
+              }
+            },
+            {
+              "clip": "milo-idle@3.0.0",
+              "end_frame": 144,
+              "start_frame": 84,
+              "transition": {
+                "frames": 6,
+                "kind": "interpolate"
+              }
+            }
+          ],
+          "costume": "everyday",
+          "facing": "front",
+          "id": "milo",
+          "position": [
+            -95,
+            326
+          ],
+          "requirements": {
+            "expression": [
+              "listening"
+            ],
+            "gaze": [
+              "partner"
+            ],
+            "intensity": [
+              "low"
+            ]
+          },
+          "tracks": {
+            "body": {},
+            "face": {},
+            "gaze": {
+              "eyes": {
+                "offset": {
+                  "interpolation": "linear",
+                  "keys": [
+                    {
+                      "frame": 0,
+                      "value": [
+                        2,
+                        0
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            "mouth": {
+              "mouth": {
+                "drawing": {
+                  "interpolation": "step",
+                  "keys": [
+                    {
+                      "frame": 0,
+                      "value": "neutral"
+                    },
+                    {
+                      "frame": 86,
+                      "value": "a"
+                    },
+                    {
+                      "frame": 89,
+                      "value": "e"
+                    },
+                    {
+                      "frame": 92,
+                      "value": "a"
+                    },
+                    {
+                      "frame": 95,
+                      "value": "o"
+                    },
+                    {
+                      "frame": 98,
+                      "value": "e"
+                    },
+                    {
+                      "frame": 101,
+                      "value": "neutral"
+                    },
+                    {
+                      "frame": 104,
+                      "value": "a"
+                    },
+                    {
+                      "frame": 107,
+                      "value": "e"
+                    },
+                    {
+                      "frame": 110,
+                      "value": "a"
+                    },
+                    {
+                      "frame": 113,
+                      "value": "o"
+                    },
+                    {
+                      "frame": 116,
+                      "value": "e"
+                    },
+                    {
+                      "frame": 119,
+                      "value": "neutral"
+                    },
+                    {
+                      "frame": 122,
+                      "value": "a"
+                    },
+                    {
+                      "frame": 125,
+                      "value": "e"
+                    },
+                    {
+                      "frame": 128,
+                      "value": "a"
+                    },
+                    {
+                      "frame": 131,
+                      "value": "neutral"
+                    },
+                    {
+                      "frame": 133,
+                      "value": "neutral"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "viewpoint": "front",
+          "z": 20
+        },
+        {
+          "bindings": {
+            "partner": "milo",
+            "seed": "seed-packet"
+          },
+          "character": "luma@3.0.0",
+          "clips": [
+            {
+              "clip": "luma-walk-left@3.0.0",
+              "end_frame": 72,
+              "start_frame": 0,
+              "transition": {
+                "frames": 0,
+                "kind": "cut"
+              }
+            },
+            {
+              "clip": "luma-stop@3.0.0",
+              "end_frame": 84,
+              "start_frame": 72,
+              "transition": {
+                "frames": 6,
+                "kind": "interpolate"
+              }
+            },
+            {
+              "clip": "luma-idle@3.0.0",
+              "end_frame": 120,
+              "start_frame": 84,
+              "transition": {
+                "frames": 6,
+                "kind": "interpolate"
+              }
+            },
+            {
+              "clip": "luma-reaction@3.0.0",
+              "end_frame": 144,
+              "start_frame": 120,
+              "transition": {
+                "frames": 6,
+                "kind": "interpolate"
+              }
+            }
+          ],
+          "costume": "everyday",
+          "facing": "front",
+          "id": "luma",
+          "position": [
+            735,
+            326
+          ],
+          "requirements": {
+            "expression": [
+              "listening"
+            ],
+            "gaze": [
+              "partner"
+            ],
+            "intensity": [
+              "low"
+            ]
+          },
+          "tracks": {
+            "body": {},
+            "face": {},
+            "gaze": {
+              "eyes": {
+                "offset": {
+                  "interpolation": "linear",
+                  "keys": [
+                    {
+                      "frame": 0,
+                      "value": [
+                        -2,
+                        0
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            "mouth": {}
+          },
+          "viewpoint": "front",
+          "z": 20
+        }
+      ],
+      "interactions": [],
+      "layers": [
+        {
+          "id": "background",
+          "image": {
+            "path": "art/scenery/path.png",
+            "provenance": {
+              "attribution": "hatch-pet demonstration authoring",
+              "fixture": false,
+              "kind": "import",
+              "origin": "Original vector-like scenery and seed packet authored in this production recipe; rasterized with Pillow.",
+              "permissions": "Created for this repository task; no external assets."
+            },
+            "sha256": "247228f0d3329fa8496cf88d0bfe953c0961b9c30a1c4e4d0739fd6833a9ec07",
+            "size": [
+              720,
+              410
+            ]
+          },
+          "opacity": 1,
+          "parallax": 1,
+          "position": [
+            0,
+            0
+          ],
+          "z": -100
+        },
+        {
+          "id": "foreground",
+          "image": {
+            "path": "art/scenery/foreground.png",
+            "provenance": {
+              "attribution": "hatch-pet demonstration authoring",
+              "fixture": false,
+              "kind": "import",
+              "origin": "Original vector-like scenery and seed packet authored in this production recipe; rasterized with Pillow.",
+              "permissions": "Created for this repository task; no external assets."
+            },
+            "sha256": "b4b1abad48aedf362428edb2464016c80e1dd8975015a8ea4a664048cbe19fbc",
+            "size": [
+              720,
+              410
+            ]
+          },
+          "opacity": 1,
+          "parallax": 1,
+          "position": [
+            0,
+            0
+          ],
+          "z": 60
+        }
+      ],
+      "lighting": {
+        "color_treatment": "Warm sRGB storybook palette; upper-left painted character light; no runtime relighting.",
+        "direction": "left"
+      },
+      "props": [
+        {
+          "attachment": {
+            "anchor": "grip",
+            "component": "hand-right",
+            "instance": "milo"
+          },
+          "id": "seed-packet",
+          "owner": "milo",
+          "ownership": [],
+          "position": [
+            0,
+            0
+          ],
+          "prop": "seed-packet@1.0.0",
+          "tracks": {},
+          "z": 26
+        }
+      ]
+    },
+    {
+      "audio": [
+        {
+          "duration_frames": 46,
+          "file": {
+            "path": "audio/line-02.wav",
+            "sha256": "06c0a40a240aecf47a8cbb20b8a197c3e704cba1b52ad4cdc37d495ec2f2cf25"
+          },
+          "gain": 1,
+          "id": "line-02",
+          "mouth_cues": [
+            {
+              "end_frame": 13,
+              "shape": "a",
+              "start_frame": 10
+            },
+            {
+              "end_frame": 16,
+              "shape": "e",
+              "start_frame": 13
+            },
+            {
+              "end_frame": 19,
+              "shape": "a",
+              "start_frame": 16
+            },
+            {
+              "end_frame": 22,
+              "shape": "o",
+              "start_frame": 19
+            },
+            {
+              "end_frame": 25,
+              "shape": "e",
+              "start_frame": 22
+            },
+            {
+              "end_frame": 28,
+              "shape": "neutral",
+              "start_frame": 25
+            },
+            {
+              "end_frame": 31,
+              "shape": "a",
+              "start_frame": 28
+            },
+            {
+              "end_frame": 34,
+              "shape": "e",
+              "start_frame": 31
+            },
+            {
+              "end_frame": 37,
+              "shape": "a",
+              "start_frame": 34
+            },
+            {
+              "end_frame": 40,
+              "shape": "o",
+              "start_frame": 37
+            },
+            {
+              "end_frame": 43,
+              "shape": "e",
+              "start_frame": 40
+            },
+            {
+              "end_frame": 46,
+              "shape": "neutral",
+              "start_frame": 43
+            },
+            {
+              "end_frame": 49,
+              "shape": "a",
+              "start_frame": 46
+            },
+            {
+              "end_frame": 52,
+              "shape": "e",
+              "start_frame": 49
+            },
+            {
+              "end_frame": 55,
+              "shape": "a",
+              "start_frame": 52
+            },
+            {
+              "end_frame": 56,
+              "shape": "neutral",
+              "start_frame": 55
+            }
+          ],
+          "provenance": {
+            "attribution": "Original script authored for the Milo/Luma pilot; local Flite voice slt",
+            "fixture": false,
+            "kind": "import",
+            "operation": {
+              "kind": "pcm-frame-padding",
+              "note": "{\"engine\": \"ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers\", \"tts_receipt\": {\"path\": \"audio/original/line-02.json\", \"sha256\": \"d062dfca74ec74dd3993f416cf88cf38aca3f3710b202d87c0f6f96a8e06700e\"}, \"voice\": \"slt\", \"source_samples\": 181920, \"output_samples\": 184000, \"sample_rate\": 48000, \"channels\": 1, \"text\": {\"path\": \"audio/original/line-02.txt\", \"sha256\": \"34243cd0cbf6c8396613078a21746c69bb9dab2a36a6aca34ad074013d6732d6\"}, \"mouth_timing\": \"Editable amplitude-gated rhythmic approximation; not phoneme alignment or acting acceptance.\"}"
+            },
+            "origin": "Original short dialogue synthesized locally by FFmpeg Flite, voice slt.",
+            "permissions": "No supplied third-party recording. TTS engine and bundled voice remain subject to their distributed licences.",
+            "references": [
+              {
+                "path": "audio/original/line-02.json",
+                "sha256": "d062dfca74ec74dd3993f416cf88cf38aca3f3710b202d87c0f6f96a8e06700e"
+              },
+              {
+                "path": "audio/original/line-02.txt",
+                "sha256": "34243cd0cbf6c8396613078a21746c69bb9dab2a36a6aca34ad074013d6732d6"
+              }
+            ],
+            "source": {
+              "path": "audio/original/line-02.wav",
+              "sha256": "13b81a46167a5af8230347a63ed01abfb32f2fa675c3c13c9c6059ff94cf5468"
+            }
+          },
+          "speaker": "luma",
+          "start_frame": 10,
+          "text": "Of course. A little care can grow into something wonderful."
+        }
+      ],
+      "camera": {
+        "bounds": {
+          "max_pan_per_frame": 2,
+          "max_zoom": 1.15,
+          "min_zoom": 1
+        },
+        "position": {
+          "interpolation": "linear",
+          "keys": [
+            {
+              "frame": 0,
+              "value": [
+                35,
+                24
+              ]
+            }
+          ]
+        },
+        "zoom": {
+          "interpolation": "linear",
+          "keys": [
+            {
+              "frame": 0,
+              "value": 1.1
+            }
+          ]
+        }
+      },
+      "cast_scale": 0.56,
+      "duration_frames": 168,
+      "explicit_requirements": [
+        "Use the same versioned cast, fixed relative scale, declared audio and ownership across the sequence."
+      ],
+      "id": "exchange",
+      "inferred_choices": [
+        "Original seed-exchange story, warm path/garden scenery and audience-facing cutout performances chosen for this pilot.",
+        "Front artwork supports screen-space locomotion; sideways or back-facing animation is not inferred from the design turnaround."
+      ],
+      "instances": [
+        {
+          "bindings": {
+            "partner": "luma",
+            "seed": "seed-packet"
+          },
+          "character": "milo@3.0.0",
+          "clips": [
+            {
+              "clip": "milo-exchange@3.0.0",
+              "end_frame": 168,
+              "start_frame": 0,
+              "transition": {
+                "frames": 0,
+                "kind": "cut"
+              }
+            }
+          ],
+          "costume": "everyday",
+          "facing": "front",
+          "id": "milo",
+          "position": [
+            230,
+            326
+          ],
+          "requirements": {
+            "expression": [
+              "listening"
+            ],
+            "gaze": [
+              "partner"
+            ],
+            "intensity": [
+              "low"
+            ]
+          },
+          "tracks": {
+            "body": {},
+            "face": {
+              "brows": {
+                "drawing": {
+                  "interpolation": "step",
+                  "keys": [
+                    {
+                      "frame": 0,
+                      "value": "neutral"
+                    },
+                    {
+                      "frame": 46,
+                      "value": "raised"
+                    },
+                    {
+                      "frame": 72,
+                      "value": "neutral"
+                    }
+                  ]
+                }
+              }
+            },
+            "gaze": {
+              "eyes": {
+                "offset": {
+                  "interpolation": "linear",
+                  "keys": [
+                    {
+                      "frame": 0,
+                      "value": [
+                        2,
+                        0
+                      ]
+                    },
+                    {
+                      "frame": 54,
+                      "value": [
+                        2,
+                        0
+                      ]
+                    },
+                    {
+                      "frame": 60,
+                      "value": [
+                        2,
+                        3
+                      ]
+                    },
+                    {
+                      "frame": 102,
+                      "value": [
+                        2,
+                        3
+                      ]
+                    },
+                    {
+                      "frame": 112,
+                      "value": [
+                        2,
+                        0
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            "mouth": {}
+          },
+          "viewpoint": "front",
+          "z": 20
+        },
+        {
+          "bindings": {
+            "partner": "milo",
+            "seed": "seed-packet"
+          },
+          "character": "luma@3.0.0",
+          "clips": [
+            {
+              "clip": "luma-exchange@3.0.0",
+              "end_frame": 168,
+              "start_frame": 0,
+              "transition": {
+                "frames": 0,
+                "kind": "cut"
+              }
+            }
+          ],
+          "costume": "everyday",
+          "facing": "front",
+          "id": "luma",
+          "position": [
+            410,
+            326
+          ],
+          "requirements": {
+            "expression": [
+              "listening"
+            ],
+            "gaze": [
+              "partner"
+            ],
+            "intensity": [
+              "low"
+            ]
+          },
+          "tracks": {
+            "body": {},
+            "face": {},
+            "gaze": {
+              "eyes": {
+                "offset": {
+                  "interpolation": "linear",
+                  "keys": [
+                    {
+                      "frame": 0,
+                      "value": [
+                        -2,
+                        0
+                      ]
+                    },
+                    {
+                      "frame": 54,
+                      "value": [
+                        -2,
+                        0
+                      ]
+                    },
+                    {
+                      "frame": 60,
+                      "value": [
+                        -2,
+                        3
+                      ]
+                    },
+                    {
+                      "frame": 102,
+                      "value": [
+                        -2,
+                        3
+                      ]
+                    },
+                    {
+                      "frame": 112,
+                      "value": [
+                        -2,
+                        0
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            "mouth": {
+              "mouth": {
+                "drawing": {
+                  "interpolation": "step",
+                  "keys": [
+                    {
+                      "frame": 0,
+                      "value": "neutral"
+                    },
+                    {
+                      "frame": 10,
+                      "value": "a"
+                    },
+                    {
+                      "frame": 13,
+                      "value": "e"
+                    },
+                    {
+                      "frame": 16,
+                      "value": "a"
+                    },
+                    {
+                      "frame": 19,
+                      "value": "o"
+                    },
+                    {
+                      "frame": 22,
+                      "value": "e"
+                    },
+                    {
+                      "frame": 25,
+                      "value": "neutral"
+                    },
+                    {
+                      "frame": 28,
+                      "value": "a"
+                    },
+                    {
+                      "frame": 31,
+                      "value": "e"
+                    },
+                    {
+                      "frame": 34,
+                      "value": "a"
+                    },
+                    {
+                      "frame": 37,
+                      "value": "o"
+                    },
+                    {
+                      "frame": 40,
+                      "value": "e"
+                    },
+                    {
+                      "frame": 43,
+                      "value": "neutral"
+                    },
+                    {
+                      "frame": 46,
+                      "value": "a"
+                    },
+                    {
+                      "frame": 49,
+                      "value": "e"
+                    },
+                    {
+                      "frame": 52,
+                      "value": "a"
+                    },
+                    {
+                      "frame": 55,
+                      "value": "neutral"
+                    },
+                    {
+                      "frame": 56,
+                      "value": "neutral"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "viewpoint": "front",
+          "z": 20
+        }
+      ],
+      "interactions": [
+        {
+          "frame": 84,
+          "id": "seed-handoff",
+          "participants": [
+            {
+              "anchor": "grip",
+              "component": "hand-right",
+              "instance": "milo",
+              "marker": "give"
+            },
+            {
+              "anchor": "grip",
+              "component": "hand-left",
+              "instance": "luma",
+              "marker": "receive"
+            }
+          ],
+          "position": [
+            329.99086559199554,
+            240.93649227224293
+          ],
+          "prop": "seed-packet",
+          "tolerance": 1e-05
+        }
+      ],
+      "layers": [
+        {
+          "id": "background",
+          "image": {
+            "path": "art/scenery/path.png",
+            "provenance": {
+              "attribution": "hatch-pet demonstration authoring",
+              "fixture": false,
+              "kind": "import",
+              "origin": "Original vector-like scenery and seed packet authored in this production recipe; rasterized with Pillow.",
+              "permissions": "Created for this repository task; no external assets."
+            },
+            "sha256": "247228f0d3329fa8496cf88d0bfe953c0961b9c30a1c4e4d0739fd6833a9ec07",
+            "size": [
+              720,
+              410
+            ]
+          },
+          "opacity": 1,
+          "parallax": 1,
+          "position": [
+            0,
+            0
+          ],
+          "z": -100
+        },
+        {
+          "id": "foreground",
+          "image": {
+            "path": "art/scenery/foreground.png",
+            "provenance": {
+              "attribution": "hatch-pet demonstration authoring",
+              "fixture": false,
+              "kind": "import",
+              "origin": "Original vector-like scenery and seed packet authored in this production recipe; rasterized with Pillow.",
+              "permissions": "Created for this repository task; no external assets."
+            },
+            "sha256": "b4b1abad48aedf362428edb2464016c80e1dd8975015a8ea4a664048cbe19fbc",
+            "size": [
+              720,
+              410
+            ]
+          },
+          "opacity": 1,
+          "parallax": 1,
+          "position": [
+            0,
+            0
+          ],
+          "z": 60
+        }
+      ],
+      "lighting": {
+        "color_treatment": "Warm sRGB storybook palette; upper-left painted character light; no runtime relighting.",
+        "direction": "left"
+      },
+      "props": [
+        {
+          "attachment": {
+            "anchor": "grip",
+            "component": "hand-right",
+            "instance": "milo"
+          },
+          "id": "seed-packet",
+          "owner": "milo",
+          "ownership": [
+            {
+              "attachment": {
+                "anchor": "grip",
+                "component": "hand-left",
+                "instance": "luma"
+              },
+              "event": "seed-handoff",
+              "frame": 84,
+              "from": "milo",
+              "to": "luma"
+            }
+          ],
+          "position": [
+            0,
+            0
+          ],
+          "prop": "seed-packet@1.0.0",
+          "tracks": {},
+          "z": 26
+        }
+      ]
+    },
+    {
+      "audio": [
+        {
+          "duration_frames": 31,
+          "file": {
+            "path": "audio/line-03.wav",
+            "sha256": "5c36796006503df51a46caa4062bfb5bd9fa9b98da413ef5ee45a567aebed0f1"
+          },
+          "gain": 1,
+          "id": "line-03",
+          "mouth_cues": [
+            {
+              "end_frame": 4,
+              "shape": "neutral",
+              "start_frame": 1
+            },
+            {
+              "end_frame": 7,
+              "shape": "e",
+              "start_frame": 4
+            },
+            {
+              "end_frame": 10,
+              "shape": "a",
+              "start_frame": 7
+            },
+            {
+              "end_frame": 13,
+              "shape": "o",
+              "start_frame": 10
+            },
+            {
+              "end_frame": 16,
+              "shape": "e",
+              "start_frame": 13
+            },
+            {
+              "end_frame": 19,
+              "shape": "neutral",
+              "start_frame": 16
+            },
+            {
+              "end_frame": 22,
+              "shape": "a",
+              "start_frame": 19
+            },
+            {
+              "end_frame": 25,
+              "shape": "e",
+              "start_frame": 22
+            },
+            {
+              "end_frame": 28,
+              "shape": "a",
+              "start_frame": 25
+            },
+            {
+              "end_frame": 31,
+              "shape": "o",
+              "start_frame": 28
+            },
+            {
+              "end_frame": 32,
+              "shape": "neutral",
+              "start_frame": 31
+            }
+          ],
+          "provenance": {
+            "attribution": "Original script authored for the Milo/Luma pilot; local Flite voice slt",
+            "fixture": false,
+            "kind": "import",
+            "operation": {
+              "kind": "pcm-frame-padding",
+              "note": "{\"engine\": \"ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers\", \"tts_receipt\": {\"path\": \"audio/original/line-03.json\", \"sha256\": \"e7cb4c8996469d489623298fceab93d7b66009d7302b9cce996f81683b8ffe2c\"}, \"voice\": \"slt\", \"source_samples\": 120720, \"output_samples\": 124000, \"sample_rate\": 48000, \"channels\": 1, \"text\": {\"path\": \"audio/original/line-03.txt\", \"sha256\": \"8fc297b4dc3a27c6cee20e3639f0e69ff0bc7038540015348dc0bc8011d00005\"}, \"mouth_timing\": \"Editable amplitude-gated rhythmic approximation; not phoneme alignment or acting acceptance.\"}"
+            },
+            "origin": "Original short dialogue synthesized locally by FFmpeg Flite, voice slt.",
+            "permissions": "No supplied third-party recording. TTS engine and bundled voice remain subject to their distributed licences.",
+            "references": [
+              {
+                "path": "audio/original/line-03.json",
+                "sha256": "e7cb4c8996469d489623298fceab93d7b66009d7302b9cce996f81683b8ffe2c"
+              },
+              {
+                "path": "audio/original/line-03.txt",
+                "sha256": "8fc297b4dc3a27c6cee20e3639f0e69ff0bc7038540015348dc0bc8011d00005"
+              }
+            ],
+            "source": {
+              "path": "audio/original/line-03.wav",
+              "sha256": "286a4889d6fbd114b999cd9fd8af8f861bf8b822028279172d5a9991b4fe6cb4"
+            }
+          },
+          "speaker": "luma",
+          "start_frame": 1,
+          "text": "Come on. Let's give it a sunny home."
+        }
+      ],
+      "camera": {
+        "bounds": {
+          "max_pan_per_frame": 2,
+          "max_zoom": 1.15,
+          "min_zoom": 1
+        },
+        "position": {
+          "interpolation": "linear",
+          "keys": [
+            {
+              "frame": 0,
+              "value": [
+                0,
+                0
+              ]
+            }
+          ]
+        },
+        "zoom": {
+          "interpolation": "linear",
+          "keys": [
+            {
+              "frame": 0,
+              "value": 1
+            }
+          ]
+        }
+      },
+      "cast_scale": 0.56,
+      "duration_frames": 120,
+      "explicit_requirements": [
+        "Use the same versioned cast, fixed relative scale, declared audio and ownership across the sequence."
+      ],
+      "id": "departure",
+      "inferred_choices": [
+        "Original seed-exchange story, warm path/garden scenery and audience-facing cutout performances chosen for this pilot.",
+        "Front artwork supports screen-space locomotion; sideways or back-facing animation is not inferred from the design turnaround."
+      ],
+      "instances": [
+        {
+          "bindings": {
+            "partner": "luma",
+            "seed": "seed-packet"
+          },
+          "character": "milo@3.0.0",
+          "clips": [
+            {
+              "clip": "milo-idle@3.0.0",
+              "end_frame": 2,
+              "start_frame": 0,
+              "transition": {
+                "frames": 0,
+                "kind": "cut"
+              }
+            },
+            {
+              "clip": "milo-walk-start@3.0.0",
+              "end_frame": 14,
+              "start_frame": 2,
+              "transition": {
+                "frames": 0,
+                "kind": "cut"
+              }
+            },
+            {
+              "clip": "milo-walk-right@3.0.0",
+              "end_frame": 120,
+              "start_frame": 14,
+              "transition": {
+                "frames": 0,
+                "kind": "cut"
+              }
+            }
+          ],
+          "costume": "everyday",
+          "facing": "front",
+          "id": "milo",
+          "position": [
+            230,
+            326
+          ],
+          "requirements": {
+            "expression": [
+              "listening"
+            ],
+            "gaze": [
+              "partner"
+            ],
+            "intensity": [
+              "low"
+            ]
+          },
+          "tracks": {
+            "body": {},
+            "face": {},
+            "gaze": {
+              "eyes": {
+                "offset": {
+                  "interpolation": "linear",
+                  "keys": [
+                    {
+                      "frame": 0,
+                      "value": [
+                        2,
+                        0
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            "mouth": {}
+          },
+          "viewpoint": "front",
+          "z": 20
+        },
+        {
+          "bindings": {
+            "partner": "milo",
+            "seed": "seed-packet"
+          },
+          "character": "luma@3.0.0",
+          "clips": [
+            {
+              "clip": "luma-idle@3.0.0",
+              "end_frame": 2,
+              "start_frame": 0,
+              "transition": {
+                "frames": 0,
+                "kind": "cut"
+              }
+            },
+            {
+              "clip": "luma-walk-start@3.0.0",
+              "end_frame": 14,
+              "start_frame": 2,
+              "transition": {
+                "frames": 0,
+                "kind": "cut"
+              }
+            },
+            {
+              "clip": "luma-walk-right@3.0.0",
+              "end_frame": 120,
+              "start_frame": 14,
+              "transition": {
+                "frames": 0,
+                "kind": "cut"
+              }
+            }
+          ],
+          "costume": "everyday",
+          "facing": "front",
+          "id": "luma",
+          "position": [
+            410,
+            326
+          ],
+          "requirements": {
+            "expression": [
+              "listening"
+            ],
+            "gaze": [
+              "partner"
+            ],
+            "intensity": [
+              "low"
+            ]
+          },
+          "tracks": {
+            "body": {},
+            "face": {},
+            "gaze": {
+              "eyes": {
+                "offset": {
+                  "interpolation": "linear",
+                  "keys": [
+                    {
+                      "frame": 0,
+                      "value": [
+                        -2,
+                        0
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            "mouth": {
+              "mouth": {
+                "drawing": {
+                  "interpolation": "step",
+                  "keys": [
+                    {
+                      "frame": 0,
+                      "value": "neutral"
+                    },
+                    {
+                      "frame": 1,
+                      "value": "neutral"
+                    },
+                    {
+                      "frame": 4,
+                      "value": "e"
+                    },
+                    {
+                      "frame": 7,
+                      "value": "a"
+                    },
+                    {
+                      "frame": 10,
+                      "value": "o"
+                    },
+                    {
+                      "frame": 13,
+                      "value": "e"
+                    },
+                    {
+                      "frame": 16,
+                      "value": "neutral"
+                    },
+                    {
+                      "frame": 19,
+                      "value": "a"
+                    },
+                    {
+                      "frame": 22,
+                      "value": "e"
+                    },
+                    {
+                      "frame": 25,
+                      "value": "a"
+                    },
+                    {
+                      "frame": 28,
+                      "value": "o"
+                    },
+                    {
+                      "frame": 31,
+                      "value": "neutral"
+                    },
+                    {
+                      "frame": 32,
+                      "value": "neutral"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "viewpoint": "front",
+          "z": 20
+        }
+      ],
+      "interactions": [],
+      "layers": [
+        {
+          "id": "background",
+          "image": {
+            "path": "art/scenery/path.png",
+            "provenance": {
+              "attribution": "hatch-pet demonstration authoring",
+              "fixture": false,
+              "kind": "import",
+              "origin": "Original vector-like scenery and seed packet authored in this production recipe; rasterized with Pillow.",
+              "permissions": "Created for this repository task; no external assets."
+            },
+            "sha256": "247228f0d3329fa8496cf88d0bfe953c0961b9c30a1c4e4d0739fd6833a9ec07",
+            "size": [
+              720,
+              410
+            ]
+          },
+          "opacity": 1,
+          "parallax": 1,
+          "position": [
+            0,
+            0
+          ],
+          "z": -100
+        },
+        {
+          "id": "foreground",
+          "image": {
+            "path": "art/scenery/foreground.png",
+            "provenance": {
+              "attribution": "hatch-pet demonstration authoring",
+              "fixture": false,
+              "kind": "import",
+              "origin": "Original vector-like scenery and seed packet authored in this production recipe; rasterized with Pillow.",
+              "permissions": "Created for this repository task; no external assets."
+            },
+            "sha256": "b4b1abad48aedf362428edb2464016c80e1dd8975015a8ea4a664048cbe19fbc",
+            "size": [
+              720,
+              410
+            ]
+          },
+          "opacity": 1,
+          "parallax": 1,
+          "position": [
+            0,
+            0
+          ],
+          "z": 60
+        }
+      ],
+      "lighting": {
+        "color_treatment": "Warm sRGB storybook palette; upper-left painted character light; no runtime relighting.",
+        "direction": "left"
+      },
+      "props": [
+        {
+          "attachment": {
+            "anchor": "grip",
+            "component": "hand-left",
+            "instance": "luma"
+          },
+          "id": "seed-packet",
+          "owner": "luma",
+          "ownership": [],
+          "position": [
+            0,
+            0
+          ],
+          "prop": "seed-packet@1.0.0",
+          "tracks": {},
+          "z": 26
+        }
+      ]
+    }
+  ],
+  "version": "3.0.0"
+}

@@ -23,6 +23,7 @@ class ProductionDeliveryTests(unittest.TestCase):
         self.assertTrue(result['verified'])
         self.assertEqual(result['bundles']['artwork']['file_count'], 36)
         self.assertEqual(result['bundles']['audio']['file_count'], 16)
+        self.assertEqual(result['bundles']['reconstruction']['file_count'], 66)
         self.assertEqual(result['history']['records'], 20)
         self.assertEqual(result['history']['supporting_evidence_files'], 13)
         self.assertTrue(result['history']['evidence_verified'])
@@ -33,8 +34,11 @@ class ProductionDeliveryTests(unittest.TestCase):
     def test_restoration_preserves_originals_ledger_and_two_scene_model_without_subprocesses(self):
         with tempfile.TemporaryDirectory(prefix='hatch-delivery-test-') as temporary:
             root = Path(temporary) / 'pilot'
-            with patch('production_demo.subprocess.run', side_effect=AssertionError('No TTS or provider')):
+            with patch('production_demo.subprocess.run', side_effect=AssertionError('No TTS or provider')), \
+                    patch('production_demo.build_pilot', side_effect=AssertionError('No reauthoring')), \
+                    patch('PIL.Image.Image.save', side_effect=AssertionError('No native PNG re-encoding')):
                 result = delivery.restore_pilot(PILOT, root)
+            self.assertFalse(result['recipe_reauthored'])
             self.assertEqual([(x['id'], x['frames']) for x in result['scenes']],
                              [('seed-exchange', 432), ('garden-promise', 264)])
             self.assertEqual(result['clips'], 20)
@@ -65,14 +69,17 @@ class ProductionDeliveryTests(unittest.TestCase):
             source, destination = Path(temporary) / 'source', Path(temporary) / 'pilot'
             # This copy is a failure-injection specimen, never accepted as production.
             shutil.copytree(PILOT, source)
-            index = json.loads((source / 'audio-source-bundle/sources-index.json').read_bytes())
-            part = source / 'audio-source-bundle' / index['parts'][0]['path']
-            raw = part.read_bytes()
-            part.write_bytes(bytes([raw[0] ^ 1]) + raw[1:])
-            with self.assertRaisesRegex(ValueError, 'hash differs'):
-                delivery.restore_pilot(source, destination)
-            self.assertFalse(destination.exists())
-            self.assertFalse(list(Path(temporary).glob('.hatch-pilot-build-*')))
+            for directory in ('audio-source-bundle', 'project-source-bundle'):
+                with self.subTest(bundle=directory):
+                    index = json.loads((source / directory / 'sources-index.json').read_bytes())
+                    part = source / directory / index['parts'][0]['path']
+                    raw = part.read_bytes()
+                    part.write_bytes(bytes([raw[0] ^ 1]) + raw[1:])
+                    with self.assertRaisesRegex(ValueError, 'hash differs'):
+                        delivery.restore_pilot(source, destination)
+                    self.assertFalse(destination.exists())
+                    self.assertFalse(list(Path(temporary).glob('.hatch-pilot-build-*')))
+                    part.write_bytes(raw)
 
     def test_altered_historical_chain_cannot_be_relabelled_as_authentic(self):
         with tempfile.TemporaryDirectory(prefix='hatch-history-test-') as temporary:

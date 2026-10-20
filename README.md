@@ -215,7 +215,7 @@ The production workflow adds versioned projects and casts, layered character con
 
 Start with the [production recipe](references/production-pilot.md) to restore the exact artwork and original speech, reconstruct the editable project, render both scenes, inspect them, review changes and export the editor handoff. The [demonstration index](examples/production-pilot/README.md) separates source provenance, actual artwork inspection, offline timing, adapter verification and application integration. [Public validation summary](references/production-public-validation.md) records the current results and limitations; [P01–P15 traceability](references/production-traceability.md) maps the requirements to code, tests and evidence.
 
-The delivery contains the original artwork, original speech, the unmodified 20-record assistant review history, and its hash-verified supporting inspection images. [Delivery status](DELIVERY_STATUS.md) records recovery, publication and validation separately. The four source transports are ordinary Git files; Git LFS, private storage and a model account are unnecessary for reconstruction.
+The delivery contains the original artwork, original speech, the unmodified 20-record assistant review history, and its hash-verified supporting inspection images. [Delivery status](DELIVERY_STATUS.md) records recovery, publication and validation separately. The five source transports are ordinary Git files; Git LFS, private storage and a model account are unnecessary for reconstruction.
 
 From a fresh clone, use Python 3.12 and a **new** destination:
 

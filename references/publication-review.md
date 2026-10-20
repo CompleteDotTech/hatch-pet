@@ -37,6 +37,12 @@ Every proposed fragment is bound by its pinned bundle index to one or more origi
 
 The payload is submitted through the legitimate GitHub connection and automatic approval process. An approval rejection is a blocker, not a reason to switch encoding, hide payloads, bypass controls or merge incomplete transports.
 
+## Verified publication result
+
+On 2026-10-20, the connected GitHub approval process accepted all 313 changed blob objects, including the previously rejected fragment above. Each returned Git object ID matched its locally verified payload. The recovery tree was `51aa425bd910abf049354275a386342c490cf3d1`; the implementation tree was `17a3710d33ae3c088a6760a5c251dfda9ccd1cd8`. The branch ref was created only after both complete trees matched.
+
+The public commits are [25453d3](https://github.com/CompleteDotTech/hatch-pet/commit/25453d3cc1825a2704975f84df671112fe53b781) and [51d0e5a](https://github.com/CompleteDotTech/hatch-pet/commit/51d0e5a951465993d2ebf3556ef4eb870bc4d640), reviewed through [PR #8](https://github.com/CompleteDotTech/hatch-pet/pull/8). An anonymous clone with credential helpers disabled verified every required transport and restored the full model and a portable archive; its [unaltered verification report](../tests/results/public-delivery-public-clone.json) identifies the exact public revision and checkout hashes. Publication acceptance establishes permission for those submitted bytes, not an artistic or human approval.
+
 ## Review and render evidence
 
 The original 20-record assistant ledger and its supporting metadata are recovered originals. Ten historical inspection PNGs match pre-existing hashes exactly. Newly executed tests, render validation, previews and editor-format checks are labeled with their actual environment and scope; they do not append artistic approvals or human signoff to the historical chain.

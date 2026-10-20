@@ -52,7 +52,8 @@ After rebuilding or restoring a project, open `renders/seed-exchange/preview.htm
 | [audio index](audio-source-bundle/sources-index.json) | Five original local Flite TTS WAVs, authored text, actual synthesis receipts and supplied package attribution |
 | [review-history index](reviews-source-bundle/sources-index.json) | Exact UTF-8 bytes of the actual production workflow/review history; transport is not a new approval |
 | [historical image index](evidence-source-bundle/sources-index.json) | Five inspection sheets and five reviewed frames whose exact bytes match the historical ledger |
-| [delivery manifest](delivery-manifest.json) | Pinned inventories for all four transports, production model, supporting metadata and review-chain identity |
+| [exact project index](project-source-bundle/sources-index.json) | Original serialized project and derived PNG/PCM bytes, preserving every pre-existing model hash across platforms |
+| [delivery manifest](delivery-manifest.json) | Pinned inventories for all five transports, production model, supporting metadata and review-chain identity |
 | [review transport evidence](evidence/review-history-transport.json) | Decoded history hash, 20-record chain identity and exact restoration check |
 
 The current production acquisition made **four actual imagegen calls**, one turnaround and one component board per character, with one attempt each and concurrency one. The configured current limit is four calls; none remain. Provider request/model/parameter identifiers were not exposed and remain explicitly unavailable. The local claim IDs are genuine hatch correlation IDs, not invented provider IDs. Earlier lost artifacts and eight previously observed calls are disclosed separately and do not approve the replacement cast.
@@ -83,7 +84,7 @@ The historical approved rerender reused **all 432 + 264 frames**, with zero new 
 
 ## Reconstruct the project
 
-The [full production recipe](../../references/production-pilot.md) gives commands for extraction, clips, dialogue, interactions, coverage, rendering, review, reuse, archives and editor handoff. Source reconstruction makes **no model or TTS calls**. Install the pinned delivery dependencies to reproduce the original raster environment.
+The [full production recipe](../../references/production-pilot.md) gives commands for extraction, clips, dialogue, interactions, coverage, rendering, review, reuse, archives and editor handoff. Source reconstruction makes **no model or TTS calls**. Install the pinned delivery dependencies. Exact restoration uses the original serialized model and derived asset bytes; rendering records its actual platform and PNG backend.
 
 ```bash
 python -m pip install -r requirements-delivery.txt

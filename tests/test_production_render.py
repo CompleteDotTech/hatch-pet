@@ -242,6 +242,20 @@ class ProductionRenderTests(unittest.TestCase):
         self.assertEqual(expected, (destination/"render-manifest.json").read_bytes())
         self.assertEqual(validate_render(destination)["frame_count"], 6)
 
+    def test_changed_png_backend_invalidates_cached_frames(self):
+        destination = self.home/"backend"
+        original = render_shot(self.bundle, "first", destination)
+        backend = original["renderer"]["png_backend"]
+        with patch("production_render.features.version", return_value=backend+"-changed"):
+            changed = render_shot(self.bundle, "first", destination)
+            self.assertEqual(changed["operation"]["reused_frames"], 0)
+            self.assertEqual(changed["operation"]["rendered_frames"], 6)
+            expected = (destination/"render-manifest.json").read_bytes()
+            repeated = render_shot(self.bundle, "first", destination)
+            self.assertEqual(repeated["operation"]["reused_frames"], 6)
+            self.assertEqual(repeated["operation"]["rendered_frames"], 0)
+            self.assertEqual(expected, (destination/"render-manifest.json").read_bytes())
+
     def test_source_edit_rerenders_only_frames_using_changed_drawing(self):
         actor = self.bundle["shots"]["first"]["instances"][0]
         actor["tracks"] = {"mouth": {"mouth": {"drawing": track((0, "default"), (2, "open"), (4, "default"))}}}

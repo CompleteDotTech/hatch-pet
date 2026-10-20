@@ -1,0 +1,143 @@
+       "model_call": {
+            "id": null,
+            "model": null,
+            "parameters": null,
+            "unavailable_reason": "The handoff did not expose provider call metadata."
+          },
+          "receipt_path": "acquisition/handoffs/luma-parts.json",
+          "receipt_sha256": "5449929736a9266d7a963d58208714c4c8a3eeb766f2c8a5282db68812123e10",
+          "run_id": "e35092f6bece4078a65dd0eae401b835"
+        },
+        "attribution": "Original character direction by the hatch-pet production demonstration; generated with OpenAI imagegen.",
+        "fixture": false,
+        "kind": "imagegen",
+        "model_call": {
+          "id": null,
+          "model": null,
+          "parameters": null,
+          "unavailable_reason": "The handoff did not expose provider call metadata."
+        },
+        "origin": "Original Milo/Luma artwork generated through the installed imagegen skill for hatch-pet; retained original PNG.",
+        "permissions": "Commissioned in this authorized repository task; no third-party character reference or separately supplied licence.",
+        "source_sha256": "bdfb919fd64776e45014f9654f41cf83d56bd5f34a2d1979b1bb09fd80be32f6"
+      },
+      "references": [
+        {
+          "path": "art/originals/luma-turnaround-v3.png",
+          "sha256": "270eb609c8cc566a61f3081d09c6e2f47390592d7650e9547872a64cb9f1cced"
+        },
+        {
+          "path": "art/originals/luma-parts-v3.png",
+          "sha256": "bdfb919fd64776e45014f9654f41cf83d56bd5f34a2d1979b1bb09fd80be32f6"
+        }
+      ],
+      "relative_scale": 1.0,
+      "restrictions": [
+        {
+          "reason": "Design references exist; these animated component viewpoints have not been authored.",
+          "when": {
+            "viewpoint": [
+              "side-left",
+              "side-right",
+              "back"
+            ]
+          }
+        }
+      ],
+      "version": "3.0.0",
+      "view_reviews": {
+        "back": {
+          "evidence": [
+            {
+              "path": "art/originals/luma-turnaround-v3.png",
+              "sha256": "270eb609c8cc566a61f3081d09c6e2f47390592d7650e9547872a64cb9f1cced"
+            }
+          ],
+          "kind": "assistant_visual",
+          "note": "Actual original design reference inspected. This decision covers this design view only; component construction and animation need separate dependency-bound reviews. Front is the only authored animation rig.",
+          "reviewer": "assistant:/root",
+          "status": "approved"
+        },
+        "front": {
+          "evidence": [
+            {
+              "path": "art/originals/luma-turnaround-v3.png",
+              "sha256": "270eb609c8cc566a61f3081d09c6e2f47390592d7650e9547872a64cb9f1cced"
+            }
+          ],
+          "kind": "assistant_visual",
+          "note": "Actual original design reference inspected. This decision covers this design view only; component construction and animation need separate dependency-bound reviews. Front is the only authored animation rig.",
+          "reviewer": "assistant:/root",
+          "status": "approved"
+        },
+        "side-right": {
+          "evidence": [
+            {
+              "path": "art/originals/luma-turnaround-v3.png",
+              "sha256": "270eb609c8cc566a61f3081d09c6e2f47390592d7650e9547872a64cb9f1cced"
+            }
+          ],
+          "kind": "assistant_visual",
+          "note": "Actual original design reference inspected. This decision covers this design view only; component construction and animation need separate dependency-bound reviews. Front is the only authored animation rig.",
+          "reviewer": "assistant:/root",
+          "status": "approved"
+        },
+        "three-quarter-right": {
+          "evidence": [
+            {
+              "path": "art/originals/luma-turnaround-v3.png",
+              "sha256": "270eb609c8cc566a61f3081d09c6e2f47390592d7650e9547872a64cb9f1cced"
+            }
+          ],
+          "kind": "assistant_visual",
+          "note": "Actual original design reference inspected. This decision covers this design view only; component construction and animation need separate dependency-bound reviews. Front is the only authored animation rig.",
+          "reviewer": "assistant:/root",
+          "status": "approved"
+        }
+      },
+      "views": [
+        "front",
+        "three-quarter-right",
+        "side-right",
+        "back"
+      ]
+    }
+  ],
+  "fixture": false,
+  "id": "milo-luma",
+  "kind": "cast",
+  "props": [
+    {
+      "anchors": {
+        "grip": [
+          17,
+          9
+        ]
+      },
+      "id": "seed-packet",
+      "image": {
+        "path": "art/scenery/seed.png",
+        "provenance": {
+          "attribution": "hatch-pet demonstration authoring",
+          "fixture": false,
+          "kind": "import",
+          "origin": "Original vector-like scenery and seed packet authored in this production recipe; rasterized with Pillow.",
+          "permissions": "Created for this repository task; no external assets."
+        },
+        "sha256": "f4380b1412bbe4f52870d632f17e7d7cc1f49aa9b8663753b867a55cc9b82da4",
+        "size": [
+          34,
+          42
+        ]
+      },
+      "name": "Seed packet",
+      "pivot": [
+        17,
+        9
+      ],
+      "version": "1.0.0"
+    }
+  ],
+  "schema_version": 1,
+  "version": "3.0.0"
+}
