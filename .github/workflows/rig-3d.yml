@@ -1,0 +1,178 @@
+name: 3D rigging and compatibility gates
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+defaults:
+  run:
+    # Retained tee logs must preserve the Python command's failure status.
+    shell: bash --noprofile --norc -eo pipefail {0}
+jobs:
+  compatibility-2d:
+    name: Existing 2D compatibility
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements-delivery.txt
+      - run: python -m playwright install --with-deps chromium
+      - run: python scripts/test_rig_gate.py compatibility 2>&1 | tee rig-compatibility-2d.log
+        env:
+          HATCH_DECOMPOSITION_BROWSER_TEST: '1'
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: rig-compatibility-2d-test-log
+          path: rig-compatibility-2d.log
+  schema-math:
+    name: 3D contracts and mathematical expectations
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements-rig-test.txt
+      - run: python scripts/generate_schemas.py --check
+      - run: python scripts/generate_rig_templates.py --check
+      - run: python scripts/test_rig_gate.py schema-math 2>&1 | tee rig-schema-math.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: rig-schema-math-test-log
+          path: rig-schema-math.log
+  rig-generation-skinning:
+    name: Rig generation and real skinning
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements-rig-test.txt
+      - run: python scripts/test_rig_gate.py skinning 2>&1 | tee rig-rig-generation-skinning.log
+      - run: python scripts/rig.py demo --archetype robotic --destination /tmp/rig-mechanical
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: rig-rig-generation-skinning-test-log
+          path: rig-rig-generation-skinning.log
+  animation-ik:
+    name: Animation, constraints, contacts and IK
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements-rig-test.txt
+      - run: python scripts/test_rig_gate.py animation-ik 2>&1 | tee rig-animation-ik.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: rig-animation-ik-test-log
+          path: rig-animation-ik.log
+  interchange:
+    name: Import/export and Khronos interoperability
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.16.0'
+      - run: python -m pip install -r requirements-rig-test.txt
+      - run: npm ci --ignore-scripts --prefix tools/rig
+      - run: python scripts/test_rig_gate.py interoperability 2>&1 | tee rig-interchange.log
+        env:
+          HATCH_RIG_INTEROP_TEST: '1'
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: rig-interchange-test-log
+          path: rig-interchange.log
+  blender:
+    name: Blender headless save/reopen and deformation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements-rig-test.txt
+      - uses: actions/cache@v4
+        id: blender-cache
+        with:
+          path: /tmp/blender-4.5.3-linux-x64
+          key: blender-linux-x64-4.5.3-975c58fcb244
+      - name: Install checksum-verified Blender 4.5.3 LTS
+        if: steps.blender-cache.outputs.cache-hit != 'true'
+        run: |
+          curl -fL --retry 3 https://download.blender.org/release/Blender4.5/blender-4.5.3-linux-x64.tar.xz -o /tmp/blender.tar.xz
+          echo '975c58fcb244273838534bba771e64ad87739216b0f9b39a888531a49a72d845  /tmp/blender.tar.xz' | sha256sum -c -
+          tar -xJf /tmp/blender.tar.xz -C /tmp
+      - run: echo 'HATCH_BLENDER=/tmp/blender-4.5.3-linux-x64/blender' >> "$GITHUB_ENV"
+      - run: python scripts/verify_rig_demos.py --generate --destination /tmp/rig-blender-gate --blender
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: blender-evidence
+          path: /tmp/rig-blender-gate/**/validation/*.json
+  browser:
+    name: Three.js browser playback and vertex comparison
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements-rig-test.txt
+      - run: python -m playwright install --with-deps chromium
+      - run: python scripts/verify_rig_demos.py --generate --destination /tmp/rig-browser-gate --browser
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: browser-evidence
+          path: |
+            /tmp/rig-browser-gate/**/validation/*.json
+            /tmp/rig-browser-gate/**/preview/*.png
+  demonstrations:
+    name: Three-character and mechanical demonstrations
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.16.0'
+      - run: python -m pip install -r requirements-rig-test.txt
+      - run: npm ci --ignore-scripts --prefix tools/rig
+      - run: python scripts/verify_rig_demos.py --generate --destination /tmp/rig-demo-gate --validator --render
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: demo-evidence
+          path: |
+            /tmp/rig-demo-gate/acceptance*.json
+            /tmp/rig-demo-gate/**/preview/*.png
+  artifact-integrity:
+    name: Operations, local API and archive restoration
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements-rig-test.txt
+      - run: python scripts/test_rig_gate.py operations-archive 2>&1 | tee rig-artifact-integrity.log
+      - run: python scripts/verify_rig_demos.py --destination examples/rig-3d --archives
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: rig-artifact-integrity-test-log
+          path: rig-artifact-integrity.log

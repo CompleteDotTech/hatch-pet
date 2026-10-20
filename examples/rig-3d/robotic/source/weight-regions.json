@@ -1,0 +1,17 @@
+{
+  "shoulder-shell": [
+    "shoulder"
+  ],
+  "elbow-shell": [
+    "elbow"
+  ],
+  "gripper-shell": [
+    "gripper"
+  ],
+  "jaw.left-shell": [
+    "jaw.left"
+  ],
+  "jaw.right-shell": [
+    "jaw.right"
+  ]
+}

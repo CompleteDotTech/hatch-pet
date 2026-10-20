@@ -1,0 +1,565 @@
+{
+  "schema_version": 1,
+  "kind": "hatch-3d-geometry-analysis",
+  "vertices": 2284,
+  "triangles": 4488,
+  "meshes": [
+    {
+      "id": "body-mesh",
+      "vertices": 146,
+      "triangles": 288,
+      "components": 1,
+      "surface_area_m2": 1.6909834627032874,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "degenerate_triangles": 0,
+      "signed_volume_m3": 0.17899379582581573,
+      "volume_status": "measured-closed-surface",
+      "bounds": [
+        [
+          -0.3100000023841858,
+          0.4699999988079071,
+          -0.6200000047683716
+        ],
+        [
+          0.3100000023841858,
+          0.9700000286102295,
+          0.5400000214576721
+        ]
+      ],
+      "region": ""
+    },
+    {
+      "id": "neck-mesh",
+      "vertices": 50,
+      "triangles": 96,
+      "components": 1,
+      "surface_area_m2": 0.4600389356609387,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "degenerate_triangles": 0,
+      "signed_volume_m3": 0.023452068733342057,
+      "volume_status": "measured-closed-surface",
+      "bounds": [
+        [
+          -0.18000000715255737,
+          0.6500959396362305,
+          0.2167443186044693
+        ],
+        [
+          0.18000000715255737,
+          1.0843591690063477,
+          0.6406717300415039
+        ]
+      ],
+      "region": ""
+    },
+    {
+      "id": "head-mesh",
+      "vertices": 146,
+      "triangles": 288,
+      "components": 1,
+      "surface_area_m2": 0.6183080347808434,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "degenerate_triangles": 0,
+      "signed_volume_m3": 0.044449789331031865,
+      "volume_status": "measured-closed-surface",
+      "bounds": [
+        [
+          -0.23499999940395355,
+          0.800000011920929,
+          0.38999998569488525
+        ],
+        [
+          0.23499999940395355,
+          1.1799999475479126,
+          0.8899999856948853
+        ]
+      ],
+      "region": "head"
+    },
+    {
+      "id": "muzzle",
+      "vertices": 146,
+      "triangles": 288,
+      "components": 1,
+      "surface_area_m2": 0.23816049291176328,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "degenerate_triangles": 0,
+      "signed_volume_m3": 0.010154263911624642,
+      "volume_status": "measured-closed-surface",
+      "bounds": [
+        [
+          -0.17000000178813934,
+          0.8100000023841858,
+          0.6700000166893005
+        ],
+        [
+          0.17000000178813934,
+          1.0099999904632568,
+          0.9700000286102295
+        ]
+      ],
+      "region": "jaw"
+    },
+    {
+      "id": "nose",
+      "vertices": 146,
+      "triangles": 288,
+      "components": 1,
+      "surface_area_m2": 0.038766268526416764,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "degenerate_triangles": 0,
+      "signed_volume_m3": 0.0006719731820059629,
+      "volume_status": "measured-closed-surface",
+      "bounds": [
+        [
+          -0.07500000298023224,
+          0.8999999761581421,
+          0.8999999761581421
+        ],
+        [
+          0.07500000298023224,
+          1.0,
+          0.9900000095367432
+        ]
+      ],
+      "region": "head"
+    },
+    {
+      "id": "leg-front.left",
+      "vertices": 86,
+      "triangles": 168,
+      "components": 1,
+      "surface_area_m2": 0.2920591477563992,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "degenerate_triangles": 0,
+      "signed_volume_m3": 0.008605873795826053,
+      "volume_status": "measured-closed-surface",
+      "bounds": [
+        [
+          -0.30496662855148315,
+          0.0928172916173935,
+          0.2358281910419464
+        ],
+        [
+          -0.1351623237133026,
+          0.7428506016731262,
+          0.42999935150146484
+        ]
+      ],
+      "region": ""
+    },
+    {
+      "id": "paw-front.left",
+      "vertices": 146,
+      "triangles": 288,
+      "components": 1,
+      "surface_area_m2": 0.10426261127286165,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "degenerate_triangles": 0,
+      "signed_volume_m3": 0.00286011744324018,
+      "volume_status": "measured-closed-surface",
+      "bounds": [
+        [
+          -0.32499998807907104,
+          0.0,
+          0.24500000476837158
+        ],
+        [
+          -0.1550000011920929,
+          0.12999999523162842,
+          0.5049999952316284
+        ]
+      ],
+      "region": "paw.front.left"
+    },
+    {
+      "id": "leg-front.right",
+      "vertices": 86,
+      "triangles": 168,
+      "components": 1,
+      "surface_area_m2": 0.2920591502682221,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "degenerate_triangles": 0,
+      "signed_volume_m3": 0.008606919479951698,
+      "volume_status": "measured-closed-surface",
+      "bounds": [
+        [
+          0.1351623237133026,
+          0.0928172916173935,
+          0.2358281910419464
+        ],
+        [
+          0.30496662855148315,
+          0.7428506016731262,
+          0.42999935150146484
+        ]
+      ],
+      "region": ""
+    },
+    {
+      "id": "paw-front.right",
+      "vertices": 146,
+      "triangles": 288,
+      "components": 1,
+      "surface_area_m2": 0.10426261127286165,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "degenerate_triangles": 0,
+      "signed_volume_m3": 0.0028601174432401795,
+      "volume_status": "measured-closed-surface",
+      "bounds": [
+        [
+          0.1550000011920929,
+          0.0,
+          0.24500000476837158
+        ],
+        [
+          0.32499998807907104,
+          0.12999999523162842,
+          0.5049999952316284
+        ]
+      ],
+      "region": "paw.front.right"
+    },
+    {
+      "id": "leg-rear.left",
+      "vertices": 86,
+      "triangles": 168,
+      "components": 1,
+      "surface_area_m2": 0.29205914942385464,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "degenerate_triangles": 0,
+      "signed_volume_m3": 0.008605873901798034,
+      "volume_status": "measured-closed-surface",
+      "bounds": [
+        [
+          -0.30496662855148315,
+          0.0928172916173935,
+          -0.4241718053817749
+        ],
+        [
+          -0.1351623237133026,
+          0.7428506016731262,
+          -0.23000064492225647
+        ]
+      ],
+      "region": ""
+    },
+    {
+      "id": "paw-rear.left",
+      "vertices": 146,
+      "triangles": 288,
+      "components": 1,
+      "surface_area_m2": 0.10426261121010783,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "degenerate_triangles": 0,
+      "signed_volume_m3": 0.002860117452735334,
+      "volume_status": "measured-closed-surface",
+      "bounds": [
+        [
+          -0.32499998807907104,
+          0.0,
+          -0.41499999165534973
+        ],
+        [
+          -0.1550000011920929,
+          0.12999999523162842,
+          -0.1550000011920929
+        ]
+      ],
+      "region": "paw.rear.left"
+    },
+    {
+      "id": "leg-rear.right",
+      "vertices": 86,
+      "triangles": 168,
+      "components": 1,
+      "surface_area_m2": 0.2920591519350283,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "degenerate_triangles": 0,
+      "signed_volume_m3": 0.008606919584365956,
+      "volume_status": "measured-closed-surface",
+      "bounds": [
+        [
+          0.1351623237133026,
+          0.0928172916173935,
+          -0.4241718053817749
+        ],
+        [
+          0.30496662855148315,
+          0.7428506016731262,
+          -0.23000064492225647
+        ]
+      ],
+      "region": ""
+    },
+    {
+      "id": "paw-rear.right",
+      "vertices": 146,
+      "triangles": 288,
+      "components": 1,
+      "surface_area_m2": 0.10426261121010783,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "degenerate_triangles": 0,
+      "signed_volume_m3": 0.002860117452735333,
+      "volume_status": "measured-closed-surface",
+      "bounds": [
+        [
+          0.1550000011920929,
+          0.0,
+          -0.41499999165534973
+        ],
+        [
+          0.32499998807907104,
+          0.12999999523162842,
+          -0.1550000011920929
+        ]
+      ],
+      "region": "paw.rear.right"
+    },
+    {
+      "id": "tail-mesh",
+      "vertices": 158,
+      "triangles": 312,
+      "components": 1,
+      "surface_area_m2": 0.17070573155441446,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "degenerate_triangles": 0,
+      "signed_volume_m3": 0.0038207891303597033,
+      "volume_status": "measured-closed-surface",
+      "bounds": [
+        [
+          -0.07500000298023224,
+          0.6583165526390076,
+          -0.9535290598869324
+        ],
+        [
+          0.07500000298023224,
+          0.901469349861145,
+          -0.4079435467720032
+        ]
+      ],
+      "region": ""
+    },
+    {
+      "id": "ear-left",
+      "vertices": 50,
+      "triangles": 96,
+      "components": 1,
+      "surface_area_m2": 0.08601490264645655,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "degenerate_triangles": 0,
+      "signed_volume_m3": 0.001778298068914063,
+      "volume_status": "measured-closed-surface",
+      "bounds": [
+        [
+          -0.30149349570274353,
+          0.8734201192855835,
+          0.4458041191101074
+        ],
+        [
+          -0.12251394242048264,
+          1.0905282497406006,
+          0.593276858329773
+        ]
+      ],
+      "region": ""
+    },
+    {
+      "id": "ear-right",
+      "vertices": 50,
+      "triangles": 96,
+      "components": 1,
+      "surface_area_m2": 0.08601490264645655,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "degenerate_triangles": 0,
+      "signed_volume_m3": 0.001778298060614644,
+      "volume_status": "measured-closed-surface",
+      "bounds": [
+        [
+          0.12251394242048264,
+          0.8734201192855835,
+          0.4458041191101074
+        ],
+        [
+          0.30149349570274353,
+          1.0905282497406006,
+          0.593276858329773
+        ]
+      ],
+      "region": ""
+    },
+    {
+      "id": "eye-white-left",
+      "vertices": 146,
+      "triangles": 288,
+      "components": 1,
+      "surface_area_m2": 0.048444192125812094,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "degenerate_triangles": 0,
+      "signed_volume_m3": 0.0009287566314809375,
+      "volume_status": "measured-closed-surface",
+      "bounds": [
+        [
+          -0.17100000381469727,
+          0.9419999718666077,
+          0.800000011920929
+        ],
+        [
+          -0.028999999165534973,
+          1.0880000591278076,
+          0.8899999856948853
+        ]
+      ],
+      "region": "eye.left"
+    },
+    {
+      "id": "pupil-left",
+      "vertices": 86,
+      "triangles": 168,
+      "components": 1,
+      "surface_area_m2": 0.009563416301037717,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "degenerate_triangles": 0,
+      "signed_volume_m3": 6.35765666506261e-05,
+      "volume_status": "measured-closed-surface",
+      "bounds": [
+        [
+          -0.13099999725818634,
+          0.9739999771118164,
+          0.871999979019165
+        ],
+        [
+          -0.0689999982714653,
+          1.055999994277954,
+          0.8980000019073486
+        ]
+      ],
+      "region": "eye.left"
+    },
+    {
+      "id": "eye-white-right",
+      "vertices": 146,
+      "triangles": 288,
+      "components": 1,
+      "surface_area_m2": 0.04844419212581211,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "degenerate_triangles": 0,
+      "signed_volume_m3": 0.0009287566314809392,
+      "volume_status": "measured-closed-surface",
+      "bounds": [
+        [
+          0.028999999165534973,
+          0.9419999718666077,
+          0.800000011920929
+        ],
+        [
+          0.17100000381469727,
+          1.0880000591278076,
+          0.8899999856948853
+        ]
+      ],
+      "region": "eye.right"
+    },
+    {
+      "id": "pupil-right",
+      "vertices": 86,
+      "triangles": 168,
+      "components": 1,
+      "surface_area_m2": 0.009563416301037717,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "degenerate_triangles": 0,
+      "signed_volume_m3": 6.357656665062263e-05,
+      "volume_status": "measured-closed-surface",
+      "bounds": [
+        [
+          0.0689999982714653,
+          0.9739999771118164,
+          0.871999979019165
+        ],
+        [
+          0.13099999725818634,
+          1.055999994277954,
+          0.8980000019073486
+        ]
+      ],
+      "region": "eye.right"
+    }
+  ],
+  "bounds": [
+    [
+      -0.32499998807907104,
+      0.0,
+      -0.9535290598869324
+    ],
+    [
+      0.32499998807907104,
+      1.1799999475479126,
+      0.9900000095367432
+    ]
+  ],
+  "dimensions_m": [
+    0.6499999761581421,
+    1.1799999475479126,
+    1.9435290694236755
+  ],
+  "surface_area_m2": 5.09029499263372,
+  "surface_centroid_m": [
+    -7.158485734732879e-07,
+    0.6807865436603163,
+    0.17089504547060597
+  ],
+  "center_of_mass_status": "surface-area estimate; material density and interior are unknown",
+  "principal_axes": [
+    [
+      -0.02798252697673878,
+      0.49589523288702675,
+      0.8679313890993448
+    ],
+    [
+      -0.01195047191688512,
+      0.8680433825300228,
+      -0.4963445096571542
+    ],
+    [
+      0.9995369750064076,
+      0.024261163322452307,
+      0.018363865314292318
+    ]
+  ],
+  "principal_variance": [
+    0.3261065587002975,
+    0.10427652265740614,
+    0.03419541543432905
+  ],
+  "symmetry_mean_error_m": 0.003430941624272285,
+  "symmetry_status": "approximate geometry only; not anatomy approval",
+  "scale_status": "canonical meters; source unit ambiguity requires explicit import scale",
+  "orientation_status": "canonical orientation or explicit import conversion; PCA does not identify species",
+  "import_format": ".glb",
+  "scale_conversion": 1.0,
+  "preserved_existing_rig": false,
+  "preserved_animation_clips": 0,
+  "source_sha256": "6ea7b4c77bd52c14ea39510eba601eb1ce43504fb3f41bf07193350abcf1427f",
+  "warnings": [],
+  "fixture": true
+}

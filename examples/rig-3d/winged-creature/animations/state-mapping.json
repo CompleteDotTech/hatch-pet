@@ -1,0 +1,2399 @@
+{
+  "schema_version": 1,
+  "catalog_version": "1.0.0",
+  "catalog_sha256": "5de72dedb3262ee0e350d1c5b45fa1cd4455d763b4760fa69ff20914f1895795",
+  "total_catalog_states": 416,
+  "selected_states": 416,
+  "capabilities": [
+    "body",
+    "ears",
+    "expressive-face",
+    "eyes",
+    "feet",
+    "head",
+    "legs",
+    "mouth",
+    "paws",
+    "tail",
+    "wings"
+  ],
+  "mapping": {
+    "idle": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "relaxed-idle": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "alert-idle": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "sleepy-idle": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "breathing": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "blinking": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "double-blinking": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "looking-around": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "looking-left": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "looking-right": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "looking-up": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "looking-down": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "looking-behind": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "watching": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "attentive": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "standing": {
+      "status": "needs-review",
+      "clips": [
+        "neutral"
+      ],
+      "reason": "Executable 3D channels are available; state-specific semantic and visual review is required."
+    },
+    "sitting": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "crouching": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "resting": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "lounging": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "leaning": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "fidgeting": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "swaying": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "rocking": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "stretching": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "settling": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "waiting": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "stillness": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "stoic-idle": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "mischievous-idle": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "nervous-idle": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "regal-idle": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "bouncy-idle": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "listening": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "happy": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "smiling": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "laughing": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "giggling": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "delighted": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "excited": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "ecstatic": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "content": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "peaceful": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "proud": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "confident": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "triumphant": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "relieved": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "grateful": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "affectionate": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "inspired": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "hopeful": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "amused": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "playful": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "curious": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "impressed": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "fascinated": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "positive-surprise": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "motivated": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "encouraged": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "celebrating": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "sad": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "crying": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "disappointed": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "discouraged": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "frustrated": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "angry": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "annoyed": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "grumpy": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "worried": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "anxious": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "afraid": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "startled": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "panicked": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "embarrassed": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "shy": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "ashamed": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "lonely": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "bored": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "overwhelmed": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "confused": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "jealous": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "suspicious": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "insecure": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "defeated": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "regretful": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "exhausted": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "impatient": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "hesitant": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "uncomfortable": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "distressed": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "thinking": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "reasoning": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "brainstorming": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "concentrating": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "analyzing": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "questioning": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "investigating": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "inspecting": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "scanning": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "searching": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "remembering": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "realization": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "having-an-idea": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "learning": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "studying": {
+      "status": "requires-rig-capability",
+      "clips": [],
+      "reason": "requires explicitly approved props: study-material"
+    },
+    "reading": {
+      "status": "requires-rig-capability",
+      "clips": [],
+      "reason": "requires explicitly approved props: reading-material"
+    },
+    "writing": {
+      "status": "requires-rig-capability",
+      "clips": [],
+      "reason": "requires anatomy: hands; requires explicitly approved props: writing-surface, writing-tool"
+    },
+    "calculating": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "planning": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "deciding": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "evaluating": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "understanding": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "explaining": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "teaching": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "speaking": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "presenting": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "debating": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "review": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "problem-solving": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "walking-right": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "walking-left": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "walking-forward": {
+      "status": "needs-review",
+      "clips": [
+        "walk"
+      ],
+      "reason": "Executable 3D channels are available; state-specific semantic and visual review is required."
+    },
+    "walking-backward": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "walking-away": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "running-right": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "running-left": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "running-forward": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "running-away": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "sprinting": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "jogging": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "tiptoeing": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "sneaking": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "hopping": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "skipping": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "jumping": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "double-jumping": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "landing": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "bouncing": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "dashing": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "sliding": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "crawling": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "climbing": {
+      "status": "requires-rig-capability",
+      "clips": [],
+      "reason": "requires anatomy: arms"
+    },
+    "swimming": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "floating": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "flying": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "hovering": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "gliding": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "spinning": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "rolling": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "turning-left": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "turning-right": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "falling": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "stumbling": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "tripping": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "balance-recovery": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "approaching": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "retreating": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "stopping": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "changing-direction": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "waving": {
+      "status": "requires-rig-capability",
+      "clips": [],
+      "reason": "requires anatomy: arms"
+    },
+    "greeting": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "saying-goodbye": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "nodding": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "shaking-head": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "bowing": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "saluting": {
+      "status": "requires-rig-capability",
+      "clips": [],
+      "reason": "requires anatomy: hands"
+    },
+    "clapping": {
+      "status": "requires-rig-capability",
+      "clips": [],
+      "reason": "requires anatomy: hands"
+    },
+    "high-fiving": {
+      "status": "requires-rig-capability",
+      "clips": [],
+      "reason": "requires anatomy: hands"
+    },
+    "hugging": {
+      "status": "requires-rig-capability",
+      "clips": [],
+      "reason": "requires anatomy: arms"
+    },
+    "pointing": {
+      "status": "requires-rig-capability",
+      "clips": [],
+      "reason": "requires anatomy: hands"
+    },
+    "beckoning": {
+      "status": "requires-rig-capability",
+      "clips": [],
+      "reason": "requires anatomy: arms"
+    },
+    "shrugging": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "thumbs-up": {
+      "status": "requires-rig-capability",
+      "clips": [],
+      "reason": "requires anatomy: hands"
+    },
+    "thumbs-down": {
+      "status": "requires-rig-capability",
+      "clips": [],
+      "reason": "requires anatomy: hands"
+    },
+    "facepalming": {
+      "status": "requires-rig-capability",
+      "clips": [],
+      "reason": "requires anatomy: hands"
+    },
+    "apologizing": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "thanking": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "requesting-attention": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "acknowledging": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "agreeing": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "disagreeing": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "encouraging": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "consoling": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "sharing": {
+      "status": "requires-rig-capability",
+      "clips": [],
+      "reason": "requires anatomy: hands; requires explicitly approved props: shareable-item"
+    },
+    "giving": {
+      "status": "requires-rig-capability",
+      "clips": [],
+      "reason": "requires anatomy: hands; requires explicitly approved props: transferable-item"
+    },
+    "receiving": {
+      "status": "requires-rig-capability",
+      "clips": [],
+      "reason": "requires anatomy: hands; requires explicitly approved props: transferable-item"
+    },
+    "inviting": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "cheering": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "posing": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "winking": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "introducing": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "hungry": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "eating": {
+      "status": "requires-rig-capability",
+      "clips": [],
+      "reason": "requires explicitly approved props: food"
+    },
+    "drinking": {
+      "status": "requires-rig-capability",
+      "clips": [],
+      "reason": "requires explicitly approved props: drinking-vessel"
+    },
+    "thirsty": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "yawning": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "sleeping": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "dreaming": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "waking": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "energetic": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "tired": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "sick": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "healing": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "healthy": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "dirty": {
+      "status": "requires-rig-capability",
+      "clips": [],
+      "reason": "requires explicitly approved props: approved-dirty-variant"
+    },
+    "bathing": {
+      "status": "requires-rig-capability",
+      "clips": [],
+      "reason": "requires explicitly approved props: washing-implement"
+    },
+    "grooming": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "scratching": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "sniffing": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "exploring": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "playing": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "exercising": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "meditating": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "relaxing": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "being-petted": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "seeking-attention": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "hiding": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "shivering": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "overheating": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "cooling-down": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "warming-up": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "tail-wagging": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "ear-twitching": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "wing-stretching": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "paw-grooming": {
+      "status": "requires-rig-capability",
+      "clips": [],
+      "reason": "archetype generic is not applicable"
+    },
+    "curling-up": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "purring": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "kneading": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "play-bowing": {
+      "status": "requires-rig-capability",
+      "clips": [],
+      "reason": "archetype generic is not applicable; requires anatomy: quadrupedal"
+    },
+    "tail-tucking": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "ear-flattening": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "wing-fluttering": {
+      "status": "needs-review",
+      "clips": [
+        "wing-flap"
+      ],
+      "reason": "Executable 3D channels are available; state-specific semantic and visual review is required."
+    },
+    "preening": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "fin-fanning": {
+      "status": "requires-rig-capability",
+      "clips": [],
+      "reason": "requires anatomy: fins"
+    },
+    "antenna-probing": {
+      "status": "requires-rig-capability",
+      "clips": [],
+      "reason": "requires anatomy: antennae"
+    },
+    "shell-retreating": {
+      "status": "requires-rig-capability",
+      "clips": [],
+      "reason": "requires anatomy: shell"
+    },
+    "tentacle-waving": {
+      "status": "requires-rig-capability",
+      "clips": [],
+      "reason": "requires anatomy: tentacles"
+    },
+    "slithering": {
+      "status": "requires-rig-capability",
+      "clips": [],
+      "reason": "archetype generic is not applicable; excludes anatomy: legs"
+    },
+    "fur-shaking": {
+      "status": "requires-rig-capability",
+      "clips": [],
+      "reason": "requires anatomy: fur"
+    },
+    "perching": {
+      "status": "requires-rig-capability",
+      "clips": [],
+      "reason": "archetype generic is not applicable"
+    },
+    "ready": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "initializing": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "loading": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "queued": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "preparing": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "researching": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "retrieving": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "running": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "generating": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "coding": {
+      "status": "requires-rig-capability",
+      "clips": [],
+      "reason": "requires anatomy: hands; requires explicitly approved props: keyboard"
+    },
+    "typing": {
+      "status": "requires-rig-capability",
+      "clips": [],
+      "reason": "requires anatomy: hands; requires explicitly approved props: keyboard"
+    },
+    "building": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "compiling": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "testing": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "debugging": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "validating": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "verifying": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "saving": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "syncing": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "uploading": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "downloading": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "deploying": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "completed": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "successful": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "partially-successful": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "failed": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "warning": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "error": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "blocked": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "waiting-for-approval": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "waiting-for-dependency": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "retrying": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "recovering": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "reconnecting": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "offline": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "timed-out": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "rate-limited": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "paused": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "resumed": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "cancelled": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "interrupted": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "idle-timeout": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "shutting-down": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "dancing": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "singing": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "playing-music": {
+      "status": "requires-rig-capability",
+      "clips": [],
+      "reason": "requires explicitly approved props: musical-instrument"
+    },
+    "practicing": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "crafting": {
+      "status": "requires-rig-capability",
+      "clips": [],
+      "reason": "requires anatomy: hands; requires explicitly approved props: craft-material"
+    },
+    "drawing": {
+      "status": "requires-rig-capability",
+      "clips": [],
+      "reason": "requires anatomy: hands; requires explicitly approved props: drawing-surface, drawing-tool"
+    },
+    "painting": {
+      "status": "requires-rig-capability",
+      "clips": [],
+      "reason": "requires anatomy: hands; requires explicitly approved props: paintbrush, painting-surface"
+    },
+    "cooking": {
+      "status": "requires-rig-capability",
+      "clips": [],
+      "reason": "requires anatomy: hands; requires explicitly approved props: cooking-utensil, food-container"
+    },
+    "cleaning": {
+      "status": "requires-rig-capability",
+      "clips": [],
+      "reason": "requires anatomy: hands; requires explicitly approved props: cleaning-cloth, cleaning-surface"
+    },
+    "organizing": {
+      "status": "requires-rig-capability",
+      "clips": [],
+      "reason": "requires anatomy: hands; requires explicitly approved props: sortable-items"
+    },
+    "gardening": {
+      "status": "requires-rig-capability",
+      "clips": [],
+      "reason": "requires anatomy: hands; requires explicitly approved props: gardening-implement, plant"
+    },
+    "assembling": {
+      "status": "requires-rig-capability",
+      "clips": [],
+      "reason": "requires anatomy: hands; requires explicitly approved props: assembly-components"
+    },
+    "repairing": {
+      "status": "requires-rig-capability",
+      "clips": [],
+      "reason": "requires anatomy: hands; requires explicitly approved props: repair-target, repair-tool"
+    },
+    "juggling": {
+      "status": "requires-rig-capability",
+      "clips": [],
+      "reason": "requires anatomy: hands; requires explicitly approved props: juggling-objects"
+    },
+    "throwing": {
+      "status": "requires-rig-capability",
+      "clips": [],
+      "reason": "requires anatomy: hands; requires explicitly approved props: throwable-object"
+    },
+    "catching": {
+      "status": "requires-rig-capability",
+      "clips": [],
+      "reason": "requires anatomy: hands; requires explicitly approved props: throwable-object"
+    },
+    "kicking": {
+      "status": "requires-rig-capability",
+      "clips": [],
+      "reason": "requires explicitly approved props: kickable-object"
+    },
+    "balancing": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "performing": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "ready-stance": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "attacking": {
+      "status": "requires-rig-capability",
+      "clips": [],
+      "reason": "requires anatomy: arms"
+    },
+    "defending": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "dodging": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "evading": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "being-hit": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "stunned": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "knocked-down": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "getting-up": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "using-item": {
+      "status": "requires-rig-capability",
+      "clips": [],
+      "reason": "requires explicitly approved props: usable-item"
+    },
+    "equipping": {
+      "status": "requires-rig-capability",
+      "clips": [],
+      "reason": "requires explicitly approved props: equipable-item"
+    },
+    "unequipping": {
+      "status": "requires-rig-capability",
+      "clips": [],
+      "reason": "requires explicitly approved props: equipable-item"
+    },
+    "casting": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "charging": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "powering-up": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "interacting": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "collecting": {
+      "status": "requires-rig-capability",
+      "clips": [],
+      "reason": "requires explicitly approved props: collectible"
+    },
+    "picking-up": {
+      "status": "requires-rig-capability",
+      "clips": [],
+      "reason": "requires anatomy: hands; requires explicitly approved props: portable-object"
+    },
+    "dropping": {
+      "status": "requires-rig-capability",
+      "clips": [],
+      "reason": "requires anatomy: hands; requires explicitly approved props: portable-object"
+    },
+    "gaining-experience": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "victory": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "respawning": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "stealth": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "discovery": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "alert": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "pursuing": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "escaping": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "non-graphic-knockout": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "parrying": {
+      "status": "requires-rig-capability",
+      "clips": [],
+      "reason": "requires anatomy: arms"
+    },
+    "muted": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "unmuted": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "reacting": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "incoming-message": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "notification": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "audience-greeting": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "answering-questions": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "follower-celebration": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "milestone-celebration": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "raid-reaction": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "intermission": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "starting-soon": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "be-right-back": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "stream-ending": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "buffering": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "connection-lost": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "returning-online": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "reacting-to-rain": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "reacting-to-snow": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "reacting-to-wind": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "reacting-to-sunshine": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "reacting-to-heat": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "reacting-to-cold": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "reacting-to-thunder": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "reacting-to-darkness": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "reacting-to-bright-light": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "reacting-to-noise": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "reacting-to-obstacle": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "reacting-to-confined-space": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "reacting-to-sudden-change": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "reacting-to-uneven-ground": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "introduction": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "anticipation": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "suspense": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "revelation": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "dramatic-reaction": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "heroic-pose": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "comedic-reaction": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "emotional-recovery": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "farewell": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "entering": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "exiting": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "scene-resolution": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "finale": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "eye-widening": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "squinting": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "head-tilting": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "ear-perking": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "tail-twitching": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "brief-smile": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "brief-frown": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "glancing": {
+      "status": "needs-review",
+      "clips": [
+        "gaze"
+      ],
+      "reason": "Executable 3D channels are available; state-specific semantic and visual review is required."
+    },
+    "recoiling": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "recoil-recovery": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "takeoff": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "pose-transition": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "return-to-idle": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "mouth-close": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "spawn": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "emerge": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "hatch": {
+      "status": "requires-rig-capability",
+      "clips": [],
+      "reason": "requires explicitly approved props: hatch-enclosure"
+    },
+    "grow": {
+      "status": "requires-rig-capability",
+      "clips": [],
+      "reason": "requires explicitly approved props: approved-growth-variant"
+    },
+    "evolve": {
+      "status": "requires-rig-capability",
+      "clips": [],
+      "reason": "requires explicitly approved props: approved-evolved-variant"
+    },
+    "transform": {
+      "status": "requires-rig-capability",
+      "clips": [],
+      "reason": "requires explicitly approved props: approved-transformed-variant"
+    },
+    "upgrade": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "leveling-up": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "adapting": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "unlocking": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "gaining-confidence": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "celebrating-achievement": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "rest-after-effort": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "recover-from-setback": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "low-stimulation-idle": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "static-neutral": {
+      "status": "needs-review",
+      "clips": [
+        "neutral"
+      ],
+      "reason": "Executable 3D channels are available; state-specific semantic and visual review is required."
+    },
+    "static-positive": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "static-concern": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "static-working": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "notification-safe": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "nonverbal-confirmation": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "nonverbal-refusal": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "nonverbal-uncertainty": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "assistance-needed": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "completion-acknowledgment": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "attention-prompt": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    },
+    "nonverbal-distress": {
+      "status": "requires-animation",
+      "clips": [],
+      "reason": "No complete executable 3D clip recipe is available for this state."
+    }
+  },
+  "recipes": {
+    "standing": {
+      "clips": [
+        "neutral"
+      ],
+      "priority": 30,
+      "interrupt": "higher",
+      "repeat": "coalesce",
+      "legal_transitions": [
+        "idle",
+        "relaxed-idle",
+        "alert-idle",
+        "sleepy-idle",
+        "breathing",
+        "blinking",
+        "double-blinking",
+        "looking-around",
+        "looking-left",
+        "looking-right",
+        "looking-up",
+        "looking-down",
+        "looking-behind",
+        "watching",
+        "attentive",
+        "sitting",
+        "crouching",
+        "resting",
+        "lounging",
+        "leaning",
+        "fidgeting",
+        "swaying",
+        "rocking",
+        "stretching",
+        "settling",
+        "waiting",
+        "stillness",
+        "stoic-idle",
+        "mischievous-idle",
+        "nervous-idle",
+        "regal-idle",
+        "bouncy-idle",
+        "listening"
+      ],
+      "completion": null,
+      "recovery": "idle",
+      "reduced_motion": {
+        "mode": "static",
+        "frame": 0,
+        "description": "Hold frame 0, showing distribute weight evenly; no flashing, oscillation or forced replay."
+      },
+      "cancel_state": "static-neutral",
+      "anatomical_adaptation": "Uses only existing weighted anatomy; no invented body parts.",
+      "semantic_review": [
+        "The pose sequence communicates the intended meaning: Establish and sustain a balanced upright resting posture.",
+        "The defining pose is clearly visible and the action differs from ordinary idle: stabilize upper body.",
+        "Expression/body language matches: Comfortable upright bearing using existing support anatomy.",
+        "All frames preserve approved identity, anatomy, prop ownership, orientation and shared character scale.",
+        "Inspect the actual timed animation and its static alternative; metadata and fixture receipts do not certify production art."
+      ]
+    },
+    "walking-forward": {
+      "clips": [
+        "walk"
+      ],
+      "priority": 30,
+      "interrupt": "higher",
+      "repeat": "coalesce",
+      "legal_transitions": [
+        "idle",
+        "walking-right",
+        "walking-left",
+        "walking-backward",
+        "walking-away",
+        "running-right",
+        "running-left",
+        "running-forward",
+        "running-away",
+        "sprinting",
+        "jogging",
+        "tiptoeing",
+        "sneaking",
+        "hopping",
+        "skipping",
+        "jumping",
+        "double-jumping",
+        "landing",
+        "bouncing",
+        "dashing",
+        "sliding",
+        "crawling",
+        "climbing",
+        "swimming",
+        "floating",
+        "flying",
+        "hovering",
+        "gliding",
+        "spinning",
+        "rolling",
+        "turning-left",
+        "turning-right",
+        "falling",
+        "stumbling",
+        "tripping",
+        "balance-recovery",
+        "approaching",
+        "retreating",
+        "stopping",
+        "changing-direction"
+      ],
+      "completion": null,
+      "recovery": "idle",
+      "reduced_motion": {
+        "mode": "static",
+        "frame": 2,
+        "description": "Hold frame 2, showing front-view opposite support contact; no flashing, oscillation or forced replay."
+      },
+      "cancel_state": "static-neutral",
+      "anatomical_adaptation": "Uses only existing weighted anatomy; no invented body parts.",
+      "semantic_review": [
+        "The pose sequence communicates the intended meaning: Walk toward the viewer with alternating front-view contacts.",
+        "The defining pose is clearly visible and the action differs from ordinary idle: front-view opposite support contact.",
+        "Expression/body language matches: Approach through foreshortened gait, not increasing scale.",
+        "All frames preserve approved identity, anatomy, prop ownership, orientation and shared character scale.",
+        "Inspect the actual timed animation and its static alternative; metadata and fixture receipts do not certify production art."
+      ]
+    },
+    "wing-fluttering": {
+      "clips": [
+        "wing-flap"
+      ],
+      "priority": 30,
+      "interrupt": "higher",
+      "repeat": "coalesce",
+      "legal_transitions": [
+        "idle",
+        "hungry",
+        "eating",
+        "drinking",
+        "thirsty",
+        "yawning",
+        "sleeping",
+        "dreaming",
+        "waking",
+        "energetic",
+        "tired",
+        "sick",
+        "healing",
+        "healthy",
+        "dirty",
+        "bathing",
+        "grooming",
+        "scratching",
+        "sniffing",
+        "exploring",
+        "playing",
+        "exercising",
+        "meditating",
+        "relaxing",
+        "being-petted",
+        "seeking-attention",
+        "hiding",
+        "shivering",
+        "overheating",
+        "cooling-down",
+        "warming-up",
+        "tail-wagging",
+        "ear-twitching",
+        "wing-stretching",
+        "paw-grooming",
+        "curling-up",
+        "purring",
+        "kneading",
+        "play-bowing",
+        "tail-tucking",
+        "ear-flattening",
+        "preening",
+        "fin-fanning",
+        "antenna-probing",
+        "shell-retreating",
+        "tentacle-waving",
+        "slithering",
+        "fur-shaking",
+        "perching"
+      ],
+      "completion": "idle",
+      "recovery": "idle",
+      "reduced_motion": {
+        "mode": "static",
+        "frame": 2,
+        "description": "Hold frame 2, showing make a short attached flutter stroke; no flashing, oscillation or forced replay."
+      },
+      "cancel_state": "static-neutral",
+      "anatomical_adaptation": "Uses only existing weighted anatomy; no invented body parts.",
+      "semantic_review": [
+        "The pose sequence communicates the intended meaning: Make a brief rapid small-range wing flutter while staying grounded.",
+        "The defining pose is clearly visible and the action differs from ordinary idle: make a short attached flutter stroke.",
+        "Expression/body language matches: Grounded wing excitement rather than sustained powered flight.",
+        "All frames preserve approved identity, anatomy, prop ownership, orientation and shared character scale.",
+        "Inspect the actual timed animation and its static alternative; metadata and fixture receipts do not certify production art."
+      ]
+    },
+    "glancing": {
+      "clips": [
+        "gaze"
+      ],
+      "priority": 30,
+      "interrupt": "higher",
+      "repeat": "coalesce",
+      "legal_transitions": [
+        "idle",
+        "eye-widening",
+        "squinting",
+        "head-tilting",
+        "ear-perking",
+        "tail-twitching",
+        "brief-smile",
+        "brief-frown",
+        "recoiling",
+        "recoil-recovery",
+        "takeoff",
+        "pose-transition",
+        "return-to-idle",
+        "mouth-close"
+      ],
+      "completion": "idle",
+      "recovery": "idle",
+      "reduced_motion": {
+        "mode": "static",
+        "frame": 2,
+        "description": "Hold frame 2, showing pause for a brief check; no flashing, oscillation or forced replay."
+      },
+      "cancel_state": "static-neutral",
+      "anatomical_adaptation": "Uses only existing weighted anatomy; no invented body parts.",
+      "semantic_review": [
+        "The pose sequence communicates the intended meaning: Make one quick sideways attention check and return.",
+        "The defining pose is clearly visible and the action differs from ordinary idle: pause for a brief check.",
+        "Expression/body language matches: Short glance rather than a sustained looking state.",
+        "All frames preserve approved identity, anatomy, prop ownership, orientation and shared character scale.",
+        "Inspect the actual timed animation and its static alternative; metadata and fixture receipts do not certify production art."
+      ]
+    },
+    "static-neutral": {
+      "clips": [
+        "neutral"
+      ],
+      "priority": 0,
+      "interrupt": "higher",
+      "repeat": "coalesce",
+      "legal_transitions": [
+        "idle",
+        "low-stimulation-idle",
+        "static-positive",
+        "static-concern",
+        "static-working",
+        "notification-safe",
+        "nonverbal-confirmation",
+        "nonverbal-refusal",
+        "nonverbal-uncertainty",
+        "assistance-needed",
+        "completion-acknowledgment",
+        "attention-prompt",
+        "nonverbal-distress"
+      ],
+      "completion": null,
+      "recovery": "idle",
+      "reduced_motion": {
+        "mode": "static",
+        "frame": 0,
+        "description": "Hold frame 0, showing hold the canonical calm centered pose; no flashing, oscillation or forced replay."
+      },
+      "cancel_state": "static-neutral",
+      "anatomical_adaptation": "Uses only existing weighted anatomy; no invented body parts.",
+      "semantic_review": [
+        "The pose sequence communicates the intended meaning: Provide one intentionally static balanced neutral pose.",
+        "The single held pose clearly communicates its intended status without any timed movement.",
+        "Expression/body language matches: Neutral status remains readable with absolutely no timed change.",
+        "All frames preserve approved identity, anatomy, prop ownership, orientation and shared character scale.",
+        "Inspect the actual timed animation and its static alternative; metadata and fixture receipts do not certify production art."
+      ]
+    }
+  },
+  "counts": {
+    "requires-animation": 353,
+    "needs-review": 5,
+    "requires-rig-capability": 58
+  },
+  "all_416_animated": false
+}

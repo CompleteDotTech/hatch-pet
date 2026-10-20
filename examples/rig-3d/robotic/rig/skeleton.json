@@ -1,0 +1,309 @@
+{
+  "schema_version": 1,
+  "id": "demo-robotic-skeleton",
+  "version": "1.0.0",
+  "root": "root",
+  "bones": [
+    {
+      "schema_version": 1,
+      "id": "root",
+      "role": "root",
+      "parent": null,
+      "rest": {
+        "translation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "head": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "tail": [
+        0.0,
+        0.1,
+        0.0
+      ],
+      "length": 0.1,
+      "roll": 0.0,
+      "deform": false,
+      "mirror": null,
+      "evidence": {
+        "source": "procedural-fixture",
+        "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks.",
+        "confidence": 1.0
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "base",
+      "role": "base",
+      "parent": "root",
+      "rest": {
+        "translation": [
+          0.0,
+          0.1,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "head": [
+        0.0,
+        0.1,
+        0.0
+      ],
+      "tail": [
+        0.0,
+        0.3,
+        0.0
+      ],
+      "length": 0.19999999999999998,
+      "roll": 0.0,
+      "deform": true,
+      "mirror": null,
+      "evidence": {
+        "source": "procedural-fixture",
+        "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks.",
+        "confidence": 1.0
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "shoulder",
+      "role": "shoulder",
+      "parent": "base",
+      "rest": {
+        "translation": [
+          0.0,
+          0.19999999999999998,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "head": [
+        0.0,
+        0.3,
+        0.0
+      ],
+      "tail": [
+        0.0,
+        0.8,
+        0.0
+      ],
+      "length": 0.5,
+      "roll": 0.0,
+      "deform": true,
+      "mirror": null,
+      "evidence": {
+        "source": "procedural-fixture",
+        "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks.",
+        "confidence": 1.0
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "elbow",
+      "role": "elbow",
+      "parent": "shoulder",
+      "rest": {
+        "translation": [
+          0.0,
+          0.5,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          -0.7071067811865476,
+          0.7071067811865475
+        ],
+        "scale": [
+          1.0000000000000002,
+          1.0000000000000002,
+          1.0
+        ]
+      },
+      "head": [
+        0.0,
+        0.8,
+        0.0
+      ],
+      "tail": [
+        0.45,
+        0.8,
+        0.0
+      ],
+      "length": 0.45,
+      "roll": 0.0,
+      "deform": true,
+      "mirror": null,
+      "evidence": {
+        "source": "procedural-fixture",
+        "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks.",
+        "confidence": 1.0
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "gripper",
+      "role": "gripper",
+      "parent": "elbow",
+      "rest": {
+        "translation": [
+          -1.1102230246251565e-16,
+          0.4499999999999999,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          -5.473822126268817e-48,
+          1.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "head": [
+        0.45,
+        0.8,
+        0.0
+      ],
+      "tail": [
+        0.6,
+        0.8,
+        0.0
+      ],
+      "length": 0.14999999999999997,
+      "roll": 0.0,
+      "deform": true,
+      "mirror": null,
+      "evidence": {
+        "source": "procedural-fixture",
+        "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks.",
+        "confidence": 1.0
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "jaw.left",
+      "role": "jaw.left",
+      "parent": "gripper",
+      "rest": {
+        "translation": [
+          -1.1102230246251565e-16,
+          0.1299999999999999,
+          -0.09
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          -5.473822126268817e-48,
+          1.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "head": [
+        0.58,
+        0.8,
+        -0.09
+      ],
+      "tail": [
+        0.73,
+        0.8,
+        -0.09
+      ],
+      "length": 0.15000000000000002,
+      "roll": 0.0,
+      "deform": true,
+      "mirror": null,
+      "evidence": {
+        "source": "procedural-fixture",
+        "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks.",
+        "confidence": 1.0
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "jaw.right",
+      "role": "jaw.right",
+      "parent": "gripper",
+      "rest": {
+        "translation": [
+          -1.1102230246251565e-16,
+          0.1299999999999999,
+          0.09
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          -5.473822126268817e-48,
+          1.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "head": [
+        0.58,
+        0.8,
+        0.09
+      ],
+      "tail": [
+        0.73,
+        0.8,
+        0.09
+      ],
+      "length": 0.15000000000000002,
+      "roll": 0.0,
+      "deform": true,
+      "mirror": null,
+      "evidence": {
+        "source": "procedural-fixture",
+        "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks.",
+        "confidence": 1.0
+      }
+    }
+  ]
+}

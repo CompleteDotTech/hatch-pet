@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "kind": "hatch-3d-rig-job",
+  "id": "demo-quadruped",
+  "status": "roundtrip-verified",
+  "rig_sha256": "8e32b2f67e563e5de61d97175493ac9b5a8c48ab2b75374e5a6fd60fea0d043c",
+  "steps": {},
+  "limits": {
+    "source_bytes": 268435456,
+    "dependency_bytes": 1073741824,
+    "vertices": 1000000,
+    "triangles": 2000000,
+    "bones": 256,
+    "influences": 4,
+    "morphs": 128,
+    "clips": 64,
+    "keyframes": 250000,
+    "duration": 120,
+    "fps": 60,
+    "memory_bytes": 2147483648,
+    "solver_iterations": 128,
+    "timeout_seconds": 300,
+    "archive_files": 10000,
+    "archive_bytes": 1073741824,
+    "attempts": 3
+  },
+  "history": [
+    {
+      "operation": "import",
+      "at": "2026-10-20T10:49:38Z",
+      "signature": "d82a1e45fd622f1b4f4fff9a9106a61c87b224977c1bbeda82be71acd94fb6f3"
+    }
+  ]
+}

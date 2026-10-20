@@ -1,0 +1,382 @@
+{
+  "ik": [
+    {
+      "schema_version": 1,
+      "id": "arm.left",
+      "bones": [
+        "upper-arm.left",
+        "forearm.left",
+        "hand.left"
+      ],
+      "solver": "two-bone",
+      "pole": [
+        -0.65,
+        1.1,
+        0.8
+      ],
+      "tolerance": 2.0549999428913e-05,
+      "iterations": 64
+    },
+    {
+      "schema_version": 1,
+      "id": "leg.left",
+      "bones": [
+        "thigh.left",
+        "shin.left",
+        "foot.left"
+      ],
+      "solver": "two-bone",
+      "pole": [
+        -0.15,
+        0.6,
+        0.8
+      ],
+      "tolerance": 2.0549999428913e-05,
+      "iterations": 64
+    },
+    {
+      "schema_version": 1,
+      "id": "arm.right",
+      "bones": [
+        "upper-arm.right",
+        "forearm.right",
+        "hand.right"
+      ],
+      "solver": "two-bone",
+      "pole": [
+        0.65,
+        1.1,
+        0.8
+      ],
+      "tolerance": 2.0549999428913e-05,
+      "iterations": 64
+    },
+    {
+      "schema_version": 1,
+      "id": "leg.right",
+      "bones": [
+        "thigh.right",
+        "shin.right",
+        "foot.right"
+      ],
+      "solver": "two-bone",
+      "pole": [
+        0.15,
+        0.6,
+        0.8
+      ],
+      "tolerance": 2.0549999428913e-05,
+      "iterations": 64
+    }
+  ],
+  "constraints": [
+    {
+      "schema_version": 1,
+      "id": "thumb.1.left-limit",
+      "bone": "thumb.1.left",
+      "type": "ball",
+      "swing": 1.8
+    },
+    {
+      "schema_version": 1,
+      "id": "thumb.2.left-limit",
+      "bone": "thumb.2.left",
+      "type": "ball",
+      "swing": 1.8
+    },
+    {
+      "schema_version": 1,
+      "id": "thumb.3.left-limit",
+      "bone": "thumb.3.left",
+      "type": "ball",
+      "swing": 1.8
+    },
+    {
+      "schema_version": 1,
+      "id": "index.1.left-limit",
+      "bone": "index.1.left",
+      "type": "ball",
+      "swing": 1.8
+    },
+    {
+      "schema_version": 1,
+      "id": "index.2.left-limit",
+      "bone": "index.2.left",
+      "type": "ball",
+      "swing": 1.8
+    },
+    {
+      "schema_version": 1,
+      "id": "index.3.left-limit",
+      "bone": "index.3.left",
+      "type": "ball",
+      "swing": 1.8
+    },
+    {
+      "schema_version": 1,
+      "id": "middle.1.left-limit",
+      "bone": "middle.1.left",
+      "type": "ball",
+      "swing": 1.8
+    },
+    {
+      "schema_version": 1,
+      "id": "middle.2.left-limit",
+      "bone": "middle.2.left",
+      "type": "ball",
+      "swing": 1.8
+    },
+    {
+      "schema_version": 1,
+      "id": "middle.3.left-limit",
+      "bone": "middle.3.left",
+      "type": "ball",
+      "swing": 1.8
+    },
+    {
+      "schema_version": 1,
+      "id": "ring.1.left-limit",
+      "bone": "ring.1.left",
+      "type": "ball",
+      "swing": 1.8
+    },
+    {
+      "schema_version": 1,
+      "id": "ring.2.left-limit",
+      "bone": "ring.2.left",
+      "type": "ball",
+      "swing": 1.8
+    },
+    {
+      "schema_version": 1,
+      "id": "ring.3.left-limit",
+      "bone": "ring.3.left",
+      "type": "ball",
+      "swing": 1.8
+    },
+    {
+      "schema_version": 1,
+      "id": "pinky.1.left-limit",
+      "bone": "pinky.1.left",
+      "type": "ball",
+      "swing": 1.8
+    },
+    {
+      "schema_version": 1,
+      "id": "pinky.2.left-limit",
+      "bone": "pinky.2.left",
+      "type": "ball",
+      "swing": 1.8
+    },
+    {
+      "schema_version": 1,
+      "id": "pinky.3.left-limit",
+      "bone": "pinky.3.left",
+      "type": "ball",
+      "swing": 1.8
+    },
+    {
+      "schema_version": 1,
+      "id": "upper-arm.left-limit",
+      "bone": "upper-arm.left",
+      "type": "ball",
+      "swing": 2.7
+    },
+    {
+      "schema_version": 1,
+      "id": "forearm.left-limit",
+      "bone": "forearm.left",
+      "type": "ball",
+      "swing": 2.7
+    },
+    {
+      "schema_version": 1,
+      "id": "thigh.left-limit",
+      "bone": "thigh.left",
+      "type": "ball",
+      "swing": 2.7
+    },
+    {
+      "schema_version": 1,
+      "id": "shin.left-limit",
+      "bone": "shin.left",
+      "type": "ball",
+      "swing": 2.7
+    },
+    {
+      "schema_version": 1,
+      "id": "eye.left-limit",
+      "bone": "eye.left",
+      "type": "ball",
+      "swing": 0.65
+    },
+    {
+      "schema_version": 1,
+      "id": "thumb.1.right-limit",
+      "bone": "thumb.1.right",
+      "type": "ball",
+      "swing": 1.8
+    },
+    {
+      "schema_version": 1,
+      "id": "thumb.2.right-limit",
+      "bone": "thumb.2.right",
+      "type": "ball",
+      "swing": 1.8
+    },
+    {
+      "schema_version": 1,
+      "id": "thumb.3.right-limit",
+      "bone": "thumb.3.right",
+      "type": "ball",
+      "swing": 1.8
+    },
+    {
+      "schema_version": 1,
+      "id": "index.1.right-limit",
+      "bone": "index.1.right",
+      "type": "ball",
+      "swing": 1.8
+    },
+    {
+      "schema_version": 1,
+      "id": "index.2.right-limit",
+      "bone": "index.2.right",
+      "type": "ball",
+      "swing": 1.8
+    },
+    {
+      "schema_version": 1,
+      "id": "index.3.right-limit",
+      "bone": "index.3.right",
+      "type": "ball",
+      "swing": 1.8
+    },
+    {
+      "schema_version": 1,
+      "id": "middle.1.right-limit",
+      "bone": "middle.1.right",
+      "type": "ball",
+      "swing": 1.8
+    },
+    {
+      "schema_version": 1,
+      "id": "middle.2.right-limit",
+      "bone": "middle.2.right",
+      "type": "ball",
+      "swing": 1.8
+    },
+    {
+      "schema_version": 1,
+      "id": "middle.3.right-limit",
+      "bone": "middle.3.right",
+      "type": "ball",
+      "swing": 1.8
+    },
+    {
+      "schema_version": 1,
+      "id": "ring.1.right-limit",
+      "bone": "ring.1.right",
+      "type": "ball",
+      "swing": 1.8
+    },
+    {
+      "schema_version": 1,
+      "id": "ring.2.right-limit",
+      "bone": "ring.2.right",
+      "type": "ball",
+      "swing": 1.8
+    },
+    {
+      "schema_version": 1,
+      "id": "ring.3.right-limit",
+      "bone": "ring.3.right",
+      "type": "ball",
+      "swing": 1.8
+    },
+    {
+      "schema_version": 1,
+      "id": "pinky.1.right-limit",
+      "bone": "pinky.1.right",
+      "type": "ball",
+      "swing": 1.8
+    },
+    {
+      "schema_version": 1,
+      "id": "pinky.2.right-limit",
+      "bone": "pinky.2.right",
+      "type": "ball",
+      "swing": 1.8
+    },
+    {
+      "schema_version": 1,
+      "id": "pinky.3.right-limit",
+      "bone": "pinky.3.right",
+      "type": "ball",
+      "swing": 1.8
+    },
+    {
+      "schema_version": 1,
+      "id": "upper-arm.right-limit",
+      "bone": "upper-arm.right",
+      "type": "ball",
+      "swing": 2.7
+    },
+    {
+      "schema_version": 1,
+      "id": "forearm.right-limit",
+      "bone": "forearm.right",
+      "type": "ball",
+      "swing": 2.7
+    },
+    {
+      "schema_version": 1,
+      "id": "thigh.right-limit",
+      "bone": "thigh.right",
+      "type": "ball",
+      "swing": 2.7
+    },
+    {
+      "schema_version": 1,
+      "id": "shin.right-limit",
+      "bone": "shin.right",
+      "type": "ball",
+      "swing": 2.7
+    },
+    {
+      "schema_version": 1,
+      "id": "eye.right-limit",
+      "bone": "eye.right",
+      "type": "ball",
+      "swing": 0.65
+    },
+    {
+      "schema_version": 1,
+      "id": "spine-limit",
+      "bone": "spine",
+      "type": "ball",
+      "swing": 0.8
+    },
+    {
+      "schema_version": 1,
+      "id": "chest-limit",
+      "bone": "chest",
+      "type": "ball",
+      "swing": 0.8
+    },
+    {
+      "schema_version": 1,
+      "id": "neck-limit",
+      "bone": "neck",
+      "type": "ball",
+      "swing": 0.8
+    },
+    {
+      "schema_version": 1,
+      "id": "head-limit",
+      "bone": "head",
+      "type": "ball",
+      "swing": 0.8
+    }
+  ]
+}

@@ -1,0 +1,4399 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gethatch.pet/schemas/rig-v1",
+  "title": "Rig v1",
+  "$defs": {
+    "Character3D": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+        },
+        "identity_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "schema_version",
+        "id",
+        "version",
+        "identity_sha256"
+      ]
+    },
+    "GeometryAsset": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+        },
+        "data": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "path": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          },
+          "required": [
+            "path",
+            "sha256"
+          ]
+        },
+        "meshes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+          },
+          "minItems": 1,
+          "maxItems": 4096
+        },
+        "vertices": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2000000000
+        },
+        "triangles": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2000000000
+        }
+      },
+      "required": [
+        "schema_version",
+        "version",
+        "data",
+        "meshes",
+        "vertices",
+        "triangles"
+      ]
+    },
+    "Skeleton": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+        },
+        "root": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+        },
+        "bones": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "schema_version": {
+                "const": 1
+              },
+              "id": {
+                "type": "string",
+                "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+              },
+              "role": {
+                "type": "string",
+                "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+              },
+              "parent": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "rest": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "translation": {
+                    "type": "array",
+                    "items": {
+                      "type": "number",
+                      "minimum": -1000000000.0,
+                      "maximum": 1000000000.0
+                    },
+                    "minItems": 3,
+                    "maxItems": 3
+                  },
+                  "rotation": {
+                    "type": "array",
+                    "items": {
+                      "type": "number",
+                      "minimum": -1000000000.0,
+                      "maximum": 1000000000.0
+                    },
+                    "minItems": 4,
+                    "maxItems": 4
+                  },
+                  "scale": {
+                    "type": "array",
+                    "items": {
+                      "type": "number",
+                      "exclusiveMinimum": 0,
+                      "maximum": 1000000000.0
+                    },
+                    "minItems": 3,
+                    "maxItems": 3
+                  }
+                },
+                "required": [
+                  "translation",
+                  "rotation",
+                  "scale"
+                ]
+              },
+              "head": {
+                "type": "array",
+                "items": {
+                  "type": "number",
+                  "minimum": -1000000000.0,
+                  "maximum": 1000000000.0
+                },
+                "minItems": 3,
+                "maxItems": 3
+              },
+              "tail": {
+                "type": "array",
+                "items": {
+                  "type": "number",
+                  "minimum": -1000000000.0,
+                  "maximum": 1000000000.0
+                },
+                "minItems": 3,
+                "maxItems": 3
+              },
+              "length": {
+                "type": "number",
+                "exclusiveMinimum": 0,
+                "maximum": 1000000000.0
+              },
+              "roll": {
+                "type": "number",
+                "minimum": -1000000000.0,
+                "maximum": 1000000000.0
+              },
+              "deform": {
+                "type": "boolean"
+              },
+              "mirror": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "evidence": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "source": {
+                    "enum": [
+                      "existing-rig",
+                      "human-landmark",
+                      "semantic-part",
+                      "import-metadata",
+                      "geometry-fit",
+                      "procedural-fixture"
+                    ]
+                  },
+                  "reference": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 4096
+                  },
+                  "confidence": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1
+                  }
+                },
+                "required": [
+                  "source",
+                  "reference",
+                  "confidence"
+                ]
+              }
+            },
+            "required": [
+              "schema_version",
+              "id",
+              "role",
+              "parent",
+              "rest",
+              "head",
+              "tail",
+              "length",
+              "roll",
+              "deform",
+              "mirror",
+              "evidence"
+            ]
+          },
+          "minItems": 1,
+          "maxItems": 256
+        }
+      },
+      "required": [
+        "schema_version",
+        "id",
+        "version",
+        "root",
+        "bones"
+      ]
+    },
+    "Bone": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+        },
+        "role": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+        },
+        "parent": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "rest": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "translation": {
+              "type": "array",
+              "items": {
+                "type": "number",
+                "minimum": -1000000000.0,
+                "maximum": 1000000000.0
+              },
+              "minItems": 3,
+              "maxItems": 3
+            },
+            "rotation": {
+              "type": "array",
+              "items": {
+                "type": "number",
+                "minimum": -1000000000.0,
+                "maximum": 1000000000.0
+              },
+              "minItems": 4,
+              "maxItems": 4
+            },
+            "scale": {
+              "type": "array",
+              "items": {
+                "type": "number",
+                "exclusiveMinimum": 0,
+                "maximum": 1000000000.0
+              },
+              "minItems": 3,
+              "maxItems": 3
+            }
+          },
+          "required": [
+            "translation",
+            "rotation",
+            "scale"
+          ]
+        },
+        "head": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "minimum": -1000000000.0,
+            "maximum": 1000000000.0
+          },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "tail": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "minimum": -1000000000.0,
+            "maximum": 1000000000.0
+          },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "length": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 1000000000.0
+        },
+        "roll": {
+          "type": "number",
+          "minimum": -1000000000.0,
+          "maximum": 1000000000.0
+        },
+        "deform": {
+          "type": "boolean"
+        },
+        "mirror": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "evidence": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "source": {
+              "enum": [
+                "existing-rig",
+                "human-landmark",
+                "semantic-part",
+                "import-metadata",
+                "geometry-fit",
+                "procedural-fixture"
+              ]
+            },
+            "reference": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096
+            },
+            "confidence": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            }
+          },
+          "required": [
+            "source",
+            "reference",
+            "confidence"
+          ]
+        }
+      },
+      "required": [
+        "schema_version",
+        "id",
+        "role",
+        "parent",
+        "rest",
+        "head",
+        "tail",
+        "length",
+        "roll",
+        "deform",
+        "mirror",
+        "evidence"
+      ]
+    },
+    "SkinBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+        },
+        "mesh": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+        },
+        "joints": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+          },
+          "minItems": 1,
+          "maxItems": 256
+        },
+        "data": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "path": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          },
+          "required": [
+            "path",
+            "sha256"
+          ]
+        },
+        "method": {
+          "enum": [
+            "distance",
+            "diffusion",
+            "segmented",
+            "rigid",
+            "imported",
+            "manual"
+          ]
+        },
+        "locked_vertices": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2000000000
+          },
+          "minItems": 0,
+          "maxItems": 250000
+        },
+        "fallback_reason": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "schema_version",
+        "id",
+        "version",
+        "mesh",
+        "joints",
+        "data",
+        "method",
+        "locked_vertices",
+        "fallback_reason"
+      ]
+    },
+    "VertexInfluence": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "joint": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+        },
+        "weight": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "required": [
+        "joint",
+        "weight"
+      ]
+    },
+    "RigTemplate": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "kind": {
+          "const": "hatch-3d-rig-template"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+        },
+        "extends": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+          },
+          "minItems": 0,
+          "maxItems": 8
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "rest_pose": {
+          "enum": [
+            "T",
+            "A",
+            "stance",
+            "mechanical",
+            "custom"
+          ]
+        },
+        "bones": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+              },
+              "role": {
+                "type": "string",
+                "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+              },
+              "parent": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "head": {
+                "type": "array",
+                "items": {
+                  "type": "number",
+                  "minimum": -1000000000.0,
+                  "maximum": 1000000000.0
+                },
+                "minItems": 3,
+                "maxItems": 3
+              },
+              "tail": {
+                "type": "array",
+                "items": {
+                  "type": "number",
+                  "minimum": -1000000000.0,
+                  "maximum": 1000000000.0
+                },
+                "minItems": 3,
+                "maxItems": 3
+              },
+              "deform": {
+                "type": "boolean"
+              },
+              "mirror": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "roll": {
+                "type": "number",
+                "minimum": -1000000000.0,
+                "maximum": 1000000000.0
+              }
+            },
+            "required": [
+              "id",
+              "role",
+              "parent",
+              "head",
+              "tail",
+              "deform"
+            ]
+          },
+          "minItems": 0,
+          "maxItems": 256
+        },
+        "constraints": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "schema_version": {
+                "const": 1
+              },
+              "id": {
+                "type": "string",
+                "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+              },
+              "bone": {
+                "type": "string",
+                "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+              },
+              "type": {
+                "enum": [
+                  "hinge",
+                  "ball",
+                  "swing-twist",
+                  "translation",
+                  "locked",
+                  "aim",
+                  "copy-rotation",
+                  "copy-position"
+                ]
+              },
+              "axis": {
+                "type": "array",
+                "items": {
+                  "type": "number",
+                  "minimum": -1000000000.0,
+                  "maximum": 1000000000.0
+                },
+                "minItems": 3,
+                "maxItems": 3
+              },
+              "minimum": {
+                "type": "number",
+                "minimum": -1000000000.0,
+                "maximum": 1000000000.0
+              },
+              "maximum": {
+                "type": "number",
+                "minimum": -1000000000.0,
+                "maximum": 1000000000.0
+              },
+              "swing": {
+                "type": "number",
+                "exclusiveMinimum": 0,
+                "maximum": 1000000000.0
+              },
+              "target": {
+                "type": "string",
+                "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+              },
+              "point": {
+                "type": "array",
+                "items": {
+                  "type": "number",
+                  "minimum": -1000000000.0,
+                  "maximum": 1000000000.0
+                },
+                "minItems": 3,
+                "maxItems": 3
+              },
+              "influence": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "axes": {
+                "type": "array",
+                "items": {
+                  "enum": [
+                    0,
+                    1,
+                    2
+                  ]
+                },
+                "minItems": 1,
+                "maxItems": 3
+              }
+            },
+            "required": [
+              "schema_version",
+              "id",
+              "bone",
+              "type"
+            ]
+          },
+          "minItems": 0,
+          "maxItems": 1024
+        },
+        "ik": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "schema_version": {
+                "const": 1
+              },
+              "id": {
+                "type": "string",
+                "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+              },
+              "bones": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+                },
+                "minItems": 3,
+                "maxItems": 256
+              },
+              "solver": {
+                "enum": [
+                  "two-bone",
+                  "fabrik"
+                ]
+              },
+              "pole": {
+                "type": "array",
+                "items": {
+                  "type": "number",
+                  "minimum": -1000000000.0,
+                  "maximum": 1000000000.0
+                },
+                "minItems": 3,
+                "maxItems": 3
+              },
+              "tolerance": {
+                "type": "number",
+                "exclusiveMinimum": 0,
+                "maximum": 1000000000.0
+              },
+              "iterations": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 128
+              },
+              "target": {
+                "type": "array",
+                "items": {
+                  "type": "number",
+                  "minimum": -1000000000.0,
+                  "maximum": 1000000000.0
+                },
+                "minItems": 3,
+                "maxItems": 3
+              },
+              "orientation": {
+                "type": "array",
+                "items": {
+                  "type": "number",
+                  "minimum": -1000000000.0,
+                  "maximum": 1000000000.0
+                },
+                "minItems": 4,
+                "maxItems": 4
+              }
+            },
+            "required": [
+              "schema_version",
+              "id",
+              "bones",
+              "solver",
+              "pole",
+              "tolerance",
+              "iterations"
+            ]
+          },
+          "minItems": 0,
+          "maxItems": 256
+        },
+        "capabilities": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+          },
+          "minItems": 0,
+          "maxItems": 128
+        },
+        "sockets": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "schema_version": {
+                "const": 1
+              },
+              "id": {
+                "type": "string",
+                "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+              },
+              "bone": {
+                "type": "string",
+                "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+              },
+              "transform": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "translation": {
+                    "type": "array",
+                    "items": {
+                      "type": "number",
+                      "minimum": -1000000000.0,
+                      "maximum": 1000000000.0
+                    },
+                    "minItems": 3,
+                    "maxItems": 3
+                  },
+                  "rotation": {
+                    "type": "array",
+                    "items": {
+                      "type": "number",
+                      "minimum": -1000000000.0,
+                      "maximum": 1000000000.0
+                    },
+                    "minItems": 4,
+                    "maxItems": 4
+                  },
+                  "scale": {
+                    "type": "array",
+                    "items": {
+                      "type": "number",
+                      "exclusiveMinimum": 0,
+                      "maximum": 1000000000.0
+                    },
+                    "minItems": 3,
+                    "maxItems": 3
+                  }
+                },
+                "required": [
+                  "translation",
+                  "rotation",
+                  "scale"
+                ]
+              },
+              "role": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096
+              },
+              "owner": {
+                "type": "string",
+                "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+              }
+            },
+            "required": [
+              "schema_version",
+              "id",
+              "bone",
+              "transform",
+              "role",
+              "owner"
+            ]
+          },
+          "minItems": 0,
+          "maxItems": 1024
+        },
+        "retarget_group": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+        },
+        "symmetry": {
+          "enum": [
+            "explicit",
+            "none"
+          ]
+        },
+        "fitting_notes": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "rest_bounds": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "minimum": -1000000000.0,
+              "maximum": 1000000000.0
+            },
+            "minItems": 3,
+            "maxItems": 3
+          },
+          "minItems": 2,
+          "maxItems": 2
+        }
+      },
+      "required": [
+        "schema_version",
+        "kind",
+        "id",
+        "version",
+        "extends",
+        "description",
+        "rest_pose",
+        "bones",
+        "constraints",
+        "ik",
+        "capabilities",
+        "sockets",
+        "retarget_group",
+        "symmetry",
+        "fitting_notes",
+        "rest_bounds"
+      ]
+    },
+    "RigController": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "ik": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "schema_version": {
+                "const": 1
+              },
+              "id": {
+                "type": "string",
+                "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+              },
+              "bones": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+                },
+                "minItems": 3,
+                "maxItems": 256
+              },
+              "solver": {
+                "enum": [
+                  "two-bone",
+                  "fabrik"
+                ]
+              },
+              "pole": {
+                "type": "array",
+                "items": {
+                  "type": "number",
+                  "minimum": -1000000000.0,
+                  "maximum": 1000000000.0
+                },
+                "minItems": 3,
+                "maxItems": 3
+              },
+              "tolerance": {
+                "type": "number",
+                "exclusiveMinimum": 0,
+                "maximum": 1000000000.0
+              },
+              "iterations": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 128
+              },
+              "target": {
+                "type": "array",
+                "items": {
+                  "type": "number",
+                  "minimum": -1000000000.0,
+                  "maximum": 1000000000.0
+                },
+                "minItems": 3,
+                "maxItems": 3
+              },
+              "orientation": {
+                "type": "array",
+                "items": {
+                  "type": "number",
+                  "minimum": -1000000000.0,
+                  "maximum": 1000000000.0
+                },
+                "minItems": 4,
+                "maxItems": 4
+              }
+            },
+            "required": [
+              "schema_version",
+              "id",
+              "bones",
+              "solver",
+              "pole",
+              "tolerance",
+              "iterations"
+            ]
+          },
+          "minItems": 0,
+          "maxItems": 256
+        },
+        "constraints": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "schema_version": {
+                "const": 1
+              },
+              "id": {
+                "type": "string",
+                "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+              },
+              "bone": {
+                "type": "string",
+                "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+              },
+              "type": {
+                "enum": [
+                  "hinge",
+                  "ball",
+                  "swing-twist",
+                  "translation",
+                  "locked",
+                  "aim",
+                  "copy-rotation",
+                  "copy-position"
+                ]
+              },
+              "axis": {
+                "type": "array",
+                "items": {
+                  "type": "number",
+                  "minimum": -1000000000.0,
+                  "maximum": 1000000000.0
+                },
+                "minItems": 3,
+                "maxItems": 3
+              },
+              "minimum": {
+                "type": "number",
+                "minimum": -1000000000.0,
+                "maximum": 1000000000.0
+              },
+              "maximum": {
+                "type": "number",
+                "minimum": -1000000000.0,
+                "maximum": 1000000000.0
+              },
+              "swing": {
+                "type": "number",
+                "exclusiveMinimum": 0,
+                "maximum": 1000000000.0
+              },
+              "target": {
+                "type": "string",
+                "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+              },
+              "point": {
+                "type": "array",
+                "items": {
+                  "type": "number",
+                  "minimum": -1000000000.0,
+                  "maximum": 1000000000.0
+                },
+                "minItems": 3,
+                "maxItems": 3
+              },
+              "influence": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "axes": {
+                "type": "array",
+                "items": {
+                  "enum": [
+                    0,
+                    1,
+                    2
+                  ]
+                },
+                "minItems": 1,
+                "maxItems": 3
+              }
+            },
+            "required": [
+              "schema_version",
+              "id",
+              "bone",
+              "type"
+            ]
+          },
+          "minItems": 0,
+          "maxItems": 1024
+        }
+      },
+      "required": [
+        "ik",
+        "constraints"
+      ]
+    },
+    "IKChain": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+        },
+        "bones": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+          },
+          "minItems": 3,
+          "maxItems": 256
+        },
+        "solver": {
+          "enum": [
+            "two-bone",
+            "fabrik"
+          ]
+        },
+        "pole": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "minimum": -1000000000.0,
+            "maximum": 1000000000.0
+          },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "tolerance": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 1000000000.0
+        },
+        "iterations": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 128
+        },
+        "target": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "minimum": -1000000000.0,
+            "maximum": 1000000000.0
+          },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "orientation": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "minimum": -1000000000.0,
+            "maximum": 1000000000.0
+          },
+          "minItems": 4,
+          "maxItems": 4
+        }
+      },
+      "required": [
+        "schema_version",
+        "id",
+        "bones",
+        "solver",
+        "pole",
+        "tolerance",
+        "iterations"
+      ]
+    },
+    "JointConstraint": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+        },
+        "bone": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+        },
+        "type": {
+          "enum": [
+            "hinge",
+            "ball",
+            "swing-twist",
+            "translation",
+            "locked",
+            "aim",
+            "copy-rotation",
+            "copy-position"
+          ]
+        },
+        "axis": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "minimum": -1000000000.0,
+            "maximum": 1000000000.0
+          },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "minimum": {
+          "type": "number",
+          "minimum": -1000000000.0,
+          "maximum": 1000000000.0
+        },
+        "maximum": {
+          "type": "number",
+          "minimum": -1000000000.0,
+          "maximum": 1000000000.0
+        },
+        "swing": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 1000000000.0
+        },
+        "target": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+        },
+        "point": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "minimum": -1000000000.0,
+            "maximum": 1000000000.0
+          },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "influence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "axes": {
+          "type": "array",
+          "items": {
+            "enum": [
+              0,
+              1,
+              2
+            ]
+          },
+          "minItems": 1,
+          "maxItems": 3
+        }
+      },
+      "required": [
+        "schema_version",
+        "id",
+        "bone",
+        "type"
+      ]
+    },
+    "ContactTarget": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+        },
+        "chain": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+        },
+        "start": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 120
+        },
+        "end": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 120
+        },
+        "target": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "minimum": -1000000000.0,
+            "maximum": 1000000000.0
+          },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "orientation": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "minimum": -1000000000.0,
+            "maximum": 1000000000.0
+          },
+          "minItems": 4,
+          "maxItems": 4
+        },
+        "kind": {
+          "enum": [
+            "foot",
+            "hand",
+            "paw",
+            "grasp"
+          ]
+        }
+      },
+      "required": [
+        "schema_version",
+        "id",
+        "chain",
+        "start",
+        "end",
+        "target",
+        "kind"
+      ]
+    },
+    "AttachmentPoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+        },
+        "bone": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+        },
+        "transform": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "translation": {
+              "type": "array",
+              "items": {
+                "type": "number",
+                "minimum": -1000000000.0,
+                "maximum": 1000000000.0
+              },
+              "minItems": 3,
+              "maxItems": 3
+            },
+            "rotation": {
+              "type": "array",
+              "items": {
+                "type": "number",
+                "minimum": -1000000000.0,
+                "maximum": 1000000000.0
+              },
+              "minItems": 4,
+              "maxItems": 4
+            },
+            "scale": {
+              "type": "array",
+              "items": {
+                "type": "number",
+                "exclusiveMinimum": 0,
+                "maximum": 1000000000.0
+              },
+              "minItems": 3,
+              "maxItems": 3
+            }
+          },
+          "required": [
+            "translation",
+            "rotation",
+            "scale"
+          ]
+        },
+        "role": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "owner": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+        }
+      },
+      "required": [
+        "schema_version",
+        "id",
+        "bone",
+        "transform",
+        "role",
+        "owner"
+      ]
+    },
+    "FacialController": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "eyes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+          },
+          "minItems": 0,
+          "maxItems": 32
+        },
+        "morph_targets": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+            },
+            "minItems": 0,
+            "maxItems": 128
+          },
+          "maxProperties": 4096
+        },
+        "expressions": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "schema_version": {
+                "const": 1
+              },
+              "morphs": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "number",
+                  "minimum": -1000000000.0,
+                  "maximum": 1000000000.0
+                },
+                "maxProperties": 128
+              },
+              "bones": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "translation": {
+                      "type": "array",
+                      "items": {
+                        "type": "number",
+                        "minimum": -1000000000.0,
+                        "maximum": 1000000000.0
+                      },
+                      "minItems": 3,
+                      "maxItems": 3
+                    },
+                    "rotation": {
+                      "type": "array",
+                      "items": {
+                        "type": "number",
+                        "minimum": -1000000000.0,
+                        "maximum": 1000000000.0
+                      },
+                      "minItems": 4,
+                      "maxItems": 4
+                    },
+                    "scale": {
+                      "type": "array",
+                      "items": {
+                        "type": "number",
+                        "exclusiveMinimum": 0,
+                        "maximum": 1000000000.0
+                      },
+                      "minItems": 3,
+                      "maxItems": 3
+                    }
+                  },
+                  "required": []
+                },
+                "maxProperties": 256
+              },
+              "incompatible": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+                },
+                "minItems": 0,
+                "maxItems": 128
+              }
+            },
+            "required": [
+              "schema_version",
+              "morphs",
+              "bones",
+              "incompatible"
+            ]
+          },
+          "maxProperties": 128
+        }
+      },
+      "required": [
+        "schema_version",
+        "eyes",
+        "morph_targets",
+        "expressions"
+      ]
+    },
+    "MorphTarget": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+        },
+        "mesh": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+        },
+        "data": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "path": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          },
+          "required": [
+            "path",
+            "sha256"
+          ]
+        }
+      },
+      "required": [
+        "schema_version",
+        "id",
+        "mesh",
+        "data"
+      ]
+    },
+    "Pose": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "kind": {
+          "const": "hatch-3d-pose"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+        },
+        "rig_version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+        },
+        "bones": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "translation": {
+                "type": "array",
+                "items": {
+                  "type": "number",
+                  "minimum": -1000000000.0,
+                  "maximum": 1000000000.0
+                },
+                "minItems": 3,
+                "maxItems": 3
+              },
+              "rotation": {
+                "type": "array",
+                "items": {
+                  "type": "number",
+                  "minimum": -1000000000.0,
+                  "maximum": 1000000000.0
+                },
+                "minItems": 4,
+                "maxItems": 4
+              },
+              "scale": {
+                "type": "array",
+                "items": {
+                  "type": "number",
+                  "exclusiveMinimum": 0,
+                  "maximum": 1000000000.0
+                },
+                "minItems": 3,
+                "maxItems": 3
+              }
+            },
+            "required": []
+          },
+          "maxProperties": 256
+        },
+        "morphs": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "number",
+              "minimum": -1000000000.0,
+              "maximum": 1000000000.0
+            },
+            "maxProperties": 128
+          },
+          "maxProperties": 4096
+        }
+      },
+      "required": [
+        "schema_version",
+        "kind",
+        "id",
+        "rig_version",
+        "bones",
+        "morphs"
+      ]
+    },
+    "AnimationClip": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "kind": {
+          "const": "hatch-3d-animation"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+        },
+        "rig_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+        },
+        "skeleton_version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+        },
+        "duration": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 120
+        },
+        "fps": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 60
+        },
+        "loop": {
+          "type": "boolean"
+        },
+        "tracks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "schema_version": {
+                "const": 1
+              },
+              "target": {
+                "type": "string",
+                "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+              },
+              "path": {
+                "enum": [
+                  "translation",
+                  "rotation",
+                  "scale",
+                  "weights"
+                ]
+              },
+              "interpolation": {
+                "enum": [
+                  "STEP",
+                  "LINEAR",
+                  "CUBICSPLINE"
+                ]
+              },
+              "times": {
+                "type": "array",
+                "items": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 120
+                },
+                "minItems": 1,
+                "maxItems": 250000
+              },
+              "values": {
+                "type": "array",
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "number",
+                    "minimum": -1000000000.0,
+                    "maximum": 1000000000.0
+                  },
+                  "minItems": 1,
+                  "maxItems": 128
+                },
+                "minItems": 1,
+                "maxItems": 250000
+              },
+              "in_tangents": {
+                "type": "array",
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "number",
+                    "minimum": -1000000000.0,
+                    "maximum": 1000000000.0
+                  },
+                  "minItems": 1,
+                  "maxItems": 128
+                },
+                "minItems": 2,
+                "maxItems": 250000
+              },
+              "out_tangents": {
+                "type": "array",
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "number",
+                    "minimum": -1000000000.0,
+                    "maximum": 1000000000.0
+                  },
+                  "minItems": 1,
+                  "maxItems": 128
+                },
+                "minItems": 2,
+                "maxItems": 250000
+              }
+            },
+            "required": [
+              "schema_version",
+              "target",
+              "path",
+              "interpolation",
+              "times",
+              "values"
+            ]
+          },
+          "minItems": 1,
+          "maxItems": 250000
+        },
+        "events": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "schema_version": {
+                "const": 1
+              },
+              "time": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 120
+              },
+              "type": {
+                "enum": [
+                  "foot_contact",
+                  "foot_release",
+                  "hand_contact",
+                  "grasp",
+                  "release",
+                  "land",
+                  "takeoff",
+                  "attach",
+                  "detach",
+                  "marker"
+                ]
+              },
+              "target": {
+                "type": "string",
+                "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+              },
+              "value": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096
+              }
+            },
+            "required": [
+              "schema_version",
+              "time",
+              "type",
+              "target"
+            ]
+          },
+          "minItems": 0,
+          "maxItems": 250000
+        },
+        "contacts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "schema_version": {
+                "const": 1
+              },
+              "id": {
+                "type": "string",
+                "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+              },
+              "chain": {
+                "type": "string",
+                "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+              },
+              "start": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 120
+              },
+              "end": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 120
+              },
+              "target": {
+                "type": "array",
+                "items": {
+                  "type": "number",
+                  "minimum": -1000000000.0,
+                  "maximum": 1000000000.0
+                },
+                "minItems": 3,
+                "maxItems": 3
+              },
+              "orientation": {
+                "type": "array",
+                "items": {
+                  "type": "number",
+                  "minimum": -1000000000.0,
+                  "maximum": 1000000000.0
+                },
+                "minItems": 4,
+                "maxItems": 4
+              },
+              "kind": {
+                "enum": [
+                  "foot",
+                  "hand",
+                  "paw",
+                  "grasp"
+                ]
+              }
+            },
+            "required": [
+              "schema_version",
+              "id",
+              "chain",
+              "start",
+              "end",
+              "target",
+              "kind"
+            ]
+          },
+          "minItems": 0,
+          "maxItems": 250000
+        },
+        "root_motion": {
+          "enum": [
+            "embedded",
+            "in-place"
+          ]
+        },
+        "interruptible": {
+          "type": "boolean"
+        },
+        "reduced_motion_pose": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+        },
+        "provenance": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "schema_version": {
+              "const": 1
+            },
+            "tool_version": {
+              "type": "string",
+              "pattern": "^\\d+\\.\\d+\\.\\d+$"
+            },
+            "operation": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096
+            },
+            "created_at": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096
+            },
+            "input_hashes": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "maxProperties": 10000
+            },
+            "ancestry": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "minItems": 0,
+              "maxItems": 1000
+            }
+          },
+          "required": [
+            "schema_version",
+            "tool_version",
+            "operation",
+            "created_at",
+            "input_hashes",
+            "ancestry"
+          ]
+        }
+      },
+      "required": [
+        "schema_version",
+        "kind",
+        "id",
+        "version",
+        "rig_id",
+        "skeleton_version",
+        "duration",
+        "fps",
+        "loop",
+        "tracks",
+        "events",
+        "contacts",
+        "root_motion",
+        "interruptible",
+        "reduced_motion_pose",
+        "provenance"
+      ]
+    },
+    "AnimationTrack": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "target": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+        },
+        "path": {
+          "enum": [
+            "translation",
+            "rotation",
+            "scale",
+            "weights"
+          ]
+        },
+        "interpolation": {
+          "enum": [
+            "STEP",
+            "LINEAR",
+            "CUBICSPLINE"
+          ]
+        },
+        "times": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 120
+          },
+          "minItems": 1,
+          "maxItems": 250000
+        },
+        "values": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "minimum": -1000000000.0,
+              "maximum": 1000000000.0
+            },
+            "minItems": 1,
+            "maxItems": 128
+          },
+          "minItems": 1,
+          "maxItems": 250000
+        },
+        "in_tangents": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "minimum": -1000000000.0,
+              "maximum": 1000000000.0
+            },
+            "minItems": 1,
+            "maxItems": 128
+          },
+          "minItems": 2,
+          "maxItems": 250000
+        },
+        "out_tangents": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "minimum": -1000000000.0,
+              "maximum": 1000000000.0
+            },
+            "minItems": 1,
+            "maxItems": 128
+          },
+          "minItems": 2,
+          "maxItems": 250000
+        }
+      },
+      "required": [
+        "schema_version",
+        "target",
+        "path",
+        "interpolation",
+        "times",
+        "values"
+      ]
+    },
+    "AnimationEvent": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "time": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 120
+        },
+        "type": {
+          "enum": [
+            "foot_contact",
+            "foot_release",
+            "hand_contact",
+            "grasp",
+            "release",
+            "land",
+            "takeoff",
+            "attach",
+            "detach",
+            "marker"
+          ]
+        },
+        "target": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+        },
+        "value": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        }
+      },
+      "required": [
+        "schema_version",
+        "time",
+        "type",
+        "target"
+      ]
+    },
+    "RetargetProfile": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "kind": {
+          "const": "hatch-3d-retarget-profile"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+        },
+        "source_rig": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+        },
+        "target_rig": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+        },
+        "source_skeleton_version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+        },
+        "target_skeleton_version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+        },
+        "mapping": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+          },
+          "maxProperties": 256
+        },
+        "root_scale": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 1000000000.0
+        },
+        "orientation_offsets": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "minimum": -1000000000.0,
+              "maximum": 1000000000.0
+            },
+            "minItems": 4,
+            "maxItems": 4
+          },
+          "maxProperties": 256
+        },
+        "omissions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          },
+          "minItems": 0,
+          "maxItems": 256
+        },
+        "morph_mapping": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+          },
+          "maxProperties": 128
+        }
+      },
+      "required": [
+        "schema_version",
+        "kind",
+        "id",
+        "source_rig",
+        "target_rig",
+        "source_skeleton_version",
+        "target_skeleton_version",
+        "mapping",
+        "root_scale",
+        "orientation_offsets",
+        "omissions",
+        "morph_mapping"
+      ]
+    },
+    "RigValidationReport": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "kind": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "rig_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "ok": {
+          "type": "boolean"
+        },
+        "metrics": {
+          "type": "object",
+          "additionalProperties": {
+            "type": [
+              "number",
+              "integer",
+              "boolean",
+              "null",
+              "string"
+            ]
+          },
+          "maxProperties": 10000
+        },
+        "checks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096
+              },
+              "status": {
+                "enum": [
+                  "passed",
+                  "failed",
+                  "unavailable",
+                  "warning"
+                ]
+              },
+              "message": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096
+              },
+              "value": {
+                "type": [
+                  "number",
+                  "integer",
+                  "boolean",
+                  "null",
+                  "string"
+                ]
+              }
+            },
+            "required": [
+              "name",
+              "status",
+              "message",
+              "value"
+            ]
+          },
+          "minItems": 0,
+          "maxItems": 250000
+        },
+        "artifacts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "path": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            },
+            "required": [
+              "path",
+              "sha256"
+            ]
+          },
+          "minItems": 0,
+          "maxItems": 250000
+        },
+        "created_at": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        }
+      },
+      "required": [
+        "schema_version",
+        "kind",
+        "rig_sha256",
+        "ok",
+        "metrics",
+        "checks",
+        "artifacts",
+        "created_at"
+      ]
+    },
+    "RigCorrection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "kind": {
+          "const": "hatch-3d-rig-correction"
+        },
+        "rig_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+        },
+        "rig_version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+        },
+        "expected_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "author": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "created_at": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "edits": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "operation": {
+                "enum": [
+                  "bone-update",
+                  "bone-add",
+                  "bone-remove",
+                  "weights",
+                  "constraint",
+                  "ik",
+                  "attachment",
+                  "facial",
+                  "expression",
+                  "morph",
+                  "template"
+                ]
+              },
+              "target": {
+                "type": "string",
+                "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+              },
+              "value": {
+                "type": [
+                  "object",
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "operation",
+              "target",
+              "value"
+            ]
+          },
+          "minItems": 1,
+          "maxItems": 1024
+        }
+      },
+      "required": [
+        "schema_version",
+        "kind",
+        "rig_id",
+        "rig_version",
+        "expected_sha256",
+        "author",
+        "reason",
+        "created_at",
+        "edits"
+      ]
+    },
+    "RigReviewReceipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "kind": {
+          "const": "hatch-3d-rig-review"
+        },
+        "rig_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+        },
+        "rig_version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+        },
+        "expected_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "author": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "reviewer_kind": {
+          "enum": [
+            "human",
+            "agent",
+            "synthetic-test"
+          ]
+        },
+        "created_at": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "fixture": {
+          "type": "boolean"
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "path": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            },
+            "required": [
+              "path",
+              "sha256"
+            ]
+          },
+          "minItems": 1,
+          "maxItems": 1000
+        },
+        "dimensions": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "verdict": {
+                "enum": [
+                  "approved",
+                  "rejected",
+                  "unreviewed"
+                ]
+              },
+              "note": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096
+              }
+            },
+            "required": [
+              "verdict",
+              "note"
+            ]
+          },
+          "maxProperties": 16
+        }
+      },
+      "required": [
+        "schema_version",
+        "kind",
+        "rig_id",
+        "rig_version",
+        "expected_sha256",
+        "author",
+        "reviewer_kind",
+        "created_at",
+        "fixture",
+        "evidence",
+        "dimensions"
+      ]
+    },
+    "RigJob": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "kind": {
+          "const": "hatch-3d-rig-job"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+        },
+        "status": {
+          "enum": [
+            "imported",
+            "geometry-analyzed",
+            "skeleton-generated",
+            "weights-generated",
+            "structurally-valid",
+            "motion-tested",
+            "needs-correction",
+            "review-approved",
+            "animation-ready",
+            "exported",
+            "roundtrip-verified",
+            "failed",
+            "blocked"
+          ]
+        },
+        "rig_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "steps": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "status": {
+                "enum": [
+                  "running",
+                  "succeeded",
+                  "failed",
+                  "stale",
+                  "interrupted"
+                ]
+              },
+              "input_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "output_sha256": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "parameters": {
+                "type": "object"
+              },
+              "parameters_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "code_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "attempts": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 2000000000
+              },
+              "token": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096
+              },
+              "started_at": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096
+              },
+              "finished_at": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "error": {
+                "type": [
+                  "object",
+                  "null"
+                ]
+              },
+              "artifacts": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "path": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 4096
+                    },
+                    "sha256": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{64}$"
+                    }
+                  },
+                  "required": [
+                    "path",
+                    "sha256"
+                  ]
+                },
+                "minItems": 0,
+                "maxItems": 250000
+              }
+            },
+            "required": [
+              "status",
+              "input_sha256",
+              "output_sha256",
+              "parameters",
+              "parameters_sha256",
+              "code_sha256",
+              "attempts",
+              "token",
+              "started_at",
+              "finished_at",
+              "error",
+              "artifacts"
+            ]
+          },
+          "maxProperties": 64
+        },
+        "limits": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "source_bytes": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 268435456
+            },
+            "dependency_bytes": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1073741824
+            },
+            "vertices": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000000
+            },
+            "triangles": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 2000000
+            },
+            "bones": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 256
+            },
+            "influences": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 8
+            },
+            "morphs": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 128
+            },
+            "clips": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 64
+            },
+            "keyframes": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 250000
+            },
+            "duration": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 120
+            },
+            "fps": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 60
+            },
+            "memory_bytes": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 2147483648
+            },
+            "solver_iterations": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 128
+            },
+            "timeout_seconds": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 300
+            },
+            "archive_files": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 10000
+            },
+            "archive_bytes": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1073741824
+            },
+            "attempts": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 3
+            }
+          },
+          "required": [
+            "source_bytes",
+            "dependency_bytes",
+            "vertices",
+            "triangles",
+            "bones",
+            "influences",
+            "morphs",
+            "clips",
+            "keyframes",
+            "duration",
+            "fps",
+            "memory_bytes",
+            "solver_iterations",
+            "timeout_seconds",
+            "archive_files",
+            "archive_bytes",
+            "attempts"
+          ]
+        },
+        "history": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          },
+          "minItems": 0,
+          "maxItems": 10000
+        }
+      },
+      "required": [
+        "schema_version",
+        "kind",
+        "id",
+        "status",
+        "rig_sha256",
+        "steps",
+        "limits",
+        "history"
+      ]
+    },
+    "RigExportReceipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "kind": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "rig_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "ok": {
+          "type": "boolean"
+        },
+        "metrics": {
+          "type": "object",
+          "additionalProperties": {
+            "type": [
+              "number",
+              "integer",
+              "boolean",
+              "null",
+              "string"
+            ]
+          },
+          "maxProperties": 10000
+        },
+        "checks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096
+              },
+              "status": {
+                "enum": [
+                  "passed",
+                  "failed",
+                  "unavailable",
+                  "warning"
+                ]
+              },
+              "message": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096
+              },
+              "value": {
+                "type": [
+                  "number",
+                  "integer",
+                  "boolean",
+                  "null",
+                  "string"
+                ]
+              }
+            },
+            "required": [
+              "name",
+              "status",
+              "message",
+              "value"
+            ]
+          },
+          "minItems": 0,
+          "maxItems": 250000
+        },
+        "artifacts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "path": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            },
+            "required": [
+              "path",
+              "sha256"
+            ]
+          },
+          "minItems": 0,
+          "maxItems": 250000
+        },
+        "created_at": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        }
+      },
+      "required": [
+        "schema_version",
+        "kind",
+        "rig_sha256",
+        "ok",
+        "metrics",
+        "checks",
+        "artifacts",
+        "created_at"
+      ]
+    },
+    "Rig": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "kind": {
+          "const": "hatch-3d-rig"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2000000000
+        },
+        "character": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "schema_version": {
+              "const": 1
+            },
+            "id": {
+              "type": "string",
+              "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+            },
+            "version": {
+              "type": "string",
+              "pattern": "^\\d+\\.\\d+\\.\\d+$"
+            },
+            "identity_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          },
+          "required": [
+            "schema_version",
+            "id",
+            "version",
+            "identity_sha256"
+          ]
+        },
+        "source": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "schema_version": {
+              "const": 1
+            },
+            "path": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "origin": {
+              "enum": [
+                "import",
+                "provider",
+                "procedural-fixture",
+                "derived"
+              ]
+            },
+            "fixture": {
+              "type": "boolean"
+            },
+            "attribution": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096
+            },
+            "dependencies": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "path": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 4096
+                  },
+                  "sha256": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                  }
+                },
+                "required": [
+                  "path",
+                  "sha256"
+                ]
+              },
+              "minItems": 1,
+              "maxItems": 10000
+            }
+          },
+          "required": [
+            "schema_version",
+            "path",
+            "sha256",
+            "origin",
+            "fixture",
+            "attribution",
+            "dependencies"
+          ]
+        },
+        "coordinate_system": {
+          "const": {
+            "handedness": "right",
+            "right": "+X",
+            "up": "+Y",
+            "forward": "+Z",
+            "unit": "meter",
+            "angles": "radian",
+            "quaternion": "XYZW",
+            "matrices": "column-vectors",
+            "time": "second"
+          }
+        },
+        "archetype": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+        },
+        "geometry": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "schema_version": {
+              "const": 1
+            },
+            "version": {
+              "type": "string",
+              "pattern": "^\\d+\\.\\d+\\.\\d+$"
+            },
+            "data": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "path": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4096
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                }
+              },
+              "required": [
+                "path",
+                "sha256"
+              ]
+            },
+            "meshes": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+              },
+              "minItems": 1,
+              "maxItems": 4096
+            },
+            "vertices": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 2000000000
+            },
+            "triangles": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 2000000000
+            }
+          },
+          "required": [
+            "schema_version",
+            "version",
+            "data",
+            "meshes",
+            "vertices",
+            "triangles"
+          ]
+        },
+        "skeleton": {
+          "anyOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "schema_version": {
+                  "const": 1
+                },
+                "id": {
+                  "type": "string",
+                  "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+                },
+                "version": {
+                  "type": "string",
+                  "pattern": "^\\d+\\.\\d+\\.\\d+$"
+                },
+                "root": {
+                  "type": "string",
+                  "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+                },
+                "bones": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "schema_version": {
+                        "const": 1
+                      },
+                      "id": {
+                        "type": "string",
+                        "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+                      },
+                      "role": {
+                        "type": "string",
+                        "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+                      },
+                      "parent": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "rest": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "translation": {
+                            "type": "array",
+                            "items": {
+                              "type": "number",
+                              "minimum": -1000000000.0,
+                              "maximum": 1000000000.0
+                            },
+                            "minItems": 3,
+                            "maxItems": 3
+                          },
+                          "rotation": {
+                            "type": "array",
+                            "items": {
+                              "type": "number",
+                              "minimum": -1000000000.0,
+                              "maximum": 1000000000.0
+                            },
+                            "minItems": 4,
+                            "maxItems": 4
+                          },
+                          "scale": {
+                            "type": "array",
+                            "items": {
+                              "type": "number",
+                              "exclusiveMinimum": 0,
+                              "maximum": 1000000000.0
+                            },
+                            "minItems": 3,
+                            "maxItems": 3
+                          }
+                        },
+                        "required": [
+                          "translation",
+                          "rotation",
+                          "scale"
+                        ]
+                      },
+                      "head": {
+                        "type": "array",
+                        "items": {
+                          "type": "number",
+                          "minimum": -1000000000.0,
+                          "maximum": 1000000000.0
+                        },
+                        "minItems": 3,
+                        "maxItems": 3
+                      },
+                      "tail": {
+                        "type": "array",
+                        "items": {
+                          "type": "number",
+                          "minimum": -1000000000.0,
+                          "maximum": 1000000000.0
+                        },
+                        "minItems": 3,
+                        "maxItems": 3
+                      },
+                      "length": {
+                        "type": "number",
+                        "exclusiveMinimum": 0,
+                        "maximum": 1000000000.0
+                      },
+                      "roll": {
+                        "type": "number",
+                        "minimum": -1000000000.0,
+                        "maximum": 1000000000.0
+                      },
+                      "deform": {
+                        "type": "boolean"
+                      },
+                      "mirror": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "evidence": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "source": {
+                            "enum": [
+                              "existing-rig",
+                              "human-landmark",
+                              "semantic-part",
+                              "import-metadata",
+                              "geometry-fit",
+                              "procedural-fixture"
+                            ]
+                          },
+                          "reference": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 4096
+                          },
+                          "confidence": {
+                            "type": "number",
+                            "minimum": 0,
+                            "maximum": 1
+                          }
+                        },
+                        "required": [
+                          "source",
+                          "reference",
+                          "confidence"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "schema_version",
+                      "id",
+                      "role",
+                      "parent",
+                      "rest",
+                      "head",
+                      "tail",
+                      "length",
+                      "roll",
+                      "deform",
+                      "mirror",
+                      "evidence"
+                    ]
+                  },
+                  "minItems": 1,
+                  "maxItems": 256
+                }
+              },
+              "required": [
+                "schema_version",
+                "id",
+                "version",
+                "root",
+                "bones"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "skins": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "schema_version": {
+                "const": 1
+              },
+              "id": {
+                "type": "string",
+                "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+              },
+              "version": {
+                "type": "string",
+                "pattern": "^\\d+\\.\\d+\\.\\d+$"
+              },
+              "mesh": {
+                "type": "string",
+                "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+              },
+              "joints": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+                },
+                "minItems": 1,
+                "maxItems": 256
+              },
+              "data": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "path": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 4096
+                  },
+                  "sha256": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                  }
+                },
+                "required": [
+                  "path",
+                  "sha256"
+                ]
+              },
+              "method": {
+                "enum": [
+                  "distance",
+                  "diffusion",
+                  "segmented",
+                  "rigid",
+                  "imported",
+                  "manual"
+                ]
+              },
+              "locked_vertices": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 2000000000
+                },
+                "minItems": 0,
+                "maxItems": 250000
+              },
+              "fallback_reason": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "schema_version",
+              "id",
+              "version",
+              "mesh",
+              "joints",
+              "data",
+              "method",
+              "locked_vertices",
+              "fallback_reason"
+            ]
+          },
+          "minItems": 0,
+          "maxItems": 4096
+        },
+        "controllers": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "ik": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "schema_version": {
+                    "const": 1
+                  },
+                  "id": {
+                    "type": "string",
+                    "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+                  },
+                  "bones": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+                    },
+                    "minItems": 3,
+                    "maxItems": 256
+                  },
+                  "solver": {
+                    "enum": [
+                      "two-bone",
+                      "fabrik"
+                    ]
+                  },
+                  "pole": {
+                    "type": "array",
+                    "items": {
+                      "type": "number",
+                      "minimum": -1000000000.0,
+                      "maximum": 1000000000.0
+                    },
+                    "minItems": 3,
+                    "maxItems": 3
+                  },
+                  "tolerance": {
+                    "type": "number",
+                    "exclusiveMinimum": 0,
+                    "maximum": 1000000000.0
+                  },
+                  "iterations": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 128
+                  },
+                  "target": {
+                    "type": "array",
+                    "items": {
+                      "type": "number",
+                      "minimum": -1000000000.0,
+                      "maximum": 1000000000.0
+                    },
+                    "minItems": 3,
+                    "maxItems": 3
+                  },
+                  "orientation": {
+                    "type": "array",
+                    "items": {
+                      "type": "number",
+                      "minimum": -1000000000.0,
+                      "maximum": 1000000000.0
+                    },
+                    "minItems": 4,
+                    "maxItems": 4
+                  }
+                },
+                "required": [
+                  "schema_version",
+                  "id",
+                  "bones",
+                  "solver",
+                  "pole",
+                  "tolerance",
+                  "iterations"
+                ]
+              },
+              "minItems": 0,
+              "maxItems": 256
+            },
+            "constraints": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "schema_version": {
+                    "const": 1
+                  },
+                  "id": {
+                    "type": "string",
+                    "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+                  },
+                  "bone": {
+                    "type": "string",
+                    "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+                  },
+                  "type": {
+                    "enum": [
+                      "hinge",
+                      "ball",
+                      "swing-twist",
+                      "translation",
+                      "locked",
+                      "aim",
+                      "copy-rotation",
+                      "copy-position"
+                    ]
+                  },
+                  "axis": {
+                    "type": "array",
+                    "items": {
+                      "type": "number",
+                      "minimum": -1000000000.0,
+                      "maximum": 1000000000.0
+                    },
+                    "minItems": 3,
+                    "maxItems": 3
+                  },
+                  "minimum": {
+                    "type": "number",
+                    "minimum": -1000000000.0,
+                    "maximum": 1000000000.0
+                  },
+                  "maximum": {
+                    "type": "number",
+                    "minimum": -1000000000.0,
+                    "maximum": 1000000000.0
+                  },
+                  "swing": {
+                    "type": "number",
+                    "exclusiveMinimum": 0,
+                    "maximum": 1000000000.0
+                  },
+                  "target": {
+                    "type": "string",
+                    "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+                  },
+                  "point": {
+                    "type": "array",
+                    "items": {
+                      "type": "number",
+                      "minimum": -1000000000.0,
+                      "maximum": 1000000000.0
+                    },
+                    "minItems": 3,
+                    "maxItems": 3
+                  },
+                  "influence": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1
+                  },
+                  "axes": {
+                    "type": "array",
+                    "items": {
+                      "enum": [
+                        0,
+                        1,
+                        2
+                      ]
+                    },
+                    "minItems": 1,
+                    "maxItems": 3
+                  }
+                },
+                "required": [
+                  "schema_version",
+                  "id",
+                  "bone",
+                  "type"
+                ]
+              },
+              "minItems": 0,
+              "maxItems": 1024
+            }
+          },
+          "required": [
+            "ik",
+            "constraints"
+          ]
+        },
+        "facial": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "schema_version": {
+              "const": 1
+            },
+            "eyes": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+              },
+              "minItems": 0,
+              "maxItems": 32
+            },
+            "morph_targets": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+                },
+                "minItems": 0,
+                "maxItems": 128
+              },
+              "maxProperties": 4096
+            },
+            "expressions": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "schema_version": {
+                    "const": 1
+                  },
+                  "morphs": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": "number",
+                      "minimum": -1000000000.0,
+                      "maximum": 1000000000.0
+                    },
+                    "maxProperties": 128
+                  },
+                  "bones": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "translation": {
+                          "type": "array",
+                          "items": {
+                            "type": "number",
+                            "minimum": -1000000000.0,
+                            "maximum": 1000000000.0
+                          },
+                          "minItems": 3,
+                          "maxItems": 3
+                        },
+                        "rotation": {
+                          "type": "array",
+                          "items": {
+                            "type": "number",
+                            "minimum": -1000000000.0,
+                            "maximum": 1000000000.0
+                          },
+                          "minItems": 4,
+                          "maxItems": 4
+                        },
+                        "scale": {
+                          "type": "array",
+                          "items": {
+                            "type": "number",
+                            "exclusiveMinimum": 0,
+                            "maximum": 1000000000.0
+                          },
+                          "minItems": 3,
+                          "maxItems": 3
+                        }
+                      },
+                      "required": []
+                    },
+                    "maxProperties": 256
+                  },
+                  "incompatible": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+                    },
+                    "minItems": 0,
+                    "maxItems": 128
+                  }
+                },
+                "required": [
+                  "schema_version",
+                  "morphs",
+                  "bones",
+                  "incompatible"
+                ]
+              },
+              "maxProperties": 128
+            }
+          },
+          "required": [
+            "schema_version",
+            "eyes",
+            "morph_targets",
+            "expressions"
+          ]
+        },
+        "attachments": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "schema_version": {
+                "const": 1
+              },
+              "id": {
+                "type": "string",
+                "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+              },
+              "bone": {
+                "type": "string",
+                "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+              },
+              "transform": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "translation": {
+                    "type": "array",
+                    "items": {
+                      "type": "number",
+                      "minimum": -1000000000.0,
+                      "maximum": 1000000000.0
+                    },
+                    "minItems": 3,
+                    "maxItems": 3
+                  },
+                  "rotation": {
+                    "type": "array",
+                    "items": {
+                      "type": "number",
+                      "minimum": -1000000000.0,
+                      "maximum": 1000000000.0
+                    },
+                    "minItems": 4,
+                    "maxItems": 4
+                  },
+                  "scale": {
+                    "type": "array",
+                    "items": {
+                      "type": "number",
+                      "exclusiveMinimum": 0,
+                      "maximum": 1000000000.0
+                    },
+                    "minItems": 3,
+                    "maxItems": 3
+                  }
+                },
+                "required": [
+                  "translation",
+                  "rotation",
+                  "scale"
+                ]
+              },
+              "role": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096
+              },
+              "owner": {
+                "type": "string",
+                "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+              }
+            },
+            "required": [
+              "schema_version",
+              "id",
+              "bone",
+              "transform",
+              "role",
+              "owner"
+            ]
+          },
+          "minItems": 0,
+          "maxItems": 1024
+        },
+        "animations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+              },
+              "version": {
+                "type": "string",
+                "pattern": "^\\d+\\.\\d+\\.\\d+$"
+              },
+              "path": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            },
+            "required": [
+              "id",
+              "version",
+              "path",
+              "sha256"
+            ]
+          },
+          "minItems": 0,
+          "maxItems": 64
+        },
+        "state_mapping": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "status": {
+                "enum": [
+                  "supported",
+                  "supported-with-adaptation",
+                  "requires-rig-capability",
+                  "requires-animation",
+                  "needs-review",
+                  "unavailable"
+                ]
+              },
+              "clips": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+                },
+                "minItems": 0,
+                "maxItems": 64
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096
+              }
+            },
+            "required": [
+              "status",
+              "clips",
+              "reason"
+            ]
+          },
+          "maxProperties": 416
+        },
+        "uncertainties": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "element": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096
+              },
+              "code": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096
+              },
+              "message": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096
+              },
+              "evidence": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "source": {
+                    "enum": [
+                      "existing-rig",
+                      "human-landmark",
+                      "semantic-part",
+                      "import-metadata",
+                      "geometry-fit",
+                      "procedural-fixture"
+                    ]
+                  },
+                  "reference": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 4096
+                  },
+                  "confidence": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1
+                  }
+                },
+                "required": [
+                  "source",
+                  "reference",
+                  "confidence"
+                ]
+              },
+              "resolution": {
+                "enum": [
+                  "pending",
+                  "accepted",
+                  "corrected"
+                ]
+              }
+            },
+            "required": [
+              "element",
+              "code",
+              "message",
+              "evidence",
+              "resolution"
+            ]
+          },
+          "minItems": 0,
+          "maxItems": 1024
+        },
+        "provenance": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "schema_version": {
+              "const": 1
+            },
+            "tool_version": {
+              "type": "string",
+              "pattern": "^\\d+\\.\\d+\\.\\d+$"
+            },
+            "operation": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096
+            },
+            "created_at": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096
+            },
+            "input_hashes": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "maxProperties": 10000
+            },
+            "ancestry": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "minItems": 0,
+              "maxItems": 1000
+            }
+          },
+          "required": [
+            "schema_version",
+            "tool_version",
+            "operation",
+            "created_at",
+            "input_hashes",
+            "ancestry"
+          ]
+        },
+        "limits": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "source_bytes": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 268435456
+            },
+            "dependency_bytes": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1073741824
+            },
+            "vertices": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000000
+            },
+            "triangles": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 2000000
+            },
+            "bones": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 256
+            },
+            "influences": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 8
+            },
+            "morphs": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 128
+            },
+            "clips": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 64
+            },
+            "keyframes": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 250000
+            },
+            "duration": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 120
+            },
+            "fps": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 60
+            },
+            "memory_bytes": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 2147483648
+            },
+            "solver_iterations": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 128
+            },
+            "timeout_seconds": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 300
+            },
+            "archive_files": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 10000
+            },
+            "archive_bytes": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1073741824
+            },
+            "attempts": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 3
+            }
+          },
+          "required": [
+            "source_bytes",
+            "dependency_bytes",
+            "vertices",
+            "triangles",
+            "bones",
+            "influences",
+            "morphs",
+            "clips",
+            "keyframes",
+            "duration",
+            "fps",
+            "memory_bytes",
+            "solver_iterations",
+            "timeout_seconds",
+            "archive_files",
+            "archive_bytes",
+            "attempts"
+          ]
+        },
+        "review": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "status": {
+              "enum": [
+                "pending",
+                "approved",
+                "rejected"
+              ]
+            },
+            "receipts": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "path": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 4096
+                  },
+                  "sha256": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                  }
+                },
+                "required": [
+                  "path",
+                  "sha256"
+                ]
+              },
+              "minItems": 0,
+              "maxItems": 250000
+            }
+          },
+          "required": [
+            "status",
+            "receipts"
+          ]
+        },
+        "validation": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "path": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            },
+            "required": [
+              "path",
+              "sha256"
+            ]
+          },
+          "minItems": 0,
+          "maxItems": 250000
+        }
+      },
+      "required": [
+        "schema_version",
+        "kind",
+        "id",
+        "version",
+        "revision",
+        "character",
+        "source",
+        "coordinate_system",
+        "archetype",
+        "geometry",
+        "skeleton",
+        "skins",
+        "controllers",
+        "facial",
+        "attachments",
+        "animations",
+        "state_mapping",
+        "uncertainties",
+        "provenance",
+        "limits",
+        "review",
+        "validation"
+      ]
+    },
+    "Provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "tool_version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+        },
+        "operation": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "created_at": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "input_hashes": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "maxProperties": 10000
+        },
+        "ancestry": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "minItems": 0,
+          "maxItems": 1000
+        }
+      },
+      "required": [
+        "schema_version",
+        "tool_version",
+        "operation",
+        "created_at",
+        "input_hashes",
+        "ancestry"
+      ]
+    },
+    "Limits": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "source_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 268435456
+        },
+        "dependency_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1073741824
+        },
+        "vertices": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000000
+        },
+        "triangles": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2000000
+        },
+        "bones": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 256
+        },
+        "influences": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 8
+        },
+        "morphs": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 128
+        },
+        "clips": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 64
+        },
+        "keyframes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 250000
+        },
+        "duration": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 120
+        },
+        "fps": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 60
+        },
+        "memory_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2147483648
+        },
+        "solver_iterations": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 128
+        },
+        "timeout_seconds": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 300
+        },
+        "archive_files": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10000
+        },
+        "archive_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1073741824
+        },
+        "attempts": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 3
+        }
+      },
+      "required": [
+        "source_bytes",
+        "dependency_bytes",
+        "vertices",
+        "triangles",
+        "bones",
+        "influences",
+        "morphs",
+        "clips",
+        "keyframes",
+        "duration",
+        "fps",
+        "memory_bytes",
+        "solver_iterations",
+        "timeout_seconds",
+        "archive_files",
+        "archive_bytes",
+        "attempts"
+      ]
+    }
+  },
+  "$ref": "#/$defs/Rig"
+}

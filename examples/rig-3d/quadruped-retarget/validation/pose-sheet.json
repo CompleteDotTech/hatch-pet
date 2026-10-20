@@ -1,0 +1,14 @@
+{
+  "path": "preview/pose-sheet.png",
+  "sha256": "1e0818f86ea7f25168c952f65b402365933a15dd7b122d1612347059d9e42470",
+  "rig_sha256": "209b5cedd80bc52105b531347caa4c763ce676793cb84f8f09a8705d28299a85",
+  "samples": [
+    {
+      "clip": "walk-retargeted",
+      "time": 1.0
+    }
+  ],
+  "renderer": "CPU z-buffer over native skinned triangles",
+  "texture_shading": "base-color-only",
+  "visual_review": "pending"
+}

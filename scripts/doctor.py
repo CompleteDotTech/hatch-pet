@@ -10,7 +10,9 @@ import tempfile
 
 
 def capabilities():
+    from rig_doctor import rig_capability_description
     return {'interface_version': 1,
+        'rig_3d': rig_capability_description(),
         'sources': {'imagegen': ['image', 'strip'], 'import': ['image', 'strip', 'frames']},
         'extraction': ['conservative-slots', 'source-bound-rectangles'],
         'decomposition': {'schema_version': 1, 'sources': ['png', 'jpeg', 'webp'],

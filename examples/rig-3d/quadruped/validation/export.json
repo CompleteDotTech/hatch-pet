@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "format": "glb",
+  "path": "exports/character.glb",
+  "sha256": "86a37d874c0820d753653b5a1825f9f5c6e610fa2d710be4a75daa283d27629d",
+  "rig_sha256": "8e32b2f67e563e5de61d97175493ac9b5a8c48ab2b75374e5a6fd60fea0d043c",
+  "vertices": 2284,
+  "skins": 20,
+  "joints": 27,
+  "animations": [
+    "head-turn",
+    "neutral",
+    "sit",
+    "tail-wag",
+    "trot",
+    "walk"
+  ],
+  "keyframes": 1606,
+  "independently_verified": false
+}

@@ -1,0 +1,375 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-10-20T11:18:07Z",
+  "status": "automated-fixture-acceptance-passed",
+  "production_artwork_approved": false,
+  "visual_review": "Agent inspection documented separately; production visual approval remains pending.",
+  "tool_versions": {
+    "python": "3.12.14",
+    "numpy": "2.3.5",
+    "jsonschema": "4.25.1",
+    "Pillow": "12.3.0"
+  },
+  "gates": {
+    "numeric": true,
+    "independent_khronos": true,
+    "independent_blender": true,
+    "independent_threejs": true,
+    "rendered_evidence": true,
+    "archive_restore": true,
+    "blender_cpu_render": true
+  },
+  "fixtures": [
+    {
+      "name": "humanoid",
+      "rig_sha256": "64ce161905c700b026d3def05a1fabf6cc80d32cefbfdebcd05ed85c8dd40151",
+      "fixture": true,
+      "numeric": {
+        "hierarchy_cycles": 0,
+        "invalid_joint_references": 0,
+        "bones": 57,
+        "vertices": 3830,
+        "triangles": 7536,
+        "weight_sum_max_error": 2.220446049250313e-16,
+        "bind_pose_max_error_m": 4.440892098500626e-16,
+        "nonfinite_vertices": 0,
+        "max_vertex_displacement_m": 1.0320521315577698,
+        "distinct_sampled_poses": 24,
+        "clips": 6,
+        "contact_tolerance_m": 0.01,
+        "max_contact_error_m": 5.575456304969596e-16,
+        "max_planted_drift_m": 6.71891344611886e-16
+      },
+      "native_roundtrip": {
+        "independent": false,
+        "reader": "hatch-native",
+        "max_vertex_error_m": 0.0005920399245556572,
+        "mesh_samples": 558,
+        "tolerance_m": 0.01,
+        "ok": true
+      },
+      "clips": [
+        "blink-expression",
+        "crouch",
+        "neutral",
+        "reach",
+        "walk",
+        "wave"
+      ],
+      "artifacts": {
+        "glb": "humanoid/exports/character.glb",
+        "blend": "humanoid/exports/character.blend",
+        "pose_sheet": "humanoid/preview/pose-sheet.png",
+        "animation": "humanoid/preview/frames/animation.webp",
+        "viewer": "humanoid/review-ui/index.html",
+        "blender_preview": "humanoid/preview/blender/frame-0001.png"
+      },
+      "khronos": {
+        "errors": 0,
+        "warnings": 0,
+        "version": "2.0.0-dev.3.10"
+      },
+      "blender": {
+        "version": "4.5.3 LTS",
+        "max_vertex_error_m": 0.0009740660184450154,
+        "reopened": true
+      },
+      "threejs": {
+        "version": "0.180.0",
+        "browser": "140.0.7339.16",
+        "max_vertex_error_m": 0.0005234898623566898
+      },
+      "archive": {
+        "path": "packages/humanoid.zip",
+        "sha256": "a77de0cb2e8a4875cde4be631ac118c97ad96d9f8da8d812345ef37066c22ab8",
+        "restored_and_evaluated": true
+      }
+    },
+    {
+      "name": "quadruped",
+      "rig_sha256": "8e32b2f67e563e5de61d97175493ac9b5a8c48ab2b75374e5a6fd60fea0d043c",
+      "fixture": true,
+      "numeric": {
+        "hierarchy_cycles": 0,
+        "invalid_joint_references": 0,
+        "bones": 27,
+        "vertices": 2284,
+        "triangles": 4488,
+        "weight_sum_max_error": 2.220446049250313e-16,
+        "bind_pose_max_error_m": 2.220446049250313e-16,
+        "nonfinite_vertices": 0,
+        "max_vertex_displacement_m": 0.8259473969640965,
+        "distinct_sampled_poses": 27,
+        "clips": 6,
+        "contact_tolerance_m": 0.01,
+        "max_contact_error_m": 4.050792900924367e-16,
+        "max_planted_drift_m": 5.194446892679256e-16
+      },
+      "native_roundtrip": {
+        "independent": false,
+        "reader": "hatch-native",
+        "max_vertex_error_m": 0.00010599195660662709,
+        "mesh_samples": 360,
+        "tolerance_m": 0.01,
+        "ok": true
+      },
+      "clips": [
+        "head-turn",
+        "neutral",
+        "sit",
+        "tail-wag",
+        "trot",
+        "walk"
+      ],
+      "artifacts": {
+        "glb": "quadruped/exports/character.glb",
+        "blend": "quadruped/exports/character.blend",
+        "pose_sheet": "quadruped/preview/pose-sheet.png",
+        "animation": "quadruped/preview/frames/animation.webp",
+        "viewer": "quadruped/review-ui/index.html",
+        "blender_preview": "quadruped/preview/blender/frame-0001.png"
+      },
+      "khronos": {
+        "errors": 0,
+        "warnings": 0,
+        "version": "2.0.0-dev.3.10"
+      },
+      "blender": {
+        "version": "4.5.3 LTS",
+        "max_vertex_error_m": 0.000480532578714485,
+        "reopened": true
+      },
+      "threejs": {
+        "version": "0.180.0",
+        "browser": "140.0.7339.16",
+        "max_vertex_error_m": 0.00023818658471021936
+      },
+      "archive": {
+        "path": "packages/quadruped.zip",
+        "sha256": "605445a937e265119db08a342e32d1545a0f0084805205a4a534b2a9904ce81a",
+        "restored_and_evaluated": true
+      }
+    },
+    {
+      "name": "winged-creature",
+      "rig_sha256": "06f4bd0e04d2b4f02027acc8420762d999493a09a7bb46a6be7933960c38559f",
+      "fixture": true,
+      "numeric": {
+        "hierarchy_cycles": 0,
+        "invalid_joint_references": 0,
+        "bones": 37,
+        "vertices": 3276,
+        "triangles": 6440,
+        "weight_sum_max_error": 2.220446049250313e-16,
+        "bind_pose_max_error_m": 4.440892098500626e-16,
+        "nonfinite_vertices": 0,
+        "max_vertex_displacement_m": 0.8909119336911907,
+        "distinct_sampled_poses": 27,
+        "clips": 6,
+        "contact_tolerance_m": 0.01,
+        "max_contact_error_m": 4.996003610813204e-16,
+        "max_planted_drift_m": 6.849500233248632e-16
+      },
+      "native_roundtrip": {
+        "independent": false,
+        "reader": "hatch-native",
+        "max_vertex_error_m": 8.786245479917824e-05,
+        "mesh_samples": 504,
+        "tolerance_m": 0.01,
+        "ok": true
+      },
+      "clips": [
+        "combined",
+        "gaze",
+        "neutral",
+        "tail-curl",
+        "walk",
+        "wing-flap"
+      ],
+      "artifacts": {
+        "glb": "winged-creature/exports/character.glb",
+        "blend": "winged-creature/exports/character.blend",
+        "pose_sheet": "winged-creature/preview/pose-sheet.png",
+        "animation": "winged-creature/preview/frames/animation.webp",
+        "viewer": "winged-creature/review-ui/index.html",
+        "blender_preview": "winged-creature/preview/blender/frame-0001.png"
+      },
+      "khronos": {
+        "errors": 0,
+        "warnings": 0,
+        "version": "2.0.0-dev.3.10"
+      },
+      "blender": {
+        "version": "4.5.3 LTS",
+        "max_vertex_error_m": 9.143751973173257e-05,
+        "reopened": true
+      },
+      "threejs": {
+        "version": "0.180.0",
+        "browser": "140.0.7339.16",
+        "max_vertex_error_m": 8.836771415161445e-05
+      },
+      "archive": {
+        "path": "packages/winged-creature.zip",
+        "sha256": "4b0568f04f47a13bc32d36b6067c8983353c98506d7ee730584bc6945ef08801",
+        "restored_and_evaluated": true
+      }
+    },
+    {
+      "name": "robotic",
+      "rig_sha256": "51c8c585e97b259883e5c3535421ec90fbb7bf6b74da20994b0622a0e5a9d089",
+      "fixture": true,
+      "numeric": {
+        "hierarchy_cycles": 0,
+        "invalid_joint_references": 0,
+        "bones": 7,
+        "vertices": 706,
+        "triangles": 1368,
+        "weight_sum_max_error": 0.0,
+        "bind_pose_max_error_m": 1.0014835710813626e-32,
+        "nonfinite_vertices": 0,
+        "max_vertex_displacement_m": 1.051430031018062,
+        "distinct_sampled_poses": 10,
+        "clips": 3,
+        "contact_tolerance_m": 0.008899999856948853,
+        "max_contact_error_m": 0.0,
+        "max_planted_drift_m": 0.0
+      },
+      "native_roundtrip": {
+        "independent": false,
+        "reader": "hatch-native",
+        "max_vertex_error_m": 8.65779877438876e-08,
+        "mesh_samples": 99,
+        "tolerance_m": 0.01,
+        "ok": true
+      },
+      "clips": [
+        "gripper-slide",
+        "hinge-sweep",
+        "neutral"
+      ],
+      "artifacts": {
+        "glb": "robotic/exports/character.glb",
+        "blend": "robotic/exports/character.blend",
+        "pose_sheet": "robotic/preview/pose-sheet.png",
+        "animation": "robotic/preview/frames/animation.webp",
+        "viewer": "robotic/review-ui/index.html",
+        "blender_preview": "robotic/preview/blender/frame-0001.png"
+      },
+      "khronos": {
+        "errors": 0,
+        "warnings": 0,
+        "version": "2.0.0-dev.3.10"
+      },
+      "blender": {
+        "version": "4.5.3 LTS",
+        "max_vertex_error_m": 1.6416032056674572e-05,
+        "reopened": true
+      },
+      "threejs": {
+        "version": "0.180.0",
+        "browser": "140.0.7339.16",
+        "max_vertex_error_m": 5.289800520483335e-08
+      },
+      "archive": {
+        "path": "packages/robotic.zip",
+        "sha256": "f642961f72dc5e3c44905ce0e223740fded10b4683f93c24059cb973b0be94b9",
+        "restored_and_evaluated": true
+      }
+    },
+    {
+      "name": "humanoid-retarget",
+      "rig_sha256": "fbe02b8f84a34a1fcfcd0f43272679d8e12b78d9d224e162f0f76d2bad4d1414",
+      "fixture": true,
+      "numeric": {
+        "hierarchy_cycles": 0,
+        "invalid_joint_references": 0,
+        "bones": 57,
+        "vertices": 3830,
+        "triangles": 7536,
+        "weight_sum_max_error": 2.220446049250313e-16,
+        "bind_pose_max_error_m": 4.440892098500626e-16,
+        "nonfinite_vertices": 0,
+        "max_vertex_displacement_m": 0.5247266129494376,
+        "distinct_sampled_poses": 6,
+        "clips": 1,
+        "contact_tolerance_m": 0.01,
+        "max_contact_error_m": 5.797195660796456e-16,
+        "max_planted_drift_m": 9.171947447016606e-16
+      },
+      "native_roundtrip": {
+        "independent": false,
+        "reader": "hatch-native",
+        "max_vertex_error_m": 4.54538895586768e-05,
+        "mesh_samples": 93,
+        "tolerance_m": 0.01,
+        "ok": true
+      },
+      "clips": [
+        "walk-retargeted"
+      ],
+      "artifacts": {
+        "glb": "humanoid-retarget/exports/character.glb",
+        "pose_sheet": "humanoid-retarget/preview/pose-sheet.png",
+        "animation": "humanoid-retarget/preview/frames/animation.webp"
+      },
+      "khronos": {
+        "errors": 0,
+        "warnings": 0,
+        "version": "2.0.0-dev.3.10"
+      },
+      "archive": {
+        "path": "packages/humanoid-retarget.zip",
+        "sha256": "d4348966ff428ef9954545531fa694ec8778793fbf69e0aa028222cd5c44d529",
+        "restored_and_evaluated": true
+      }
+    },
+    {
+      "name": "quadruped-retarget",
+      "rig_sha256": "209b5cedd80bc52105b531347caa4c763ce676793cb84f8f09a8705d28299a85",
+      "fixture": true,
+      "numeric": {
+        "hierarchy_cycles": 0,
+        "invalid_joint_references": 0,
+        "bones": 27,
+        "vertices": 2284,
+        "triangles": 4488,
+        "weight_sum_max_error": 2.220446049250313e-16,
+        "bind_pose_max_error_m": 2.220446049250313e-16,
+        "nonfinite_vertices": 0,
+        "max_vertex_displacement_m": 0.39951023747452297,
+        "distinct_sampled_poses": 6,
+        "clips": 1,
+        "contact_tolerance_m": 0.008496000170707703,
+        "max_contact_error_m": 2.830524433501838e-16,
+        "max_planted_drift_m": 3.8956806801599406e-16
+      },
+      "native_roundtrip": {
+        "independent": false,
+        "reader": "hatch-native",
+        "max_vertex_error_m": 6.180589830154961e-05,
+        "mesh_samples": 60,
+        "tolerance_m": 0.01,
+        "ok": true
+      },
+      "clips": [
+        "walk-retargeted"
+      ],
+      "artifacts": {
+        "glb": "quadruped-retarget/exports/character.glb",
+        "pose_sheet": "quadruped-retarget/preview/pose-sheet.png",
+        "animation": "quadruped-retarget/preview/frames/animation.webp"
+      },
+      "khronos": {
+        "errors": 0,
+        "warnings": 0,
+        "version": "2.0.0-dev.3.10"
+      },
+      "archive": {
+        "path": "packages/quadruped-retarget.zip",
+        "sha256": "59af47bef1870f153f08940ef54d6abf44e0bc51096831ef386db817aeda5c22",
+        "restored_and_evaluated": true
+      }
+    }
+  ]
+}

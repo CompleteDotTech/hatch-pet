@@ -1,0 +1,1554 @@
+{
+  "schema_version": 1,
+  "kind": "hatch-3d-rig-template",
+  "id": "humanoid",
+  "version": "1.0.0",
+  "extends": [
+    "custom"
+  ],
+  "description": "A stylized A-pose biped with optional articulated fingers, face joints and four limb IK chains.",
+  "rest_pose": "A",
+  "bones": [
+    {
+      "id": "pelvis",
+      "role": "pelvis",
+      "parent": "root",
+      "head": [
+        0,
+        0.93,
+        0
+      ],
+      "tail": [
+        0,
+        1.13,
+        0
+      ],
+      "deform": true,
+      "mirror": null,
+      "roll": 0.0
+    },
+    {
+      "id": "spine",
+      "role": "spine",
+      "parent": "pelvis",
+      "head": [
+        0,
+        1.08,
+        0
+      ],
+      "tail": [
+        0,
+        1.31,
+        0
+      ],
+      "deform": true,
+      "mirror": null,
+      "roll": 0.0
+    },
+    {
+      "id": "chest",
+      "role": "chest",
+      "parent": "spine",
+      "head": [
+        0,
+        1.31,
+        0
+      ],
+      "tail": [
+        0,
+        1.49,
+        0
+      ],
+      "deform": true,
+      "mirror": null,
+      "roll": 0.0
+    },
+    {
+      "id": "neck",
+      "role": "neck",
+      "parent": "chest",
+      "head": [
+        0,
+        1.49,
+        0
+      ],
+      "tail": [
+        0,
+        1.63,
+        0
+      ],
+      "deform": true,
+      "mirror": null,
+      "roll": 0.0
+    },
+    {
+      "id": "head",
+      "role": "head",
+      "parent": "neck",
+      "head": [
+        0,
+        1.63,
+        0
+      ],
+      "tail": [
+        0,
+        1.94,
+        0
+      ],
+      "deform": true,
+      "mirror": null,
+      "roll": 0.0
+    },
+    {
+      "id": "jaw",
+      "role": "jaw",
+      "parent": "head",
+      "head": [
+        0,
+        1.66,
+        0.18
+      ],
+      "tail": [
+        0,
+        1.6,
+        0.25
+      ],
+      "deform": true,
+      "mirror": null,
+      "roll": 0.0
+    },
+    {
+      "id": "clavicle.left",
+      "role": "clavicle.left",
+      "parent": "chest",
+      "head": [
+        -0.07,
+        1.44,
+        0
+      ],
+      "tail": [
+        -0.24,
+        1.43,
+        0
+      ],
+      "deform": true,
+      "mirror": "clavicle.right",
+      "roll": 0.0
+    },
+    {
+      "id": "upper-arm.left",
+      "role": "upper-arm.left",
+      "parent": "clavicle.left",
+      "head": [
+        -0.24,
+        1.43,
+        0
+      ],
+      "tail": [
+        -0.49,
+        1.17,
+        0.015
+      ],
+      "deform": true,
+      "mirror": "upper-arm.right",
+      "roll": 0.0
+    },
+    {
+      "id": "forearm.left",
+      "role": "forearm.left",
+      "parent": "upper-arm.left",
+      "head": [
+        -0.49,
+        1.17,
+        0.015
+      ],
+      "tail": [
+        -0.69,
+        0.98,
+        0.035
+      ],
+      "deform": true,
+      "mirror": "forearm.right",
+      "roll": 0.0
+    },
+    {
+      "id": "hand.left",
+      "role": "hand.left",
+      "parent": "forearm.left",
+      "head": [
+        -0.69,
+        0.98,
+        0.035
+      ],
+      "tail": [
+        -0.76,
+        0.91,
+        0.035
+      ],
+      "deform": true,
+      "mirror": "hand.right",
+      "roll": 0.0
+    },
+    {
+      "id": "thigh.left",
+      "role": "thigh.left",
+      "parent": "pelvis",
+      "head": [
+        -0.14,
+        0.93,
+        0
+      ],
+      "tail": [
+        -0.15,
+        0.52,
+        0.04
+      ],
+      "deform": true,
+      "mirror": "thigh.right",
+      "roll": 0.0
+    },
+    {
+      "id": "shin.left",
+      "role": "shin.left",
+      "parent": "thigh.left",
+      "head": [
+        -0.15,
+        0.52,
+        0.04
+      ],
+      "tail": [
+        -0.15,
+        0.12,
+        0
+      ],
+      "deform": true,
+      "mirror": "shin.right",
+      "roll": 0.0
+    },
+    {
+      "id": "foot.left",
+      "role": "foot.left",
+      "parent": "shin.left",
+      "head": [
+        -0.15,
+        0.12,
+        0
+      ],
+      "tail": [
+        -0.15,
+        0.09,
+        0.18
+      ],
+      "deform": true,
+      "mirror": "foot.right",
+      "roll": 0.0
+    },
+    {
+      "id": "toe.left",
+      "role": "toe.left",
+      "parent": "foot.left",
+      "head": [
+        -0.15,
+        0.09,
+        0.18
+      ],
+      "tail": [
+        -0.15,
+        0.075,
+        0.25
+      ],
+      "deform": true,
+      "mirror": "toe.right",
+      "roll": 0.0
+    },
+    {
+      "id": "eye.left",
+      "role": "eye.left",
+      "parent": "head",
+      "head": [
+        -0.105,
+        1.79,
+        0.218
+      ],
+      "tail": [
+        -0.105,
+        1.79,
+        0.29
+      ],
+      "deform": true,
+      "mirror": "eye.right",
+      "roll": 0.0
+    },
+    {
+      "id": "ear.left",
+      "role": "ear.left",
+      "parent": "head",
+      "head": [
+        -0.245,
+        1.77,
+        0
+      ],
+      "tail": [
+        -0.3,
+        1.8,
+        0
+      ],
+      "deform": true,
+      "mirror": "ear.right",
+      "roll": 0.0
+    },
+    {
+      "id": "thumb.1.left",
+      "role": "thumb.1.left",
+      "parent": "hand.left",
+      "head": [
+        -0.745,
+        0.94,
+        -0.0049999999999999975
+      ],
+      "tail": [
+        -0.773,
+        0.911,
+        -0.0049999999999999975
+      ],
+      "deform": true,
+      "mirror": "thumb.1.right",
+      "roll": 0.0
+    },
+    {
+      "id": "thumb.2.left",
+      "role": "thumb.2.left",
+      "parent": "thumb.1.left",
+      "head": [
+        -0.773,
+        0.9109999999999999,
+        -0.0049999999999999975
+      ],
+      "tail": [
+        -0.801,
+        0.882,
+        -0.0049999999999999975
+      ],
+      "deform": true,
+      "mirror": "thumb.2.right",
+      "roll": 0.0
+    },
+    {
+      "id": "thumb.3.left",
+      "role": "thumb.3.left",
+      "parent": "thumb.2.left",
+      "head": [
+        -0.801,
+        0.8819999999999999,
+        -0.0049999999999999975
+      ],
+      "tail": [
+        -0.8290000000000001,
+        0.853,
+        -0.0049999999999999975
+      ],
+      "deform": true,
+      "mirror": "thumb.3.right",
+      "roll": 0.0
+    },
+    {
+      "id": "index.1.left",
+      "role": "index.1.left",
+      "parent": "hand.left",
+      "head": [
+        -0.745,
+        0.94,
+        0.015000000000000003
+      ],
+      "tail": [
+        -0.773,
+        0.911,
+        0.015000000000000003
+      ],
+      "deform": true,
+      "mirror": "index.1.right",
+      "roll": 0.0
+    },
+    {
+      "id": "index.2.left",
+      "role": "index.2.left",
+      "parent": "index.1.left",
+      "head": [
+        -0.773,
+        0.9109999999999999,
+        0.015000000000000003
+      ],
+      "tail": [
+        -0.801,
+        0.882,
+        0.015000000000000003
+      ],
+      "deform": true,
+      "mirror": "index.2.right",
+      "roll": 0.0
+    },
+    {
+      "id": "index.3.left",
+      "role": "index.3.left",
+      "parent": "index.2.left",
+      "head": [
+        -0.801,
+        0.8819999999999999,
+        0.015000000000000003
+      ],
+      "tail": [
+        -0.8290000000000001,
+        0.853,
+        0.015000000000000003
+      ],
+      "deform": true,
+      "mirror": "index.3.right",
+      "roll": 0.0
+    },
+    {
+      "id": "middle.1.left",
+      "role": "middle.1.left",
+      "parent": "hand.left",
+      "head": [
+        -0.745,
+        0.94,
+        0.035
+      ],
+      "tail": [
+        -0.773,
+        0.911,
+        0.035
+      ],
+      "deform": true,
+      "mirror": "middle.1.right",
+      "roll": 0.0
+    },
+    {
+      "id": "middle.2.left",
+      "role": "middle.2.left",
+      "parent": "middle.1.left",
+      "head": [
+        -0.773,
+        0.9109999999999999,
+        0.035
+      ],
+      "tail": [
+        -0.801,
+        0.882,
+        0.035
+      ],
+      "deform": true,
+      "mirror": "middle.2.right",
+      "roll": 0.0
+    },
+    {
+      "id": "middle.3.left",
+      "role": "middle.3.left",
+      "parent": "middle.2.left",
+      "head": [
+        -0.801,
+        0.8819999999999999,
+        0.035
+      ],
+      "tail": [
+        -0.8290000000000001,
+        0.853,
+        0.035
+      ],
+      "deform": true,
+      "mirror": "middle.3.right",
+      "roll": 0.0
+    },
+    {
+      "id": "ring.1.left",
+      "role": "ring.1.left",
+      "parent": "hand.left",
+      "head": [
+        -0.745,
+        0.94,
+        0.05500000000000001
+      ],
+      "tail": [
+        -0.773,
+        0.911,
+        0.05500000000000001
+      ],
+      "deform": true,
+      "mirror": "ring.1.right",
+      "roll": 0.0
+    },
+    {
+      "id": "ring.2.left",
+      "role": "ring.2.left",
+      "parent": "ring.1.left",
+      "head": [
+        -0.773,
+        0.9109999999999999,
+        0.05500000000000001
+      ],
+      "tail": [
+        -0.801,
+        0.882,
+        0.05500000000000001
+      ],
+      "deform": true,
+      "mirror": "ring.2.right",
+      "roll": 0.0
+    },
+    {
+      "id": "ring.3.left",
+      "role": "ring.3.left",
+      "parent": "ring.2.left",
+      "head": [
+        -0.801,
+        0.8819999999999999,
+        0.05500000000000001
+      ],
+      "tail": [
+        -0.8290000000000001,
+        0.853,
+        0.05500000000000001
+      ],
+      "deform": true,
+      "mirror": "ring.3.right",
+      "roll": 0.0
+    },
+    {
+      "id": "pinky.1.left",
+      "role": "pinky.1.left",
+      "parent": "hand.left",
+      "head": [
+        -0.745,
+        0.94,
+        0.07500000000000001
+      ],
+      "tail": [
+        -0.773,
+        0.911,
+        0.07500000000000001
+      ],
+      "deform": true,
+      "mirror": "pinky.1.right",
+      "roll": 0.0
+    },
+    {
+      "id": "pinky.2.left",
+      "role": "pinky.2.left",
+      "parent": "pinky.1.left",
+      "head": [
+        -0.773,
+        0.9109999999999999,
+        0.07500000000000001
+      ],
+      "tail": [
+        -0.801,
+        0.882,
+        0.07500000000000001
+      ],
+      "deform": true,
+      "mirror": "pinky.2.right",
+      "roll": 0.0
+    },
+    {
+      "id": "pinky.3.left",
+      "role": "pinky.3.left",
+      "parent": "pinky.2.left",
+      "head": [
+        -0.801,
+        0.8819999999999999,
+        0.07500000000000001
+      ],
+      "tail": [
+        -0.8290000000000001,
+        0.853,
+        0.07500000000000001
+      ],
+      "deform": true,
+      "mirror": "pinky.3.right",
+      "roll": 0.0
+    },
+    {
+      "id": "clavicle.right",
+      "role": "clavicle.right",
+      "parent": "chest",
+      "head": [
+        0.07,
+        1.44,
+        0
+      ],
+      "tail": [
+        0.24,
+        1.43,
+        0
+      ],
+      "deform": true,
+      "mirror": "clavicle.left",
+      "roll": 0.0
+    },
+    {
+      "id": "upper-arm.right",
+      "role": "upper-arm.right",
+      "parent": "clavicle.right",
+      "head": [
+        0.24,
+        1.43,
+        0
+      ],
+      "tail": [
+        0.49,
+        1.17,
+        0.015
+      ],
+      "deform": true,
+      "mirror": "upper-arm.left",
+      "roll": 0.0
+    },
+    {
+      "id": "forearm.right",
+      "role": "forearm.right",
+      "parent": "upper-arm.right",
+      "head": [
+        0.49,
+        1.17,
+        0.015
+      ],
+      "tail": [
+        0.69,
+        0.98,
+        0.035
+      ],
+      "deform": true,
+      "mirror": "forearm.left",
+      "roll": 0.0
+    },
+    {
+      "id": "hand.right",
+      "role": "hand.right",
+      "parent": "forearm.right",
+      "head": [
+        0.69,
+        0.98,
+        0.035
+      ],
+      "tail": [
+        0.76,
+        0.91,
+        0.035
+      ],
+      "deform": true,
+      "mirror": "hand.left",
+      "roll": 0.0
+    },
+    {
+      "id": "thigh.right",
+      "role": "thigh.right",
+      "parent": "pelvis",
+      "head": [
+        0.14,
+        0.93,
+        0
+      ],
+      "tail": [
+        0.15,
+        0.52,
+        0.04
+      ],
+      "deform": true,
+      "mirror": "thigh.left",
+      "roll": 0.0
+    },
+    {
+      "id": "shin.right",
+      "role": "shin.right",
+      "parent": "thigh.right",
+      "head": [
+        0.15,
+        0.52,
+        0.04
+      ],
+      "tail": [
+        0.15,
+        0.12,
+        0
+      ],
+      "deform": true,
+      "mirror": "shin.left",
+      "roll": 0.0
+    },
+    {
+      "id": "foot.right",
+      "role": "foot.right",
+      "parent": "shin.right",
+      "head": [
+        0.15,
+        0.12,
+        0
+      ],
+      "tail": [
+        0.15,
+        0.09,
+        0.18
+      ],
+      "deform": true,
+      "mirror": "foot.left",
+      "roll": 0.0
+    },
+    {
+      "id": "toe.right",
+      "role": "toe.right",
+      "parent": "foot.right",
+      "head": [
+        0.15,
+        0.09,
+        0.18
+      ],
+      "tail": [
+        0.15,
+        0.075,
+        0.25
+      ],
+      "deform": true,
+      "mirror": "toe.left",
+      "roll": 0.0
+    },
+    {
+      "id": "eye.right",
+      "role": "eye.right",
+      "parent": "head",
+      "head": [
+        0.105,
+        1.79,
+        0.218
+      ],
+      "tail": [
+        0.105,
+        1.79,
+        0.29
+      ],
+      "deform": true,
+      "mirror": "eye.left",
+      "roll": 0.0
+    },
+    {
+      "id": "ear.right",
+      "role": "ear.right",
+      "parent": "head",
+      "head": [
+        0.245,
+        1.77,
+        0
+      ],
+      "tail": [
+        0.3,
+        1.8,
+        0
+      ],
+      "deform": true,
+      "mirror": "ear.left",
+      "roll": 0.0
+    },
+    {
+      "id": "thumb.1.right",
+      "role": "thumb.1.right",
+      "parent": "hand.right",
+      "head": [
+        0.745,
+        0.94,
+        -0.0049999999999999975
+      ],
+      "tail": [
+        0.773,
+        0.911,
+        -0.0049999999999999975
+      ],
+      "deform": true,
+      "mirror": "thumb.1.left",
+      "roll": 0.0
+    },
+    {
+      "id": "thumb.2.right",
+      "role": "thumb.2.right",
+      "parent": "thumb.1.right",
+      "head": [
+        0.773,
+        0.9109999999999999,
+        -0.0049999999999999975
+      ],
+      "tail": [
+        0.801,
+        0.882,
+        -0.0049999999999999975
+      ],
+      "deform": true,
+      "mirror": "thumb.2.left",
+      "roll": 0.0
+    },
+    {
+      "id": "thumb.3.right",
+      "role": "thumb.3.right",
+      "parent": "thumb.2.right",
+      "head": [
+        0.801,
+        0.8819999999999999,
+        -0.0049999999999999975
+      ],
+      "tail": [
+        0.8290000000000001,
+        0.853,
+        -0.0049999999999999975
+      ],
+      "deform": true,
+      "mirror": "thumb.3.left",
+      "roll": 0.0
+    },
+    {
+      "id": "index.1.right",
+      "role": "index.1.right",
+      "parent": "hand.right",
+      "head": [
+        0.745,
+        0.94,
+        0.015000000000000003
+      ],
+      "tail": [
+        0.773,
+        0.911,
+        0.015000000000000003
+      ],
+      "deform": true,
+      "mirror": "index.1.left",
+      "roll": 0.0
+    },
+    {
+      "id": "index.2.right",
+      "role": "index.2.right",
+      "parent": "index.1.right",
+      "head": [
+        0.773,
+        0.9109999999999999,
+        0.015000000000000003
+      ],
+      "tail": [
+        0.801,
+        0.882,
+        0.015000000000000003
+      ],
+      "deform": true,
+      "mirror": "index.2.left",
+      "roll": 0.0
+    },
+    {
+      "id": "index.3.right",
+      "role": "index.3.right",
+      "parent": "index.2.right",
+      "head": [
+        0.801,
+        0.8819999999999999,
+        0.015000000000000003
+      ],
+      "tail": [
+        0.8290000000000001,
+        0.853,
+        0.015000000000000003
+      ],
+      "deform": true,
+      "mirror": "index.3.left",
+      "roll": 0.0
+    },
+    {
+      "id": "middle.1.right",
+      "role": "middle.1.right",
+      "parent": "hand.right",
+      "head": [
+        0.745,
+        0.94,
+        0.035
+      ],
+      "tail": [
+        0.773,
+        0.911,
+        0.035
+      ],
+      "deform": true,
+      "mirror": "middle.1.left",
+      "roll": 0.0
+    },
+    {
+      "id": "middle.2.right",
+      "role": "middle.2.right",
+      "parent": "middle.1.right",
+      "head": [
+        0.773,
+        0.9109999999999999,
+        0.035
+      ],
+      "tail": [
+        0.801,
+        0.882,
+        0.035
+      ],
+      "deform": true,
+      "mirror": "middle.2.left",
+      "roll": 0.0
+    },
+    {
+      "id": "middle.3.right",
+      "role": "middle.3.right",
+      "parent": "middle.2.right",
+      "head": [
+        0.801,
+        0.8819999999999999,
+        0.035
+      ],
+      "tail": [
+        0.8290000000000001,
+        0.853,
+        0.035
+      ],
+      "deform": true,
+      "mirror": "middle.3.left",
+      "roll": 0.0
+    },
+    {
+      "id": "ring.1.right",
+      "role": "ring.1.right",
+      "parent": "hand.right",
+      "head": [
+        0.745,
+        0.94,
+        0.05500000000000001
+      ],
+      "tail": [
+        0.773,
+        0.911,
+        0.05500000000000001
+      ],
+      "deform": true,
+      "mirror": "ring.1.left",
+      "roll": 0.0
+    },
+    {
+      "id": "ring.2.right",
+      "role": "ring.2.right",
+      "parent": "ring.1.right",
+      "head": [
+        0.773,
+        0.9109999999999999,
+        0.05500000000000001
+      ],
+      "tail": [
+        0.801,
+        0.882,
+        0.05500000000000001
+      ],
+      "deform": true,
+      "mirror": "ring.2.left",
+      "roll": 0.0
+    },
+    {
+      "id": "ring.3.right",
+      "role": "ring.3.right",
+      "parent": "ring.2.right",
+      "head": [
+        0.801,
+        0.8819999999999999,
+        0.05500000000000001
+      ],
+      "tail": [
+        0.8290000000000001,
+        0.853,
+        0.05500000000000001
+      ],
+      "deform": true,
+      "mirror": "ring.3.left",
+      "roll": 0.0
+    },
+    {
+      "id": "pinky.1.right",
+      "role": "pinky.1.right",
+      "parent": "hand.right",
+      "head": [
+        0.745,
+        0.94,
+        0.07500000000000001
+      ],
+      "tail": [
+        0.773,
+        0.911,
+        0.07500000000000001
+      ],
+      "deform": true,
+      "mirror": "pinky.1.left",
+      "roll": 0.0
+    },
+    {
+      "id": "pinky.2.right",
+      "role": "pinky.2.right",
+      "parent": "pinky.1.right",
+      "head": [
+        0.773,
+        0.9109999999999999,
+        0.07500000000000001
+      ],
+      "tail": [
+        0.801,
+        0.882,
+        0.07500000000000001
+      ],
+      "deform": true,
+      "mirror": "pinky.2.left",
+      "roll": 0.0
+    },
+    {
+      "id": "pinky.3.right",
+      "role": "pinky.3.right",
+      "parent": "pinky.2.right",
+      "head": [
+        0.801,
+        0.8819999999999999,
+        0.07500000000000001
+      ],
+      "tail": [
+        0.8290000000000001,
+        0.853,
+        0.07500000000000001
+      ],
+      "deform": true,
+      "mirror": "pinky.3.left",
+      "roll": 0.0
+    }
+  ],
+  "constraints": [
+    {
+      "schema_version": 1,
+      "id": "thumb.1.left-limit",
+      "bone": "thumb.1.left",
+      "type": "ball",
+      "swing": 1.8
+    },
+    {
+      "schema_version": 1,
+      "id": "thumb.2.left-limit",
+      "bone": "thumb.2.left",
+      "type": "ball",
+      "swing": 1.8
+    },
+    {
+      "schema_version": 1,
+      "id": "thumb.3.left-limit",
+      "bone": "thumb.3.left",
+      "type": "ball",
+      "swing": 1.8
+    },
+    {
+      "schema_version": 1,
+      "id": "index.1.left-limit",
+      "bone": "index.1.left",
+      "type": "ball",
+      "swing": 1.8
+    },
+    {
+      "schema_version": 1,
+      "id": "index.2.left-limit",
+      "bone": "index.2.left",
+      "type": "ball",
+      "swing": 1.8
+    },
+    {
+      "schema_version": 1,
+      "id": "index.3.left-limit",
+      "bone": "index.3.left",
+      "type": "ball",
+      "swing": 1.8
+    },
+    {
+      "schema_version": 1,
+      "id": "middle.1.left-limit",
+      "bone": "middle.1.left",
+      "type": "ball",
+      "swing": 1.8
+    },
+    {
+      "schema_version": 1,
+      "id": "middle.2.left-limit",
+      "bone": "middle.2.left",
+      "type": "ball",
+      "swing": 1.8
+    },
+    {
+      "schema_version": 1,
+      "id": "middle.3.left-limit",
+      "bone": "middle.3.left",
+      "type": "ball",
+      "swing": 1.8
+    },
+    {
+      "schema_version": 1,
+      "id": "ring.1.left-limit",
+      "bone": "ring.1.left",
+      "type": "ball",
+      "swing": 1.8
+    },
+    {
+      "schema_version": 1,
+      "id": "ring.2.left-limit",
+      "bone": "ring.2.left",
+      "type": "ball",
+      "swing": 1.8
+    },
+    {
+      "schema_version": 1,
+      "id": "ring.3.left-limit",
+      "bone": "ring.3.left",
+      "type": "ball",
+      "swing": 1.8
+    },
+    {
+      "schema_version": 1,
+      "id": "pinky.1.left-limit",
+      "bone": "pinky.1.left",
+      "type": "ball",
+      "swing": 1.8
+    },
+    {
+      "schema_version": 1,
+      "id": "pinky.2.left-limit",
+      "bone": "pinky.2.left",
+      "type": "ball",
+      "swing": 1.8
+    },
+    {
+      "schema_version": 1,
+      "id": "pinky.3.left-limit",
+      "bone": "pinky.3.left",
+      "type": "ball",
+      "swing": 1.8
+    },
+    {
+      "schema_version": 1,
+      "id": "upper-arm.left-limit",
+      "bone": "upper-arm.left",
+      "type": "ball",
+      "swing": 2.7
+    },
+    {
+      "schema_version": 1,
+      "id": "forearm.left-limit",
+      "bone": "forearm.left",
+      "type": "ball",
+      "swing": 2.7
+    },
+    {
+      "schema_version": 1,
+      "id": "thigh.left-limit",
+      "bone": "thigh.left",
+      "type": "ball",
+      "swing": 2.7
+    },
+    {
+      "schema_version": 1,
+      "id": "shin.left-limit",
+      "bone": "shin.left",
+      "type": "ball",
+      "swing": 2.7
+    },
+    {
+      "schema_version": 1,
+      "id": "eye.left-limit",
+      "bone": "eye.left",
+      "type": "ball",
+      "swing": 0.65
+    },
+    {
+      "schema_version": 1,
+      "id": "thumb.1.right-limit",
+      "bone": "thumb.1.right",
+      "type": "ball",
+      "swing": 1.8
+    },
+    {
+      "schema_version": 1,
+      "id": "thumb.2.right-limit",
+      "bone": "thumb.2.right",
+      "type": "ball",
+      "swing": 1.8
+    },
+    {
+      "schema_version": 1,
+      "id": "thumb.3.right-limit",
+      "bone": "thumb.3.right",
+      "type": "ball",
+      "swing": 1.8
+    },
+    {
+      "schema_version": 1,
+      "id": "index.1.right-limit",
+      "bone": "index.1.right",
+      "type": "ball",
+      "swing": 1.8
+    },
+    {
+      "schema_version": 1,
+      "id": "index.2.right-limit",
+      "bone": "index.2.right",
+      "type": "ball",
+      "swing": 1.8
+    },
+    {
+      "schema_version": 1,
+      "id": "index.3.right-limit",
+      "bone": "index.3.right",
+      "type": "ball",
+      "swing": 1.8
+    },
+    {
+      "schema_version": 1,
+      "id": "middle.1.right-limit",
+      "bone": "middle.1.right",
+      "type": "ball",
+      "swing": 1.8
+    },
+    {
+      "schema_version": 1,
+      "id": "middle.2.right-limit",
+      "bone": "middle.2.right",
+      "type": "ball",
+      "swing": 1.8
+    },
+    {
+      "schema_version": 1,
+      "id": "middle.3.right-limit",
+      "bone": "middle.3.right",
+      "type": "ball",
+      "swing": 1.8
+    },
+    {
+      "schema_version": 1,
+      "id": "ring.1.right-limit",
+      "bone": "ring.1.right",
+      "type": "ball",
+      "swing": 1.8
+    },
+    {
+      "schema_version": 1,
+      "id": "ring.2.right-limit",
+      "bone": "ring.2.right",
+      "type": "ball",
+      "swing": 1.8
+    },
+    {
+      "schema_version": 1,
+      "id": "ring.3.right-limit",
+      "bone": "ring.3.right",
+      "type": "ball",
+      "swing": 1.8
+    },
+    {
+      "schema_version": 1,
+      "id": "pinky.1.right-limit",
+      "bone": "pinky.1.right",
+      "type": "ball",
+      "swing": 1.8
+    },
+    {
+      "schema_version": 1,
+      "id": "pinky.2.right-limit",
+      "bone": "pinky.2.right",
+      "type": "ball",
+      "swing": 1.8
+    },
+    {
+      "schema_version": 1,
+      "id": "pinky.3.right-limit",
+      "bone": "pinky.3.right",
+      "type": "ball",
+      "swing": 1.8
+    },
+    {
+      "schema_version": 1,
+      "id": "upper-arm.right-limit",
+      "bone": "upper-arm.right",
+      "type": "ball",
+      "swing": 2.7
+    },
+    {
+      "schema_version": 1,
+      "id": "forearm.right-limit",
+      "bone": "forearm.right",
+      "type": "ball",
+      "swing": 2.7
+    },
+    {
+      "schema_version": 1,
+      "id": "thigh.right-limit",
+      "bone": "thigh.right",
+      "type": "ball",
+      "swing": 2.7
+    },
+    {
+      "schema_version": 1,
+      "id": "shin.right-limit",
+      "bone": "shin.right",
+      "type": "ball",
+      "swing": 2.7
+    },
+    {
+      "schema_version": 1,
+      "id": "eye.right-limit",
+      "bone": "eye.right",
+      "type": "ball",
+      "swing": 0.65
+    },
+    {
+      "schema_version": 1,
+      "id": "spine-limit",
+      "bone": "spine",
+      "type": "ball",
+      "swing": 0.8
+    },
+    {
+      "schema_version": 1,
+      "id": "chest-limit",
+      "bone": "chest",
+      "type": "ball",
+      "swing": 0.8
+    },
+    {
+      "schema_version": 1,
+      "id": "neck-limit",
+      "bone": "neck",
+      "type": "ball",
+      "swing": 0.8
+    },
+    {
+      "schema_version": 1,
+      "id": "head-limit",
+      "bone": "head",
+      "type": "ball",
+      "swing": 0.8
+    }
+  ],
+  "ik": [
+    {
+      "schema_version": 1,
+      "id": "arm.left",
+      "bones": [
+        "upper-arm.left",
+        "forearm.left",
+        "hand.left"
+      ],
+      "solver": "two-bone",
+      "pole": [
+        -0.65,
+        1.1,
+        0.8
+      ],
+      "tolerance": 1e-05,
+      "iterations": 64
+    },
+    {
+      "schema_version": 1,
+      "id": "leg.left",
+      "bones": [
+        "thigh.left",
+        "shin.left",
+        "foot.left"
+      ],
+      "solver": "two-bone",
+      "pole": [
+        -0.15,
+        0.6,
+        0.8
+      ],
+      "tolerance": 1e-05,
+      "iterations": 64
+    },
+    {
+      "schema_version": 1,
+      "id": "arm.right",
+      "bones": [
+        "upper-arm.right",
+        "forearm.right",
+        "hand.right"
+      ],
+      "solver": "two-bone",
+      "pole": [
+        0.65,
+        1.1,
+        0.8
+      ],
+      "tolerance": 1e-05,
+      "iterations": 64
+    },
+    {
+      "schema_version": 1,
+      "id": "leg.right",
+      "bones": [
+        "thigh.right",
+        "shin.right",
+        "foot.right"
+      ],
+      "solver": "two-bone",
+      "pole": [
+        0.15,
+        0.6,
+        0.8
+      ],
+      "tolerance": 1e-05,
+      "iterations": 64
+    }
+  ],
+  "capabilities": [
+    "arms",
+    "legs",
+    "hands",
+    "fingers",
+    "face",
+    "eyes",
+    "mouth",
+    "head",
+    "feet"
+  ],
+  "sockets": [
+    {
+      "schema_version": 1,
+      "id": "grip.left",
+      "bone": "hand.left",
+      "transform": {
+        "translation": [
+          0,
+          0.055,
+          0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "role": "hand-grip",
+      "owner": "character"
+    },
+    {
+      "schema_version": 1,
+      "id": "grip.right",
+      "bone": "hand.right",
+      "transform": {
+        "translation": [
+          0,
+          0.055,
+          0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "role": "hand-grip",
+      "owner": "character"
+    },
+    {
+      "schema_version": 1,
+      "id": "head-top",
+      "bone": "head",
+      "transform": {
+        "translation": [
+          0,
+          0.35,
+          0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "role": "head-accessory",
+      "owner": "character"
+    },
+    {
+      "schema_version": 1,
+      "id": "back",
+      "bone": "chest",
+      "transform": {
+        "translation": [
+          0,
+          0.04,
+          -0.16
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "role": "back-accessory",
+      "owner": "character"
+    },
+    {
+      "schema_version": 1,
+      "id": "waist",
+      "bone": "pelvis",
+      "transform": {
+        "translation": [
+          0,
+          0.07,
+          0.16
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "role": "waist-accessory",
+      "owner": "character"
+    }
+  ],
+  "retarget_group": "humanoid",
+  "symmetry": "explicit",
+  "rest_bounds": [
+    [
+      -0.85,
+      0,
+      -0.35
+    ],
+    [
+      0.85,
+      2.05,
+      0.35
+    ]
+  ],
+  "fitting_notes": "Approved 3D landmarks take precedence. Bounds and region centerlines need anatomical review."
+}

@@ -1,0 +1,1599 @@
+{
+  "schema_version": 1,
+  "id": "demo-winged-creature-skeleton",
+  "version": "1.0.0",
+  "root": "root",
+  "bones": [
+    {
+      "schema_version": 1,
+      "id": "root",
+      "role": "root",
+      "parent": null,
+      "rest": {
+        "translation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "head": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "tail": [
+        0.0,
+        0.1,
+        0.0
+      ],
+      "length": 0.1,
+      "roll": 0.0,
+      "deform": false,
+      "mirror": null,
+      "evidence": {
+        "source": "procedural-fixture",
+        "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks.",
+        "confidence": 1.0
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "pelvis",
+      "role": "pelvis",
+      "parent": "root",
+      "rest": {
+        "translation": [
+          0.0,
+          0.72,
+          -0.35
+        ],
+        "rotation": [
+          0.6783269041240774,
+          0.0,
+          0.0,
+          0.7347602405829026
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "head": [
+        0.0,
+        0.72,
+        -0.35
+      ],
+      "tail": [
+        0.0,
+        0.74,
+        -0.1
+      ],
+      "length": 0.250798724079689,
+      "roll": 0.0,
+      "deform": true,
+      "mirror": null,
+      "evidence": {
+        "source": "procedural-fixture",
+        "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks.",
+        "confidence": 1.0
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "spine",
+      "role": "spine",
+      "parent": "pelvis",
+      "rest": {
+        "translation": [
+          0.0,
+          0.250798724079689,
+          -1.1102230246251565e-16
+        ],
+        "rotation": [
+          -0.009919170724478451,
+          0.0,
+          0.0,
+          0.9999508038159372
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "head": [
+        0.0,
+        0.74,
+        -0.1
+      ],
+      "tail": [
+        0.0,
+        0.77,
+        0.2
+      ],
+      "length": 0.3014962686336267,
+      "roll": 0.0,
+      "deform": true,
+      "mirror": null,
+      "evidence": {
+        "source": "procedural-fixture",
+        "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks.",
+        "confidence": 1.0
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "chest",
+      "role": "chest",
+      "parent": "spine",
+      "rest": {
+        "translation": [
+          0.0,
+          0.30149626863362666,
+          -1.1102230246251565e-16
+        ],
+        "rotation": [
+          -0.03273416372605722,
+          0.0,
+          0.0,
+          0.9994640936647778
+        ],
+        "scale": [
+          1.0,
+          0.9999999999999998,
+          1.0
+        ]
+      },
+      "head": [
+        0.0,
+        0.77,
+        0.2
+      ],
+      "tail": [
+        0.0,
+        0.8,
+        0.38
+      ],
+      "length": 0.18248287590894657,
+      "roll": 0.0,
+      "deform": true,
+      "mirror": null,
+      "evidence": {
+        "source": "procedural-fixture",
+        "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks.",
+        "confidence": 1.0
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "neck",
+      "role": "neck",
+      "parent": "chest",
+      "rest": {
+        "translation": [
+          0.0,
+          0.18248287590894657,
+          0.0
+        ],
+        "rotation": [
+          -0.3366988339032386,
+          0.0,
+          0.0,
+          0.9416123911930001
+        ],
+        "scale": [
+          1.0,
+          0.9999999999999999,
+          0.9999999999999998
+        ]
+      },
+      "head": [
+        0.0,
+        0.8,
+        0.38
+      ],
+      "tail": [
+        0.0,
+        0.96,
+        0.52
+      ],
+      "length": 0.21260291625469294,
+      "roll": 0.0,
+      "deform": true,
+      "mirror": null,
+      "evidence": {
+        "source": "procedural-fixture",
+        "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks.",
+        "confidence": 1.0
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "head",
+      "role": "head",
+      "parent": "neck",
+      "rest": {
+        "translation": [
+          0.0,
+          0.21260291625469296,
+          -5.551115123125783e-17
+        ],
+        "rotation": [
+          0.3113836185485923,
+          0.0,
+          0.0,
+          0.9502842954082662
+        ],
+        "scale": [
+          1.0,
+          1.0000000000000002,
+          1.0000000000000002
+        ]
+      },
+      "head": [
+        0.0,
+        0.96,
+        0.52
+      ],
+      "tail": [
+        0.0,
+        1.02,
+        0.79
+      ],
+      "length": 0.27658633371878666,
+      "roll": 0.0,
+      "deform": true,
+      "mirror": null,
+      "evidence": {
+        "source": "procedural-fixture",
+        "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks.",
+        "confidence": 1.0
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "jaw",
+      "role": "jaw",
+      "parent": "head",
+      "rest": {
+        "translation": [
+          0.0,
+          0.08785683541655576,
+          0.11171918577660789
+        ],
+        "rotation": [
+          0.13166271717424408,
+          0.0,
+          0.0,
+          0.9912945722167025
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          0.9999999999999999
+        ]
+      },
+      "head": [
+        0.0,
+        0.87,
+        0.63
+      ],
+      "tail": [
+        0.0,
+        0.86,
+        0.85
+      ],
+      "length": 0.22022715545545238,
+      "roll": 0.0,
+      "deform": true,
+      "mirror": null,
+      "evidence": {
+        "source": "procedural-fixture",
+        "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks.",
+        "confidence": 1.0
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "upper-leg.front.left",
+      "role": "upper-leg.front.left",
+      "parent": "chest",
+      "rest": {
+        "translation": [
+          -0.22,
+          0.11179131136764292,
+          0.05918363542992855
+        ],
+        "rotation": [
+          0.6459256808830118,
+          0.26175302433951897,
+          0.3089890854973638,
+          0.6471407219982649
+        ],
+        "scale": [
+          0.9999999999999999,
+          1.0000000000000002,
+          1.0
+        ]
+      },
+      "head": [
+        -0.22,
+        0.73,
+        0.32
+      ],
+      "tail": [
+        -0.24,
+        0.41,
+        0.365
+      ],
+      "length": 0.3237668914512415,
+      "roll": 0.0,
+      "deform": true,
+      "mirror": "upper-leg.front.right",
+      "evidence": {
+        "source": "procedural-fixture",
+        "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks.",
+        "confidence": 1.0
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "lower-leg.front.left",
+      "role": "lower-leg.front.left",
+      "parent": "upper-leg.front.left",
+      "rest": {
+        "translation": [
+          1.1102230246251565e-16,
+          0.3237668914512415,
+          -3.3306690738754696e-16
+        ],
+        "rotation": [
+          0.1416893903415239,
+          -0.40390398943615596,
+          0.029162784931135423,
+          0.9032913239687766
+        ],
+        "scale": [
+          0.9999999999999999,
+          1.0,
+          1.0
+        ]
+      },
+      "head": [
+        -0.24,
+        0.41,
+        0.365
+      ],
+      "tail": [
+        -0.24,
+        0.1,
+        0.32
+      ],
+      "length": 0.3132491021535416,
+      "roll": 0.0,
+      "deform": true,
+      "mirror": "lower-leg.front.right",
+      "evidence": {
+        "source": "procedural-fixture",
+        "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks.",
+        "confidence": 1.0
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "paw.front.left",
+      "role": "paw.front.left",
+      "parent": "lower-leg.front.left",
+      "rest": {
+        "translation": [
+          0.0,
+          0.3132491021535415,
+          5.551115123125783e-17
+        ],
+        "rotation": [
+          -0.6638671511964166,
+          0.0,
+          0.0,
+          0.7478505235422077
+        ],
+        "scale": [
+          1.0,
+          0.9999999999999999,
+          0.9999999999999999
+        ]
+      },
+      "head": [
+        -0.24,
+        0.1,
+        0.32
+      ],
+      "tail": [
+        -0.24,
+        0.065,
+        0.45
+      ],
+      "length": 0.13462912017836262,
+      "roll": 0.0,
+      "deform": true,
+      "mirror": "paw.front.right",
+      "evidence": {
+        "source": "procedural-fixture",
+        "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks.",
+        "confidence": 1.0
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "upper-leg.front.right",
+      "role": "upper-leg.front.right",
+      "parent": "chest",
+      "rest": {
+        "translation": [
+          0.22,
+          0.11179131136764292,
+          0.05918363542992855
+        ],
+        "rotation": [
+          0.6459256808830118,
+          -0.26175302433951897,
+          -0.3089890854973638,
+          0.6471407219982649
+        ],
+        "scale": [
+          0.9999999999999999,
+          1.0000000000000002,
+          1.0
+        ]
+      },
+      "head": [
+        0.22,
+        0.73,
+        0.32
+      ],
+      "tail": [
+        0.24,
+        0.41,
+        0.365
+      ],
+      "length": 0.3237668914512415,
+      "roll": 0.0,
+      "deform": true,
+      "mirror": "upper-leg.front.left",
+      "evidence": {
+        "source": "procedural-fixture",
+        "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks.",
+        "confidence": 1.0
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "lower-leg.front.right",
+      "role": "lower-leg.front.right",
+      "parent": "upper-leg.front.right",
+      "rest": {
+        "translation": [
+          -1.1102230246251565e-16,
+          0.3237668914512415,
+          -3.3306690738754696e-16
+        ],
+        "rotation": [
+          0.1416893903415239,
+          0.40390398943615596,
+          -0.029162784931135423,
+          0.9032913239687766
+        ],
+        "scale": [
+          0.9999999999999999,
+          1.0,
+          1.0
+        ]
+      },
+      "head": [
+        0.24,
+        0.41,
+        0.365
+      ],
+      "tail": [
+        0.24,
+        0.1,
+        0.32
+      ],
+      "length": 0.3132491021535416,
+      "roll": 0.0,
+      "deform": true,
+      "mirror": "lower-leg.front.left",
+      "evidence": {
+        "source": "procedural-fixture",
+        "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks.",
+        "confidence": 1.0
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "paw.front.right",
+      "role": "paw.front.right",
+      "parent": "lower-leg.front.right",
+      "rest": {
+        "translation": [
+          0.0,
+          0.3132491021535415,
+          5.551115123125783e-17
+        ],
+        "rotation": [
+          -0.6638671511964166,
+          0.0,
+          0.0,
+          0.7478505235422077
+        ],
+        "scale": [
+          1.0,
+          0.9999999999999999,
+          0.9999999999999999
+        ]
+      },
+      "head": [
+        0.24,
+        0.1,
+        0.32
+      ],
+      "tail": [
+        0.24,
+        0.065,
+        0.45
+      ],
+      "length": 0.13462912017836262,
+      "roll": 0.0,
+      "deform": true,
+      "mirror": "paw.front.left",
+      "evidence": {
+        "source": "procedural-fixture",
+        "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks.",
+        "confidence": 1.0
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "upper-leg.rear.left",
+      "role": "upper-leg.rear.left",
+      "parent": "pelvis",
+      "rest": {
+        "translation": [
+          -0.22,
+          0.010765605008190127,
+          -0.009170700562532441
+        ],
+        "rotation": [
+          0.6177398083773153,
+          0.2746921634926497,
+          0.2975451495539954,
+          0.6740983818691273
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "head": [
+        -0.22,
+        0.73,
+        -0.34
+      ],
+      "tail": [
+        -0.24,
+        0.41,
+        -0.29500000000000004
+      ],
+      "length": 0.3237668914512415,
+      "roll": 0.0,
+      "deform": true,
+      "mirror": "upper-leg.rear.right",
+      "evidence": {
+        "source": "procedural-fixture",
+        "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks.",
+        "confidence": 1.0
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "lower-leg.rear.left",
+      "role": "lower-leg.rear.left",
+      "parent": "upper-leg.rear.left",
+      "rest": {
+        "translation": [
+          2.220446049250313e-16,
+          0.3237668914512413,
+          -3.0531133177191805e-16
+        ],
+        "rotation": [
+          0.1416893903415239,
+          -0.40390398943615596,
+          0.029162784931135423,
+          0.9032913239687766
+        ],
+        "scale": [
+          0.9999999999999999,
+          1.0,
+          1.0
+        ]
+      },
+      "head": [
+        -0.24,
+        0.41,
+        -0.29500000000000004
+      ],
+      "tail": [
+        -0.24,
+        0.1,
+        -0.34
+      ],
+      "length": 0.3132491021535416,
+      "roll": 0.0,
+      "deform": true,
+      "mirror": "lower-leg.rear.right",
+      "evidence": {
+        "source": "procedural-fixture",
+        "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks.",
+        "confidence": 1.0
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "paw.rear.left",
+      "role": "paw.rear.left",
+      "parent": "lower-leg.rear.left",
+      "rest": {
+        "translation": [
+          0.0,
+          0.31324910215354157,
+          1.1102230246251565e-16
+        ],
+        "rotation": [
+          -0.6638671511964166,
+          0.0,
+          0.0,
+          0.7478505235422077
+        ],
+        "scale": [
+          1.0,
+          0.9999999999999999,
+          0.9999999999999999
+        ]
+      },
+      "head": [
+        -0.24,
+        0.1,
+        -0.34
+      ],
+      "tail": [
+        -0.24,
+        0.065,
+        -0.21000000000000002
+      ],
+      "length": 0.13462912017836262,
+      "roll": 0.0,
+      "deform": true,
+      "mirror": "paw.rear.right",
+      "evidence": {
+        "source": "procedural-fixture",
+        "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks.",
+        "confidence": 1.0
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "upper-leg.rear.right",
+      "role": "upper-leg.rear.right",
+      "parent": "pelvis",
+      "rest": {
+        "translation": [
+          0.22,
+          0.010765605008190127,
+          -0.009170700562532441
+        ],
+        "rotation": [
+          0.6177398083773153,
+          -0.2746921634926497,
+          -0.2975451495539954,
+          0.6740983818691273
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "head": [
+        0.22,
+        0.73,
+        -0.34
+      ],
+      "tail": [
+        0.24,
+        0.41,
+        -0.29500000000000004
+      ],
+      "length": 0.3237668914512415,
+      "roll": 0.0,
+      "deform": true,
+      "mirror": "upper-leg.rear.left",
+      "evidence": {
+        "source": "procedural-fixture",
+        "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks.",
+        "confidence": 1.0
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "lower-leg.rear.right",
+      "role": "lower-leg.rear.right",
+      "parent": "upper-leg.rear.right",
+      "rest": {
+        "translation": [
+          -2.220446049250313e-16,
+          0.3237668914512413,
+          -3.0531133177191805e-16
+        ],
+        "rotation": [
+          0.1416893903415239,
+          0.40390398943615596,
+          -0.029162784931135423,
+          0.9032913239687766
+        ],
+        "scale": [
+          0.9999999999999999,
+          1.0,
+          1.0
+        ]
+      },
+      "head": [
+        0.24,
+        0.41,
+        -0.29500000000000004
+      ],
+      "tail": [
+        0.24,
+        0.1,
+        -0.34
+      ],
+      "length": 0.3132491021535416,
+      "roll": 0.0,
+      "deform": true,
+      "mirror": "lower-leg.rear.left",
+      "evidence": {
+        "source": "procedural-fixture",
+        "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks.",
+        "confidence": 1.0
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "paw.rear.right",
+      "role": "paw.rear.right",
+      "parent": "lower-leg.rear.right",
+      "rest": {
+        "translation": [
+          0.0,
+          0.31324910215354157,
+          1.1102230246251565e-16
+        ],
+        "rotation": [
+          -0.6638671511964166,
+          0.0,
+          0.0,
+          0.7478505235422077
+        ],
+        "scale": [
+          1.0,
+          0.9999999999999999,
+          0.9999999999999999
+        ]
+      },
+      "head": [
+        0.24,
+        0.1,
+        -0.34
+      ],
+      "tail": [
+        0.24,
+        0.065,
+        -0.21000000000000002
+      ],
+      "length": 0.13462912017836262,
+      "roll": 0.0,
+      "deform": true,
+      "mirror": "paw.rear.left",
+      "evidence": {
+        "source": "procedural-fixture",
+        "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks.",
+        "confidence": 1.0
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "tail.1",
+      "role": "tail.1",
+      "parent": "pelvis",
+      "rest": {
+        "translation": [
+          0.0,
+          -0.0789477700600611,
+          -0.016347770567992526
+        ],
+        "rotation": [
+          0.9821616917321586,
+          0.0,
+          0.0,
+          -0.1880383240029124
+        ],
+        "scale": [
+          1.0,
+          0.9999999999999999,
+          1.0
+        ]
+      },
+      "head": [
+        0.0,
+        0.73,
+        -0.43
+      ],
+      "tail": [
+        0.0,
+        0.77,
+        -0.56
+      ],
+      "length": 0.1360147050873545,
+      "roll": 0.0,
+      "deform": true,
+      "mirror": null,
+      "evidence": {
+        "source": "procedural-fixture",
+        "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks.",
+        "confidence": 1.0
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "tail.2",
+      "role": "tail.2",
+      "parent": "tail.1",
+      "rest": {
+        "translation": [
+          0.0,
+          0.13601470508735447,
+          0.0
+        ],
+        "rotation": [
+          5.101576259310177e-18,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          0.9999999999999999
+        ]
+      },
+      "head": [
+        0.0,
+        0.77,
+        -0.56
+      ],
+      "tail": [
+        0.0,
+        0.81,
+        -0.6900000000000001
+      ],
+      "length": 0.13601470508735444,
+      "roll": 0.0,
+      "deform": true,
+      "mirror": null,
+      "evidence": {
+        "source": "procedural-fixture",
+        "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks.",
+        "confidence": 1.0
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "tail.3",
+      "role": "tail.3",
+      "parent": "tail.2",
+      "rest": {
+        "translation": [
+          0.0,
+          0.13601470508735436,
+          -1.1102230246251565e-16
+        ],
+        "rotation": [
+          2.7141886082020925e-17,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scale": [
+          1.0,
+          0.9999999999999999,
+          0.9999999999999999
+        ]
+      },
+      "head": [
+        0.0,
+        0.8099999999999999,
+        -0.69
+      ],
+      "tail": [
+        0.0,
+        0.85,
+        -0.8200000000000001
+      ],
+      "length": 0.13601470508735455,
+      "roll": 0.0,
+      "deform": true,
+      "mirror": null,
+      "evidence": {
+        "source": "procedural-fixture",
+        "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks.",
+        "confidence": 1.0
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "tail.4",
+      "role": "tail.4",
+      "parent": "tail.3",
+      "rest": {
+        "translation": [
+          0.0,
+          0.13601470508735447,
+          0.0
+        ],
+        "rotation": [
+          -3.530440809691721e-17,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0000000000000002
+        ]
+      },
+      "head": [
+        0.0,
+        0.85,
+        -0.8200000000000001
+      ],
+      "tail": [
+        0.0,
+        0.89,
+        -0.9500000000000001
+      ],
+      "length": 0.13601470508735444,
+      "roll": 0.0,
+      "deform": true,
+      "mirror": null,
+      "evidence": {
+        "source": "procedural-fixture",
+        "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks.",
+        "confidence": 1.0
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "eye.left",
+      "role": "eye.left",
+      "parent": "head",
+      "rest": {
+        "translation": [
+          -0.1,
+          0.3291919697398107,
+          0.016812110480945885
+        ],
+        "rotation": [
+          0.10911677189150916,
+          0.0,
+          0.0,
+          0.9940289382568178
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "head": [
+        -0.1,
+        1.015,
+        0.845
+      ],
+      "tail": [
+        -0.1,
+        1.015,
+        0.92
+      ],
+      "length": 0.07500000000000007,
+      "roll": 0.0,
+      "deform": true,
+      "mirror": "eye.right",
+      "evidence": {
+        "source": "procedural-fixture",
+        "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks.",
+        "confidence": 1.0
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "ear.left",
+      "role": "ear.left",
+      "parent": "head",
+      "rest": {
+        "translation": [
+          -0.19,
+          0.020608393492772326,
+          -0.09273777071747535
+        ],
+        "rotation": [
+          -0.49195978225503056,
+          0.542493859518837,
+          0.6762815527422217,
+          -0.07949368810483738
+        ],
+        "scale": [
+          1.0,
+          1.0000000000000002,
+          1.0
+        ]
+      },
+      "head": [
+        -0.19,
+        1.055,
+        0.52
+      ],
+      "tail": [
+        -0.27,
+        0.89,
+        0.48
+      ],
+      "length": 0.18768324379123455,
+      "roll": 0.0,
+      "deform": true,
+      "mirror": "ear.right",
+      "evidence": {
+        "source": "procedural-fixture",
+        "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks.",
+        "confidence": 1.0
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "eye.right",
+      "role": "eye.right",
+      "parent": "head",
+      "rest": {
+        "translation": [
+          0.1,
+          0.3291919697398107,
+          0.016812110480945885
+        ],
+        "rotation": [
+          0.10911677189150916,
+          0.0,
+          0.0,
+          0.9940289382568178
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "head": [
+        0.1,
+        1.015,
+        0.845
+      ],
+      "tail": [
+        0.1,
+        1.015,
+        0.92
+      ],
+      "length": 0.07500000000000007,
+      "roll": 0.0,
+      "deform": true,
+      "mirror": "eye.left",
+      "evidence": {
+        "source": "procedural-fixture",
+        "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks.",
+        "confidence": 1.0
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "ear.right",
+      "role": "ear.right",
+      "parent": "head",
+      "rest": {
+        "translation": [
+          0.19,
+          0.020608393492772326,
+          -0.09273777071747535
+        ],
+        "rotation": [
+          0.49195978225503056,
+          0.542493859518837,
+          0.6762815527422217,
+          0.07949368810483738
+        ],
+        "scale": [
+          1.0,
+          1.0000000000000002,
+          1.0
+        ]
+      },
+      "head": [
+        0.19,
+        1.055,
+        0.52
+      ],
+      "tail": [
+        0.27,
+        0.89,
+        0.48
+      ],
+      "length": 0.18768324379123455,
+      "roll": 0.0,
+      "deform": true,
+      "mirror": "ear.left",
+      "evidence": {
+        "source": "procedural-fixture",
+        "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks.",
+        "confidence": 1.0
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "upper-leg.middle.left",
+      "role": "upper-leg.middle.left",
+      "parent": "spine",
+      "rest": {
+        "translation": [
+          -0.23,
+          0.0985086818307889,
+          0.019900743804199816
+        ],
+        "rotation": [
+          -0.11022933098535846,
+          0.6428522531689775,
+          0.7103437440274517,
+          0.2645793652331024
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          0.9999999999999997
+        ]
+      },
+      "head": [
+        -0.23,
+        0.73,
+        0.0
+      ],
+      "tail": [
+        -0.43,
+        0.4,
+        0.02
+      ],
+      "length": 0.38639358172723315,
+      "roll": 0.0,
+      "deform": true,
+      "mirror": "upper-leg.middle.right",
+      "evidence": {
+        "source": "procedural-fixture",
+        "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks.",
+        "confidence": 1.0
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "lower-leg.middle.left",
+      "role": "lower-leg.middle.left",
+      "parent": "upper-leg.middle.left",
+      "rest": {
+        "translation": [
+          -1.1102230246251565e-16,
+          0.38639358172723304,
+          1.3877787807814457e-17
+        ],
+        "rotation": [
+          -0.09489943987149717,
+          0.39172448860815207,
+          0.15554294942915112,
+          0.9018605281414851
+        ],
+        "scale": [
+          1.0,
+          0.9999999999999996,
+          0.9999999999999999
+        ]
+      },
+      "head": [
+        -0.43,
+        0.4,
+        0.02
+      ],
+      "tail": [
+        -0.49,
+        0.1,
+        0.0
+      ],
+      "length": 0.30659419433511786,
+      "roll": 0.0,
+      "deform": true,
+      "mirror": "lower-leg.middle.right",
+      "evidence": {
+        "source": "procedural-fixture",
+        "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks.",
+        "confidence": 1.0
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "paw.middle.left",
+      "role": "paw.middle.left",
+      "parent": "lower-leg.middle.left",
+      "rest": {
+        "translation": [
+          5.551115123125783e-17,
+          0.30659419433511786,
+          -5.551115123125783e-17
+        ],
+        "rotation": [
+          -0.2736296261273271,
+          0.7489263678672348,
+          0.5739605777614564,
+          0.18656199611481908
+        ],
+        "scale": [
+          0.9999999999999998,
+          1.0,
+          1.0
+        ]
+      },
+      "head": [
+        -0.49,
+        0.1,
+        0.0
+      ],
+      "tail": [
+        -0.49,
+        0.065,
+        0.13
+      ],
+      "length": 0.13462912017836262,
+      "roll": 0.0,
+      "deform": true,
+      "mirror": "paw.middle.right",
+      "evidence": {
+        "source": "procedural-fixture",
+        "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks.",
+        "confidence": 1.0
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "wing-root.left",
+      "role": "wing-root.left",
+      "parent": "chest",
+      "rest": {
+        "translation": [
+          -0.18,
+          -0.08713146327183932,
+          -0.08548747339878571
+        ],
+        "rotation": [
+          0.6895818577343689,
+          -0.3819430916571102,
+          -0.45086870304920657,
+          -0.4187048469145676
+        ],
+        "scale": [
+          0.9999999999999999,
+          0.9999999999999999,
+          0.9999999999999998
+        ]
+      },
+      "head": [
+        -0.18,
+        0.84,
+        0.1
+      ],
+      "tail": [
+        -0.55,
+        0.91,
+        -0.06
+      ],
+      "length": 0.40914545090957577,
+      "roll": 0.0,
+      "deform": true,
+      "mirror": "wing-root.right",
+      "evidence": {
+        "source": "procedural-fixture",
+        "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks.",
+        "confidence": 1.0
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "wing-tip.left",
+      "role": "wing-tip.left",
+      "parent": "wing-root.left",
+      "rest": {
+        "translation": [
+          0.0,
+          0.40914545090957577,
+          -5.551115123125783e-17
+        ],
+        "rotation": [
+          -0.033132272441999434,
+          0.03595045418207516,
+          -0.031040973599591598,
+          0.9983217293663006
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "head": [
+        -0.55,
+        0.91,
+        -0.06
+      ],
+      "tail": [
+        -1.03,
+        1.02,
+        -0.32
+      ],
+      "length": 0.5568662316930342,
+      "roll": 0.0,
+      "deform": true,
+      "mirror": "wing-tip.right",
+      "evidence": {
+        "source": "procedural-fixture",
+        "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks.",
+        "confidence": 1.0
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "upper-leg.middle.right",
+      "role": "upper-leg.middle.right",
+      "parent": "spine",
+      "rest": {
+        "translation": [
+          0.23,
+          0.0985086818307889,
+          0.019900743804199816
+        ],
+        "rotation": [
+          0.11022933098535846,
+          0.6428522531689775,
+          0.7103437440274517,
+          -0.2645793652331024
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          0.9999999999999997
+        ]
+      },
+      "head": [
+        0.23,
+        0.73,
+        0.0
+      ],
+      "tail": [
+        0.43,
+        0.4,
+        0.02
+      ],
+      "length": 0.38639358172723315,
+      "roll": 0.0,
+      "deform": true,
+      "mirror": "upper-leg.middle.left",
+      "evidence": {
+        "source": "procedural-fixture",
+        "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks.",
+        "confidence": 1.0
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "lower-leg.middle.right",
+      "role": "lower-leg.middle.right",
+      "parent": "upper-leg.middle.right",
+      "rest": {
+        "translation": [
+          1.1102230246251565e-16,
+          0.38639358172723304,
+          1.3877787807814457e-17
+        ],
+        "rotation": [
+          -0.09489943987149717,
+          -0.39172448860815207,
+          -0.15554294942915112,
+          0.9018605281414851
+        ],
+        "scale": [
+          1.0,
+          0.9999999999999996,
+          0.9999999999999999
+        ]
+      },
+      "head": [
+        0.43,
+        0.4,
+        0.02
+      ],
+      "tail": [
+        0.49,
+        0.1,
+        0.0
+      ],
+      "length": 0.30659419433511786,
+      "roll": 0.0,
+      "deform": true,
+      "mirror": "lower-leg.middle.left",
+      "evidence": {
+        "source": "procedural-fixture",
+        "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks.",
+        "confidence": 1.0
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "paw.middle.right",
+      "role": "paw.middle.right",
+      "parent": "lower-leg.middle.right",
+      "rest": {
+        "translation": [
+          -5.551115123125783e-17,
+          0.30659419433511786,
+          -5.551115123125783e-17
+        ],
+        "rotation": [
+          0.2736296261273271,
+          0.7489263678672348,
+          0.5739605777614564,
+          -0.18656199611481908
+        ],
+        "scale": [
+          0.9999999999999998,
+          1.0,
+          1.0
+        ]
+      },
+      "head": [
+        0.49,
+        0.1,
+        0.0
+      ],
+      "tail": [
+        0.49,
+        0.065,
+        0.13
+      ],
+      "length": 0.13462912017836262,
+      "roll": 0.0,
+      "deform": true,
+      "mirror": "paw.middle.left",
+      "evidence": {
+        "source": "procedural-fixture",
+        "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks.",
+        "confidence": 1.0
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "wing-root.right",
+      "role": "wing-root.right",
+      "parent": "chest",
+      "rest": {
+        "translation": [
+          0.18,
+          -0.08713146327183932,
+          -0.08548747339878571
+        ],
+        "rotation": [
+          0.6895818577343689,
+          0.3819430916571102,
+          0.45086870304920657,
+          -0.4187048469145676
+        ],
+        "scale": [
+          0.9999999999999999,
+          0.9999999999999999,
+          0.9999999999999998
+        ]
+      },
+      "head": [
+        0.18,
+        0.84,
+        0.1
+      ],
+      "tail": [
+        0.55,
+        0.91,
+        -0.06
+      ],
+      "length": 0.40914545090957577,
+      "roll": 0.0,
+      "deform": true,
+      "mirror": "wing-root.left",
+      "evidence": {
+        "source": "procedural-fixture",
+        "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks.",
+        "confidence": 1.0
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "wing-tip.right",
+      "role": "wing-tip.right",
+      "parent": "wing-root.right",
+      "rest": {
+        "translation": [
+          0.0,
+          0.40914545090957577,
+          -5.551115123125783e-17
+        ],
+        "rotation": [
+          -0.033132272441999434,
+          -0.03595045418207516,
+          0.031040973599591598,
+          0.9983217293663006
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "head": [
+        0.55,
+        0.91,
+        -0.06
+      ],
+      "tail": [
+        1.03,
+        1.02,
+        -0.32
+      ],
+      "length": 0.5568662316930342,
+      "roll": 0.0,
+      "deform": true,
+      "mirror": "wing-tip.left",
+      "evidence": {
+        "source": "procedural-fixture",
+        "reference": "Authored fixture mesh and skeleton share these explicit construction landmarks.",
+        "confidence": 1.0
+      }
+    }
+  ]
+}

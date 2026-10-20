@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "kind": "hatch-3d-rig-validation",
+  "rig_sha256": "51c8c585e97b259883e5c3535421ec90fbb7bf6b74da20994b0622a0e5a9d089",
+  "ok": true,
+  "metrics": {
+    "hierarchy_cycles": 0,
+    "invalid_joint_references": 0,
+    "bones": 7,
+    "vertices": 706,
+    "triangles": 1368,
+    "weight_sum_max_error": 0.0,
+    "bind_pose_max_error_m": 1.0014835710813626e-32,
+    "nonfinite_vertices": 0,
+    "max_vertex_displacement_m": 1.051430031018062,
+    "distinct_sampled_poses": 10,
+    "clips": 3,
+    "contact_tolerance_m": 0.008899999856948853,
+    "max_contact_error_m": 0.0,
+    "max_planted_drift_m": 0.0
+  },
+  "checks": [
+    {
+      "name": "structure",
+      "status": "passed",
+      "message": "Finite acyclic skeleton, geometry and controller graph.",
+      "value": 0
+    },
+    {
+      "name": "skin",
+      "status": "passed",
+      "message": "Every vertex has normalized real bone weights.",
+      "value": 0.0
+    },
+    {
+      "name": "bind-pose",
+      "status": "passed",
+      "message": "Canonical bind-pose vertex reconstruction (meters).",
+      "value": 1.0014835710813626e-32
+    },
+    {
+      "name": "clip:gripper-slide",
+      "status": "passed",
+      "message": "Channel evaluation produces finite real mesh positions.",
+      "value": 3
+    },
+    {
+      "name": "clip:hinge-sweep",
+      "status": "passed",
+      "message": "Channel evaluation produces finite real mesh positions.",
+      "value": 2
+    },
+    {
+      "name": "clip:neutral",
+      "status": "passed",
+      "message": "Channel evaluation produces finite real mesh positions.",
+      "value": 1
+    },
+    {
+      "name": "key-budget",
+      "status": "passed",
+      "message": "Total authored keyframe budget.",
+      "value": 127
+    },
+    {
+      "name": "contacts",
+      "status": "passed",
+      "message": "Measured IK endpoint error and planted world-space drift.",
+      "value": 0.0
+    },
+    {
+      "name": "animated-geometry",
+      "status": "passed",
+      "message": "Acceptance requires executable channels and distinct deformed vertices.",
+      "value": 1.051430031018062
+    },
+    {
+      "name": "visual-review",
+      "status": "unavailable",
+      "message": "Numerical validation does not establish artistic or anatomical approval.",
+      "value": "pending"
+    }
+  ],
+  "artifacts": [],
+  "created_at": "2026-10-20T10:58:07Z"
+}

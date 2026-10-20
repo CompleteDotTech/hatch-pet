@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "kind": "hatch-3d-rig-template",
+  "id": "custom",
+  "version": "1.0.0",
+  "extends": [],
+  "description": "An extensible root for explicitly authored arbitrary branching anatomy.",
+  "rest_pose": "custom",
+  "bones": [
+    {
+      "id": "root",
+      "role": "root",
+      "parent": null,
+      "head": [
+        0,
+        0,
+        0
+      ],
+      "tail": [
+        0,
+        0.1,
+        0
+      ],
+      "deform": false,
+      "mirror": null,
+      "roll": 0.0
+    }
+  ],
+  "constraints": [],
+  "ik": [],
+  "capabilities": [],
+  "sockets": [],
+  "retarget_group": "custom",
+  "symmetry": "explicit",
+  "rest_bounds": [
+    [
+      -1,
+      0,
+      -1
+    ],
+    [
+      1,
+      2,
+      1
+    ]
+  ],
+  "fitting_notes": "Approved 3D landmarks take precedence. Bounds and region centerlines need anatomical review."
+}

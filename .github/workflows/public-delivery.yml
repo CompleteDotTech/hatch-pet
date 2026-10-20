@@ -69,8 +69,8 @@ jobs:
           git --version
           ffmpeg -version
           ffprobe -version
-      - name: Verify inventory, all regressions, reconstruction, both films and editor handoffs
-        run: python scripts/verify_public_delivery.py --destination delivery-verification --tests --render --video
+      - name: Verify inventory, all 2D regressions, reconstruction, both films and editor handoffs
+        run: python scripts/verify_public_delivery.py --destination delivery-verification --tests --test-scope 2d --render --video
       - name: Retain actual validation evidence
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7

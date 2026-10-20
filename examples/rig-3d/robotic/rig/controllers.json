@@ -1,0 +1,60 @@
+{
+  "ik": [
+    {
+      "schema_version": 1,
+      "id": "robot-arm",
+      "bones": [
+        "shoulder",
+        "elbow",
+        "gripper"
+      ],
+      "solver": "two-bone",
+      "pole": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "tolerance": 8.899999856948854e-06,
+      "iterations": 64
+    }
+  ],
+  "constraints": [
+    {
+      "schema_version": 1,
+      "id": "shoulder-hinge",
+      "bone": "shoulder",
+      "type": "hinge",
+      "axis": [
+        0,
+        0,
+        1
+      ],
+      "minimum": -1.3,
+      "maximum": 1.3
+    },
+    {
+      "schema_version": 1,
+      "id": "elbow-hinge",
+      "bone": "elbow",
+      "type": "hinge",
+      "axis": [
+        0,
+        0,
+        1
+      ],
+      "minimum": -1.3,
+      "maximum": 1.3
+    },
+    {
+      "schema_version": 1,
+      "id": "gripper-slide",
+      "bone": "gripper",
+      "type": "translation",
+      "axes": [
+        1
+      ],
+      "minimum": 0,
+      "maximum": 0.12
+    }
+  ]
+}

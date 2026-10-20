@@ -1,0 +1,822 @@
+{
+  "schema_version": 1,
+  "kind": "hatch-3d-rig-template",
+  "id": "quadruped",
+  "version": "1.0.0",
+  "extends": [
+    "custom"
+  ],
+  "description": "A four-legged animal with independent paws, articulated spine, jaw, eyes, ears and tail.",
+  "rest_pose": "stance",
+  "bones": [
+    {
+      "id": "pelvis",
+      "role": "pelvis",
+      "parent": "root",
+      "head": [
+        0,
+        0.72,
+        -0.35
+      ],
+      "tail": [
+        0,
+        0.74,
+        -0.1
+      ],
+      "deform": true,
+      "mirror": null,
+      "roll": 0.0
+    },
+    {
+      "id": "spine",
+      "role": "spine",
+      "parent": "pelvis",
+      "head": [
+        0,
+        0.74,
+        -0.1
+      ],
+      "tail": [
+        0,
+        0.77,
+        0.2
+      ],
+      "deform": true,
+      "mirror": null,
+      "roll": 0.0
+    },
+    {
+      "id": "chest",
+      "role": "chest",
+      "parent": "spine",
+      "head": [
+        0,
+        0.77,
+        0.2
+      ],
+      "tail": [
+        0,
+        0.8,
+        0.38
+      ],
+      "deform": true,
+      "mirror": null,
+      "roll": 0.0
+    },
+    {
+      "id": "neck",
+      "role": "neck",
+      "parent": "chest",
+      "head": [
+        0,
+        0.8,
+        0.38
+      ],
+      "tail": [
+        0,
+        0.96,
+        0.52
+      ],
+      "deform": true,
+      "mirror": null,
+      "roll": 0.0
+    },
+    {
+      "id": "head",
+      "role": "head",
+      "parent": "neck",
+      "head": [
+        0,
+        0.96,
+        0.52
+      ],
+      "tail": [
+        0,
+        1.02,
+        0.79
+      ],
+      "deform": true,
+      "mirror": null,
+      "roll": 0.0
+    },
+    {
+      "id": "jaw",
+      "role": "jaw",
+      "parent": "head",
+      "head": [
+        0,
+        0.87,
+        0.63
+      ],
+      "tail": [
+        0,
+        0.86,
+        0.85
+      ],
+      "deform": true,
+      "mirror": null,
+      "roll": 0.0
+    },
+    {
+      "id": "upper-leg.front.left",
+      "role": "upper-leg.front.left",
+      "parent": "chest",
+      "head": [
+        -0.22,
+        0.73,
+        0.32
+      ],
+      "tail": [
+        -0.24,
+        0.41,
+        0.365
+      ],
+      "deform": true,
+      "mirror": "upper-leg.front.right",
+      "roll": 0.0
+    },
+    {
+      "id": "lower-leg.front.left",
+      "role": "lower-leg.front.left",
+      "parent": "upper-leg.front.left",
+      "head": [
+        -0.24,
+        0.41,
+        0.365
+      ],
+      "tail": [
+        -0.24,
+        0.1,
+        0.32
+      ],
+      "deform": true,
+      "mirror": "lower-leg.front.right",
+      "roll": 0.0
+    },
+    {
+      "id": "paw.front.left",
+      "role": "paw.front.left",
+      "parent": "lower-leg.front.left",
+      "head": [
+        -0.24,
+        0.1,
+        0.32
+      ],
+      "tail": [
+        -0.24,
+        0.065,
+        0.45
+      ],
+      "deform": true,
+      "mirror": "paw.front.right",
+      "roll": 0.0
+    },
+    {
+      "id": "upper-leg.front.right",
+      "role": "upper-leg.front.right",
+      "parent": "chest",
+      "head": [
+        0.22,
+        0.73,
+        0.32
+      ],
+      "tail": [
+        0.24,
+        0.41,
+        0.365
+      ],
+      "deform": true,
+      "mirror": "upper-leg.front.left",
+      "roll": 0.0
+    },
+    {
+      "id": "lower-leg.front.right",
+      "role": "lower-leg.front.right",
+      "parent": "upper-leg.front.right",
+      "head": [
+        0.24,
+        0.41,
+        0.365
+      ],
+      "tail": [
+        0.24,
+        0.1,
+        0.32
+      ],
+      "deform": true,
+      "mirror": "lower-leg.front.left",
+      "roll": 0.0
+    },
+    {
+      "id": "paw.front.right",
+      "role": "paw.front.right",
+      "parent": "lower-leg.front.right",
+      "head": [
+        0.24,
+        0.1,
+        0.32
+      ],
+      "tail": [
+        0.24,
+        0.065,
+        0.45
+      ],
+      "deform": true,
+      "mirror": "paw.front.left",
+      "roll": 0.0
+    },
+    {
+      "id": "upper-leg.rear.left",
+      "role": "upper-leg.rear.left",
+      "parent": "pelvis",
+      "head": [
+        -0.22,
+        0.73,
+        -0.34
+      ],
+      "tail": [
+        -0.24,
+        0.41,
+        -0.29500000000000004
+      ],
+      "deform": true,
+      "mirror": "upper-leg.rear.right",
+      "roll": 0.0
+    },
+    {
+      "id": "lower-leg.rear.left",
+      "role": "lower-leg.rear.left",
+      "parent": "upper-leg.rear.left",
+      "head": [
+        -0.24,
+        0.41,
+        -0.29500000000000004
+      ],
+      "tail": [
+        -0.24,
+        0.1,
+        -0.34
+      ],
+      "deform": true,
+      "mirror": "lower-leg.rear.right",
+      "roll": 0.0
+    },
+    {
+      "id": "paw.rear.left",
+      "role": "paw.rear.left",
+      "parent": "lower-leg.rear.left",
+      "head": [
+        -0.24,
+        0.1,
+        -0.34
+      ],
+      "tail": [
+        -0.24,
+        0.065,
+        -0.21000000000000002
+      ],
+      "deform": true,
+      "mirror": "paw.rear.right",
+      "roll": 0.0
+    },
+    {
+      "id": "upper-leg.rear.right",
+      "role": "upper-leg.rear.right",
+      "parent": "pelvis",
+      "head": [
+        0.22,
+        0.73,
+        -0.34
+      ],
+      "tail": [
+        0.24,
+        0.41,
+        -0.29500000000000004
+      ],
+      "deform": true,
+      "mirror": "upper-leg.rear.left",
+      "roll": 0.0
+    },
+    {
+      "id": "lower-leg.rear.right",
+      "role": "lower-leg.rear.right",
+      "parent": "upper-leg.rear.right",
+      "head": [
+        0.24,
+        0.41,
+        -0.29500000000000004
+      ],
+      "tail": [
+        0.24,
+        0.1,
+        -0.34
+      ],
+      "deform": true,
+      "mirror": "lower-leg.rear.left",
+      "roll": 0.0
+    },
+    {
+      "id": "paw.rear.right",
+      "role": "paw.rear.right",
+      "parent": "lower-leg.rear.right",
+      "head": [
+        0.24,
+        0.1,
+        -0.34
+      ],
+      "tail": [
+        0.24,
+        0.065,
+        -0.21000000000000002
+      ],
+      "deform": true,
+      "mirror": "paw.rear.left",
+      "roll": 0.0
+    },
+    {
+      "id": "tail.1",
+      "role": "tail.1",
+      "parent": "pelvis",
+      "head": [
+        0,
+        0.73,
+        -0.43
+      ],
+      "tail": [
+        0,
+        0.77,
+        -0.56
+      ],
+      "deform": true,
+      "mirror": null,
+      "roll": 0.0
+    },
+    {
+      "id": "tail.2",
+      "role": "tail.2",
+      "parent": "tail.1",
+      "head": [
+        0,
+        0.77,
+        -0.56
+      ],
+      "tail": [
+        0,
+        0.81,
+        -0.6900000000000001
+      ],
+      "deform": true,
+      "mirror": null,
+      "roll": 0.0
+    },
+    {
+      "id": "tail.3",
+      "role": "tail.3",
+      "parent": "tail.2",
+      "head": [
+        0,
+        0.8099999999999999,
+        -0.69
+      ],
+      "tail": [
+        0,
+        0.85,
+        -0.8200000000000001
+      ],
+      "deform": true,
+      "mirror": null,
+      "roll": 0.0
+    },
+    {
+      "id": "tail.4",
+      "role": "tail.4",
+      "parent": "tail.3",
+      "head": [
+        0,
+        0.85,
+        -0.8200000000000001
+      ],
+      "tail": [
+        0,
+        0.89,
+        -0.9500000000000001
+      ],
+      "deform": true,
+      "mirror": null,
+      "roll": 0.0
+    },
+    {
+      "id": "eye.left",
+      "role": "eye.left",
+      "parent": "head",
+      "head": [
+        -0.1,
+        1.015,
+        0.845
+      ],
+      "tail": [
+        -0.1,
+        1.015,
+        0.92
+      ],
+      "deform": true,
+      "mirror": "eye.right",
+      "roll": 0.0
+    },
+    {
+      "id": "ear.left",
+      "role": "ear.left",
+      "parent": "head",
+      "head": [
+        -0.19,
+        1.055,
+        0.52
+      ],
+      "tail": [
+        -0.27,
+        0.89,
+        0.48
+      ],
+      "deform": true,
+      "mirror": "ear.right",
+      "roll": 0.0
+    },
+    {
+      "id": "eye.right",
+      "role": "eye.right",
+      "parent": "head",
+      "head": [
+        0.1,
+        1.015,
+        0.845
+      ],
+      "tail": [
+        0.1,
+        1.015,
+        0.92
+      ],
+      "deform": true,
+      "mirror": "eye.left",
+      "roll": 0.0
+    },
+    {
+      "id": "ear.right",
+      "role": "ear.right",
+      "parent": "head",
+      "head": [
+        0.19,
+        1.055,
+        0.52
+      ],
+      "tail": [
+        0.27,
+        0.89,
+        0.48
+      ],
+      "deform": true,
+      "mirror": "ear.left",
+      "roll": 0.0
+    }
+  ],
+  "constraints": [
+    {
+      "schema_version": 1,
+      "id": "upper-leg.front.left-limit",
+      "bone": "upper-leg.front.left",
+      "type": "ball",
+      "swing": 2.7
+    },
+    {
+      "schema_version": 1,
+      "id": "lower-leg.front.left-limit",
+      "bone": "lower-leg.front.left",
+      "type": "ball",
+      "swing": 2.7
+    },
+    {
+      "schema_version": 1,
+      "id": "upper-leg.front.right-limit",
+      "bone": "upper-leg.front.right",
+      "type": "ball",
+      "swing": 2.7
+    },
+    {
+      "schema_version": 1,
+      "id": "lower-leg.front.right-limit",
+      "bone": "lower-leg.front.right",
+      "type": "ball",
+      "swing": 2.7
+    },
+    {
+      "schema_version": 1,
+      "id": "upper-leg.rear.left-limit",
+      "bone": "upper-leg.rear.left",
+      "type": "ball",
+      "swing": 2.7
+    },
+    {
+      "schema_version": 1,
+      "id": "lower-leg.rear.left-limit",
+      "bone": "lower-leg.rear.left",
+      "type": "ball",
+      "swing": 2.7
+    },
+    {
+      "schema_version": 1,
+      "id": "upper-leg.rear.right-limit",
+      "bone": "upper-leg.rear.right",
+      "type": "ball",
+      "swing": 2.7
+    },
+    {
+      "schema_version": 1,
+      "id": "lower-leg.rear.right-limit",
+      "bone": "lower-leg.rear.right",
+      "type": "ball",
+      "swing": 2.7
+    },
+    {
+      "schema_version": 1,
+      "id": "tail.1-limit",
+      "bone": "tail.1",
+      "type": "ball",
+      "swing": 1.0
+    },
+    {
+      "schema_version": 1,
+      "id": "tail.2-limit",
+      "bone": "tail.2",
+      "type": "ball",
+      "swing": 1.0
+    },
+    {
+      "schema_version": 1,
+      "id": "tail.3-limit",
+      "bone": "tail.3",
+      "type": "ball",
+      "swing": 1.0
+    },
+    {
+      "schema_version": 1,
+      "id": "tail.4-limit",
+      "bone": "tail.4",
+      "type": "ball",
+      "swing": 1.0
+    },
+    {
+      "schema_version": 1,
+      "id": "eye.left-limit",
+      "bone": "eye.left",
+      "type": "ball",
+      "swing": 0.65
+    },
+    {
+      "schema_version": 1,
+      "id": "eye.right-limit",
+      "bone": "eye.right",
+      "type": "ball",
+      "swing": 0.65
+    }
+  ],
+  "ik": [
+    {
+      "schema_version": 1,
+      "id": "leg.front.left",
+      "bones": [
+        "upper-leg.front.left",
+        "lower-leg.front.left",
+        "paw.front.left"
+      ],
+      "solver": "two-bone",
+      "pole": [
+        -0.24,
+        0.4,
+        1.12
+      ],
+      "tolerance": 1e-05,
+      "iterations": 64
+    },
+    {
+      "schema_version": 1,
+      "id": "leg.front.right",
+      "bones": [
+        "upper-leg.front.right",
+        "lower-leg.front.right",
+        "paw.front.right"
+      ],
+      "solver": "two-bone",
+      "pole": [
+        0.24,
+        0.4,
+        1.12
+      ],
+      "tolerance": 1e-05,
+      "iterations": 64
+    },
+    {
+      "schema_version": 1,
+      "id": "leg.rear.left",
+      "bones": [
+        "upper-leg.rear.left",
+        "lower-leg.rear.left",
+        "paw.rear.left"
+      ],
+      "solver": "two-bone",
+      "pole": [
+        -0.24,
+        0.4,
+        0.46
+      ],
+      "tolerance": 1e-05,
+      "iterations": 64
+    },
+    {
+      "schema_version": 1,
+      "id": "leg.rear.right",
+      "bones": [
+        "upper-leg.rear.right",
+        "lower-leg.rear.right",
+        "paw.rear.right"
+      ],
+      "solver": "two-bone",
+      "pole": [
+        0.24,
+        0.4,
+        0.46
+      ],
+      "tolerance": 1e-05,
+      "iterations": 64
+    },
+    {
+      "schema_version": 1,
+      "id": "tail-target",
+      "bones": [
+        "tail.1",
+        "tail.2",
+        "tail.3",
+        "tail.4"
+      ],
+      "solver": "fabrik",
+      "pole": [
+        0,
+        1.5,
+        -1
+      ],
+      "tolerance": 1e-05,
+      "iterations": 64
+    }
+  ],
+  "capabilities": [
+    "legs",
+    "paws",
+    "tail",
+    "ears",
+    "eyes",
+    "face",
+    "head",
+    "mouth",
+    "quadruped"
+  ],
+  "sockets": [
+    {
+      "schema_version": 1,
+      "id": "paw-socket.front.left",
+      "bone": "paw.front.left",
+      "transform": {
+        "translation": [
+          0,
+          0.06,
+          0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "role": "paw-contact",
+      "owner": "character"
+    },
+    {
+      "schema_version": 1,
+      "id": "paw-socket.front.right",
+      "bone": "paw.front.right",
+      "transform": {
+        "translation": [
+          0,
+          0.06,
+          0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "role": "paw-contact",
+      "owner": "character"
+    },
+    {
+      "schema_version": 1,
+      "id": "paw-socket.rear.left",
+      "bone": "paw.rear.left",
+      "transform": {
+        "translation": [
+          0,
+          0.06,
+          0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "role": "paw-contact",
+      "owner": "character"
+    },
+    {
+      "schema_version": 1,
+      "id": "paw-socket.rear.right",
+      "bone": "paw.rear.right",
+      "transform": {
+        "translation": [
+          0,
+          0.06,
+          0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "role": "paw-contact",
+      "owner": "character"
+    },
+    {
+      "schema_version": 1,
+      "id": "head-top",
+      "bone": "head",
+      "transform": {
+        "translation": [
+          0,
+          0.22,
+          -0.03
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "role": "head-accessory",
+      "owner": "character"
+    }
+  ],
+  "retarget_group": "quadruped",
+  "symmetry": "explicit",
+  "rest_bounds": [
+    [
+      -0.42,
+      0,
+      -0.9
+    ],
+    [
+      0.42,
+      1.18,
+      0.95
+    ]
+  ],
+  "fitting_notes": "Approved 3D landmarks take precedence. Bounds and region centerlines need anatomical review."
+}

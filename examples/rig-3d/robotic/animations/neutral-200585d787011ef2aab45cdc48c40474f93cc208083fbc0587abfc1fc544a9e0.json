@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "kind": "hatch-3d-animation",
+  "id": "neutral",
+  "version": "1.0.0",
+  "rig_id": "demo-robotic",
+  "skeleton_version": "1.0.0",
+  "duration": 2.0,
+  "fps": 12,
+  "loop": true,
+  "tracks": [
+    {
+      "schema_version": 1,
+      "target": "root",
+      "path": "rotation",
+      "interpolation": "LINEAR",
+      "times": [
+        0.0,
+        2.0
+      ],
+      "values": [
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ]
+    }
+  ],
+  "events": [],
+  "contacts": [],
+  "root_motion": "embedded",
+  "interruptible": true,
+  "reduced_motion_pose": "neutral",
+  "provenance": {
+    "schema_version": 1,
+    "tool_version": "1.0.0",
+    "operation": "Authored pose keyframes",
+    "created_at": "2026-10-20T10:50:07Z",
+    "input_hashes": {},
+    "ancestry": []
+  }
+}

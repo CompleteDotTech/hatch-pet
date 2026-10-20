@@ -1,0 +1,113 @@
+{
+  "reader": "Three.js",
+  "version": "0.180.0",
+  "browser": "140.0.7339.16",
+  "independent": true,
+  "ok": true,
+  "rig_sha256": "06f4bd0e04d2b4f02027acc8420762d999493a09a7bb46a6be7933960c38559f",
+  "max_vertex_error_m": 8.836771415161445e-05,
+  "tolerance_m": 0.01,
+  "compared_vertices": 8064,
+  "clips": [
+    {
+      "clip": "combined",
+      "time": 0.0,
+      "max_vertex_error_m": 8.554669539780283e-08
+    },
+    {
+      "clip": "combined",
+      "time": 0.74,
+      "max_vertex_error_m": 1.1425444163081532e-06
+    },
+    {
+      "clip": "combined",
+      "time": 1.46,
+      "max_vertex_error_m": 7.090615063748939e-08
+    },
+    {
+      "clip": "gaze",
+      "time": 0.0,
+      "max_vertex_error_m": 6.092893760056014e-08
+    },
+    {
+      "clip": "gaze",
+      "time": 0.74,
+      "max_vertex_error_m": 1.8741623026234884e-07
+    },
+    {
+      "clip": "gaze",
+      "time": 1.46,
+      "max_vertex_error_m": 6.092893760056014e-08
+    },
+    {
+      "clip": "neutral",
+      "time": 0.0,
+      "max_vertex_error_m": 6.092893760056014e-08
+    },
+    {
+      "clip": "neutral",
+      "time": 0.74,
+      "max_vertex_error_m": 6.092893760056014e-08
+    },
+    {
+      "clip": "neutral",
+      "time": 1.46,
+      "max_vertex_error_m": 6.092893760056014e-08
+    },
+    {
+      "clip": "tail-curl",
+      "time": 0.0,
+      "max_vertex_error_m": 6.092893760056014e-08
+    },
+    {
+      "clip": "tail-curl",
+      "time": 0.74,
+      "max_vertex_error_m": 2.970633298190627e-07
+    },
+    {
+      "clip": "tail-curl",
+      "time": 1.46,
+      "max_vertex_error_m": 6.092893760056014e-08
+    },
+    {
+      "clip": "walk",
+      "time": 0.0,
+      "max_vertex_error_m": 9.250083047238613e-08
+    },
+    {
+      "clip": "walk",
+      "time": 0.74,
+      "max_vertex_error_m": 3.9878654009687674e-05
+    },
+    {
+      "clip": "walk",
+      "time": 1.46,
+      "max_vertex_error_m": 8.836771415161445e-05
+    },
+    {
+      "clip": "wing-flap",
+      "time": 0.0,
+      "max_vertex_error_m": 7.099522646170527e-08
+    },
+    {
+      "clip": "wing-flap",
+      "time": 0.74,
+      "max_vertex_error_m": 6.238998977473704e-08
+    },
+    {
+      "clip": "wing-flap",
+      "time": 1.46,
+      "max_vertex_error_m": 8.302802981391702e-08
+    }
+  ],
+  "ui_playback": true,
+  "ui_frame_step": true,
+  "ui_skeleton": true,
+  "ui_weights": true,
+  "ui_ik": true,
+  "ui_expressions": true,
+  "ui_reduced_motion": true,
+  "errors": [],
+  "asset_sha256": "2370fb09870c33a157c6dabbeb8179fe74d00969cb80a149e54c0fac1b3b2e31",
+  "screenshot_sha256": "4382ad767c32842b2054a9431c6e95c4931d5adf29e6bb11e176ee543d98dec0"
+}

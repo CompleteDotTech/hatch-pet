@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "kind": "hatch-3d-rig-validation",
+  "rig_sha256": "209b5cedd80bc52105b531347caa4c763ce676793cb84f8f09a8705d28299a85",
+  "ok": true,
+  "metrics": {
+    "hierarchy_cycles": 0,
+    "invalid_joint_references": 0,
+    "bones": 27,
+    "vertices": 2284,
+    "triangles": 4488,
+    "weight_sum_max_error": 2.220446049250313e-16,
+    "bind_pose_max_error_m": 2.220446049250313e-16,
+    "nonfinite_vertices": 0,
+    "max_vertex_displacement_m": 0.39951023747452297,
+    "distinct_sampled_poses": 6,
+    "clips": 1,
+    "contact_tolerance_m": 0.008496000170707703,
+    "max_contact_error_m": 2.830524433501838e-16,
+    "max_planted_drift_m": 3.8956806801599406e-16
+  },
+  "checks": [
+    {
+      "name": "structure",
+      "status": "passed",
+      "message": "Finite acyclic skeleton, geometry and controller graph.",
+      "value": 0
+    },
+    {
+      "name": "skin",
+      "status": "passed",
+      "message": "Every vertex has normalized real bone weights.",
+      "value": 2.220446049250313e-16
+    },
+    {
+      "name": "bind-pose",
+      "status": "passed",
+      "message": "Canonical bind-pose vertex reconstruction (meters).",
+      "value": 2.220446049250313e-16
+    },
+    {
+      "name": "clip:walk-retargeted",
+      "status": "passed",
+      "message": "Channel evaluation produces finite real mesh positions.",
+      "value": 17
+    },
+    {
+      "name": "key-budget",
+      "status": "passed",
+      "message": "Total authored keyframe budget.",
+      "value": 425
+    },
+    {
+      "name": "contacts",
+      "status": "passed",
+      "message": "Measured IK endpoint error and planted world-space drift.",
+      "value": 3.8956806801599406e-16
+    },
+    {
+      "name": "animated-geometry",
+      "status": "passed",
+      "message": "Acceptance requires executable channels and distinct deformed vertices.",
+      "value": 0.39951023747452297
+    },
+    {
+      "name": "visual-review",
+      "status": "unavailable",
+      "message": "Numerical validation does not establish artistic or anatomical approval.",
+      "value": "pending"
+    }
+  ],
+  "artifacts": [],
+  "created_at": "2026-10-20T10:58:44Z"
+}

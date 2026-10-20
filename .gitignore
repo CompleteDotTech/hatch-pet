@@ -22,3 +22,9 @@ __pycache__/
 /examples/.production-fixture.hatch.lock
 
 examples/production-pilot/production-workflow.json
+
+# Optional 3D dependencies and ephemeral writer locks / Blender backups.
+/tools/rig/node_modules/
+*.rig.lock
+*.blend1
+*.blend2

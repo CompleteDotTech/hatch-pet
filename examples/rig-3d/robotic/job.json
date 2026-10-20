@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "kind": "hatch-3d-rig-job",
+  "id": "demo-robotic",
+  "status": "roundtrip-verified",
+  "rig_sha256": "51c8c585e97b259883e5c3535421ec90fbb7bf6b74da20994b0622a0e5a9d089",
+  "steps": {},
+  "limits": {
+    "source_bytes": 268435456,
+    "dependency_bytes": 1073741824,
+    "vertices": 1000000,
+    "triangles": 2000000,
+    "bones": 256,
+    "influences": 4,
+    "morphs": 128,
+    "clips": 64,
+    "keyframes": 250000,
+    "duration": 120,
+    "fps": 60,
+    "memory_bytes": 2147483648,
+    "solver_iterations": 128,
+    "timeout_seconds": 300,
+    "archive_files": 10000,
+    "archive_bytes": 1073741824,
+    "attempts": 3
+  },
+  "history": [
+    {
+      "operation": "import",
+      "at": "2026-10-20T10:50:07Z",
+      "signature": "557b03b33c9eb3b5baa9b7dfd251044d93345a4919ce01d984b83498b610e9d6"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "format": "glb",
+  "path": "exports/character.glb",
+  "sha256": "38c95ce549f58bdef2f06ce4652ac2026ca99c744f9593f348d0d1696131296e",
+  "rig_sha256": "51c8c585e97b259883e5c3535421ec90fbb7bf6b74da20994b0622a0e5a9d089",
+  "vertices": 706,
+  "skins": 11,
+  "joints": 7,
+  "animations": [
+    "gripper-slide",
+    "hinge-sweep",
+    "neutral"
+  ],
+  "keyframes": 127,
+  "independently_verified": false
+}

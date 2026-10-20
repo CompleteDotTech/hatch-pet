@@ -1,0 +1,174 @@
+{
+  "schema_version": 1,
+  "kind": "hatch-3d-rendered-frames",
+  "rig_sha256": "209b5cedd80bc52105b531347caa4c763ce676793cb84f8f09a8705d28299a85",
+  "source_sha256": "b6d50a2b375e7b348b59cfc3d9049ed799eb6f64efb25a42bbf953ff4065fe2b",
+  "fixture": true,
+  "clip": "walk-retargeted",
+  "fps": 12,
+  "duration": 2.0,
+  "width": 256,
+  "height": 256,
+  "camera": "three-quarter",
+  "bounds": [
+    [
+      -0.2665279446161681,
+      -2.270909301349284e-16,
+      -0.8363708706809992
+    ],
+    [
+      0.26652794461616813,
+      0.8172000149795563,
+      1.1748000446770832
+    ]
+  ],
+  "transparent": true,
+  "frames": [
+    {
+      "path": "frame-0000.png",
+      "sha256": "2d25eca71133deaf0b3e01ce63ec86709d8658d7bcf80d5322778edd3a0b7780",
+      "time": 0.0,
+      "duration": 0.08333333333333333
+    },
+    {
+      "path": "frame-0001.png",
+      "sha256": "1227d907f4fc4c3b81a0c36b8e4e95cde4d975ad01910c65187fea0452f150a4",
+      "time": 0.08333333333333333,
+      "duration": 0.08333333333333333
+    },
+    {
+      "path": "frame-0002.png",
+      "sha256": "3666865548155e40ae8bc3b503e777b1eac7a0227c85b4baf692561c1e6a783f",
+      "time": 0.16666666666666666,
+      "duration": 0.08333333333333333
+    },
+    {
+      "path": "frame-0003.png",
+      "sha256": "8c3d8dd93d8993cfb8e7a22711a2e19d3379c6dee8c71312d18822b3f8d6df2e",
+      "time": 0.25,
+      "duration": 0.08333333333333333
+    },
+    {
+      "path": "frame-0004.png",
+      "sha256": "953c556274d5f45b0fa646d029c5409d457de43db6664746056dd2d649bd17bf",
+      "time": 0.3333333333333333,
+      "duration": 0.08333333333333333
+    },
+    {
+      "path": "frame-0005.png",
+      "sha256": "d96c4d01ea10f2623fd452dd912a9f4b646070ffa397df5526bd6f2577d6e67b",
+      "time": 0.4166666666666667,
+      "duration": 0.08333333333333333
+    },
+    {
+      "path": "frame-0006.png",
+      "sha256": "a99895e89c448e92d829292c55e69762f36ba017968e9322037491d872eef029",
+      "time": 0.5,
+      "duration": 0.08333333333333333
+    },
+    {
+      "path": "frame-0007.png",
+      "sha256": "fad65c05c8d656bb13dfb267efeed734c79ee5cb32a442bf466e65015ecaa568",
+      "time": 0.5833333333333334,
+      "duration": 0.08333333333333333
+    },
+    {
+      "path": "frame-0008.png",
+      "sha256": "65f976e5689498e7f8848e8f70cb01b4e68a960e6617e0190ba215e42e272aa7",
+      "time": 0.6666666666666666,
+      "duration": 0.08333333333333333
+    },
+    {
+      "path": "frame-0009.png",
+      "sha256": "de3db2b48e585c336e95933f967c99d86f7e7b08a210406fe3da70acc6ca48c3",
+      "time": 0.75,
+      "duration": 0.08333333333333333
+    },
+    {
+      "path": "frame-0010.png",
+      "sha256": "aeeda1ba78301d528ea92662d255440c8f673a17866cd327dab763683e3f3f11",
+      "time": 0.8333333333333334,
+      "duration": 0.08333333333333333
+    },
+    {
+      "path": "frame-0011.png",
+      "sha256": "5fb3708fb54606e065bf3371d41a5834b4b919af6a6f0474934fdd0b137384d3",
+      "time": 0.9166666666666666,
+      "duration": 0.08333333333333333
+    },
+    {
+      "path": "frame-0012.png",
+      "sha256": "e5853e3f046ac68c9d196567041cab8d04cfb1a23dfc4c70080b6a4c587ccda6",
+      "time": 1.0,
+      "duration": 0.08333333333333333
+    },
+    {
+      "path": "frame-0013.png",
+      "sha256": "ca85578d062c9208e9175375b1a18718b5d07d4bc4e8f65251495d08ab18d28b",
+      "time": 1.0833333333333333,
+      "duration": 0.08333333333333333
+    },
+    {
+      "path": "frame-0014.png",
+      "sha256": "23fcc9f47c1871ae3902c099bf8339c0df5caf503d13f10e7aae08532f10a423",
+      "time": 1.1666666666666667,
+      "duration": 0.08333333333333333
+    },
+    {
+      "path": "frame-0015.png",
+      "sha256": "d158a50985021093079fe01f1c5fa9853c9b77961b0ed0ca9823b808342e55f2",
+      "time": 1.25,
+      "duration": 0.08333333333333333
+    },
+    {
+      "path": "frame-0016.png",
+      "sha256": "a8171ce27522aa46f1c9694987563b4b18b262a22ffb4ea733bd2cf1f6c208ab",
+      "time": 1.3333333333333333,
+      "duration": 0.08333333333333333
+    },
+    {
+      "path": "frame-0017.png",
+      "sha256": "30b04cab2453e7100e50975139bb4936dc75f5c2f8b49698177d328d7e22a636",
+      "time": 1.4166666666666667,
+      "duration": 0.08333333333333333
+    },
+    {
+      "path": "frame-0018.png",
+      "sha256": "dc3591ac3f89db908d423db902f29db989c9054a78155b8734b5c19e5785bbd6",
+      "time": 1.5,
+      "duration": 0.08333333333333333
+    },
+    {
+      "path": "frame-0019.png",
+      "sha256": "d21a5ec2c9ad8dc7e15650e0cbe5282a4c49fc45eae6113f2f3187642f5593e3",
+      "time": 1.5833333333333333,
+      "duration": 0.08333333333333333
+    },
+    {
+      "path": "frame-0020.png",
+      "sha256": "2dc5a301341e124977c728b148843cd0ea40b139528f6b2da5b851666c2df1d6",
+      "time": 1.6666666666666667,
+      "duration": 0.08333333333333333
+    },
+    {
+      "path": "frame-0021.png",
+      "sha256": "e00507b1bbfca6a85d5534c470142f04e03c9015cfef7cf1002210ba6b079e01",
+      "time": 1.75,
+      "duration": 0.08333333333333333
+    },
+    {
+      "path": "frame-0022.png",
+      "sha256": "55caf9684e2a3fbafb6cbcebbe36c2f18fe6c4c0898bf94aaf6d73d2510d6025",
+      "time": 1.8333333333333333,
+      "duration": 0.08333333333333333
+    },
+    {
+      "path": "frame-0023.png",
+      "sha256": "222117677bb390a853637a0d87de161e5302ee5bf87160ab15a4723bbf2c0c2b",
+      "time": 1.9166666666666667,
+      "duration": 0.08333333333333326
+    }
+  ],
+  "review_status": "pending",
+  "note": "Derived 2D frames retain 3D provenance; existing 2D packaging and visual review gates still apply."
+}

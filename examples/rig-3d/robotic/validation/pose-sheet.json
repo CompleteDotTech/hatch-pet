@@ -1,0 +1,22 @@
+{
+  "path": "preview/pose-sheet.png",
+  "sha256": "538de5be3b32b87c211c3a37100ecff01b01d713667cf442a765437f8fdd4e62",
+  "rig_sha256": "51c8c585e97b259883e5c3535421ec90fbb7bf6b74da20994b0622a0e5a9d089",
+  "samples": [
+    {
+      "clip": "gripper-slide",
+      "time": 1.0
+    },
+    {
+      "clip": "hinge-sweep",
+      "time": 1.0
+    },
+    {
+      "clip": "neutral",
+      "time": 1.0
+    }
+  ],
+  "renderer": "CPU z-buffer over native skinned triangles",
+  "texture_shading": "base-color-only",
+  "visual_review": "pending"
+}

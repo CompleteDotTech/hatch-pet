@@ -1356,6 +1356,9 @@ def calibrate(root, data, path, apply=False):
 
 
 def main():
+    if len(sys.argv) > 1 and sys.argv[1] == 'rig':
+        from rig import main as rig_main
+        raise SystemExit(rig_main(sys.argv[2:]))
     from decomposition_cli import COMMANDS as decomposition_commands, add_arguments as decomposition_arguments
     if len(sys.argv) > 1 and sys.argv[1] == 'states':
         from state_catalog import main as catalog_main

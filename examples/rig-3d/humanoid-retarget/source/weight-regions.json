@@ -1,0 +1,76 @@
+{
+  "torso": [
+    "pelvis",
+    "spine",
+    "chest"
+  ],
+  "hips": [
+    "pelvis"
+  ],
+  "arm-left": [
+    "upper-arm.left",
+    "forearm.left"
+  ],
+  "leg-left": [
+    "thigh.left",
+    "shin.left"
+  ],
+  "finger-thumb-left": [
+    "thumb.1.left",
+    "thumb.2.left",
+    "thumb.3.left"
+  ],
+  "finger-index-left": [
+    "index.1.left",
+    "index.2.left",
+    "index.3.left"
+  ],
+  "finger-middle-left": [
+    "middle.1.left",
+    "middle.2.left",
+    "middle.3.left"
+  ],
+  "finger-ring-left": [
+    "ring.1.left",
+    "ring.2.left",
+    "ring.3.left"
+  ],
+  "finger-pinky-left": [
+    "pinky.1.left",
+    "pinky.2.left",
+    "pinky.3.left"
+  ],
+  "arm-right": [
+    "upper-arm.right",
+    "forearm.right"
+  ],
+  "leg-right": [
+    "thigh.right",
+    "shin.right"
+  ],
+  "finger-thumb-right": [
+    "thumb.1.right",
+    "thumb.2.right",
+    "thumb.3.right"
+  ],
+  "finger-index-right": [
+    "index.1.right",
+    "index.2.right",
+    "index.3.right"
+  ],
+  "finger-middle-right": [
+    "middle.1.right",
+    "middle.2.right",
+    "middle.3.right"
+  ],
+  "finger-ring-right": [
+    "ring.1.right",
+    "ring.2.right",
+    "ring.3.right"
+  ],
+  "finger-pinky-right": [
+    "pinky.1.right",
+    "pinky.2.right",
+    "pinky.3.right"
+  ]
+}

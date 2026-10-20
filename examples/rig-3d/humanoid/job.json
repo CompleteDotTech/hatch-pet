@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "kind": "hatch-3d-rig-job",
+  "id": "demo-humanoid",
+  "status": "roundtrip-verified",
+  "rig_sha256": "64ce161905c700b026d3def05a1fabf6cc80d32cefbfdebcd05ed85c8dd40151",
+  "steps": {},
+  "limits": {
+    "source_bytes": 268435456,
+    "dependency_bytes": 1073741824,
+    "vertices": 1000000,
+    "triangles": 2000000,
+    "bones": 256,
+    "influences": 4,
+    "morphs": 128,
+    "clips": 64,
+    "keyframes": 250000,
+    "duration": 120,
+    "fps": 60,
+    "memory_bytes": 2147483648,
+    "solver_iterations": 128,
+    "timeout_seconds": 300,
+    "archive_files": 10000,
+    "archive_bytes": 1073741824,
+    "attempts": 3
+  },
+  "history": [
+    {
+      "operation": "import",
+      "at": "2026-10-20T10:49:23Z",
+      "signature": "90f43be4584137c7bda3cb483d8908555b2167507048f3c0b89a3fb02557a551"
+    }
+  ]
+}

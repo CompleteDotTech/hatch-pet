@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "format": "glb",
+  "path": "exports/character.glb",
+  "sha256": "806901b9f412d2b5e6dd7b7099cd04adf81b57221f78527a01b811cadd95af2f",
+  "rig_sha256": "64ce161905c700b026d3def05a1fabf6cc80d32cefbfdebcd05ed85c8dd40151",
+  "vertices": 3830,
+  "skins": 31,
+  "joints": 57,
+  "animations": [
+    "blink-expression",
+    "crouch",
+    "neutral",
+    "reach",
+    "walk",
+    "wave"
+  ],
+  "keyframes": 1488,
+  "independently_verified": false
+}
