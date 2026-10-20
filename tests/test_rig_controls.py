@@ -1,0 +1,65 @@
+import math
+import unittest
+import numpy as np
+from test_rig_math import chain_skeleton
+from rig_constraints import apply_constraints, constraint_order
+from rig_errors import RigError
+from rig_ik import match_fk_to_ik, solve_ik
+from rig_math import axis_angle, qangle
+from rig_skeleton import evaluate_fk, neutral_pose, rotate_bone
+
+
+def ik_chain(count=3, solver='two-bone'):
+    return dict(schema_version=1, id='limb', bones=[f'b{i}' for i in range(count)], solver=solver,
+                pole=[0, 0, 2], tolerance=1e-5, iterations=128)
+
+
+class RigControlTests(unittest.TestCase):
+    def test_analytic_reachable_target_and_geometric_pole(self):
+        skeleton = chain_skeleton()
+        solved = solve_ik(skeleton, neutral_pose(skeleton), ik_chain(), [1, 1, 0])
+        self.assertTrue(solved.converged, solved.report())
+        world = evaluate_fk(skeleton, solved.pose)
+        np.testing.assert_allclose(world['b2'][:3, 3], [1, 1, 0], atol=1e-8)
+        np.testing.assert_allclose(world['b1'][:3, 3], [.5, .5, math.sqrt(.5)], atol=1e-8)
+
+    def test_unreachable_target_has_real_residual(self):
+        skeleton = chain_skeleton()
+        result = solve_ik(skeleton, neutral_pose(skeleton), ik_chain(), [3, 0, 0])
+        self.assertFalse(result.reachable);self.assertFalse(result.converged)
+        self.assertAlmostEqual(result.residual_m, 1., places=8)
+
+    def test_full_extension_and_fold_are_finite(self):
+        skeleton = chain_skeleton()
+        for target in ([0, 2, 0], [0, 0, 0], [0, 1e-9, 0]):
+            result = solve_ik(skeleton, neutral_pose(skeleton), ik_chain(), target)
+            self.assertTrue(result.converged, result.report())
+
+    def test_fabrik_multisegment_chain(self):
+        skeleton = chain_skeleton(4)
+        result = solve_ik(skeleton, neutral_pose(skeleton), ik_chain(4, 'fabrik'), [1.2, 1.8, .2])
+        self.assertTrue(result.converged, result.report())
+        self.assertLess(result.residual_m, 1e-5)
+
+    def test_fk_ik_matching_preserves_endpoint(self):
+        skeleton = chain_skeleton();pose = neutral_pose(skeleton)
+        pose = rotate_bone(skeleton, pose, 'b1', axis_angle([1, 0, 0], .5))
+        targets = match_fk_to_ik(skeleton, pose, ik_chain())
+        result = solve_ik(skeleton, pose, ik_chain(), targets['target'], pole=targets['pole'], orientation=targets['orientation'])
+        self.assertTrue(result.converged)
+
+    def test_hinge_and_prismatic_limits_act_on_actual_pose(self):
+        skeleton = chain_skeleton();pose = rotate_bone(skeleton, neutral_pose(skeleton), 'b1', axis_angle([1, 0, 0], 1.2))
+        pose['bones']['b1']['translation'] = [0, 3, 0]
+        constraints = [dict(schema_version=1, id='hinge', bone='b1', type='hinge', axis=[1, 0, 0], minimum=0, maximum=.4),
+                       dict(schema_version=1, id='slide', bone='b1', type='translation', axes=[1], minimum=0, maximum=.2)]
+        fixed, changes = apply_constraints(skeleton, pose, constraints)
+        self.assertAlmostEqual(qangle(fixed['bones']['b1']['rotation']), .4)
+        self.assertAlmostEqual(fixed['bones']['b1']['translation'][1], 1.2)
+        self.assertEqual(len(changes), 2)
+
+    def test_constraint_cycles_and_invalid_chains_fail(self):
+        skeleton = chain_skeleton()
+        with self.assertRaises(RigError):constraint_order(skeleton, [dict(schema_version=1, id='copy', bone='b0', type='copy-position', target='b2')])
+        chain = ik_chain();chain['bones'] = ['b0', 'b2', 'b1']
+        with self.assertRaises(RigError):solve_ik(skeleton, neutral_pose(skeleton), chain, [1, 1, 0])

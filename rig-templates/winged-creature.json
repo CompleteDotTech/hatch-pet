@@ -1,0 +1,372 @@
+{
+  "schema_version": 1,
+  "kind": "hatch-3d-rig-template",
+  "id": "winged-creature",
+  "version": "1.0.0",
+  "extends": [
+    "quadruped"
+  ],
+  "description": "A six-legged winged creature; inherits animal spine/tail and adds middle legs and branching articulated wings.",
+  "rest_pose": "stance",
+  "bones": [
+    {
+      "id": "upper-leg.middle.left",
+      "role": "upper-leg.middle.left",
+      "parent": "spine",
+      "head": [
+        -0.23,
+        0.73,
+        0
+      ],
+      "tail": [
+        -0.43,
+        0.4,
+        0.02
+      ],
+      "deform": true,
+      "mirror": "upper-leg.middle.right",
+      "roll": 0.0
+    },
+    {
+      "id": "lower-leg.middle.left",
+      "role": "lower-leg.middle.left",
+      "parent": "upper-leg.middle.left",
+      "head": [
+        -0.43,
+        0.4,
+        0.02
+      ],
+      "tail": [
+        -0.49,
+        0.1,
+        0
+      ],
+      "deform": true,
+      "mirror": "lower-leg.middle.right",
+      "roll": 0.0
+    },
+    {
+      "id": "paw.middle.left",
+      "role": "paw.middle.left",
+      "parent": "lower-leg.middle.left",
+      "head": [
+        -0.49,
+        0.1,
+        0
+      ],
+      "tail": [
+        -0.49,
+        0.065,
+        0.13
+      ],
+      "deform": true,
+      "mirror": "paw.middle.right",
+      "roll": 0.0
+    },
+    {
+      "id": "wing-root.left",
+      "role": "wing-root.left",
+      "parent": "chest",
+      "head": [
+        -0.18,
+        0.84,
+        0.1
+      ],
+      "tail": [
+        -0.55,
+        0.91,
+        -0.06
+      ],
+      "deform": true,
+      "mirror": "wing-root.right",
+      "roll": 0.0
+    },
+    {
+      "id": "wing-tip.left",
+      "role": "wing-tip.left",
+      "parent": "wing-root.left",
+      "head": [
+        -0.55,
+        0.91,
+        -0.06
+      ],
+      "tail": [
+        -1.03,
+        1.02,
+        -0.32
+      ],
+      "deform": true,
+      "mirror": "wing-tip.right",
+      "roll": 0.0
+    },
+    {
+      "id": "upper-leg.middle.right",
+      "role": "upper-leg.middle.right",
+      "parent": "spine",
+      "head": [
+        0.23,
+        0.73,
+        0
+      ],
+      "tail": [
+        0.43,
+        0.4,
+        0.02
+      ],
+      "deform": true,
+      "mirror": "upper-leg.middle.left",
+      "roll": 0.0
+    },
+    {
+      "id": "lower-leg.middle.right",
+      "role": "lower-leg.middle.right",
+      "parent": "upper-leg.middle.right",
+      "head": [
+        0.43,
+        0.4,
+        0.02
+      ],
+      "tail": [
+        0.49,
+        0.1,
+        0
+      ],
+      "deform": true,
+      "mirror": "lower-leg.middle.left",
+      "roll": 0.0
+    },
+    {
+      "id": "paw.middle.right",
+      "role": "paw.middle.right",
+      "parent": "lower-leg.middle.right",
+      "head": [
+        0.49,
+        0.1,
+        0
+      ],
+      "tail": [
+        0.49,
+        0.065,
+        0.13
+      ],
+      "deform": true,
+      "mirror": "paw.middle.left",
+      "roll": 0.0
+    },
+    {
+      "id": "wing-root.right",
+      "role": "wing-root.right",
+      "parent": "chest",
+      "head": [
+        0.18,
+        0.84,
+        0.1
+      ],
+      "tail": [
+        0.55,
+        0.91,
+        -0.06
+      ],
+      "deform": true,
+      "mirror": "wing-root.left",
+      "roll": 0.0
+    },
+    {
+      "id": "wing-tip.right",
+      "role": "wing-tip.right",
+      "parent": "wing-root.right",
+      "head": [
+        0.55,
+        0.91,
+        -0.06
+      ],
+      "tail": [
+        1.03,
+        1.02,
+        -0.32
+      ],
+      "deform": true,
+      "mirror": "wing-tip.left",
+      "roll": 0.0
+    }
+  ],
+  "constraints": [
+    {
+      "schema_version": 1,
+      "id": "upper-leg.middle.left-limit",
+      "bone": "upper-leg.middle.left",
+      "type": "ball",
+      "swing": 2.7
+    },
+    {
+      "schema_version": 1,
+      "id": "lower-leg.middle.left-limit",
+      "bone": "lower-leg.middle.left",
+      "type": "ball",
+      "swing": 2.7
+    },
+    {
+      "schema_version": 1,
+      "id": "paw.middle.left-limit",
+      "bone": "paw.middle.left",
+      "type": "ball",
+      "swing": 2.7
+    },
+    {
+      "schema_version": 1,
+      "id": "wing-root.left-limit",
+      "bone": "wing-root.left",
+      "type": "ball",
+      "swing": 1.5
+    },
+    {
+      "schema_version": 1,
+      "id": "wing-tip.left-limit",
+      "bone": "wing-tip.left",
+      "type": "ball",
+      "swing": 1.5
+    },
+    {
+      "schema_version": 1,
+      "id": "upper-leg.middle.right-limit",
+      "bone": "upper-leg.middle.right",
+      "type": "ball",
+      "swing": 2.7
+    },
+    {
+      "schema_version": 1,
+      "id": "lower-leg.middle.right-limit",
+      "bone": "lower-leg.middle.right",
+      "type": "ball",
+      "swing": 2.7
+    },
+    {
+      "schema_version": 1,
+      "id": "paw.middle.right-limit",
+      "bone": "paw.middle.right",
+      "type": "ball",
+      "swing": 2.7
+    },
+    {
+      "schema_version": 1,
+      "id": "wing-root.right-limit",
+      "bone": "wing-root.right",
+      "type": "ball",
+      "swing": 1.5
+    },
+    {
+      "schema_version": 1,
+      "id": "wing-tip.right-limit",
+      "bone": "wing-tip.right",
+      "type": "ball",
+      "swing": 1.5
+    }
+  ],
+  "ik": [
+    {
+      "schema_version": 1,
+      "id": "leg.middle.left",
+      "bones": [
+        "upper-leg.middle.left",
+        "lower-leg.middle.left",
+        "paw.middle.left"
+      ],
+      "solver": "two-bone",
+      "pole": [
+        -0.5,
+        0.4,
+        0.8
+      ],
+      "tolerance": 1e-05,
+      "iterations": 64
+    },
+    {
+      "schema_version": 1,
+      "id": "leg.middle.right",
+      "bones": [
+        "upper-leg.middle.right",
+        "lower-leg.middle.right",
+        "paw.middle.right"
+      ],
+      "solver": "two-bone",
+      "pole": [
+        0.5,
+        0.4,
+        0.8
+      ],
+      "tolerance": 1e-05,
+      "iterations": 64
+    }
+  ],
+  "capabilities": [
+    "wings",
+    "six-legs"
+  ],
+  "sockets": [
+    {
+      "schema_version": 1,
+      "id": "wing-socket.left",
+      "bone": "wing-root.left",
+      "transform": {
+        "translation": [
+          0,
+          0.1,
+          0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "role": "wing-accessory",
+      "owner": "character"
+    },
+    {
+      "schema_version": 1,
+      "id": "wing-socket.right",
+      "bone": "wing-root.right",
+      "transform": {
+        "translation": [
+          0,
+          0.1,
+          0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "role": "wing-accessory",
+      "owner": "character"
+    }
+  ],
+  "retarget_group": "winged-creature",
+  "symmetry": "explicit",
+  "rest_bounds": [
+    [
+      -1.2,
+      0,
+      -1.1
+    ],
+    [
+      1.2,
+      1.3,
+      0.95
+    ]
+  ],
+  "fitting_notes": "Approved 3D landmarks take precedence. Bounds and region centerlines need anatomical review."
+}

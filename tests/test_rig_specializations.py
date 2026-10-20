@@ -1,0 +1,60 @@
+from copy import deepcopy
+from pathlib import Path
+import tempfile
+import unittest
+import numpy as np
+from rig_test_helpers import fixture
+from rig_demo import create_demo
+from rig_facial import apply_expressions,gaze_at,finger_controls,appendage_controls
+from rig_attachments import socket_world,attach_prop,detach_prop,transfer_prop,prop_world,solve_grasp
+from rig_skeleton import neutral_pose,evaluate_fk,mirror_pose
+from rig_skinning import evaluate_deformation
+from rig_math import decompose
+from rig_errors import RigError
+
+
+class RigSpecializationTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.temp=tempfile.TemporaryDirectory();cls.humanoid,_=create_demo(Path(cls.temp.name)/'human','humanoid',animate=False)
+        cls.creature,_=create_demo(Path(cls.temp.name)/'creature','winged-creature',animate=False)
+    @classmethod
+    def tearDownClass(cls):cls.temp.cleanup()
+    def test_fingers_gaze_and_morphs_change_actual_vertices(self):
+        r=self.humanoid;neutral=neutral_pose(r.skeleton);before=evaluate_deformation(r,neutral)
+        pose=finger_controls(r,neutral,side='right',curl=.7,spread=.4)
+        after=evaluate_deformation(r,pose)
+        self.assertGreater(np.linalg.norm(after['finger-index-right']['positions']-before['finger-index-right']['positions']),.01)
+        pose=gaze_at(r,neutral,[.6,1.8,3.],head_follow=.3);world=evaluate_fk(r.skeleton,pose)
+        self.assertFalse(np.allclose(world['eye.right'],evaluate_fk(r.skeleton)['eye.right']))
+        blink=apply_expressions(r,neutral,{'blink':1.});delta=evaluate_deformation(r,blink)['eye-white-right']['positions']-before['eye-white-right']['positions']
+        self.assertGreater(np.max(np.abs(delta)),.05)
+    def test_appendages_are_deterministic_seeded_and_capability_checked(self):
+        r=self.creature;p=neutral_pose(r.skeleton)
+        first=appendage_controls(r,p,time=.3,tail_curl=.5,wing_flap=.8,secondary=.5,seed=17)
+        second=appendage_controls(r,p,time=.3,tail_curl=.5,wing_flap=.8,secondary=.5,seed=17)
+        self.assertEqual(first,second);self.assertIn('wing-root.right',first['bones'])
+        with self.assertRaises(RigError):appendage_controls(self.humanoid,neutral_pose(self.humanoid.skeleton),tail_curl=.5)
+        with self.assertRaises(RigError):finger_controls(self.creature,p,side='left',curl=.5)
+    def test_expression_conflicts_and_unavailable_controls_fail(self):
+        r=deepcopy(self.humanoid);r.manifest['facial']['expressions']['blink']['incompatible']=['squint']
+        r.manifest['facial']['expressions']['squint']=dict(schema_version=1,morphs={'blink':.5},bones={},incompatible=['blink'])
+        with self.assertRaises(RigError):apply_expressions(r,neutral_pose(r.skeleton),{'blink':1.,'squint':1.})
+        with self.assertRaises(RigError):apply_expressions(r,neutral_pose(r.skeleton),{'invented-mouth':1.})
+    def test_attach_detach_and_owner_transfer_preserve_world_space(self):
+        r=self.humanoid;pose=neutral_pose(r.skeleton);matrix=socket_world(r,pose,'grip.right')
+        prop=dict(id='cube',owner=None,socket=None,transform=decompose(matrix))
+        attached=attach_prop(r,pose,prop,'grip.right');np.testing.assert_allclose(prop_world(r,pose,attached),matrix,atol=1e-12)
+        detached=detach_prop(r,pose,attached);self.assertIsNone(detached['owner']);np.testing.assert_allclose(prop_world(r,pose,detached),matrix,atol=1e-12)
+        other=deepcopy(r);other.manifest['character']['id']='other'
+        moved=transfer_prop(r,pose,other,pose,attached,'grip.right');self.assertEqual(moved['owner'],'other')
+        with self.assertRaises(RigError):attach_prop(r,pose,attached,'grip.left')
+        with self.assertRaises(RigError):transfer_prop(r,pose,other,pose,attached,'grip.left')
+    def test_object_relative_grasp_meets_actual_socket(self):
+        r=self.humanoid;p=neutral_pose(r.skeleton);target=decompose(np.eye(4));target['translation']=[.35,1.25,.45]
+        result=solve_grasp(r,p,'arm.right','grip.right',target,decompose(np.eye(4)))
+        self.assertTrue(result['reachable']);self.assertLess(result['residual_m'],.001)
+    def test_mirroring_requires_explicit_symmetry_approval(self):
+        r=self.humanoid;p=finger_controls(r,neutral_pose(r.skeleton),side='right',curl=.4)
+        with self.assertRaises(RigError):mirror_pose(r.skeleton,p)
+        mirrored=mirror_pose(r.skeleton,p,approved=True);self.assertIn('index.1.left',mirrored['bones'])

@@ -1,0 +1,137 @@
+"""Analytical two-bone IK and bounded FABRIK, evaluated on actual FK chains."""
+from __future__ import annotations
+
+from copy import deepcopy
+from dataclasses import dataclass
+import math
+import numpy as np
+from rig_contracts import validate_contract
+from rig_constraints import apply_constraints, constraint_order
+from rig_errors import require
+from rig_math import (decompose, qbetween, qinverse, qmul, quaternion, unit, vector)
+from rig_skeleton import evaluate_fk
+
+
+@dataclass
+class IKResult:
+    pose: dict
+    residual_m: float
+    reachable: bool
+    converged: bool
+    iterations: int
+    constraints_applied: list[dict]
+
+    def report(self) -> dict:
+        return dict(pose=self.pose, residual_m=self.residual_m, reachable=self.reachable,
+                    converged=self.converged, iterations=self.iterations,
+                    constraints_applied=self.constraints_applied)
+
+
+def validate_chain(skeleton: dict, chain: dict) -> None:
+    validate_contract(chain, 'IKChain')
+    bones = {b['id']: b for b in skeleton['bones']}
+    names = chain['bones']
+    require(len(set(names)) == len(names) and all(n in bones for n in names), 'RIG_IK_CHAIN', 'IK references invalid bones.')
+    require(all(bones[b]['parent'] == a for a, b in zip(names, names[1:])),
+            'RIG_IK_CHAIN', 'IK chains must follow direct parent relationships.')
+    require(chain['solver'] != 'two-bone' or len(names) == 3, 'RIG_IK_CHAIN', 'Two-bone IK needs two segments and an endpoint.')
+
+
+def _orient_chain(skeleton: dict, pose: dict, names: list[str], targets: np.ndarray) -> dict:
+    result = deepcopy(pose)
+    bones = {b['id']: b for b in skeleton['bones']}
+    for i, name in enumerate(names[:-1]):
+        world = evaluate_fk(skeleton, result)
+        current = world[names[i+1]][:3, 3]-world[name][:3, 3]
+        desired = targets[i+1]-targets[i]
+        if np.linalg.norm(current) < 1e-9 or np.linalg.norm(desired) < 1e-9:continue
+        world_q = qmul(qbetween(current, desired), decompose(world[name])['rotation'])
+        parent = bones[name]['parent']
+        parent_q = decompose(world[parent])['rotation'] if parent else [0, 0, 0, 1]
+        result['bones'].setdefault(name, {})['rotation'] = quaternion(qmul(qinverse(parent_q), world_q)).tolist()
+    return result
+
+
+def _pole_perpendicular(direction, origin, pole):
+    delta = pole-origin
+    perpendicular = delta-direction*np.dot(delta, direction)
+    if np.linalg.norm(perpendicular) < 1e-8:
+        perpendicular = np.cross(direction, np.eye(3)[np.argmin(np.abs(direction))])
+    return unit(perpendicular)
+
+
+def solve_ik(skeleton: dict, pose: dict, chain: dict, target, *, pole=None,
+             constraints=(), orientation=None) -> IKResult:
+    validate_chain(skeleton, chain)
+    target = vector(target);pole = vector(pole if pole is not None else chain['pole'])
+    result = deepcopy(pose)
+    world = evaluate_fk(skeleton, result)
+    names = chain['bones']
+    points = np.array([world[name][:3, 3] for name in names])
+    lengths = np.linalg.norm(np.diff(points, axis=0), axis=1)
+    require(np.all(lengths > 1e-8), 'RIG_IK_LENGTH', 'IK segments must have measurable length.')
+    origin = points[0].copy()
+    distance = float(np.linalg.norm(target-origin))
+    lower = max(0., float(2*lengths.max()-lengths.sum()))
+    reachable = lower-1e-7 <= distance <= lengths.sum()+1e-7
+    direction = unit(target-origin) if distance > 1e-9 else unit(points[-1]-origin) if np.linalg.norm(points[-1]-origin) > 1e-9 else np.array([0., 1., 0.])
+    constrained = constraint_order(skeleton, list(constraints))
+    changes, iterations = [], 0
+    tolerance = chain['tolerance']
+    limit = chain['iterations']
+    if chain['solver'] == 'two-bone':
+        d = float(np.clip(distance, max(lower, 1e-9), lengths.sum()))
+        a, b = lengths
+        x = (d*d+a*a-b*b)/(2*d)
+        y = math.sqrt(max(0., a*a-x*x))
+        points[1] = origin + direction*x + _pole_perpendicular(direction, origin, pole)*y
+        points[2] = origin + direction*d
+        result = _orient_chain(skeleton, result, names, points)
+        if constrained:result, changes = apply_constraints(skeleton, result, constrained, ordered=True)
+        iterations = 1
+    else:
+        for iterations in range(1, limit+1):
+            if distance >= lengths.sum():
+                for i, length in enumerate(lengths):points[i+1] = points[i]+direction*length
+            else:
+                points[-1] = target
+                for i in range(len(points)-2, -1, -1):
+                    d = points[i]-points[i+1]
+                    points[i] = points[i+1]+unit(d if np.linalg.norm(d) > 1e-10 else [1, 0, 0])*lengths[i]
+                points[0] = origin
+                for i, length in enumerate(lengths):
+                    d = points[i+1]-points[i]
+                    points[i+1] = points[i]+unit(d if np.linalg.norm(d) > 1e-10 else direction)*length
+                # Pole rotates each intermediate point around its neighbour axis.
+                for i in range(1, len(points)-1):
+                    axis = points[i+1]-points[i-1]
+                    if np.linalg.norm(axis) < 1e-8:continue
+                    axis = unit(axis);delta = points[i]-points[i-1]
+                    projection = axis*np.dot(delta, axis)
+                    radius = np.linalg.norm(delta-projection)
+                    points[i] = points[i-1]+projection+_pole_perpendicular(axis, points[i-1], pole)*radius
+            result = _orient_chain(skeleton, result, names, points)
+            if constrained:
+                result, current = apply_constraints(skeleton, result, constrained, ordered=True);changes.extend(current)
+            world = evaluate_fk(skeleton, result)
+            points = np.array([world[name][:3, 3] for name in names])
+            if np.linalg.norm(points[-1]-target) <= tolerance or not reachable:break
+    orientation = orientation if orientation is not None else chain.get('orientation')
+    if orientation is not None:
+        world = evaluate_fk(skeleton, result)
+        parent = next(b['parent'] for b in skeleton['bones'] if b['id'] == names[-1])
+        parent_q = decompose(world[parent])['rotation'] if parent else [0, 0, 0, 1]
+        result['bones'].setdefault(names[-1], {})['rotation'] = quaternion(qmul(qinverse(parent_q), quaternion(orientation))).tolist()
+    final = evaluate_fk(skeleton, result)[names[-1]][:3, 3]
+    error = float(np.linalg.norm(final-target))
+    return IKResult(result, error, bool(reachable), bool(reachable and error <= tolerance), iterations, changes)
+
+
+def match_fk_to_ik(skeleton: dict, pose: dict, chain: dict) -> dict:
+    validate_chain(skeleton, chain)
+    world = evaluate_fk(skeleton, pose)
+    points = [world[name][:3, 3] for name in chain['bones']]
+    axis = unit(points[-1]-points[0])
+    bend = _pole_perpendicular(axis, points[0], points[1])
+    return dict(target=points[-1].tolist(), pole=(points[0]+bend*np.linalg.norm(points[-1]-points[0])).tolist(),
+                orientation=decompose(world[chain['bones'][-1]])['rotation'])

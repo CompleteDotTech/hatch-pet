@@ -18,3 +18,7 @@ tests/results/*.json -text
 tests/results/*.log -text
 scripts/*.py text eol=lf
 profiles/*.json text eol=lf
+# Rig evidence and offline dependency inventories bind the exact encoded bytes.
+examples/rig-3d/** -text
+assets/rig-viewer/** -text
+rig-templates/*.json text eol=lf

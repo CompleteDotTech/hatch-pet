@@ -1,5 +1,13 @@
 # Public production delivery status
 
+## Optional 3D rigging implementation — 2026-10-20 UTC
+
+The `feat/3d-character-rigging` branch adds genuine mesh import, versioned rigs, normalized skinning, FK/IK, facial and appendage controls, animation/contacts/retargeting, a local API and offline review UI, animated GLB/glTF, editable Blender projects, and native/Blender frame rendering. Its original source was `19649be`; the complete production-delivery repair at `594177b` was integrated before final compatibility testing.
+
+The integrated suite ran **865 tests in 321.471 seconds**, with zero failures/errors and one optional native-Krita skip. All 13 original production-pilot cases passed. After the final additive Blender CPU preview path and one new test were completed, all **76 focused 3D tests passed in 14.844 seconds**, including actual Blender, Khronos and Three.js checks. Separate source snapshots and logs are retained in [the machine-readable release report](tests/results/rig-release-results.json); no single combined 866-test run is claimed.
+
+The three main procedural mesh characters each execute six real motions; a mechanical fixture and two proportion-changing retargets provide additional coverage. The four principal animated GLBs were sampled independently in Blender and Three.js; all six native GLBs have zero Khronos errors/warnings, all four `.blend` files reopen and render actual Cycles frames, and all six archives restore and evaluate. These are engineering fixtures with production visual approval pending. [The 3D acceptance report](references/3d-rigging-acceptance.md) documents measured results, Blender re-export warnings, unsupported cases and the 38-section traceability table. The original 2D contracts and tests are preserved.
+
 ## Recovery audit — 2026-10-20 UTC
 
 The fresh audit started at public main `19649be829a9badcd789d381a3a22ebe2b3f3a54`. PR [#4](https://github.com/CompleteDotTech/hatch-pet/pull/4) had already merged with incomplete production transports. Its earlier instruction to leave that PR open did not describe the actual repository state. This repair is tracked in [PR #8](https://github.com/CompleteDotTech/hatch-pet/pull/8) on a separate development branch.

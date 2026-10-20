@@ -1,0 +1,227 @@
+{
+  "schema_version": 1,
+  "kind": "hatch-3d-rig-template",
+  "id": "robotic",
+  "version": "1.0.0",
+  "extends": [
+    "custom"
+  ],
+  "description": "Rigid articulated hinge arm with a prismatic gripper and explicit hard limits.",
+  "rest_pose": "mechanical",
+  "bones": [
+    {
+      "id": "base",
+      "role": "base",
+      "parent": "root",
+      "head": [
+        0,
+        0.1,
+        0
+      ],
+      "tail": [
+        0,
+        0.3,
+        0
+      ],
+      "deform": true,
+      "mirror": null,
+      "roll": 0.0
+    },
+    {
+      "id": "shoulder",
+      "role": "shoulder",
+      "parent": "base",
+      "head": [
+        0,
+        0.3,
+        0
+      ],
+      "tail": [
+        0,
+        0.8,
+        0
+      ],
+      "deform": true,
+      "mirror": null,
+      "roll": 0.0
+    },
+    {
+      "id": "elbow",
+      "role": "elbow",
+      "parent": "shoulder",
+      "head": [
+        0,
+        0.8,
+        0
+      ],
+      "tail": [
+        0.45,
+        0.8,
+        0
+      ],
+      "deform": true,
+      "mirror": null,
+      "roll": 0.0
+    },
+    {
+      "id": "gripper",
+      "role": "gripper",
+      "parent": "elbow",
+      "head": [
+        0.45,
+        0.8,
+        0
+      ],
+      "tail": [
+        0.6,
+        0.8,
+        0
+      ],
+      "deform": true,
+      "mirror": null,
+      "roll": 0.0
+    },
+    {
+      "id": "jaw.left",
+      "role": "jaw.left",
+      "parent": "gripper",
+      "head": [
+        0.58,
+        0.8,
+        -0.09
+      ],
+      "tail": [
+        0.73,
+        0.8,
+        -0.09
+      ],
+      "deform": true,
+      "mirror": null,
+      "roll": 0.0
+    },
+    {
+      "id": "jaw.right",
+      "role": "jaw.right",
+      "parent": "gripper",
+      "head": [
+        0.58,
+        0.8,
+        0.09
+      ],
+      "tail": [
+        0.73,
+        0.8,
+        0.09
+      ],
+      "deform": true,
+      "mirror": null,
+      "roll": 0.0
+    }
+  ],
+  "constraints": [
+    {
+      "schema_version": 1,
+      "id": "shoulder-hinge",
+      "bone": "shoulder",
+      "type": "hinge",
+      "axis": [
+        0,
+        0,
+        1
+      ],
+      "minimum": -1.3,
+      "maximum": 1.3
+    },
+    {
+      "schema_version": 1,
+      "id": "elbow-hinge",
+      "bone": "elbow",
+      "type": "hinge",
+      "axis": [
+        0,
+        0,
+        1
+      ],
+      "minimum": -1.3,
+      "maximum": 1.3
+    },
+    {
+      "schema_version": 1,
+      "id": "gripper-slide",
+      "bone": "gripper",
+      "type": "translation",
+      "axes": [
+        1
+      ],
+      "minimum": 0,
+      "maximum": 0.12
+    }
+  ],
+  "ik": [
+    {
+      "schema_version": 1,
+      "id": "robot-arm",
+      "bones": [
+        "shoulder",
+        "elbow",
+        "gripper"
+      ],
+      "solver": "two-bone",
+      "pole": [
+        0,
+        0,
+        1
+      ],
+      "tolerance": 1e-05,
+      "iterations": 64
+    }
+  ],
+  "capabilities": [
+    "arms",
+    "gripper",
+    "rigid",
+    "prismatic"
+  ],
+  "sockets": [
+    {
+      "schema_version": 1,
+      "id": "grip",
+      "bone": "gripper",
+      "transform": {
+        "translation": [
+          0,
+          0.15,
+          0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "role": "mechanical-grip",
+      "owner": "character"
+    }
+  ],
+  "retarget_group": "robotic",
+  "symmetry": "none",
+  "rest_bounds": [
+    [
+      -0.5,
+      0,
+      -0.4
+    ],
+    [
+      0.8,
+      1.4,
+      0.4
+    ]
+  ],
+  "fitting_notes": "Approved 3D landmarks take precedence. Bounds and region centerlines need anatomical review."
+}

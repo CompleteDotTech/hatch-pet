@@ -4,7 +4,7 @@
 
 <img src="assets/title.svg" alt="hatch-pet" width="720">
 
-**A Codex skill for animated pets, reusable visual assets and layered 2D cast production.**<br>
+**A Codex skill for animated pets, reusable visual assets, layered 2D casts and genuine 3D rigging.**<br>
 Start with a concept, brand, sketch, or existing artwork. Generate through the installed imagegen skill, import explicitly, or decompose a character into editable visual components. Validate and visually review, then export or create a local package.
 
 <br>
@@ -41,6 +41,24 @@ Deterministic scripts preserve motion, validate provenance, compose the atlas, a
 </td>
 </tr>
 </table>
+
+## Real 3D rigs and animation
+
+The optional 3D engine imports real GLB/glTF, OBJ or packed Blender models, preserves original assets, constructs editable skeletons, generates normalized skin weights, and evaluates FK, spatial IK, contacts, expressions and animation channels. It includes humanoid, quadruped, six-legged winged, robotic and extensible custom templates; manual corrections, semantic retargeting, local review, animated GLB export and independently reopened Blender files.
+
+```bash
+python -m pip install "Pillow>=10.1" -r requirements-rig.txt
+python scripts/hatch.py rig doctor
+python scripts/rig.py import --model input/character.glb --run-dir output/character
+python scripts/rig.py auto --run-dir output/character --template humanoid
+python scripts/rig.py weights --run-dir output/character --method auto
+python scripts/rig.py validate --run-dir output/character
+python scripts/rig.py review-ui --run-dir output/character --destination output/review
+```
+
+Read the [complete 3D guide](references/3d-rigging.md) for fitting uncertainty, corrections, animation authoring, APIs, state mapping, render/export commands and tool setup. Inspect the [acceptance report](references/3d-rigging-acceptance.md) and [retained demonstration evidence](examples/rig-3d/acceptance.json). The three character demonstrations each contain six real motions; a mechanical fixture and two proportion-changing retargets add coverage. Their source meshes are labelled procedural engineering fixtures, with production-art approval pending.
+
+The 3D contracts are additive. Existing Codex atlas geometry/timing, 2D profiles/playback, decomposition and the 416-state catalog retain their original contracts. Selected actual clips map to catalog definitions; missing anatomy or animation remains explicit. Blender, WebGL and the optional 3D Python packages are unnecessary for ordinary 2D use.
 
 <div align="center">
 <img src="assets/art/story-1-ready.jpg" width="24%" alt="Chapter 1: an egg in a nest of sketches and swatches">
