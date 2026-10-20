@@ -1,0 +1,172 @@
+{
+  "schema_version": 1,
+  "recipes": [
+    {
+      "id": "quiet-cycle",
+      "name": "Quiet four-pose cycle",
+      "description": "Low amplitude ambient cycle; frame zero is a readable calm static pose.",
+      "frames": 4,
+      "durations": [
+        420,
+        260,
+        260,
+        420
+      ],
+      "key_phases": [
+        "neutral anchor",
+        "small inhalation or orientation change",
+        "opposing subtle motion",
+        "close return to anchor"
+      ],
+      "loop_seam": "Last pose approaches first without a jump."
+    },
+    {
+      "id": "expressive-once",
+      "name": "Four-beat expression",
+      "description": "Readable anticipation, expression apex and recovery for a discrete response.",
+      "frames": 4,
+      "durations": [
+        160,
+        180,
+        320,
+        220
+      ],
+      "key_phases": [
+        "readable entry",
+        "anticipation",
+        "expressive apex",
+        "settle"
+      ],
+      "loop_seam": "One-shot ends in recoverable posture; completion selects a state rather than interpolating."
+    },
+    {
+      "id": "working-cycle",
+      "name": "Four-beat sustained task",
+      "description": "Deliberate repeated task attention with alternating inspection and execution.",
+      "frames": 4,
+      "durations": [
+        200,
+        220,
+        240,
+        200
+      ],
+      "key_phases": [
+        "orient",
+        "perform first movement",
+        "inspect or counter-movement",
+        "reset near entry"
+      ],
+      "loop_seam": "Reset preserves task focus and planted scale."
+    },
+    {
+      "id": "locomotion-cycle",
+      "name": "Four-contact locomotion",
+      "description": "Alternating contacts or body undulation conveying travel at a shared viewport scale.",
+      "frames": 4,
+      "durations": [
+        140,
+        140,
+        140,
+        140
+      ],
+      "key_phases": [
+        "first contact",
+        "first passing pose",
+        "opposite contact",
+        "opposite passing pose"
+      ],
+      "loop_seam": "Opposite contact returns smoothly to first stride; position stays within assigned cell."
+    },
+    {
+      "id": "impact-recovery",
+      "name": "Impact and recovery",
+      "description": "Brief anticipation, fast impulse, visible response and gentle stabilization.",
+      "frames": 4,
+      "durations": [
+        180,
+        90,
+        200,
+        280
+      ],
+      "key_phases": [
+        "anticipation",
+        "impulse",
+        "response",
+        "stable recovery"
+      ],
+      "loop_seam": "One-shot; finish visibly stable before recovery transition."
+    },
+    {
+      "id": "slow-settle",
+      "name": "Slow posture change",
+      "description": "Unhurried whole-body transition into a resting or held pose.",
+      "frames": 4,
+      "durations": [
+        280,
+        340,
+        400,
+        600
+      ],
+      "key_phases": [
+        "balanced starting pose",
+        "weight redistribution",
+        "new pose nearly reached",
+        "settled destination"
+      ],
+      "loop_seam": "One-shot destination held or completed to the requested resting state."
+    },
+    {
+      "id": "micro-once",
+      "name": "Brief expression accent",
+      "description": "Short local movement with a clear apex and a return near its entry pose.",
+      "frames": 4,
+      "durations": [
+        100,
+        90,
+        140,
+        150
+      ],
+      "key_phases": [
+        "neutral cue",
+        "begin movement",
+        "small apex",
+        "return"
+      ],
+      "loop_seam": "One-shot; return near entry avoids abrupt changes when selecting idle."
+    },
+    {
+      "id": "static-pose",
+      "name": "Static expressive pose",
+      "description": "A single intentionally static pose, not duplicated pseudo-animation.",
+      "frames": 1,
+      "durations": [
+        1000
+      ],
+      "key_phases": [
+        "single readable held pose"
+      ],
+      "loop_seam": "No animation; hold frame zero."
+    },
+    {
+      "id": "double-blink",
+      "name": "Two separated blinks",
+      "description": "Five exact eyelid states distinguish two separate blink closures without asking one frame to represent several poses.",
+      "frames": 5,
+      "durations": [
+        220,
+        80,
+        100,
+        80,
+        220
+      ],
+      "key_phases": [
+        "eyes open",
+        "first closure",
+        "eyes reopened",
+        "second closure",
+        "eyes open and settled"
+      ],
+      "loop_seam": "One-shot starts and ends with the same resting open-eye expression."
+    }
+  ]
+}

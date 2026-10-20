@@ -105,6 +105,8 @@ def manifest(root):
         raise ValueError('unsupported run schema; use hatch.py migrate --run-dir PATH for schema 2, or recover into a separate run')
     profile = load_profile(root / 'profile.json')
     request = read(root / 'pet_request.json')
+    from state_selection import prepared_selection
+    prepared_selection(root)
     if 'style_sha256' in result and request.get('resolved_style') is None:
         raise ValueError('manifest style hash requires the saved resolved style snapshot; restore the intact pet_request.json')
     if request.get('resolved_style') is not None:
@@ -338,7 +340,7 @@ def prepare(root, args):
     transaction = root.parent / ('.' + root.name + '.prepare.json')
     try:
         cmd = ['--output-dir', stage, '--pet-name', args.pet_name, '--pet-notes', args.pet_notes]
-        for flag in ('profile', 'constraints', 'identity', 'reference_roles', 'brand_discovery_file', 'brand_name', 'brand_brief',
+        for flag in ('profile', 'state_selection', 'constraints', 'identity', 'reference_roles', 'brand_discovery_file', 'brand_name', 'brand_brief',
                      'chroma_key', 'style_preset', 'style_notes', 'description', 'pet_id', 'display_name', 'background'):
             value = getattr(args, flag, None)
             if value:
@@ -743,7 +745,7 @@ def derive(root, data, name, reason, approved):
 
 def artifact_hashes(root):
     files = ['pet_request.json', 'profile.json', 'extraction-settings.json', 'frames/frames-manifest.json',
-             'qa/contact-sheet.png', 'qa/review.json']
+             'qa/contact-sheet.png', 'qa/review.json', 'state-selection.json']
     for folder in ('references', 'prompts', 'decoded', 'frames', 'final', 'qa/previews', 'annotations'):
         files += [p.relative_to(root).as_posix() for p in sorted((root / folder).rglob('*'))
                   if p.is_file() and not p.name.endswith(('.tmp', '.lock'))]
@@ -1350,9 +1352,12 @@ def calibrate(root, data, path, apply=False):
 
 def main():
     from decomposition_cli import COMMANDS as decomposition_commands, add_arguments as decomposition_arguments
+    if len(sys.argv) > 1 and sys.argv[1] == 'states':
+        from state_catalog import main as catalog_main
+        raise SystemExit(catalog_main(sys.argv[2:]))
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument('command', choices=['prepare', 'status', 'claim', 'ingest', 'import-source', 'base-review', 'fail', 'resume', 'repair', 'configure', 'revise-profile', 'derive', 'validate', 'review-template', 'review-ui', 'review', 'export', 'package', 'install', 'rollback', 'cleanup', 'doctor', 'capabilities', 'limits', 'annotate', 'calibrate', 'archive', 'restore', 'migrate', 'styles', 'style', 'style-modifiers', *decomposition_commands])
-    p.add_argument('--run-dir', help='Required for lifecycle commands; omit for doctor, capabilities and style discovery')
+    p.add_argument('command', choices=['states', 'prepare', 'status', 'claim', 'ingest', 'import-source', 'base-review', 'fail', 'resume', 'repair', 'configure', 'revise-profile', 'derive', 'validate', 'review-template', 'review-ui', 'review', 'export', 'package', 'install', 'rollback', 'cleanup', 'doctor', 'capabilities', 'limits', 'annotate', 'calibrate', 'archive', 'restore', 'migrate', 'styles', 'style', 'style-modifiers', *decomposition_commands])
+    p.add_argument('--run-dir', help='Required for lifecycle commands; omit for doctor, capabilities, state discovery and style discovery')
     p.add_argument('--search', default='', help='Style keyword, name or category search')
     p.add_argument('--category', help='Filter styles by stable category ID')
     p.add_argument('--json', action='store_true', help='Machine-readable style discovery with complete metadata')
@@ -1366,7 +1371,7 @@ def main():
     p.add_argument('--mode', choices=['repair', 'minimal-delivery'], default='repair')
     p.add_argument('--pet-name', default='')
     p.add_argument('--pet-notes', default='')
-    for flag in ('profile', 'constraints', 'identity', 'reference-roles', 'brand-discovery-file', 'brand-name', 'brand-brief', 'chroma-key', 'style-preset', 'style-notes', 'description', 'pet-id', 'display-name'):
+    for flag in ('profile', 'state-selection', 'constraints', 'identity', 'reference-roles', 'brand-discovery-file', 'brand-name', 'brand-brief', 'chroma-key', 'style-preset', 'style-notes', 'description', 'pet-id', 'display-name'):
         p.add_argument('--' + flag)
     p.add_argument('--background', choices=['auto', 'alpha', 'chroma', 'solid', 'keep'])
     p.add_argument('--holes', choices=['preserve', 'key'])
@@ -1471,4 +1476,7 @@ def main():
 
 
 if __name__ == '__main__':
+    for stream in (sys.stdout, sys.stderr):
+        if hasattr(stream, 'reconfigure'):
+            stream.reconfigure(encoding='utf-8')
     main()

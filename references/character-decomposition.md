@@ -251,6 +251,8 @@ python scripts/hatch.py claim --run-dir output/creature-waving --job wave
 
 The first command imports the observed foreground as the normal canonical base, prepopulates strict `identity.json`, snapshots decomposition provenance, and makes selected component images explicit required references. Preparation does not create animation frames, spend model calls, approve the base, or erase pending semantic status. Complete the claimed state with the installed imagegen workflow, then use the existing validation, visual review and export gates. Fixture labels persist across the boundary. An explicit `--profile profiles/codex-v1.json` is required when the destination must satisfy Codex's fixed package; otherwise reuse creates a generic asset profile appropriate to the selected operation.
 
+To reuse a [compiled character-state selection](character-states.md), pass its profile with `--profile selected-profile.json` and its compilation evidence with `--state-selection selected-profile.selection.json` to `decompose-prepare`. Both the original state selection and the selected component references remain bound to the forward run through retries. Compilation does not change imported pixels or supply missing animation artwork.
+
 Identity prepopulation includes measured palette entries and component/canvas proportions, named visible markings and accessories, anatomical side constraints and explicit identity extensions. These are observed-view measurements and instructions, not a recovery of unknowable body proportions. Mirroring is forbidden by default because one view cannot establish opposing-side symmetry. Add carefully reviewed identity fields beneath annotation `extensions.identity` when needed.
 
 | Request | Operation classification | Practical implication |
@@ -363,6 +365,8 @@ HATCH_DECOMPOSITION_BROWSER_TEST=1 python -m unittest discover -s tests -p test_
 In PowerShell, set `$env:HATCH_DECOMPOSITION_BROWSER_TEST = "1"` before running the same Python command without the leading shell assignment. Set this environment variable for the complete suite as well when browser-editor acceptance is required. Deterministic fixture tests never require paid inference.
 
 ### Implementation verification
+
+See [current integration validation](decomposition-integration-validation.md) for the repaired merge with the character-state library and the latest complete regression. The following counts describe the earlier feature-branch run.
 
 The complete development suite passed **512 tests with no skips** with the decomposition browser test enabled: **109 decomposition tests** plus **403 existing regression tests**, including the merged style catalog. This includes real Chromium editing and receipt application, staged recovery at each promotion phase, exact source/alpha reconstruction, inferred-art provenance, directory/ZIP round trips, actual static layer edits, and ordinary forward import/validation/review/package/archive restoration. A dedicated catalog integration test verifies imported pixels and style authority, nearest-neighbor profile precedence, and frozen style/component provenance through forward handoff and archive/restore. Generated schemas matched their source declarations, and the installed skill metadata validator passed.
 

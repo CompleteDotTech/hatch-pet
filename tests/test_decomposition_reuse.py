@@ -64,7 +64,7 @@ class DecompositionForwardReuseTests(unittest.TestCase):
         self.assertEqual(len(handoff['input_images']), 5)
         self.assertIn('eyes', handoff['input_images'][1]['note'])
         self.assertEqual(handoff['identity'], request['identity'])
-        self.assertIn('required provenance-tracked references', Path(handoff['prompt']).read_text())
+        self.assertIn('required provenance-tracked references', Path(handoff['prompt']).read_text(encoding='utf-8'))
 
     def test_targeted_changes_use_edit_target_roles_and_preserve_other_components(self):
         forward = self.home / 'forward'
@@ -73,7 +73,7 @@ class DecompositionForwardReuseTests(unittest.TestCase):
         request = hatch.read(forward / 'pet_request.json')
         self.assertEqual(request['references'][1]['role'], 'edit-target')
         self.assertFalse(result['operation']['requires_new_artwork'])
-        prompt = (forward / 'prompts/rows/recolor.md').read_text()
+        prompt = (forward / 'prompts/rows/recolor.md').read_text(encoding='utf-8')
         self.assertIn('Only component IDs badge', prompt)
         self.assertIn('#FF0000', prompt)
         self.assertIn('Preserve', prompt)
@@ -100,7 +100,7 @@ class DecompositionForwardReuseTests(unittest.TestCase):
         self.assertTrue(any('resampling differs' in warning for warning in settings['style_warnings']))
         with Image.open(forward / 'references/canonical-base.png') as canonical, Image.open(self.decomposition / 'foreground.png') as observed:
             self.assertEqual(canonical.convert('RGBA').tobytes(), observed.convert('RGBA').tobytes())
-        prompt = (forward / 'prompts/rows/wave.md').read_text()
+        prompt = (forward / 'prompts/rows/wave.md').read_text(encoding='utf-8')
         self.assertIn('The canonical base is imported artwork.', prompt)
         self.assertIn('does not authorize restyling this imported base', prompt)
         self.assertIn(snapshot['contract'], prompt)
@@ -128,6 +128,36 @@ class DecompositionForwardReuseTests(unittest.TestCase):
             self.assertEqual(hatch.job_for(restored_data, 'base')['import_receipt']['decomposition'], request['decomposition'])
             self.assertEqual((restored / 'references/decomposition/decomposition.json').read_bytes(), original_manifest)
         self.assertEqual((self.decomposition / 'decomposition.json').read_bytes(), original_manifest)
+
+    def test_compiled_state_selection_survives_decomposition_reuse_and_retry(self):
+        from state_catalog import compile_profile
+        from state_selection import prepared_selection
+
+        compiled = compile_profile(states=['idle', 'waving'], archetype='humanoid',
+                                   cell_width=96, cell_height=96)
+        profile = self.home / 'selected-profile.json'
+        selection = self.home / 'selected-states.json'
+        hatch.atomic(profile, compiled['profile'])
+        hatch.atomic(selection, compiled['manifest'])
+        forward = self.home / 'selected-forward'
+        prepare_from_decomposition(self.decomposition, forward,
+            argparse.Namespace(profile=str(profile), state_selection=str(selection)),
+            component_ids=['eyes'])
+        data = hatch.manifest(forward)
+        request = hatch.read(forward / 'pet_request.json')
+        self.assertEqual(prepared_selection(forward), compiled['manifest'])
+        self.assertEqual([job['id'] for job in data['jobs']], ['base', 'idle', 'waving'])
+        self.assertEqual(hatch.job_for(data, 'base')['source_origin'], 'import')
+        self.assertEqual(request['references'][1]['decomposition_component']['component_id'], 'eyes')
+        hatch.record_base_review(forward, data, 'Synthetic imported character inspected.', True)
+        first = hatch.claim(forward, data, 'waving')
+        hatch.fail(forward, data, 'waving', first['token'], 'Synthetic retry; no model call.')
+        second = hatch.claim(forward, data, 'waving')
+        self.assertNotEqual(first['token'], second['token'])
+        self.assertEqual(first['input_images'], second['input_images'])
+        self.assertEqual(prepared_selection(forward), compiled['manifest'])
+        self.assertEqual(second['identity'], request['identity'])
+        self.assertIn('eyes', second['input_images'][1]['note'])
 
     def test_unknown_references_or_required_approval_leave_no_partial_forward_run(self):
         for selected, args in ((['not-a-component'], None), (['eyes'], argparse.Namespace(require_approved=True))):

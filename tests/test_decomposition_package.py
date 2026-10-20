@@ -117,7 +117,14 @@ class DecompositionTransportSafetyTests(unittest.TestCase):
             for path in source.iterdir():
                 archive.write(path, path.name)
             if extra:
-                archive.writestr(*extra)
+                name, data = extra
+                if isinstance(name, str):
+                    # ZipInfo's constructor normalizes the host separator on
+                    # Windows. Preserve the malicious bytes being tested.
+                    member = zipfile.ZipInfo()
+                    member.filename = member.orig_filename = name
+                    name = member
+                archive.writestr(name, data)
         return target
 
     def test_directory_and_zip_transport_hashes_agree(self):
@@ -162,6 +169,18 @@ class DecompositionTransportSafetyTests(unittest.TestCase):
         info.external_attr = (stat.S_IFLNK | 0o777) << 16
         with self.assertRaisesRegex(ValueError, 'unsafe'):
             verify_package(self.zip(source, (info, '../outside')))
+
+    def test_host_separator_normalization_cannot_hide_a_receipt_bound_alias(self):
+        import hashlib
+
+        source, receipt = self.package()
+        payload = b'Known nested payload'
+        receipt['files']['nested/payload.bin'] = hashlib.sha256(payload).hexdigest()
+        receipt['inventory_sha256'] = hash_object(receipt['files'])
+        (source / RECEIPT).write_text(json.dumps(receipt), encoding='utf-8')
+        archive = self.zip(source, ('nested\\payload.bin', payload))
+        with self.assertRaisesRegex(ValueError, 'unsafe'):
+            verify_package(archive)
 
     def test_symlink_directory_member_is_rejected(self):
         source, _ = self.package()

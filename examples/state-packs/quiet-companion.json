@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "packs": [
+    {
+      "id": "quiet-companion",
+      "name": "Quiet Companion",
+      "description": "A small custom pack for calm companionship and listening, with no object dependencies.",
+      "states": ["idle", "relaxed-idle", "content", "listening"],
+      "includes": [],
+      "exclude": [],
+      "archetypes": ["cat", "humanoid"],
+      "recommended_limit": 8,
+      "selection_only": false
+    }
+  ]
+}

@@ -188,6 +188,11 @@ def _zip_receipt(archive):
     if sum(entry.file_size for entry in entries) > MAX_PACKAGE_BYTES + MAX_RECEIPT_BYTES:
         raise ValueError('decomposition archive exceeds decompressed size bound')
     for entry in entries:
+        # zipfile normalizes native separators and truncates NULs while reading.
+        # Validate the original archive name before any host normalization.
+        _relative(entry.orig_filename)
+        if entry.orig_filename != entry.filename:
+            raise ValueError('unsafe normalized decomposition archive member: ' + entry.orig_filename)
         _relative(entry.filename)
         mode = stat.S_IFMT(entry.external_attr >> 16)
         if mode not in (0, stat.S_IFREG) or entry.is_dir() or entry.flag_bits & 1 or entry.compress_type not in (zipfile.ZIP_STORED, zipfile.ZIP_DEFLATED):

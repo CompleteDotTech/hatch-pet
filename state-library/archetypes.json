@@ -1,0 +1,298 @@
+{
+  "schema_version": 1,
+  "capabilities": [
+    {
+      "id": "body",
+      "name": "Body",
+      "description": "A canonical body or object silhouette capable of approved posture changes."
+    },
+    {
+      "id": "head",
+      "name": "Head",
+      "description": "An approved head with a real attachment and stable proportions."
+    },
+    {
+      "id": "eyes",
+      "name": "Eyes",
+      "description": "Approved eyes and eyelids with documented shapes."
+    },
+    {
+      "id": "expressive-face",
+      "name": "Expressive Face",
+      "description": "A facial structure explicitly capable of changing expression."
+    },
+    {
+      "id": "mouth",
+      "name": "Mouth",
+      "description": "An approved mouth, beak or analogous attached feeding/speech structure."
+    },
+    {
+      "id": "legs",
+      "name": "Legs",
+      "description": "Approved locomotion/support legs with feasible joints."
+    },
+    {
+      "id": "feet",
+      "name": "Feet",
+      "description": "Approved feet or toes capable of the selected contacts."
+    },
+    {
+      "id": "arms",
+      "name": "Arms",
+      "description": "Approved upper limbs usable for gestures."
+    },
+    {
+      "id": "hands",
+      "name": "Hands",
+      "description": "Approved articulated hands with appropriate grasp or finger anatomy."
+    },
+    {
+      "id": "paws",
+      "name": "Paws",
+      "description": "Approved animal paws with real attachments."
+    },
+    {
+      "id": "ears",
+      "name": "Ears",
+      "description": "Approved movable ears with stable roots and markings."
+    },
+    {
+      "id": "tail",
+      "name": "Tail",
+      "description": "An approved tail with a continuous anatomical root."
+    },
+    {
+      "id": "wings",
+      "name": "Wings",
+      "description": "Approved functional or poseable wings with documented attachment."
+    },
+    {
+      "id": "fins",
+      "name": "Fins",
+      "description": "Approved attached fins capable of fanning or swimming strokes."
+    },
+    {
+      "id": "antennae",
+      "name": "Antennae",
+      "description": "Approved attached antennae with fixed count and segmentation."
+    },
+    {
+      "id": "fur",
+      "name": "Fur",
+      "description": "Approved attached fur or hair material that can deform with the body."
+    },
+    {
+      "id": "shell",
+      "name": "Shell",
+      "description": "An approved shell with anatomically valid retraction."
+    },
+    {
+      "id": "tentacles",
+      "name": "Tentacles",
+      "description": "Approved continuously deformable tentacles with fixed count."
+    },
+    {
+      "id": "quadrupedal",
+      "name": "Quadrupedal",
+      "description": "Four-legged body structure supporting a forequarter play bow."
+    }
+  ],
+  "archetypes": [
+    {
+      "id": "generic",
+      "name": "Generic or unspecified",
+      "description": "Conservative body-only starting point. Declare capabilities from the approved reference before selecting anatomical states.",
+      "capabilities": [
+        "body"
+      ]
+    },
+    {
+      "id": "humanoid",
+      "name": "Humanoid",
+      "description": "Typical articulated humanoid; remove capabilities absent from the approved reference.",
+      "capabilities": [
+        "body",
+        "head",
+        "eyes",
+        "expressive-face",
+        "mouth",
+        "legs",
+        "feet",
+        "arms",
+        "hands",
+        "ears"
+      ]
+    },
+    {
+      "id": "quadruped",
+      "name": "Quadruped",
+      "description": "Generic four-legged mammal with typical paws, ears and tail; confirm every detail.",
+      "capabilities": [
+        "body",
+        "head",
+        "eyes",
+        "expressive-face",
+        "mouth",
+        "legs",
+        "feet",
+        "paws",
+        "ears",
+        "tail",
+        "fur",
+        "quadrupedal"
+      ]
+    },
+    {
+      "id": "cat",
+      "name": "Cat",
+      "description": "Typical cat anatomy with paws, expressive ears and tail; no human hands assumed.",
+      "capabilities": [
+        "body",
+        "head",
+        "eyes",
+        "expressive-face",
+        "mouth",
+        "legs",
+        "feet",
+        "paws",
+        "ears",
+        "tail",
+        "fur",
+        "quadrupedal"
+      ]
+    },
+    {
+      "id": "dog",
+      "name": "Dog",
+      "description": "Typical dog anatomy with forepaws, muzzle and tail; no human hands assumed.",
+      "capabilities": [
+        "body",
+        "head",
+        "eyes",
+        "expressive-face",
+        "mouth",
+        "legs",
+        "feet",
+        "paws",
+        "ears",
+        "tail",
+        "fur",
+        "quadrupedal"
+      ]
+    },
+    {
+      "id": "bird",
+      "name": "Bird",
+      "description": "Typical winged bird with beak, eyes and feet; no human hands or mammal ears assumed.",
+      "capabilities": [
+        "body",
+        "head",
+        "eyes",
+        "mouth",
+        "legs",
+        "feet",
+        "wings",
+        "tail"
+      ]
+    },
+    {
+      "id": "winged",
+      "name": "Winged creature",
+      "description": "Conservative winged creature with body, head and feet; add expressive anatomy only when approved.",
+      "capabilities": [
+        "body",
+        "head",
+        "eyes",
+        "mouth",
+        "legs",
+        "feet",
+        "wings"
+      ]
+    },
+    {
+      "id": "fish",
+      "name": "Fish",
+      "description": "Aquatic body with eyes, mouth and fins; no arms, feet or human face assumed.",
+      "capabilities": [
+        "body",
+        "eyes",
+        "mouth",
+        "fins",
+        "tail"
+      ]
+    },
+    {
+      "id": "insect",
+      "name": "Insect",
+      "description": "Typical insect with segmented legs, eyes and antennae; wings are not assumed.",
+      "capabilities": [
+        "body",
+        "head",
+        "eyes",
+        "mouth",
+        "legs",
+        "antennae"
+      ]
+    },
+    {
+      "id": "serpentine",
+      "name": "Serpentine creature",
+      "description": "Legless elongated body with approved head, eyes and mouth.",
+      "capabilities": [
+        "body",
+        "head",
+        "eyes",
+        "mouth",
+        "tail"
+      ]
+    },
+    {
+      "id": "blob",
+      "name": "Blob",
+      "description": "Flexible body-only abstract character; facial features are not assumed.",
+      "capabilities": [
+        "body"
+      ]
+    },
+    {
+      "id": "object",
+      "name": "Object mascot",
+      "description": "Body-only inanimate mascot; no face, limbs or movement joints assumed.",
+      "capabilities": [
+        "body"
+      ]
+    },
+    {
+      "id": "robot",
+      "name": "Robot",
+      "description": "Conservative articulated robot body and head; do not assume biological mouth or limbs.",
+      "capabilities": [
+        "body",
+        "head"
+      ]
+    },
+    {
+      "id": "cephalopod",
+      "name": "Cephalopod",
+      "description": "Tentacled aquatic body with eyes and mouth, no human hands.",
+      "capabilities": [
+        "body",
+        "eyes",
+        "mouth",
+        "tentacles"
+      ]
+    },
+    {
+      "id": "shell-creature",
+      "name": "Shell-bearing creature",
+      "description": "Conservative shell-bearing creature; add limbs only from the approved identity.",
+      "capabilities": [
+        "body",
+        "head",
+        "eyes",
+        "mouth",
+        "shell"
+      ]
+    }
+  ]
+}
