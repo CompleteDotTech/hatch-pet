@@ -33,7 +33,7 @@ ROOT_Y = 326
 def write_json(path, value):
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(value, indent=2, sort_keys=True) + '\n', encoding='utf-8')
+    path.write_bytes((json.dumps(value, indent=2, sort_keys=True) + '\n').encode('utf-8'))
     return path
 
 
@@ -48,7 +48,7 @@ def keyed(values, interpolation='linear'):
 
 def original_provenance(root, name, job):
     run = root / 'acquisition' / name
-    history = json.loads((run / 'imagegen-jobs.json').read_text())
+    history = json.loads((run / 'imagegen-jobs.json').read_text(encoding='utf-8'))
     record = next(j for j in history['jobs'] if j['id'] == job)
     if history['fixture_mode'] or record['status'] != 'generated' or record['source_origin'] != 'imagegen':
         raise ValueError('pilot requires an actual ingested imagegen source: ' + name + '/' + job)
@@ -56,7 +56,7 @@ def original_provenance(root, name, job):
     if file_sha(original) != record['source_hash']:
         raise ValueError('original source differs from real acquisition history: ' + str(original))
     receipt = root / 'acquisition/handoffs' / (name + '-' + job + '.json')
-    handoff = json.loads(receipt.read_text())
+    handoff = json.loads(receipt.read_text(encoding='utf-8'))
     if handoff['receipt_template'] != record['generation_receipt']:
         raise ValueError('handoff differs from ingested receipt')
     return {'kind': 'imagegen', 'fixture': False,
@@ -440,7 +440,7 @@ DIALOGUE = [
 ]
 
 
-def make_audio(root):
+def make_audio(root, *, synthesize_missing=False):
     """Local Flite TTS; retained originals, explicit frame padding, editable cues."""
     ffmpeg = shutil.which('ffmpeg')
     version = None
@@ -451,12 +451,16 @@ def make_audio(root):
         text_path = original.with_suffix('.txt')
         receipt_path = original.with_suffix('.json')
         original.parent.mkdir(parents=True, exist_ok=True)
-        if text_path.exists() and text_path.read_text() != text:
+        text_bytes = text.encode('utf-8')
+        if text_path.exists() and text_path.read_bytes() != text_bytes:
             raise ValueError('dialogue source changed; retain this audio version and author a new line version')
-        text_path.write_text(text)
         if not original.exists():
+            if not synthesize_missing:
+                raise ValueError('missing retained dialogue: restore audio-source-bundle; new speech requires explicit --synthesize-missing-audio')
             if ffmpeg is None:
                 raise ValueError('missing retained dialogue: restore audio-source-bundle or supply local FFmpeg with Flite')
+            if not text_path.exists():
+                text_path.write_bytes(text_bytes)
             if version is None:
                 version = subprocess.check_output([ffmpeg, '-version'], text=True).splitlines()[0]
             subprocess.run([ffmpeg, '-v', 'error', '-f', 'lavfi', '-i',
@@ -468,7 +472,7 @@ def make_audio(root):
                 'provider_id': None, 'provider_id_unavailable_reason': 'Local TTS has no remote provider call.'})
         if not receipt_path.is_file():
             raise ValueError('retained TTS source needs its original provenance receipt: ' + str(receipt_path))
-        tts_record = json.loads(receipt_path.read_text())
+        tts_record = json.loads(receipt_path.read_text(encoding='utf-8'))
         if (tts_record.get('audio') != file_ref(root, original) or tts_record.get('text') != file_ref(root, text_path)
                 or tts_record.get('voice') != voice or not tts_record.get('engine')):
             raise ValueError('retained TTS audio, text or voice differs from its source receipt')
@@ -552,7 +556,7 @@ def add_dialogue(root, shot, source, start):
     return audio
 
 
-def build_pilot(root, *, audio=True):
+def build_pilot(root, *, audio=True, synthesize_missing_audio=False):
     root = Path(root).resolve()
     cast, scenery = make_art(root)
     geometry = exchange_geometry(cast)
@@ -578,7 +582,7 @@ def build_pilot(root, *, audio=True):
     tomorrow = shot('tomorrow', 120, [actor(n, x, [place(n, 'idle', 0, 84), place(n, 'reaction', 84, 108, 6), place(n, 'idle', 108, 120, 6)])
         for n, x in (('milo', 230), ('luma', 410))], 'luma', scenery, garden=True, camera=(18, 10), zoom=1.05)
     if audio:
-        lines = make_audio(root)
+        lines = make_audio(root, synthesize_missing=synthesize_missing_audio)
         for target, line, preferred in zip((arrival, exchange, departure, garden, tomorrow), lines, (86, 10, 1, 27, 12)):
             add_dialogue(root, target, line, min(preferred, target['duration_frames']-line['duration_frames']-5))
     continuity = lambda a, b, position=True: {'from_shot': a, 'to_shot': b, 'characters': ['milo@'+VERSION, 'luma@'+VERSION],
@@ -619,8 +623,10 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--project', type=Path, default=Path('examples/production-pilot'))
     parser.add_argument('--without-audio', action='store_true', help='Construction diagnostics only; not the complete production demonstration')
+    parser.add_argument('--synthesize-missing-audio', action='store_true', help='Explicitly create new Flite speech if originals are absent; this is not exact delivery reconstruction')
     args = parser.parse_args(argv)
-    print(json.dumps(build_pilot(args.project, audio=not args.without_audio), indent=2))
+    print(json.dumps(build_pilot(args.project, audio=not args.without_audio,
+        synthesize_missing_audio=args.synthesize_missing_audio), indent=2))
 
 
 if __name__ == '__main__':

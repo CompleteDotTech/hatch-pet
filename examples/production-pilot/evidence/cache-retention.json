@@ -1,0 +1,12 @@
+{
+  "operation": "move-unreferenced-owned-render-cache",
+  "moved_files": 14787,
+  "moved_bytes": 108016772,
+  "originals_or_acquisition_records_moved": false,
+  "current_manifest_artifacts_moved": false,
+  "current_manifests_unchanged": true,
+  "complete_manifests_validated": 7,
+  "cache_inventory_sha256": "5b6cf23f7bed7796e0a51e3c5aa809892db94fb9c662a014006235127110e603",
+  "backup_location": "/workspace/scratch/368aa013e993/production-obsolete-render-cache",
+  "reason": "Keep the final project within the unchanged 10000-file archive safeguard. Earlier renderer/repair cache layers were not referenced by any complete current manifest or review."
+}

@@ -1,0 +1,103 @@
+{
+  "character": "milo@3.0.0",
+  "completion": "hold",
+  "contacts": [],
+  "displacement": [
+    0,
+    0
+  ],
+  "duration_frames": 48,
+  "end_pose": "stand",
+  "entry_points": [
+    {
+      "frame": 0,
+      "pose": "hold"
+    }
+  ],
+  "events": [],
+  "exit_points": [
+    {
+      "frame": 47,
+      "pose": "stand"
+    }
+  ],
+  "facing": "front",
+  "full_frames": [],
+  "id": "milo-release",
+  "interpolation": {
+    "max_frames": 12,
+    "max_offset_per_frame": 20,
+    "max_rotation_per_frame": 20
+  },
+  "interruptions": {
+    "cancel_pose": "stand",
+    "frames": [
+      0,
+      24,
+      47
+    ],
+    "max_transition_frames": 12,
+    "policy": "at-markers"
+  },
+  "kind": "clip",
+  "mode": "once",
+  "requirements": {
+    "action": [
+      "release"
+    ],
+    "hand": [
+      "open-paw"
+    ],
+    "pose": [
+      "hold",
+      "stand"
+    ],
+    "prop_state": [
+      "carried"
+    ]
+  },
+  "root": {
+    "offset": {
+      "interpolation": "linear",
+      "keys": [
+        {
+          "frame": 0,
+          "value": [
+            0,
+            0
+          ]
+        }
+      ]
+    }
+  },
+  "schema_version": 1,
+  "start_pose": "hold",
+  "tracks": {
+    "body": {
+      "arm-right": {
+        "rotation": {
+          "interpolation": "linear",
+          "keys": [
+            {
+              "frame": 0,
+              "value": -66.22628848822447
+            },
+            {
+              "frame": 12,
+              "value": -66.22628848822447
+            },
+            {
+              "frame": 48,
+              "value": 0
+            }
+          ]
+        }
+      }
+    },
+    "face": {},
+    "gaze": {},
+    "mouth": {}
+  },
+  "version": "3.0.0",
+  "viewpoint": "front"
+}

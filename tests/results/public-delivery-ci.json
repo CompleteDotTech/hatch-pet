@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "kind": "public-production-ci-verification",
+  "fixture": false,
+  "tested_head": "bb799921eb3ded5eef9eb5d27bb4ff3375b86a78",
+  "tested_tree": "109884f147b92e7ab9e11b4b4a797c33485d2624",
+  "pull_request_merge_revision": "c6de0f6c8e0ad1de6ea2f06cf5ca17606a8aee13",
+  "same_tree_confirmed": true,
+  "platforms": [
+    {
+      "platform": "linux",
+      "run_url": "https://github.com/CompleteDotTech/hatch-pet/actions/runs/39409771913",
+      "job_url": "https://github.com/CompleteDotTech/hatch-pet/actions/runs/39409771913/job/118584382962",
+      "revision": "c6de0f6c8e0ad1de6ea2f06cf5ca17606a8aee13",
+      "python": "3.12.15",
+      "pillow": "13.0.0",
+      "tests": 790,
+      "failures": 0,
+      "errors": 0,
+      "skips": [
+        {
+          "reason": "Krita not available; adapter tests remain separate from integration",
+          "test": "test_production_adapter.ProductionAdapterTests.test_actual_local_krita_import_export_and_layer_roundtrip"
+        }
+      ],
+      "seconds": 313.09,
+      "report": "public-delivery-linux.json",
+      "report_sha256": "5f1d484e098184718ca56710a831d12cbf8651ee77333511b721ec77040becd8",
+      "log": "public-delivery-linux-tests.log",
+      "log_sha256": "c883e2536b8fe9142e736c83ddef327c316ba01ea59e21c45904d8312f6b58ce",
+      "artifact_id": 12258743853,
+      "artifact_sha256": "c3ee4f5aba5847520831158717e7dd6a79c4e73c18b41924979a236c6f0e2c5d",
+      "complete_delivery_gate": true,
+      "checkout_unchanged": true
+    },
+    {
+      "platform": "macos",
+      "run_url": "https://github.com/CompleteDotTech/hatch-pet/actions/runs/39409771913",
+      "job_url": "https://github.com/CompleteDotTech/hatch-pet/actions/runs/39409771913/job/118584383234",
+      "revision": "c6de0f6c8e0ad1de6ea2f06cf5ca17606a8aee13",
+      "python": "3.12.10",
+      "pillow": "13.0.0",
+      "tests": 790,
+      "failures": 0,
+      "errors": 0,
+      "skips": [
+        {
+          "reason": "Krita not available; adapter tests remain separate from integration",
+          "test": "test_production_adapter.ProductionAdapterTests.test_actual_local_krita_import_export_and_layer_roundtrip"
+        }
+      ],
+      "seconds": 342.587,
+      "report": "public-delivery-macos.json",
+      "report_sha256": "e3a21d33868a1a98dee351b450d76467f875a9906528dc6ed04330b3604ac0e5",
+      "log": "public-delivery-macos-tests.log",
+      "log_sha256": "93952bc625a3db3a5d98f0745fbc720e5a3f5cfa03f28e75a0036928fd4cbe23",
+      "artifact_id": 12258509005,
+      "artifact_sha256": "5b495d6cae4d949c14a4adbf395685688c8ee543d6749d8f677425ece1530871",
+      "complete_delivery_gate": true,
+      "checkout_unchanged": true
+    },
+    {
+      "platform": "windows",
+      "run_url": "https://github.com/CompleteDotTech/hatch-pet/actions/runs/39409766974",
+      "job_url": "https://github.com/CompleteDotTech/hatch-pet/actions/runs/39409766974/job/118584365975",
+      "revision": "bb799921eb3ded5eef9eb5d27bb4ff3375b86a78",
+      "python": "3.12.10",
+      "pillow": "13.0.0",
+      "tests": 790,
+      "failures": 0,
+      "errors": 0,
+      "skips": [
+        {
+          "reason": "Krita not available; adapter tests remain separate from integration",
+          "test": "test_production_adapter.ProductionAdapterTests.test_actual_local_krita_import_export_and_layer_roundtrip"
+        },
+        {
+          "reason": "Named pipes are not available on this platform.",
+          "test": "test_style_catalog.CatalogIntegrityTests.test_loader_rejects_named_pipes_without_blocking"
+        }
+      ],
+      "seconds": 446.828,
+      "report": "public-delivery-windows.json",
+      "report_sha256": "56e9098095babc9107824cdbfb85385d8b63059fdfc8769f9353f20815dd1c5b",
+      "log": "public-delivery-windows-tests.log",
+      "log_sha256": "b1de06ca3d27e11ae6123e081f65f57cd4c15219d0318cc43b7e53ba5a369a3a",
+      "artifact_id": 12259079618,
+      "artifact_sha256": "6e37b4a43f5cb68be129fd62ae4b33bc9a035c083d2444ed059fcdd9ad35ea31",
+      "complete_delivery_gate": true,
+      "checkout_unchanged": true
+    }
+  ],
+  "implementation_inputs_identical_across_platforms": true,
+  "original_transport_inventories_identical": true,
+  "scene_pcm_hashes_identical": true,
+  "all_complete_gates_passed": true,
+  "new_artistic_approval_recorded": false,
+  "human_review": false,
+  "public_media_provenance": "../../examples/production-pilot/media/provenance.json",
+  "scope": "Actual full-suite, integrity, original restoration, portable archive, both complete layered scenes, repeat rendering, PCM/video and complete editor-format gates. Native Krita execution is optional; Windows lacks POSIX FIFO. New render reviews and current merge/default-branch state remain separately recorded on PR #8."
+}

@@ -66,7 +66,7 @@ class StateCatalogCLI(unittest.TestCase):
         result = self.okay(self.cli('compile', '--selection', str(selection), '--output', str(profile_path), hatch=True))
         self.assertEqual(result['selected_states'], ['happy', 'idle'])
         self.assertEqual(result['estimates']['model_calls_baseline'], 3)
-        self.assertEqual(result['selection_manifest'], str(self.home / 'compiled.selection.json'))
+        self.assertEqual(result['selection_manifest'], str((self.home / 'compiled.selection.json').resolve()))
         profile = load_profile(profile_path)
         self.assertEqual(profile['schema_version'], 1)
         run = self.home / 'run'
@@ -152,7 +152,7 @@ class StateCatalogCLI(unittest.TestCase):
         self.assertEqual(len(discovery['states'][0]['frames']), 3)
         self.assertFalse(discovery['states'][0]['production_artwork'])
         self.assertFalse(discovery['states'][0]['matches_catalog_selection'])
-        self.assertEqual(discovery['preview_html'], str(destination / 'preview.html'))
+        self.assertEqual(discovery['preview_html'], str((destination / 'preview.html').resolve()))
         (destination / 'state-selection.json').write_text(json.dumps(compiled['manifest']))
         write_export_receipt(destination, compiled['profile'])
         discovery = self.okay(self.cli('preview', 'happy', '--export-dir', str(destination)))

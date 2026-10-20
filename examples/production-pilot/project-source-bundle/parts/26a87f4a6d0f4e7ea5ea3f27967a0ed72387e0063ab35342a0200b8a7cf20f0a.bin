@@ -1,0 +1,122 @@
+{
+  "cast": {
+    "path": "cast.json",
+    "sha256": "cbeb179e22574fbac903b703be72d38a0de41ecdc37c2e00dffeca4efcde9048"
+  },
+  "clips": [
+    {
+      "path": "clips/milo-idle.json",
+      "sha256": "727a3552144e080c54d7c4365c3d8a64e4a4a31c4328b0bb87715ba2ea544ea7"
+    },
+    {
+      "path": "clips/milo-walk-right.json",
+      "sha256": "6889534c307441df74b78353bc21aaa3da28c2e76cc83adbec288997beb1f0ae"
+    },
+    {
+      "path": "clips/milo-walk-left.json",
+      "sha256": "0dfd05c14078589699ab15fb0a2c1dc760ef3ed6010a9c14545d46b6fbf0383a"
+    },
+    {
+      "path": "clips/milo-walk-start.json",
+      "sha256": "5fda371277c10abbbbda4d77ae780fcfabe18190cfbcfae56a56af8b09726443"
+    },
+    {
+      "path": "clips/milo-stop.json",
+      "sha256": "7495a8d2dbdb4b2777a8d1e8434baaf805215e38453f47d48bdbf89ac0127204"
+    },
+    {
+      "path": "clips/milo-reaction.json",
+      "sha256": "82c79823c7ed302d4c2672b0e3e14be3ef2c51dd3ab144519c009b182a1bf02a"
+    },
+    {
+      "path": "clips/milo-reach.json",
+      "sha256": "5053485ef865048cb90adc65db6d72677bd66416cd250168313a09c8e8a31fa8"
+    },
+    {
+      "path": "clips/milo-hold.json",
+      "sha256": "a088ac41ffbf88f4dee0350f56e7522a950c7b8c910a0d2dc9af00468107d34f"
+    },
+    {
+      "path": "clips/milo-release.json",
+      "sha256": "11346241719c4bb215e3b2711fdc921c957559c1167d2f31e8158a49bf87ea49"
+    },
+    {
+      "path": "clips/milo-exchange.json",
+      "sha256": "befbebff6ea1685d8ec6dd2b20258ef78bf649f0a844761905a78d41ca031b91"
+    },
+    {
+      "path": "clips/luma-idle.json",
+      "sha256": "91768304f80d3b4bc9134453dc5886bac739a6f4c90ff7f8dfa7e506480eeea3"
+    },
+    {
+      "path": "clips/luma-walk-right.json",
+      "sha256": "6ea3b6e8871460ec198e3a200f03b5742161bf4c9041ed3cfd686d9ee3549188"
+    },
+    {
+      "path": "clips/luma-walk-left.json",
+      "sha256": "8ae21873760bec89eb828ae8625b210ad00cfe95b180bea44b3dff5da5da7363"
+    },
+    {
+      "path": "clips/luma-walk-start.json",
+      "sha256": "b8d053345008184b27647b11d5d9fd349925b66f3a8c8bad563850bc77c2eeb9"
+    },
+    {
+      "path": "clips/luma-stop.json",
+      "sha256": "9f55f65171abdaf6a209dc762625f13640974b7bdab9fee29e727bdd1aec3b03"
+    },
+    {
+      "path": "clips/luma-reaction.json",
+      "sha256": "5377670b0b66071cf3b3d1d5a9d2459c8435240bcb125a346a00ee86b0148aa3"
+    },
+    {
+      "path": "clips/luma-reach.json",
+      "sha256": "7d8d25a031f2a42258cf040bf0e901bf4eee7cb3e77dc7d41ad6158a9749763d"
+    },
+    {
+      "path": "clips/luma-hold.json",
+      "sha256": "52dc8c5c28bbd1c3080171f3246c3b4b2b6014a07c4d9f2213523a439ee29398"
+    },
+    {
+      "path": "clips/luma-release.json",
+      "sha256": "fcb825c43333655ea37ff65ba4973199e0e36bc4dc11c48a4ae10185c0b02eb9"
+    },
+    {
+      "path": "clips/luma-exchange.json",
+      "sha256": "bf94331910247118dfe14ea08031baeb46d7f4d4886d0783d586a482801e3ae3"
+    }
+  ],
+  "fixture": false,
+  "id": "milo-luma-pilot",
+  "kind": "project",
+  "limits": {
+    "max_assets": 256,
+    "max_frames": 1200,
+    "max_generation_calls": 4,
+    "max_source_pixels": 2000000,
+    "max_work_bytes": 268435456
+  },
+  "render": {
+    "alpha": "straight",
+    "background": "#F5E9CBFF",
+    "color_space": "srgb",
+    "fps": {
+      "denominator": 1,
+      "numerator": 12
+    },
+    "height": 360,
+    "resampling": "bicubic",
+    "width": 640
+  },
+  "scenes": [
+    {
+      "path": "scenes/seed-exchange.json",
+      "sha256": "0656fc260521c2d6d6efd5863f4cf59c094d47ceedd3b584896094b1b0b05d5a"
+    },
+    {
+      "path": "scenes/garden-promise.json",
+      "sha256": "9f783134708d1185a93212f6cc8c52895f6635b2a201695ea99a1faa8284c99b"
+    }
+  ],
+  "schema_version": 1,
+  "version": "3.0.0"
+}

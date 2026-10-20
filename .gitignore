@@ -11,6 +11,8 @@ __pycache__/
 /examples/production-pilot/evidence/*.png
 /examples/.production-pilot.hatch.lock
 /examples/production-pilot/acquisition/.*.hatch.lock
+/examples/production-pilot/.*.hatch.lock
+/delivery-verification/
 
 # Model-free demonstration output; retain its small acceptance evidence.
 /examples/production-fixture/*

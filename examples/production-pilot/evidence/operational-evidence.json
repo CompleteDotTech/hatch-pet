@@ -1,0 +1,494 @@
+{
+  "schema_version": 1,
+  "kind": "production-operational-evidence",
+  "created_at": "2026-10-19T20:14:41.707900+00:00",
+  "project_id": "milo-luma-pilot",
+  "fixture": false,
+  "renderer": {
+    "id": "hatch-reference-rgba",
+    "version": "1.0.0",
+    "code_sha256": "7b8b1c68aef4e55ca5941f32ba6c928b599f059b81a0f9b3b9989424f6c53833",
+    "implementation": {
+      "production_render.py": "b4d6cf5b97268d650ccef53d721ee352ad4583c39e71eee950f3ae5ade4de492",
+      "production_performance.py": "6d282e15b541d7f13dab076529a6c395e004b10bd596a065b5cdf17a4f03a26c",
+      "production_contracts.py": "7b0c7f873a5b8cd129cf6d550cb5d1ba7ac7a367c399b1a300ccebacb98e2a46"
+    },
+    "pillow": "13.0.0",
+    "python": "3.12.14",
+    "compositing": "8-bit encoded-srgb source-over; straight output alpha",
+    "filtering": "premultiplied-alpha affine except exact nearest"
+  },
+  "provider_called": false,
+  "production_art_acceptance_claimed_by_this_evidence": false,
+  "live_workflow_review_file_written_by_this_operation": false,
+  "scope": "Actual pilot export and isolated dependency-change operations, plus a separately labeled fresh synthetic regression rebuild. Production visual and AV decisions remain in explicit scoped review receipts.",
+  "editor_handoff": {
+    "report": {
+      "path": "editor-handoff/operational-export.json",
+      "sha256": "c5b6338b451908de275808859d8cb6d557d56a0853a1a488045e55a558bd69b4"
+    },
+    "project_relative_path": "editor-handoff/exchange",
+    "source_shot": "seed-exchange/exchange",
+    "source_manifest_sha256": "d7a8c1c4085da89c1ca752ddbb5629cc569a6bb3cc15d0bcafc521e659538218",
+    "frame_count": 168,
+    "fps": {
+      "denominator": 1,
+      "numerator": 12
+    },
+    "resolution": [
+      640,
+      360
+    ],
+    "selected_frames": [
+      83,
+      84,
+      85
+    ],
+    "layer_snapshots": [
+      {
+        "path": "editor-handoff/exchange/drawings/frame-000083.ora",
+        "sha256": "a1fcba2e54a4d27b18299e597c7dad4918b1aa00f2f10becb7f409ff1c086d5b",
+        "frame_index": 83,
+        "roundtrip": {
+          "tested": true,
+          "pixel_exact": true,
+          "layer_count": 26
+        }
+      },
+      {
+        "path": "editor-handoff/exchange/drawings/frame-000084.ora",
+        "sha256": "a661c99c69b6229d3f16d70b3625ca57c3f78b83f307ac00092675c30d1871ea",
+        "frame_index": 84,
+        "roundtrip": {
+          "tested": true,
+          "pixel_exact": true,
+          "layer_count": 26
+        }
+      },
+      {
+        "path": "editor-handoff/exchange/drawings/frame-000085.ora",
+        "sha256": "0fe6002e65b2a4f0e52c6455fe9b7822c60cec27490a6286f31c2b0c3d7f256f",
+        "frame_index": 85,
+        "roundtrip": {
+          "tested": true,
+          "pixel_exact": true,
+          "layer_count": 26
+        }
+      }
+    ],
+    "validation": {
+      "ok": true,
+      "exported_assets": true,
+      "adapter_roundtrip_tested": true,
+      "frame_count": 168,
+      "drawings": 3,
+      "application_integration": "not-performed",
+      "handoff_sha256": "0c1a4cd9fed8511410a13ca3661a0c921821f862db1a95cb46bcab19c8325122"
+    },
+    "consumer": {
+      "schema_version": 1,
+      "consumer": "Krita",
+      "exported_assets": true,
+      "adapter_roundtrip_tested": true,
+      "application_integration": "not-performed",
+      "timeline_integration": "not-performed",
+      "handoff_sha256": "0c1a4cd9fed8511410a13ca3661a0c921821f862db1a95cb46bcab19c8325122",
+      "reason": "Krita executable is unavailable in this environment. No application was installed."
+    },
+    "arrival_snapshot": {
+      "source_manifest": "renders/seed-exchange/shots/arrival/render-manifest.json",
+      "source_manifest_sha256": "03887b98dc8414544a80fbc16e4e17b59517d00ec816d347c0e4562dae6c4402",
+      "path": "editor-handoff/arrival-frame-096.ora",
+      "export": {
+        "schema_version": 1,
+        "adapter_version": "1.0.0",
+        "path": "arrival-frame-096.ora",
+        "sha256": "00d6e3ae5c5d31659a5d5dede7f4bfac390930722b83d8965d8d3d3bca4c0458",
+        "frame_index": 96,
+        "source_frame_sha256": "ce79a5cd9ef4ec9d0ea199b21d2f1eced2e49d5b1a9474f12fa98d6bb9165075",
+        "layers": [
+          {
+            "name": "foreground",
+            "src": "data/layer0000.png",
+            "source_sha256": "77d4d3d8d134c434d4d836791aa210adffd39a7b06c9442d420aa212528b1272"
+          },
+          {
+            "name": "luma/hand-right",
+            "src": "data/layer0001.png",
+            "source_sha256": "cd555ae92204e94e61a73414428454487ac1697865097b7d9345b573046ee6e7"
+          },
+          {
+            "name": "luma/hand-left",
+            "src": "data/layer0002.png",
+            "source_sha256": "1f6581a409ce6b5db08bad9c709bc44ca5f23319f66d7ae7465bf12066661aa7"
+          },
+          {
+            "name": "milo/hand-right",
+            "src": "data/layer0003.png",
+            "source_sha256": "85ad06655d5272d49db44f9d3d54017e93f219dc99de5b69a2a8ded7ef33f945"
+          },
+          {
+            "name": "milo/hand-left",
+            "src": "data/layer0004.png",
+            "source_sha256": "31fa2c0d26f26bd05404a470313cfc482154c84af618133ae5552d9aae2e0c51"
+          },
+          {
+            "name": "seed-packet",
+            "src": "data/layer0005.png",
+            "source_sha256": "c5c7564e930fd33bf22e813b1405e79d02cb87596194dcaadb55a07589d2d9de"
+          },
+          {
+            "name": "luma/mouth",
+            "src": "data/layer0006.png",
+            "source_sha256": "346b142134c2f24c94aff2970451886b93e427c8e7405b843ccb6af163c45dd4"
+          },
+          {
+            "name": "luma/brows",
+            "src": "data/layer0007.png",
+            "source_sha256": "78ef49ba1bd59c6dc053881c832c8fc695dcacc970270c6d336656ac161cfcb7"
+          },
+          {
+            "name": "luma/eyes",
+            "src": "data/layer0008.png",
+            "source_sha256": "5716e96f89bee97c44ab7a39a29453f536991b74f7dd73f4446d3915a053b3d8"
+          },
+          {
+            "name": "milo/mouth",
+            "src": "data/layer0009.png",
+            "source_sha256": "cd6290ae7a045b1eb600fce6f71512ff0f29aac40418e0825f383bc45c436fec"
+          },
+          {
+            "name": "milo/brows",
+            "src": "data/layer0010.png",
+            "source_sha256": "4ad34f7dc341b2669b384b4c595366b8b30d3a667becd0c51e38c95f984a6ca0"
+          },
+          {
+            "name": "milo/eyes",
+            "src": "data/layer0011.png",
+            "source_sha256": "200a6d110f57bce078cf1acfa2be772c3df106079c93cc3817ef0a7484579f41"
+          },
+          {
+            "name": "luma/head",
+            "src": "data/layer0012.png",
+            "source_sha256": "bba7cfb0490fd03c5b65eef3b0be9e6e59af2d96ccdf463f931c73d9e78d4a4d"
+          },
+          {
+            "name": "milo/head",
+            "src": "data/layer0013.png",
+            "source_sha256": "9dbbe8117fa9f638acb8e14a42d46513feee7b7c6e1cc1a9993659e54c246424"
+          },
+          {
+            "name": "luma/torso",
+            "src": "data/layer0014.png",
+            "source_sha256": "909b5acfd7e6dd6d91970fbf4759910cda449a980219a00865cc649902001580"
+          },
+          {
+            "name": "milo/torso",
+            "src": "data/layer0015.png",
+            "source_sha256": "a34ea565ca9960451079ff91e161398317d311bde14bf4827c831a64efaf2bd0"
+          },
+          {
+            "name": "luma/arm-right",
+            "src": "data/layer0016.png",
+            "source_sha256": "42ff09deb0e28ab31c54997b7319f277965cc781704918a82e53e9a31f71f2fb"
+          },
+          {
+            "name": "luma/arm-left",
+            "src": "data/layer0017.png",
+            "source_sha256": "4f355b7fb14c4e463e74bbeaf164f5a7521558882179ee9ba2236239fbda8112"
+          },
+          {
+            "name": "milo/arm-right",
+            "src": "data/layer0018.png",
+            "source_sha256": "3a61476861aefae91e854cca91f167a0c04fd13b25c4a430ec8d4f779a1cfb62"
+          },
+          {
+            "name": "milo/arm-left",
+            "src": "data/layer0019.png",
+            "source_sha256": "9a8c8985147df9841112de7250afd721f77accad487a52dd34a9d4e86b948dd1"
+          },
+          {
+            "name": "luma/leg-right",
+            "src": "data/layer0020.png",
+            "source_sha256": "65c60ede0b3b1a511aa85c8fd4686876a946c1fddf16748c0440dc9e2ff1fc9c"
+          },
+          {
+            "name": "luma/leg-left",
+            "src": "data/layer0021.png",
+            "source_sha256": "0ee83daf83432fb42d636c3adad02e66f7d34cac287f43062c49b59dfcc957c5"
+          },
+          {
+            "name": "milo/leg-right",
+            "src": "data/layer0022.png",
+            "source_sha256": "ad4379d64424b1e486f349ef99f6df526ae761a6d6300856e8862aceeee68dd3"
+          },
+          {
+            "name": "milo/leg-left",
+            "src": "data/layer0023.png",
+            "source_sha256": "e3456c98e6ad7e70a000d1fbc354dbb4f798833fdfc66d2e8c9dc671dbcbdd0f"
+          },
+          {
+            "name": "background",
+            "src": "data/layer0024.png",
+            "source_sha256": "106e27c5f390cb456ef5841e15a07c0d43faa075bf9e4f9cc909bed443ee549f"
+          }
+        ],
+        "roundtrip": {
+          "tested": true,
+          "pixel_exact": true,
+          "layer_count": 26
+        },
+        "application_integration": "not-performed",
+        "format": "OpenRaster 0.0.6 baseline source-over"
+      }
+    }
+  },
+  "limited_assistant_visual_spot_check": {
+    "reviewer": {
+      "kind": "assistant",
+      "id": "workflow-agent",
+      "name": "ChatGPT workflow agent"
+    },
+    "method": "visual_inspection",
+    "evidence": [
+      {
+        "path": "editor-handoff/exchange/animation/000084.png",
+        "sha256": "ab4ffa2f10076f7b94de11e62ff3fe66819fb8684439f4a4291c0af82671c3ce",
+        "shot": "exchange",
+        "frame": 84,
+        "note": "The exported image visibly contains both acquired characters, the seed packet and the meeting hands; the adapter separately verifies exact source-frame bytes."
+      },
+      {
+        "path": "renders/seed-exchange/shots/arrival/frames/000096.png",
+        "sha256": "ce79a5cd9ef4ec9d0ea199b21d2f1eced2e49d5b1a9474f12fa98d6bb9165075",
+        "shot": "arrival",
+        "frame": 96,
+        "note": "The wider arrival image visibly contains both acquired characters and the seed packet, matching the selected source for the separate layered snapshot."
+      }
+    ],
+    "scope": "Two still images inspected for artifact presence and layout; no full motion, audio, AV-sync, human or production-art acceptance is claimed."
+  },
+  "dependency_impact": {
+    "schema_version": 1,
+    "created_at": "2026-10-19T20:12:20.293369+00:00",
+    "project_id": "milo-luma-pilot",
+    "fixture": false,
+    "original_declared_inputs_unchanged": true,
+    "live_workflow_file_modified_by_this_operation": false,
+    "baseline_snapshot": "evidence/dependency-impact/baseline.json",
+    "baseline_sha256": "746732bf028c80b4e828dfff4596f9c73e502ac2348e05793ffce6b2efa10656",
+    "cases": [
+      {
+        "case": "camera",
+        "evidence": "evidence/dependency-impact/camera.json",
+        "sha256": "884a75ecf348b2e3c5bdf60897d050d41fb995dec4181af340746a2fc5d0c1a6",
+        "mutation": {
+          "target": "seed-exchange/exchange",
+          "field": "camera.position.keys[0].value",
+          "before": [
+            35,
+            24
+          ],
+          "after": [
+            36,
+            24
+          ],
+          "purpose": "One-pixel camera framing revision in an isolated copy."
+        },
+        "affected_shots": [
+          "seed-exchange/exchange"
+        ],
+        "unaffected_shots": [
+          "garden-promise/garden",
+          "garden-promise/tomorrow",
+          "seed-exchange/arrival",
+          "seed-exchange/departure"
+        ],
+        "required_actions": [
+          "rerender",
+          "review_changed_dimensions"
+        ]
+      },
+      {
+        "case": "component",
+        "evidence": "evidence/dependency-impact/component.json",
+        "sha256": "236682e42b904409dcd7eccd9d8c019b4cca24709656d36877541d49ee432e24",
+        "mutation": {
+          "target": "milo@3.0.0/mouth",
+          "field": "component.offset",
+          "before": [
+            0,
+            0
+          ],
+          "after": [
+            1,
+            0
+          ],
+          "purpose": "One-pixel rest attachment revision to a shared component in an isolated copy."
+        },
+        "affected_shots": [
+          "garden-promise/garden",
+          "garden-promise/tomorrow",
+          "seed-exchange/arrival",
+          "seed-exchange/departure",
+          "seed-exchange/exchange"
+        ],
+        "unaffected_shots": [],
+        "required_actions": [
+          "rerender",
+          "review_changed_dimensions"
+        ]
+      },
+      {
+        "case": "clip",
+        "evidence": "evidence/dependency-impact/clip.json",
+        "sha256": "c5cf966347de9b97e212549d5b033bc81e6a1145463373722e3c5edb7d3e5e3a",
+        "mutation": {
+          "target": "milo-reaction@3.0.0",
+          "field": "tracks.face.head.rotation.keys[1].value",
+          "key_frame": 8,
+          "before": -4,
+          "after": -5,
+          "purpose": "One-degree authored reaction change in an isolated copy."
+        },
+        "affected_shots": [
+          "garden-promise/garden",
+          "garden-promise/tomorrow"
+        ],
+        "unaffected_shots": [
+          "seed-exchange/arrival",
+          "seed-exchange/departure",
+          "seed-exchange/exchange"
+        ],
+        "required_actions": [
+          "rerender",
+          "review_changed_dimensions"
+        ]
+      }
+    ],
+    "provider_called": false,
+    "production_review_recorded": false
+  },
+  "synthetic_regression": {
+    "fixture": true,
+    "human_review": false,
+    "production_art_acceptance": false,
+    "scratch_project": "/tmp/hatch-production-final-regression-wn1w32a4",
+    "scene_count": 3,
+    "frame_count": 300,
+    "coverage_ready": true,
+    "scene_renders": [
+      {
+        "scene_id": "first-scene",
+        "frame_count": 12,
+        "render_manifest": "renders/first-scene/render-manifest.json",
+        "preview": "renders/first-scene/index.html",
+        "storyboard": "first-scene-storyboard.png",
+        "movie": "renders/first-scene/review.mp4",
+        "validated": true,
+        "complete": true,
+        "resume_operation": {
+          "rendered_frames": 0,
+          "reused_frames": 12
+        },
+        "manifest_sha256": "6962792f6f7176182b687375853b77d2123b4260decf678a97157f00132a9a4f",
+        "movie_sha256": "141b30b7e8903d24b3d7430fd3afd129ed3216e049517d75d4377bd4f1ec0036",
+        "movie_bytes": 4792,
+        "storyboard_sha256": "5256ff9e47f1d8d8915c49fd9fd315fab9942dc0e406722672671c326b7b26a5",
+        "validation": {
+          "ok": true,
+          "kind": "offline-frame-and-pcm-validation",
+          "frame_count": 12,
+          "fps": {
+            "denominator": 1,
+            "numerator": 12
+          },
+          "duration": {
+            "numerator": 1,
+            "denominator": 1
+          },
+          "sample_count": 48000,
+          "render_manifest_sha256": "6962792f6f7176182b687375853b77d2123b4260decf678a97157f00132a9a4f",
+          "visual_review": "not-performed",
+          "application_integration": "not-performed"
+        }
+      },
+      {
+        "scene_id": "second-scene",
+        "frame_count": 12,
+        "render_manifest": "renders/second-scene/render-manifest.json",
+        "preview": "renders/second-scene/index.html",
+        "storyboard": "second-scene-storyboard.png",
+        "movie": "renders/second-scene/review.mp4",
+        "validated": true,
+        "complete": true,
+        "resume_operation": {
+          "rendered_frames": 0,
+          "reused_frames": 12
+        },
+        "manifest_sha256": "0ed08cbb4415e151345eab529de03302058d6461c28ca8088178f08903e51681",
+        "movie_sha256": "52ac38398c7f3ce304c569e4ac83ca42cc8141078bfc9127cf647338b491e66d",
+        "movie_bytes": 5033,
+        "storyboard_sha256": "39b0e70eaa184fd4164307f91f4761f86b32ec223fbd04d01e74480f5f86a6f1",
+        "validation": {
+          "ok": true,
+          "kind": "offline-frame-and-pcm-validation",
+          "frame_count": 12,
+          "fps": {
+            "denominator": 1,
+            "numerator": 12
+          },
+          "duration": {
+            "numerator": 1,
+            "denominator": 1
+          },
+          "sample_count": 48000,
+          "render_manifest_sha256": "0ed08cbb4415e151345eab529de03302058d6461c28ca8088178f08903e51681",
+          "visual_review": "not-performed",
+          "application_integration": "not-performed"
+        }
+      },
+      {
+        "scene_id": "regression-performances",
+        "frame_count": 276,
+        "render_manifest": "renders/regression-performances/render-manifest.json",
+        "preview": "renders/regression-performances/index.html",
+        "storyboard": "regression-performances-storyboard.png",
+        "movie": "renders/regression-performances/review.mp4",
+        "validated": true,
+        "complete": true,
+        "resume_operation": {
+          "rendered_frames": 0,
+          "reused_frames": 276
+        },
+        "manifest_sha256": "fb063ece468fd5b4a78ad5486bda2092fff22cb69a63867c2070678aa3fb2cd5",
+        "movie_sha256": "af268821a21b452633b6b0142fae8fd756599dc1a0e4f37fd7a0843ee1a675f0",
+        "movie_bytes": 84315,
+        "storyboard_sha256": "b6521d99bf52fff642b00c56f3c6489401b1b98ba3381e9c22af2a650aafa456",
+        "validation": {
+          "ok": true,
+          "kind": "offline-frame-and-pcm-validation",
+          "frame_count": 276,
+          "fps": {
+            "denominator": 1,
+            "numerator": 12
+          },
+          "duration": {
+            "numerator": 23,
+            "denominator": 1
+          },
+          "sample_count": 552000,
+          "render_manifest_sha256": "fb063ece468fd5b4a78ad5486bda2092fff22cb69a63867c2070678aa3fb2cd5",
+          "visual_review": "not-performed",
+          "application_integration": "not-performed"
+        }
+      }
+    ],
+    "scope": "Model-free geometric fixtures and square-wave PCM. All 300 rendered frames were reused on the verification pass; synthetic gates do not approve production artwork.",
+    "repository_relative_report": "tests/results/production-regression-final-run.json",
+    "repository_relative_evidence": {
+      "examples/production-fixture/acceptance.json": "5d57908f697b0dc04ab02e12306475f390984af7f378da5e8ab5e7a6798676f6",
+      "examples/production-fixture/performance-evidence.json": "72c7bc26ac5ea85031c5fc2cc0d5829de3fbf2490e3771e6097c7485709dda85"
+    }
+  }
+}

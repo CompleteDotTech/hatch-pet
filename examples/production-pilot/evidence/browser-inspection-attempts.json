@@ -1,0 +1,6 @@
+{
+  "kind": "inspection-harness-history",
+  "attempts": [
+    {"attempt": 1, "result": "harness-assertion-failed", "seed_exchange_completed": true, "garden_promise_last_frame_reached": true, "reason": "The harness required HTMLMediaElement.ended to be true after preview completion. A preview may pause at the final audio boundary before that asynchronous event. No application code or regression test changed.", "repair": "Inspect and retain exact audio clock, duration, final frame, and paused state; accept the final frame interval rather than requiring a browser ended-event ordering."}
+  ]
+}

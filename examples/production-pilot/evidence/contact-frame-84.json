@@ -1,0 +1,51 @@
+{
+  "fixture": false,
+  "interaction": [
+    {
+      "id": "seed-handoff",
+      "participants": [
+        {
+          "distance": 5.684341886080802e-14,
+          "instance": "milo",
+          "point": [
+            329.99086559199554,
+            240.936492272243
+          ]
+        },
+        {
+          "distance": 6.355287432313019e-14,
+          "instance": "luma",
+          "point": [
+            329.9908655919956,
+            240.93649227224296
+          ]
+        }
+      ],
+      "position": [
+        329.99086559199554,
+        240.93649227224293
+      ]
+    }
+  ],
+  "method": "deterministic_geometry",
+  "prop": {
+    "anchors": {
+      "grip": [
+        329.9908655919956,
+        240.93649227224296
+      ]
+    },
+    "attachment": {
+      "anchor": "grip",
+      "component": "hand-left",
+      "instance": "luma"
+    },
+    "owner": "luma",
+    "position": [
+      329.9908655919956,
+      240.93649227224296
+    ],
+    "visible": true
+  },
+  "visual_review_performed": false
+}

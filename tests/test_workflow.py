@@ -197,11 +197,13 @@ class WorkflowTests(unittest.TestCase):
         unknown_preview.write_text('retain')
         hatch.validate(self.root, self.data)
         record_fixture_review(self.root, self.data)
-        preview = hatch.cleanup(self.root, self.data, 'repair', False)
+        alias = self.base / 'run-alias'
+        alias.symlink_to(self.root.resolve(), target_is_directory=True)
+        preview = hatch.cleanup(alias, self.data, 'repair', False)
         self.assertTrue((self.root / 'frames/rest/00.png').exists())
-        self.assertNotIn(str(unrelated), preview['remove'])
-        self.assertNotIn(str(unknown_preview), preview['remove'])
-        hatch.cleanup(self.root, self.data, 'repair', True)
+        self.assertNotIn(str(unrelated.resolve()), preview['remove'])
+        self.assertNotIn(str(unknown_preview.resolve()), preview['remove'])
+        hatch.cleanup(alias, self.data, 'repair', True)
         archive = Path(self.data['retention']['archive'])
         with zipfile.ZipFile(archive) as saved:
             self.assertIn('decoded/jump.png', saved.namelist())
@@ -228,6 +230,8 @@ class WorkflowTests(unittest.TestCase):
 
     def test_prepare_recovers_before_and_after_old_directory_rename(self):
         self.build()
+        alias = self.base / 'parent-alias'
+        alias.symlink_to(self.base.resolve(), target_is_directory=True)
         original_id = self.data['run_id']
         stage = self.base / '.run-prepare-fixture'
         new_data = build_run(stage, validate=False)
@@ -235,7 +239,7 @@ class WorkflowTests(unittest.TestCase):
         journal = self.base / '.run.prepare.json'
         hatch.atomic(journal, {'stage': str(stage), 'backup': str(backup), 'run_id': new_data['run_id'],
                              'previous_manifest_hash': hatch.digest(self.root / 'imagegen-jobs.json')})
-        hatch.recover_prepare(self.root)
+        hatch.recover_prepare(alias / self.root.name)
         self.assertEqual(hatch.manifest(self.root)['run_id'], new_data['run_id'])
         self.assertEqual(hatch.manifest(backup)['run_id'], original_id)
         self.assertFalse(journal.exists())
@@ -246,7 +250,7 @@ class WorkflowTests(unittest.TestCase):
         hatch.atomic(journal, {'stage': str(stage2), 'backup': str(backup2), 'run_id': new2['run_id'],
                              'previous_manifest_hash': hatch.digest(self.root / 'imagegen-jobs.json')})
         os.replace(self.root, backup2)
-        hatch.recover_prepare(self.root)
+        hatch.recover_prepare(alias / self.root.name)
         self.assertEqual(hatch.manifest(self.root)['run_id'], new2['run_id'])
 
     def test_install_recovery_before_legacy_backup_and_after_promotion(self):
@@ -331,8 +335,12 @@ class WorkflowTests(unittest.TestCase):
         hatch.atomic(receipt, handoff)
         decoded = self.root / 'decoded/rest.png'
         before = decoded.read_bytes()
-        with self.assertRaisesRegex(ValueError, 'outside managed outputs'):
-            hatch.ingest(self.root, data, 'rest', decoded, handoff['token'], 'Fixture', receipt, True)
+        # macOS /var aliases and Windows short names must not bypass containment.
+        alias = self.base / 'run-alias'
+        alias.symlink_to(self.root.resolve(), target_is_directory=True)
+        for run in (self.root, alias):
+            with self.subTest(root=run), self.assertRaisesRegex(ValueError, 'outside managed outputs'):
+                hatch.ingest(run, data, 'rest', decoded, handoff['token'], 'Fixture', receipt, True)
         self.assertEqual(decoded.read_bytes(), before)
         source = self.base / 'fixture-sources/rest.png'
         original_hash = hatch.digest(source)

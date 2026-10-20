@@ -1,0 +1,4 @@
+# Recorded public-delivery raster and test environment (Python 3.12).
+Pillow==13.0.0
+jsonschema==4.26.0
+playwright==1.64.0

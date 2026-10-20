@@ -329,6 +329,7 @@ def _relocate(value, stage, root):
 
 
 def prepare(root, args):
+    root = Path(root).resolve()
     exists = root.exists() and any(root.iterdir())
     if exists and not args.replace_inputs:
         raise ValueError('run exists; use resume, or --replace-inputs for a new revision with a preserved previous directory')
@@ -376,6 +377,7 @@ def prepare(root, args):
 
 
 def _journal_sibling(path, destination, prefix):
+    destination = Path(destination).resolve()
     p = Path(path).resolve()
     if p.parent != destination.parent or not p.name.startswith(prefix) or p == destination:
         raise ValueError('invalid transaction journal path')
@@ -383,6 +385,7 @@ def _journal_sibling(path, destination, prefix):
 
 
 def recover_prepare(root):
+    root = Path(root).resolve()
     path = root.parent / ('.' + root.name + '.prepare.json')
     if not path.exists():
         return
@@ -549,6 +552,7 @@ def record_base_review(root, data, note, accept_color_warning=False):
 
 
 def ingest(root, data, name, source, token, note, used_inputs, fixture=False):
+    root = Path(root).resolve()
     job = job_for(data, name)
     if job['status'] != 'running' or token != job.get('token'):
         raise ValueError('generation token is not active')
@@ -1152,6 +1156,7 @@ def rollback(root, data):
 
 
 def cleanup(root, data, mode, apply):
+    root = Path(root).resolve()
     require_review(root, data)
     if mode not in ('repair', 'minimal-delivery'):
         raise ValueError('unknown retention mode')

@@ -1,0 +1,145 @@
+{
+  "schema_version": 1,
+  "repository": "https://github.com/CompleteDotTech/hatch-pet",
+  "delivery_state": "implemented-and-verified-locally; public media/evidence publication blocked",
+  "pull_request": {
+    "url": "https://github.com/CompleteDotTech/hatch-pet/pull/4",
+    "number": 4,
+    "state": "open",
+    "draft": false,
+    "head": "feat/cast-scene-production",
+    "head_sha": "7e6dcf0beba172254bcba7558215ca8ba2a3cfe5",
+    "mechanically_mergeable": true,
+    "merged": false,
+    "actual_merge_commit": null
+  },
+  "github_checks": {
+    "commit_status_count": 0,
+    "pr_workflow_run_count": 0,
+    "submitted_review_count": 0,
+    "check_run_count": 0,
+    "main_protected": false,
+    "repository_ruleset_count": 0,
+    "required_checks_bypassed": false,
+    "checks_note": "No status/check/workflow runs are reported. This is absence of configured CI, not a green CI result.",
+    "checked_commit": "7e6dcf0beba172254bcba7558215ca8ba2a3cfe5"
+  },
+  "regression": {
+    "total": 299,
+    "passed": 298,
+    "skipped": 1,
+    "failed": 0,
+    "errors": 0,
+    "exit_code": 0,
+    "unittest_seconds": 160.239,
+    "source_hashes_unchanged": 91,
+    "legacy_test_ids_passed": 123,
+    "skip": "Krita unavailable; adapter checks passed separately from native application exercise.",
+    "wall_seconds": 160.57439771800273,
+    "started_at_utc": "2026-10-19T21:24:29.456211+00:00",
+    "ended_at_utc": "2026-10-19T21:27:10.030628+00:00",
+    "final_log_sha256": "f44870e189ce28ce0750bbf99fcd5181609dca58b41dbb7422542d338ebfd0d4",
+    "git_autocrlf_checkout_regression": "Passed with actual Git; unprotected text control confirms conversion is active.",
+    "source_transport_cases_passed": 13,
+    "source_transport_portability": "Actual Git index and checkout with core.autocrlf=true passed for all three exact bundle paths. Isolated removal of the copied attributes caused the expected integrity failures.",
+    "superseded_298_log": "tests/results/production-complete-regression-superseded-298.log"
+  },
+  "public_transport": {
+    "source_parts": {
+      "published": 94,
+      "total": 207,
+      "confirmed_git_blobs": 150
+    },
+    "audio_parts": {
+      "published": 0,
+      "total": 39,
+      "confirmed_git_blobs": 12
+    },
+    "review_history_parts": {
+      "published": 38,
+      "total": 64,
+      "index_published": false
+    },
+    "complete": false,
+    "verification": "Actual verification of an isolated public source-bundle snapshot fails: source bundle has missing or extra files outside its exact part inventory.",
+    "final_snapshot_audit": "evidence/public-git-audit.json",
+    "audited_commit": "7e6dcf0beba172254bcba7558215ca8ba2a3cfe5"
+  },
+  "local_preservation": {
+    "branch": "feat/cast-scene-production-pending-approval",
+    "based_on_public_commit": "7e6dcf0beba172254bcba7558215ca8ba2a3cfe5",
+    "publishing": "Local task branch only; do not push until explicit payload-publication authorization accepted.",
+    "working_files_preserved_during_metadata_sync": 591,
+    "public_feature_reference_equals_origin": true,
+    "main_reference_equals_origin": true,
+    "main_sha": "857791b9503f9ff54b118751eea640866688000a",
+    "default_branch_checked_out": false,
+    "task_merged": false,
+    "review_transport_reconciliation": "evidence/review-transport-reconciliation.json",
+    "current_source_audio_review_transports_verified": true,
+    "staged_transports": {
+      "stage": "before-final-public-reference-sync",
+      "bundles": [
+        {
+          "bundle": "source-bundle",
+          "indexed_parts": 207,
+          "every_staged_part_matches_index_and_working_file": true
+        },
+        {
+          "bundle": "audio-source-bundle",
+          "indexed_parts": 39,
+          "every_staged_part_matches_index_and_working_file": true
+        },
+        {
+          "bundle": "reviews-source-bundle",
+          "indexed_parts": 64,
+          "every_staged_part_matches_index_and_working_file": true
+        }
+      ],
+      "total_parts": 310,
+      "index_and_working_media_intact": true,
+      "public_publication_claimed": false
+    },
+    "final_metadata_sync": {
+      "working_files_preserved": 578,
+      "before_head": "d98984289984d5751c18c36a8c6b18cebf6fcafc",
+      "after_head": "7e6dcf0beba172254bcba7558215ca8ba2a3cfe5",
+      "public_feature_equals_origin": true,
+      "main_equals_origin": true,
+      "main_commit": "857791b9503f9ff54b118751eea640866688000a",
+      "tested_source_files_match_public_commit": 91,
+      "branch": "feat/cast-scene-production-pending-approval",
+      "mode": "Mixed metadata reset only; all original working bytes independently checked unchanged."
+    },
+    "local_commit_note": "This record is included in the local preservation commit on the named branch; resolve that branch to obtain its exact commit identity. It is deliberately not pushed while publication approval is blocked."
+  },
+  "outputs": {
+    "saved_compiled_deliverables": 7,
+    "index": "evidence/render-delivery.json",
+    "complete_local_project_archive_verified": true,
+    "archive_project_files": 8811,
+    "retained_scene_frames": 696,
+    "incremental_new_frames": 0,
+    "current_assistant_review_records": 20,
+    "human_review_claimed": false,
+    "auditory_review_claimed": false,
+    "archive_snapshot_scope": "Verified historical 8,811-file archive; original snapshot retains 18 superseded review-transport fragments. The restored current transport was reconciled and verified separately without modifying review history or renders."
+  },
+  "permission_blocker_reference": "evidence/delivery-blockers.json",
+  "remaining_work": "Obtain explicit approval accepted by automatic review for retained production artwork, original dialogue audio, rendered outputs and associated provenance/review evidence; finish public transport, verify complete fresh-clone assets and final checks, merge normally, then synchronize and check out main.",
+  "checked_at_utc": "2026-10-19T21:31:44.407924+00:00",
+  "final_diff_review": {
+    "local_preservation_diff_check_exit_code": 0,
+    "complete_baseline_diff_check_exit_code": 2,
+    "exact_source_warning": {
+      "path": "examples/production-pilot/audio/original/flite-package-copyright.txt",
+      "line": 342,
+      "message": "Trailing whitespace in original third-party copyright text. Retained verbatim to preserve supplied license/provenance bytes, which match the exact source transport inventory.",
+      "sha256": "77d13a5e6cbe7277b4721033f9ad15707241c2832baa8c74ec823c9ee5ebf71c",
+      "source_inventory_match": true
+    },
+    "task_only_local_paths": true,
+    "baseline_paths_deleted": 0,
+    "implementation_and_tests_unchanged_since_final_run": true
+  }
+}

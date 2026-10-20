@@ -6,6 +6,8 @@ production archives, invoke a provider, infer source provenance, or approve art.
 """
 from __future__ import annotations
 import argparse
+import ctypes
+import errno
 import hashlib
 import json
 import os
@@ -14,6 +16,7 @@ import re
 import shutil
 import sys
 import tempfile
+import unicodedata
 import production_workflow as workflow
 
 SOURCE_INDEX = 'sources-index.json'
@@ -53,7 +56,65 @@ def _integer(value, minimum, maximum, label):
 def _path(root, relative):
     if not isinstance(relative, str) or len(relative) > 1024:
         raise ValueError('source paths must be canonical relative strings no longer than 1024 characters')
+    for name in relative.split('/'):
+        if (any(ord(character) < 32 or character in '<>"|?*' for character in name)
+                or name.endswith((' ', '.'))
+                or name.split('.')[0].upper() in {'CON', 'PRN', 'AUX', 'NUL',
+                    *(f'COM{i}' for i in range(1, 10)), *(f'LPT{i}' for i in range(1, 10)),
+                    'COM¹', 'COM²', 'COM³', 'LPT¹', 'LPT²', 'LPT³'}):
+            raise ValueError('source path is not portable across Windows, Linux and macOS: ' + repr(relative))
     return workflow.safe_path(root, relative)
+
+
+def _portable_inventory(paths):
+    """Reject file/directory aliases on case-insensitive and normalizing volumes."""
+    namespace = {}
+    for relative in paths:
+        pieces = relative.split('/')
+        for count in range(1, len(pieces) + 1):
+            name = '/'.join(pieces[:count])
+            key = unicodedata.normalize('NFC', name).casefold()
+            if key in namespace and namespace[key] != name:
+                raise ValueError('source paths alias on a case-insensitive or Unicode-normalizing filesystem')
+            namespace[key] = name
+
+
+def _publish_stage(stage, destination):
+    # All source-transport writers share the existing cross-platform kernel lock.
+    # Recheck after streaming so a destination created during staging is retained.
+    with workflow.hatch.ownership(destination):
+        _new_destination(destination)
+        _rename_no_replace(stage, destination)
+
+
+def _rename_no_replace(stage, destination):
+    """Publish atomically without replacing even a racing empty directory.
+
+    Windows os.rename has exclusive semantics. POSIX os.rename does not, so
+    use the operating system's exclusive rename and fail closed if unsupported.
+    Linux: man7.org/linux/man-pages/man2/rename.2.html (RENAME_NOREPLACE).
+    macOS: Apple's sys/stdio.h and renamex_np(2) (RENAME_EXCL).
+    """
+    if os.name == 'nt':
+        os.rename(stage, destination)
+        return
+    library = ctypes.CDLL(None, use_errno=True)
+    old, new = os.fsencode(stage), os.fsencode(destination)
+    if sys.platform.startswith('linux') and hasattr(library, 'renameat2'):
+        operation = library.renameat2
+        operation.argtypes = [ctypes.c_int, ctypes.c_char_p, ctypes.c_int, ctypes.c_char_p, ctypes.c_uint]
+        operation.restype = ctypes.c_int
+        result = operation(-100, old, -100, new, 1)  # AT_FDCWD; RENAME_NOREPLACE
+    elif sys.platform == 'darwin' and hasattr(library, 'renamex_np'):
+        operation = library.renamex_np
+        operation.argtypes = [ctypes.c_char_p, ctypes.c_char_p, ctypes.c_uint]
+        operation.restype = ctypes.c_int
+        result = operation(old, new, 4)  # RENAME_EXCL
+    else:
+        raise OSError(errno.ENOTSUP, 'atomic exclusive directory publication is unavailable', str(destination))
+    if result != 0:
+        error = ctypes.get_errno()
+        raise OSError(error, os.strerror(error), str(destination))
 
 
 def _new_destination(value):
@@ -77,9 +138,14 @@ def _hash_bounded(path, expected_bytes):
 
 
 def _load_index(bundle_index):
-    path = Path(bundle_index).resolve()
+    path = Path(bundle_index)
+    if path.is_symlink():
+        raise ValueError('source index or bundle cannot be a symlink')
+    path = path.resolve()
     if path.is_dir():
         path = path / SOURCE_INDEX
+    if path.is_symlink():
+        raise ValueError('source index cannot be a symlink')
     if not path.is_file() or path.stat().st_size > MAX_INDEX_BYTES:
         raise ValueError('source index is missing or exceeds the 4 MiB index bound')
     raw = path.read_bytes()
@@ -141,6 +207,7 @@ def _load_index(bundle_index):
     for relative in original_paths:
         if any(parent.as_posix() in original_paths for parent in Path(relative).parents if parent.as_posix() != '.'):
             raise ValueError('source file paths conflict with a parent file')
+    _portable_inventory(original_paths)
     if total_bytes != index['total_bytes'] or referenced != set(part_map):
         raise ValueError('source totals or exact referenced part inventory differ')
     provenance = index['provenance_paths']
@@ -231,6 +298,7 @@ def create_source_bundle(source_root, paths, destination, *, fixture, origin,
     if (not isinstance(paths, (list, tuple)) or not 1 <= len(paths) <= MAX_FILES or
             any(not isinstance(relative, str) for relative in paths) or len(paths) != len(set(paths))):
         raise ValueError('explicit source inventory must contain 1 to 4096 unique relative paths')
+    _portable_inventory(paths)
     if (not isinstance(provenance_paths, (list, tuple)) or
             any(not isinstance(relative, str) for relative in provenance_paths) or
             len(provenance_paths) != len(set(provenance_paths)) or not set(provenance_paths) <= set(paths)):
@@ -283,7 +351,7 @@ def create_source_bundle(source_root, paths, destination, *, fixture, origin,
             raise ValueError('source index exceeds the 4 MiB bound')
         (stage / SOURCE_INDEX).write_bytes(raw)
         report = verify_source_bundle(stage)
-        os.replace(stage, destination)
+        _publish_stage(stage, destination)
     finally:
         if stage.exists():
             shutil.rmtree(stage)
@@ -297,7 +365,7 @@ def restore_source_bundle(bundle_index, destination):
     stage = Path(tempfile.mkdtemp(prefix='.hatch-source-restore-', dir=destination.parent))
     try:
         _copy_and_verify(path.parent, index, parts, stage)
-        os.replace(stage, destination)
+        _publish_stage(stage, destination)
     finally:
         if stage.exists():
             shutil.rmtree(stage)
@@ -322,9 +390,18 @@ def main(argv=None):
     restore = commands.add_parser('restore')
     restore.add_argument('--bundle', required=True)
     restore.add_argument('--destination', required=True)
+    delivery = commands.add_parser('verify-delivery', help='Verify the pinned public pilot inventory and authentic history')
+    delivery.add_argument('--pilot', type=Path, default=Path(__file__).resolve().parents[1] / 'examples/production-pilot')
+    pilot = commands.add_parser('restore-pilot', help='Reconstruct the complete retained pilot without generation or new reviews')
+    pilot.add_argument('--pilot', type=Path, default=Path(__file__).resolve().parents[1] / 'examples/production-pilot')
+    pilot.add_argument('--destination', required=True)
     args = parser.parse_args(argv)
     try:
-        if args.command == 'create':
+        if args.command in ('verify-delivery', 'restore-pilot'):
+            from production_delivery import verify_delivery, restore_pilot
+            result = (verify_delivery(args.pilot) if args.command == 'verify-delivery'
+                      else restore_pilot(args.pilot, args.destination))
+        elif args.command == 'create':
             result = create_source_bundle(args.root, args.file, args.destination, fixture=args.fixture,
                          origin=args.origin, provenance_paths=args.provenance, part_size=args.part_bytes)
         elif args.command == 'verify':

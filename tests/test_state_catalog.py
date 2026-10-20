@@ -251,7 +251,7 @@ class CompilerContractTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / 'character.json'
             paths = write_compilation(first, path)
-            self.assertEqual(paths['selection_manifest'], str(path.with_suffix('.selection.json')))
+            self.assertEqual(paths['selection_manifest'], str(path.with_suffix('.selection.json').resolve()))
             self.assertEqual(load_profile(path), first['profile'])
             self.assertEqual(json.loads(path.with_suffix('.selection.json').read_text()), first['manifest'])
             before = path.read_bytes()

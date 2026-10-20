@@ -728,13 +728,18 @@ def repair_generation(root, binding_id, job, reason):
     return _generation_action(root, binding_id, job, 'repair', reason=reason)
 
 
-def _project_files(root):
+def _project_files(root, runtime_locks=()):
     result, total = {}, 0
     for path in sorted(Path(root).rglob('*')):
         relative = path.relative_to(root).as_posix()
         safe_path(root, relative)
         if path.is_symlink():
             raise ValueError('portable projects cannot archive symlinks: ' + relative)
+        # These exact sibling files belong to acquisition locks held by this
+        # archive operation. Windows denies reads of their mandatory lock byte.
+        # They are runtime coordination, not acquisition history or project data.
+        if relative in runtime_locks:
+            continue
         if not path.is_file():
             continue
         size = path.stat().st_size
@@ -780,9 +785,10 @@ def _active_acquisitions(root):
 
 
 def archive_project(root, destination):
+    from production_sources import _new_destination, _publish_stage
     root = Path(root).resolve()
-    destination = Path(destination).resolve()
-    if destination.exists() or destination.is_relative_to(root):
+    destination = _new_destination(destination)
+    if destination.is_relative_to(root):
         raise ValueError('archive destination must be a new file outside the project')
     destination.parent.mkdir(parents=True, exist_ok=True)
     with hatch.ownership(root), ExitStack() as locks:
@@ -795,7 +801,9 @@ def archive_project(root, destination):
                 locks.enter_context(hatch.ownership(run))
         if _active_acquisitions(root):
             raise ValueError('reconcile every active acquisition token before archiving; bound and unbound runs are checked')
-        files = _project_files(root)
+        runtime_locks = {(run.parent / ('.' + run.name + '.hatch.lock')).relative_to(root).as_posix()
+                         for run in run_paths if run != root}
+        files = _project_files(root, runtime_locks)
         if 'archive-receipt.json' in files:
             raise ValueError('archive-receipt.json is reserved for archive inventory metadata')
         receipt = {'schema_version': 2, 'kind': 'hatch-production-project', 'mode': 'full',
@@ -810,7 +818,7 @@ def archive_project(root, destination):
                     archive.write(safe_path(root, name), name)
                 archive.writestr('archive-receipt.json', json.dumps(receipt, sort_keys=True, indent=2) + '\n')
             verify_project_archive(temporary)
-            os.replace(temporary, destination)
+            _publish_stage(temporary, destination)
         finally:
             temporary.unlink(missing_ok=True)
     return {'archive': str(destination), 'sha256': file_hash(destination),
@@ -904,10 +912,9 @@ def _cached_render_freshness(root, bundle):
 
 
 def restore_project(archive_path, destination):
+    from production_sources import _new_destination, _publish_stage
     receipt = verify_project_archive(archive_path)
-    destination = Path(destination).resolve()
-    if destination.exists():
-        raise ValueError('restore destination must not exist; use a new directory')
+    destination = _new_destination(destination)
     destination.parent.mkdir(parents=True, exist_ok=True)
     stage = Path(tempfile.mkdtemp(prefix='.hatch-production-restore-', dir=destination.parent))
     try:
@@ -932,7 +939,7 @@ def restore_project(archive_path, destination):
                affected_renders=[item['path'] for item in render_freshness['affected_renders']],
                external_integration_verified=False)
         _save(stage, state)
-        os.replace(stage, destination)
+        _publish_stage(stage, destination)
     finally:
         if stage.exists():
             shutil.rmtree(stage)

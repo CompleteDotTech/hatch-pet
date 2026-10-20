@@ -1,0 +1,773 @@
+{
+  "all_current_transports_verified": true,
+  "archive_snapshot": {
+    "contains_obsolete_fragments": 18,
+    "note": "This retained historical snapshot predates transport reconciliation. Its project and complete original review history already restored successfully. The restored project was additionally reconciled and its current transport verified in this report. This report does not claim the historical ZIP itself has been rewritten.",
+    "path": "/workspace/scratch/368aa013e993/hatch-delivery/hatch-production-pilot-complete.zip",
+    "restoration_recipe": "After normal archive restore, compare reviews-source-bundle/parts with sources-index.json. Move only the 18 extra files listed in this report to a preservation directory after verifying their recorded sizes and SHA-256. Then run production_sources.py verify --bundle reviews-source-bundle. Never discard or accept missing or mismatched indexed parts.",
+    "sha256": "c7ced7e76a08be61abef766f8a1131c75175bb56619676fd02c54bc2889e7e00",
+    "unchanged": true
+  },
+  "created_at_utc": "2026-10-19T21:17:22.111105+00:00",
+  "current_index_sha256": "454bfdb6daad191cdcf1c20ea8dfe487dae0bb7a3576d2258cbe6c8b4f99c5dc",
+  "current_part_count": 64,
+  "exact_review_ledger_restore": {
+    "bundle": "/workspace/scratch/368aa013e993/hatch-pet/examples/production-pilot/reviews-source-bundle/sources-index.json",
+    "bundle_sha256": "454bfdb6daad191cdcf1c20ea8dfe487dae0bb7a3576d2258cbe6c8b4f99c5dc",
+    "file_count": 1,
+    "files": [
+      {
+        "bytes": 4167150,
+        "path": "production-workflow.json",
+        "sha256": "cce42c52460d4525f18eb00f7525f8df8d99ebda9e31b3d875dccba6d93220d4"
+      }
+    ],
+    "fixture": false,
+    "origin": "Verbatim actual assistant-scoped pilot review history as inspectable UTF-8 JSON bytes. Exact source, renderer and rendered-artifact bindings remain mandatory; this transport never grants approval.",
+    "production_art_acceptance": false,
+    "provenance_paths": [],
+    "provider_called": false,
+    "restored": "/tmp/hatch-current-review-transport-g4ouhzq4/restored",
+    "scope": "Exact selected source and provenance bytes; complete project and artwork review are separate.",
+    "total_bytes": 4167150,
+    "unique_part_bytes": 4167150,
+    "unique_part_count": 64,
+    "verified": true,
+    "visual_review_performed": false
+  },
+  "finding": "18 superseded gzip transport fragments remained beside the 64 current exact UTF-8 review-ledger fragments; the unchanged exact-inventory safeguard correctly rejected this directory.",
+  "git_transport_preservation": {
+    "attributes_file": ".gitattributes",
+    "git_autocrlf_regression": "Final validation adds actual index/checkout roundtrip with core.autocrlf=true for all three bundle paths; refer to the final regression log for its executed result.",
+    "scope": "Only the source/audio/review content-addressed .bin fragment paths are marked binary. Their bytes remain unchanged; Git must not normalize line endings, treat split fragments as independently mergeable documents, or format trailing partial lines.",
+    "sha256": "ba51f7878340a5740fcfbfd10dce7d43ea46ef4d2e2ed106e7cd0af769838826",
+    "staged_diff_check_after_attributes_exit_code": 0,
+    "staged_diff_check_before_attributes": "Four immutable text fragments reported whitespace at exact source/fragment boundaries. Payload bytes were preserved."
+  },
+  "implementation_changed": false,
+  "initial_attempt": {
+    "destination": "/tmp/hatch-review-transport-reconciliation",
+    "error": "OSError: Invalid cross-device link",
+    "repair": "Use a new task-owned preservation directory on the same filesystem and check device identities before all moves.",
+    "status": "failed before moving any file"
+  },
+  "kind": "review-transport-reconciliation",
+  "new_generation": false,
+  "new_visual_review_claimed": false,
+  "operation": "Moved only the 18 unindexed fragments from each task-owned active, staging and restored directory to an external preservation directory after proving each exactly matches the already preserved superseded transport. No source, review receipt, render artifact, current fragment or index was rewritten.",
+  "other_transports_verified": {
+    "audio-source-bundle": {
+      "bundle": "/workspace/scratch/368aa013e993/hatch-pet/examples/production-pilot/audio-source-bundle/sources-index.json",
+      "bundle_sha256": "62a25bf2764210d0616e374cf04c0202fa311e18682f4208f7ea0e27b7ecb6e9",
+      "file_count": 16,
+      "files": [
+        {
+          "bytes": 16340,
+          "path": "audio/original/flite-package-copyright.txt",
+          "sha256": "77d13a5e6cbe7277b4721033f9ad15707241c2832baa8c74ec823c9ee5ebf71c"
+        },
+        {
+          "bytes": 677,
+          "path": "audio/original/line-01.json",
+          "sha256": "a30a8083a4fe0d541cac1b55171f0b6c5fe68b5ada7cb0786ce63319b580f737"
+        },
+        {
+          "bytes": 47,
+          "path": "audio/original/line-01.txt",
+          "sha256": "7afd1a41ca68e22f62f38033cf00bd3ac91316e9324f49de653e116766679238"
+        },
+        {
+          "bytes": 368718,
+          "path": "audio/original/line-01.wav",
+          "sha256": "a4708107a7733e700c5b3fc678bcf85356cde23c92259b16b6c5802de296976d"
+        },
+        {
+          "bytes": 677,
+          "path": "audio/original/line-02.json",
+          "sha256": "d062dfca74ec74dd3993f416cf88cf38aca3f3710b202d87c0f6f96a8e06700e"
+        },
+        {
+          "bytes": 59,
+          "path": "audio/original/line-02.txt",
+          "sha256": "34243cd0cbf6c8396613078a21746c69bb9dab2a36a6aca34ad074013d6732d6"
+        },
+        {
+          "bytes": 363918,
+          "path": "audio/original/line-02.wav",
+          "sha256": "13b81a46167a5af8230347a63ed01abfb32f2fa675c3c13c9c6059ff94cf5468"
+        },
+        {
+          "bytes": 677,
+          "path": "audio/original/line-03.json",
+          "sha256": "e7cb4c8996469d489623298fceab93d7b66009d7302b9cce996f81683b8ffe2c"
+        },
+        {
+          "bytes": 36,
+          "path": "audio/original/line-03.txt",
+          "sha256": "8fc297b4dc3a27c6cee20e3639f0e69ff0bc7038540015348dc0bc8011d00005"
+        },
+        {
+          "bytes": 241518,
+          "path": "audio/original/line-03.wav",
+          "sha256": "286a4889d6fbd114b999cd9fd8af8f861bf8b822028279172d5a9991b4fe6cb4"
+        },
+        {
+          "bytes": 677,
+          "path": "audio/original/line-04.json",
+          "sha256": "d403c87f698e31c6ed8478fa95e1882a2f8748934bba6f6d9464c6399d4f90e3"
+        },
+        {
+          "bytes": 61,
+          "path": "audio/original/line-04.txt",
+          "sha256": "c8960d50ee533fdf8e77b07549c593ea8de9a5d51346690f385130506abb3403"
+        },
+        {
+          "bytes": 396558,
+          "path": "audio/original/line-04.wav",
+          "sha256": "888526242317fa61d0adebe5d44df97144c72c39643b19686fad020addd195eb"
+        },
+        {
+          "bytes": 677,
+          "path": "audio/original/line-05.json",
+          "sha256": "5426619b3b60319c573e37223d3f51ee0199462ed28e84ce5a407e9dde3a109f"
+        },
+        {
+          "bytes": 53,
+          "path": "audio/original/line-05.txt",
+          "sha256": "06e0c98c9c60b4830d11653c4762cb66e0b9fdf8408e16db72a9ddfa1d927945"
+        },
+        {
+          "bytes": 324558,
+          "path": "audio/original/line-05.wav",
+          "sha256": "dabca8103d29ce60d1ee9986b199ce328bc35aa1c954972da1890dd99002c8fe"
+        }
+      ],
+      "fixture": false,
+      "origin": "Exact retained original local FFmpeg Flite speech, author-written dialogue, actual TTS receipts and installed engine attribution. No model calls.",
+      "production_art_acceptance": false,
+      "provenance_paths": [
+        "audio/original/flite-package-copyright.txt",
+        "audio/original/line-01.json",
+        "audio/original/line-01.txt",
+        "audio/original/line-02.json",
+        "audio/original/line-02.txt",
+        "audio/original/line-03.json",
+        "audio/original/line-03.txt",
+        "audio/original/line-04.json",
+        "audio/original/line-04.txt",
+        "audio/original/line-05.json",
+        "audio/original/line-05.txt"
+      ],
+      "provider_called": false,
+      "scope": "Exact selected source and provenance bytes; complete project and artwork review are separate.",
+      "total_bytes": 1715251,
+      "unique_part_bytes": 1715251,
+      "unique_part_count": 39,
+      "verified": true,
+      "visual_review_performed": false
+    },
+    "source-bundle": {
+      "bundle": "/workspace/scratch/368aa013e993/hatch-pet/examples/production-pilot/source-bundle/sources-index.json",
+      "bundle_sha256": "7ed8daad15ba0be16aee297e77e1ee9ca9561a866c9668800c27850aafd41fe6",
+      "file_count": 36,
+      "files": [
+        {
+          "bytes": 1950,
+          "path": "acquisition/README.md",
+          "sha256": "3962f8a518030393965fcdac9a53789dbaff333a80b56c5c421d0773aeaef381"
+        },
+        {
+          "bytes": 1892,
+          "path": "acquisition/handoffs/luma-base.json",
+          "sha256": "3a3a32231f56afba4e4ffab706bd6675de6d3f752bb5a3dd36fd4697ce53886f"
+        },
+        {
+          "bytes": 2646,
+          "path": "acquisition/handoffs/luma-parts.json",
+          "sha256": "5449929736a9266d7a963d58208714c4c8a3eeb766f2c8a5282db68812123e10"
+        },
+        {
+          "bytes": 1943,
+          "path": "acquisition/handoffs/milo-base.json",
+          "sha256": "c93b75c3df2b8116c4450cd2e976ed09696e57ce6828b45cbd59245b2434d5d7"
+        },
+        {
+          "bytes": 2697,
+          "path": "acquisition/handoffs/milo-parts.json",
+          "sha256": "44591d1c1f417568b772ed33b4f289f1f59b58a64b9068c597227945478ca747"
+        },
+        {
+          "bytes": 2791,
+          "path": "acquisition/lost-prior-artifacts.json",
+          "sha256": "8b8a87f115e753707fe75d54c1033d5eb20f5b9f4659978abaf74326ffe9f089"
+        },
+        {
+          "bytes": 530,
+          "path": "acquisition/luma-identity.json",
+          "sha256": "4fe78586994ad8e908b12952add0ec6f1e9a219cf1854dd89fd7ba5ed4fc8e5b"
+        },
+        {
+          "bytes": 3137,
+          "path": "acquisition/luma-profile.json",
+          "sha256": "2dd7c94484edbba58205f8cb7eda21be4236c33089de39bb256337166b05cb63"
+        },
+        {
+          "bytes": 1848287,
+          "path": "acquisition/luma/decoded/base.png",
+          "sha256": "e96b5277966d7ffd52371580647ad120937dbdad226470726e56329ab7c72e96"
+        },
+        {
+          "bytes": 1430423,
+          "path": "acquisition/luma/decoded/parts.png",
+          "sha256": "ba819f471cef4444f3d98954560cc58e1d0e2ff97841a89a9a2d0d9d5a5bd243"
+        },
+        {
+          "bytes": 1010,
+          "path": "acquisition/luma/extraction-settings.json",
+          "sha256": "5a3d9200833ed703f9f814a21e2b2bc58d8daa94fcd4e998e0b2ba4aac341ad3"
+        },
+        {
+          "bytes": 23491,
+          "path": "acquisition/luma/imagegen-jobs.json",
+          "sha256": "82fcd453084d146f527fc5c846c202a506f0a97e02658e9195663641831ce247"
+        },
+        {
+          "bytes": 7640,
+          "path": "acquisition/luma/pet_request.json",
+          "sha256": "b0e58378b074606d0741a1954e85c6f0c85bdad8d4e9f0558883863a4a740bb1"
+        },
+        {
+          "bytes": 3137,
+          "path": "acquisition/luma/profile.json",
+          "sha256": "2dd7c94484edbba58205f8cb7eda21be4236c33089de39bb256337166b05cb63"
+        },
+        {
+          "bytes": 3110,
+          "path": "acquisition/luma/prompts/base-pet.md",
+          "sha256": "a52f022c339aed4fa2fc1982ac985c7805b9163faf71124795a66a0a35be290d"
+        },
+        {
+          "bytes": 5893,
+          "path": "acquisition/luma/prompts/row-retries/parts.md",
+          "sha256": "4b0a12e6b5a79d5fbb0d31b5d5f5e9ea0dc01b385caad933c2085002ba8d5833"
+        },
+        {
+          "bytes": 5732,
+          "path": "acquisition/luma/prompts/rows/parts.md",
+          "sha256": "f2a8183cddcb62e40d27d83dfaaf7a61afa44ada910460fbcefa948cde4935da"
+        },
+        {
+          "bytes": 1848287,
+          "path": "acquisition/luma/references/canonical-base.png",
+          "sha256": "e96b5277966d7ffd52371580647ad120937dbdad226470726e56329ab7c72e96"
+        },
+        {
+          "bytes": 6152,
+          "path": "acquisition/luma/references/layout-guides/parts.png",
+          "sha256": "12b10c983aff1f94e0b3d27191dac8688e38f1f2d54e0238e734fe5b1372c7e1"
+        },
+        {
+          "bytes": 577,
+          "path": "acquisition/milo-identity.json",
+          "sha256": "b9d37e35fb975cd8fb8249de108f341e6c2efcb9b3796977bde732fd7316f3ad"
+        },
+        {
+          "bytes": 3137,
+          "path": "acquisition/milo-profile.json",
+          "sha256": "38a2aabdb11b5a475e627a592672f7e73ce07671a4a87ab995662229e483dce9"
+        },
+        {
+          "bytes": 1204863,
+          "path": "acquisition/milo/decoded/base.png",
+          "sha256": "29b857963c2d5b3ffceaa0231f49da394aabe897a9a60734cb30d7da0f83c41f"
+        },
+        {
+          "bytes": 1159333,
+          "path": "acquisition/milo/decoded/parts.png",
+          "sha256": "73e2ba30660d48a00bac035874c9d0b31ae7fe3f770f3bf699c7c8851216dd56"
+        },
+        {
+          "bytes": 1009,
+          "path": "acquisition/milo/extraction-settings.json",
+          "sha256": "7e5723f66ecbcf117cfe3e22928d90ec70b219b44a584c7af89ff20e8f9b9063"
+        },
+        {
+          "bytes": 23590,
+          "path": "acquisition/milo/imagegen-jobs.json",
+          "sha256": "4a4b13d6bb2f8555c01830c1e649d2ac229ff4234b612a46c3c8be397e0ffa6e"
+        },
+        {
+          "bytes": 7723,
+          "path": "acquisition/milo/pet_request.json",
+          "sha256": "45867ba3eb5e1fd9ea6bddaf1a6e9d36aabf7e1eada147e94cac01c0fc6d0b74"
+        },
+        {
+          "bytes": 3137,
+          "path": "acquisition/milo/profile.json",
+          "sha256": "38a2aabdb11b5a475e627a592672f7e73ce07671a4a87ab995662229e483dce9"
+        },
+        {
+          "bytes": 3165,
+          "path": "acquisition/milo/prompts/base-pet.md",
+          "sha256": "ca80a3b2283fbd5712fdeb77b986db40e812e1aec162cf054d3d5799da4aaad0"
+        },
+        {
+          "bytes": 5948,
+          "path": "acquisition/milo/prompts/row-retries/parts.md",
+          "sha256": "eebe834efff80501ed9524dfded73ef2e6b66d6d21c2ab156ff40b68b581c111"
+        },
+        {
+          "bytes": 5787,
+          "path": "acquisition/milo/prompts/rows/parts.md",
+          "sha256": "4878bcd95ab8e60441730f966be5c2311f2aaf4250c48159f8577f44e0177294"
+        },
+        {
+          "bytes": 1204863,
+          "path": "acquisition/milo/references/canonical-base.png",
+          "sha256": "29b857963c2d5b3ffceaa0231f49da394aabe897a9a60734cb30d7da0f83c41f"
+        },
+        {
+          "bytes": 6152,
+          "path": "acquisition/milo/references/layout-guides/parts.png",
+          "sha256": "12b10c983aff1f94e0b3d27191dac8688e38f1f2d54e0238e734fe5b1372c7e1"
+        },
+        {
+          "bytes": 1542545,
+          "path": "art/originals/luma-parts-v3.png",
+          "sha256": "bdfb919fd64776e45014f9654f41cf83d56bd5f34a2d1979b1bb09fd80be32f6"
+        },
+        {
+          "bytes": 1980333,
+          "path": "art/originals/luma-turnaround-v3.png",
+          "sha256": "270eb609c8cc566a61f3081d09c6e2f47390592d7650e9547872a64cb9f1cced"
+        },
+        {
+          "bytes": 1257833,
+          "path": "art/originals/milo-parts-v3.png",
+          "sha256": "84e0abc18797bbeb5224dacc281873cfd7b39ed64d7ef0ac2161947772c63588"
+        },
+        {
+          "bytes": 1310850,
+          "path": "art/originals/milo-turnaround-v3.png",
+          "sha256": "cb88dd18e162ee7e8d7a40da6b510e7ae4431595458b548fb4414db18eb225da"
+        }
+      ],
+      "fixture": false,
+      "origin": "Original v3 generated source PNGs and exact Milo/Luma hatch acquisition records. This source-only checkpoint retains normalized decoded/reference images, layout guides, prompts and job history; complete project, constructed layers, audio, performance, renders and artwork review are separate.",
+      "production_art_acceptance": false,
+      "provenance_paths": [
+        "acquisition/README.md",
+        "acquisition/handoffs/luma-base.json",
+        "acquisition/handoffs/luma-parts.json",
+        "acquisition/handoffs/milo-base.json",
+        "acquisition/handoffs/milo-parts.json",
+        "acquisition/lost-prior-artifacts.json",
+        "acquisition/luma-identity.json",
+        "acquisition/luma-profile.json",
+        "acquisition/luma/decoded/base.png",
+        "acquisition/luma/decoded/parts.png",
+        "acquisition/luma/extraction-settings.json",
+        "acquisition/luma/imagegen-jobs.json",
+        "acquisition/luma/pet_request.json",
+        "acquisition/luma/profile.json",
+        "acquisition/luma/prompts/base-pet.md",
+        "acquisition/luma/prompts/row-retries/parts.md",
+        "acquisition/luma/prompts/rows/parts.md",
+        "acquisition/luma/references/canonical-base.png",
+        "acquisition/luma/references/layout-guides/parts.png",
+        "acquisition/milo-identity.json",
+        "acquisition/milo-profile.json",
+        "acquisition/milo/decoded/base.png",
+        "acquisition/milo/decoded/parts.png",
+        "acquisition/milo/extraction-settings.json",
+        "acquisition/milo/imagegen-jobs.json",
+        "acquisition/milo/pet_request.json",
+        "acquisition/milo/profile.json",
+        "acquisition/milo/prompts/base-pet.md",
+        "acquisition/milo/prompts/row-retries/parts.md",
+        "acquisition/milo/prompts/rows/parts.md",
+        "acquisition/milo/references/canonical-base.png",
+        "acquisition/milo/references/layout-guides/parts.png"
+      ],
+      "provider_called": false,
+      "scope": "Exact selected source and provenance bytes; complete project and artwork review are separate.",
+      "total_bytes": 14921593,
+      "unique_part_bytes": 11856017,
+      "unique_part_count": 207,
+      "verified": true,
+      "visual_review_performed": false
+    }
+  },
+  "preserved_superseded_bundle": "/tmp/hatch-review-gzip-transport-superseded",
+  "raw_ledger_bytes": 4167150,
+  "raw_ledger_sha256": "cce42c52460d4525f18eb00f7525f8df8d99ebda9e31b3d875dccba6d93220d4",
+  "roots": [
+    {
+      "path": "/workspace/scratch/368aa013e993/hatch-pet/examples/production-pilot",
+      "preserved_at": "/workspace/scratch/368aa013e993/production-superseded-review-transport/active",
+      "preserved_fragments": [
+        {
+          "bytes": 65535,
+          "path": "parts/0fe1d407044ae1a60a93aa262b9388a55b671755395dee6d49eb356ba6950cc1.bin",
+          "sha256": "0fe1d407044ae1a60a93aa262b9388a55b671755395dee6d49eb356ba6950cc1"
+        },
+        {
+          "bytes": 65535,
+          "path": "parts/10c569a10fb0dc7a8548798cc2b44943499d0302155e0228f8216fc918a9922d.bin",
+          "sha256": "10c569a10fb0dc7a8548798cc2b44943499d0302155e0228f8216fc918a9922d"
+        },
+        {
+          "bytes": 65535,
+          "path": "parts/1717543aa717102e7284f3f00630f034db8abe2d161966f66063c689e110a1b4.bin",
+          "sha256": "1717543aa717102e7284f3f00630f034db8abe2d161966f66063c689e110a1b4"
+        },
+        {
+          "bytes": 65535,
+          "path": "parts/33296d872550b62d8c4a4c5fe0e5f93495417f25f7dcf704ebe20701e9e0343e.bin",
+          "sha256": "33296d872550b62d8c4a4c5fe0e5f93495417f25f7dcf704ebe20701e9e0343e"
+        },
+        {
+          "bytes": 65535,
+          "path": "parts/57227a2f8be5374740896bfae6d4c132cbc62b10afc3810ea525647c1f9889eb.bin",
+          "sha256": "57227a2f8be5374740896bfae6d4c132cbc62b10afc3810ea525647c1f9889eb"
+        },
+        {
+          "bytes": 65535,
+          "path": "parts/6aa3fd30b3c01eedf75f783c0bac5230c8b39b2f93c71aecf786dc07736225e5.bin",
+          "sha256": "6aa3fd30b3c01eedf75f783c0bac5230c8b39b2f93c71aecf786dc07736225e5"
+        },
+        {
+          "bytes": 65535,
+          "path": "parts/6f763e4eebd1a15d1e8e698d7acee8fe4dd6770491f5e18815f953f456616568.bin",
+          "sha256": "6f763e4eebd1a15d1e8e698d7acee8fe4dd6770491f5e18815f953f456616568"
+        },
+        {
+          "bytes": 65535,
+          "path": "parts/8180e584cd615521627b5209d8a49b66c3cb92c117a1209aafe75cbc7810a056.bin",
+          "sha256": "8180e584cd615521627b5209d8a49b66c3cb92c117a1209aafe75cbc7810a056"
+        },
+        {
+          "bytes": 65535,
+          "path": "parts/8c29a0041a3611e062a18648fb44bbe57459f9cf6778596f9613ef987a1b7487.bin",
+          "sha256": "8c29a0041a3611e062a18648fb44bbe57459f9cf6778596f9613ef987a1b7487"
+        },
+        {
+          "bytes": 10807,
+          "path": "parts/93f2c4c18a4503c4e0229ba4e67e4f930c646daeb875471d5d687f8b496bb616.bin",
+          "sha256": "93f2c4c18a4503c4e0229ba4e67e4f930c646daeb875471d5d687f8b496bb616"
+        },
+        {
+          "bytes": 65535,
+          "path": "parts/99bdb512c890f6719527962c32c6b6a9db9612ea770a7c2fe4a87894db90155d.bin",
+          "sha256": "99bdb512c890f6719527962c32c6b6a9db9612ea770a7c2fe4a87894db90155d"
+        },
+        {
+          "bytes": 65535,
+          "path": "parts/a76b71a4397e8447d669c90af930b39e8712ec60e59fc92bebc04478033138b4.bin",
+          "sha256": "a76b71a4397e8447d669c90af930b39e8712ec60e59fc92bebc04478033138b4"
+        },
+        {
+          "bytes": 65535,
+          "path": "parts/a7807bc548edc56018fc774d36bad5d98d89218e97362b703841265913c43a2e.bin",
+          "sha256": "a7807bc548edc56018fc774d36bad5d98d89218e97362b703841265913c43a2e"
+        },
+        {
+          "bytes": 65535,
+          "path": "parts/ad5566a33720ed8e0a6729f66052e0bd3f0650d3fe14d06f5bbe4a97c45916e7.bin",
+          "sha256": "ad5566a33720ed8e0a6729f66052e0bd3f0650d3fe14d06f5bbe4a97c45916e7"
+        },
+        {
+          "bytes": 65535,
+          "path": "parts/c168e4bf1932e6bd0ab5813b75eb333614ffdefe8b9d620ab595163cf1de8bf0.bin",
+          "sha256": "c168e4bf1932e6bd0ab5813b75eb333614ffdefe8b9d620ab595163cf1de8bf0"
+        },
+        {
+          "bytes": 65535,
+          "path": "parts/c3af50db4f8d43a955d7da90e7e083c86735407901c502f6f133aec4af094c75.bin",
+          "sha256": "c3af50db4f8d43a955d7da90e7e083c86735407901c502f6f133aec4af094c75"
+        },
+        {
+          "bytes": 65535,
+          "path": "parts/c78232087362270057bf2854bd860c19b36f82960c0d67c27935a8c4960a493c.bin",
+          "sha256": "c78232087362270057bf2854bd860c19b36f82960c0d67c27935a8c4960a493c"
+        },
+        {
+          "bytes": 65535,
+          "path": "parts/ee0c2565fe50022ae9899370ce5b75c230e42baf152ea9925133685064e3f6e9.bin",
+          "sha256": "ee0c2565fe50022ae9899370ce5b75c230e42baf152ea9925133685064e3f6e9"
+        }
+      ],
+      "project_valid": true,
+      "review_ledger_and_seven_render_manifests_unchanged": true,
+      "root": "active",
+      "verification": {
+        "bundle": "/workspace/scratch/368aa013e993/hatch-pet/examples/production-pilot/reviews-source-bundle/sources-index.json",
+        "bundle_sha256": "454bfdb6daad191cdcf1c20ea8dfe487dae0bb7a3576d2258cbe6c8b4f99c5dc",
+        "file_count": 1,
+        "files": [
+          {
+            "bytes": 4167150,
+            "path": "production-workflow.json",
+            "sha256": "cce42c52460d4525f18eb00f7525f8df8d99ebda9e31b3d875dccba6d93220d4"
+          }
+        ],
+        "fixture": false,
+        "origin": "Verbatim actual assistant-scoped pilot review history as inspectable UTF-8 JSON bytes. Exact source, renderer and rendered-artifact bindings remain mandatory; this transport never grants approval.",
+        "production_art_acceptance": false,
+        "provenance_paths": [],
+        "provider_called": false,
+        "scope": "Exact selected source and provenance bytes; complete project and artwork review are separate.",
+        "total_bytes": 4167150,
+        "unique_part_bytes": 4167150,
+        "unique_part_count": 64,
+        "verified": true,
+        "visual_review_performed": false
+      }
+    },
+    {
+      "path": "/workspace/scratch/368aa013e993/hatch-delivery/pilot-archive-stage",
+      "preserved_at": "/workspace/scratch/368aa013e993/production-superseded-review-transport/archive-stage",
+      "preserved_fragments": [
+        {
+          "bytes": 65535,
+          "path": "parts/0fe1d407044ae1a60a93aa262b9388a55b671755395dee6d49eb356ba6950cc1.bin",
+          "sha256": "0fe1d407044ae1a60a93aa262b9388a55b671755395dee6d49eb356ba6950cc1"
+        },
+        {
+          "bytes": 65535,
+          "path": "parts/10c569a10fb0dc7a8548798cc2b44943499d0302155e0228f8216fc918a9922d.bin",
+          "sha256": "10c569a10fb0dc7a8548798cc2b44943499d0302155e0228f8216fc918a9922d"
+        },
+        {
+          "bytes": 65535,
+          "path": "parts/1717543aa717102e7284f3f00630f034db8abe2d161966f66063c689e110a1b4.bin",
+          "sha256": "1717543aa717102e7284f3f00630f034db8abe2d161966f66063c689e110a1b4"
+        },
+        {
+          "bytes": 65535,
+          "path": "parts/33296d872550b62d8c4a4c5fe0e5f93495417f25f7dcf704ebe20701e9e0343e.bin",
+          "sha256": "33296d872550b62d8c4a4c5fe0e5f93495417f25f7dcf704ebe20701e9e0343e"
+        },
+        {
+          "bytes": 65535,
+          "path": "parts/57227a2f8be5374740896bfae6d4c132cbc62b10afc3810ea525647c1f9889eb.bin",
+          "sha256": "57227a2f8be5374740896bfae6d4c132cbc62b10afc3810ea525647c1f9889eb"
+        },
+        {
+          "bytes": 65535,
+          "path": "parts/6aa3fd30b3c01eedf75f783c0bac5230c8b39b2f93c71aecf786dc07736225e5.bin",
+          "sha256": "6aa3fd30b3c01eedf75f783c0bac5230c8b39b2f93c71aecf786dc07736225e5"
+        },
+        {
+          "bytes": 65535,
+          "path": "parts/6f763e4eebd1a15d1e8e698d7acee8fe4dd6770491f5e18815f953f456616568.bin",
+          "sha256": "6f763e4eebd1a15d1e8e698d7acee8fe4dd6770491f5e18815f953f456616568"
+        },
+        {
+          "bytes": 65535,
+          "path": "parts/8180e584cd615521627b5209d8a49b66c3cb92c117a1209aafe75cbc7810a056.bin",
+          "sha256": "8180e584cd615521627b5209d8a49b66c3cb92c117a1209aafe75cbc7810a056"
+        },
+        {
+          "bytes": 65535,
+          "path": "parts/8c29a0041a3611e062a18648fb44bbe57459f9cf6778596f9613ef987a1b7487.bin",
+          "sha256": "8c29a0041a3611e062a18648fb44bbe57459f9cf6778596f9613ef987a1b7487"
+        },
+        {
+          "bytes": 10807,
+          "path": "parts/93f2c4c18a4503c4e0229ba4e67e4f930c646daeb875471d5d687f8b496bb616.bin",
+          "sha256": "93f2c4c18a4503c4e0229ba4e67e4f930c646daeb875471d5d687f8b496bb616"
+        },
+        {
+          "bytes": 65535,
+          "path": "parts/99bdb512c890f6719527962c32c6b6a9db9612ea770a7c2fe4a87894db90155d.bin",
+          "sha256": "99bdb512c890f6719527962c32c6b6a9db9612ea770a7c2fe4a87894db90155d"
+        },
+        {
+          "bytes": 65535,
+          "path": "parts/a76b71a4397e8447d669c90af930b39e8712ec60e59fc92bebc04478033138b4.bin",
+          "sha256": "a76b71a4397e8447d669c90af930b39e8712ec60e59fc92bebc04478033138b4"
+        },
+        {
+          "bytes": 65535,
+          "path": "parts/a7807bc548edc56018fc774d36bad5d98d89218e97362b703841265913c43a2e.bin",
+          "sha256": "a7807bc548edc56018fc774d36bad5d98d89218e97362b703841265913c43a2e"
+        },
+        {
+          "bytes": 65535,
+          "path": "parts/ad5566a33720ed8e0a6729f66052e0bd3f0650d3fe14d06f5bbe4a97c45916e7.bin",
+          "sha256": "ad5566a33720ed8e0a6729f66052e0bd3f0650d3fe14d06f5bbe4a97c45916e7"
+        },
+        {
+          "bytes": 65535,
+          "path": "parts/c168e4bf1932e6bd0ab5813b75eb333614ffdefe8b9d620ab595163cf1de8bf0.bin",
+          "sha256": "c168e4bf1932e6bd0ab5813b75eb333614ffdefe8b9d620ab595163cf1de8bf0"
+        },
+        {
+          "bytes": 65535,
+          "path": "parts/c3af50db4f8d43a955d7da90e7e083c86735407901c502f6f133aec4af094c75.bin",
+          "sha256": "c3af50db4f8d43a955d7da90e7e083c86735407901c502f6f133aec4af094c75"
+        },
+        {
+          "bytes": 65535,
+          "path": "parts/c78232087362270057bf2854bd860c19b36f82960c0d67c27935a8c4960a493c.bin",
+          "sha256": "c78232087362270057bf2854bd860c19b36f82960c0d67c27935a8c4960a493c"
+        },
+        {
+          "bytes": 65535,
+          "path": "parts/ee0c2565fe50022ae9899370ce5b75c230e42baf152ea9925133685064e3f6e9.bin",
+          "sha256": "ee0c2565fe50022ae9899370ce5b75c230e42baf152ea9925133685064e3f6e9"
+        }
+      ],
+      "project_valid": true,
+      "review_ledger_and_seven_render_manifests_unchanged": true,
+      "root": "archive-stage",
+      "verification": {
+        "bundle": "/workspace/scratch/368aa013e993/hatch-delivery/pilot-archive-stage/reviews-source-bundle/sources-index.json",
+        "bundle_sha256": "454bfdb6daad191cdcf1c20ea8dfe487dae0bb7a3576d2258cbe6c8b4f99c5dc",
+        "file_count": 1,
+        "files": [
+          {
+            "bytes": 4167150,
+            "path": "production-workflow.json",
+            "sha256": "cce42c52460d4525f18eb00f7525f8df8d99ebda9e31b3d875dccba6d93220d4"
+          }
+        ],
+        "fixture": false,
+        "origin": "Verbatim actual assistant-scoped pilot review history as inspectable UTF-8 JSON bytes. Exact source, renderer and rendered-artifact bindings remain mandatory; this transport never grants approval.",
+        "production_art_acceptance": false,
+        "provenance_paths": [],
+        "provider_called": false,
+        "scope": "Exact selected source and provenance bytes; complete project and artwork review are separate.",
+        "total_bytes": 4167150,
+        "unique_part_bytes": 4167150,
+        "unique_part_count": 64,
+        "verified": true,
+        "visual_review_performed": false
+      }
+    },
+    {
+      "path": "/workspace/scratch/368aa013e993/hatch-delivery/restored-pilot",
+      "preserved_at": "/workspace/scratch/368aa013e993/production-superseded-review-transport/archive-restore",
+      "preserved_fragments": [
+        {
+          "bytes": 65535,
+          "path": "parts/0fe1d407044ae1a60a93aa262b9388a55b671755395dee6d49eb356ba6950cc1.bin",
+          "sha256": "0fe1d407044ae1a60a93aa262b9388a55b671755395dee6d49eb356ba6950cc1"
+        },
+        {
+          "bytes": 65535,
+          "path": "parts/10c569a10fb0dc7a8548798cc2b44943499d0302155e0228f8216fc918a9922d.bin",
+          "sha256": "10c569a10fb0dc7a8548798cc2b44943499d0302155e0228f8216fc918a9922d"
+        },
+        {
+          "bytes": 65535,
+          "path": "parts/1717543aa717102e7284f3f00630f034db8abe2d161966f66063c689e110a1b4.bin",
+          "sha256": "1717543aa717102e7284f3f00630f034db8abe2d161966f66063c689e110a1b4"
+        },
+        {
+          "bytes": 65535,
+          "path": "parts/33296d872550b62d8c4a4c5fe0e5f93495417f25f7dcf704ebe20701e9e0343e.bin",
+          "sha256": "33296d872550b62d8c4a4c5fe0e5f93495417f25f7dcf704ebe20701e9e0343e"
+        },
+        {
+          "bytes": 65535,
+          "path": "parts/57227a2f8be5374740896bfae6d4c132cbc62b10afc3810ea525647c1f9889eb.bin",
+          "sha256": "57227a2f8be5374740896bfae6d4c132cbc62b10afc3810ea525647c1f9889eb"
+        },
+        {
+          "bytes": 65535,
+          "path": "parts/6aa3fd30b3c01eedf75f783c0bac5230c8b39b2f93c71aecf786dc07736225e5.bin",
+          "sha256": "6aa3fd30b3c01eedf75f783c0bac5230c8b39b2f93c71aecf786dc07736225e5"
+        },
+        {
+          "bytes": 65535,
+          "path": "parts/6f763e4eebd1a15d1e8e698d7acee8fe4dd6770491f5e18815f953f456616568.bin",
+          "sha256": "6f763e4eebd1a15d1e8e698d7acee8fe4dd6770491f5e18815f953f456616568"
+        },
+        {
+          "bytes": 65535,
+          "path": "parts/8180e584cd615521627b5209d8a49b66c3cb92c117a1209aafe75cbc7810a056.bin",
+          "sha256": "8180e584cd615521627b5209d8a49b66c3cb92c117a1209aafe75cbc7810a056"
+        },
+        {
+          "bytes": 65535,
+          "path": "parts/8c29a0041a3611e062a18648fb44bbe57459f9cf6778596f9613ef987a1b7487.bin",
+          "sha256": "8c29a0041a3611e062a18648fb44bbe57459f9cf6778596f9613ef987a1b7487"
+        },
+        {
+          "bytes": 10807,
+          "path": "parts/93f2c4c18a4503c4e0229ba4e67e4f930c646daeb875471d5d687f8b496bb616.bin",
+          "sha256": "93f2c4c18a4503c4e0229ba4e67e4f930c646daeb875471d5d687f8b496bb616"
+        },
+        {
+          "bytes": 65535,
+          "path": "parts/99bdb512c890f6719527962c32c6b6a9db9612ea770a7c2fe4a87894db90155d.bin",
+          "sha256": "99bdb512c890f6719527962c32c6b6a9db9612ea770a7c2fe4a87894db90155d"
+        },
+        {
+          "bytes": 65535,
+          "path": "parts/a76b71a4397e8447d669c90af930b39e8712ec60e59fc92bebc04478033138b4.bin",
+          "sha256": "a76b71a4397e8447d669c90af930b39e8712ec60e59fc92bebc04478033138b4"
+        },
+        {
+          "bytes": 65535,
+          "path": "parts/a7807bc548edc56018fc774d36bad5d98d89218e97362b703841265913c43a2e.bin",
+          "sha256": "a7807bc548edc56018fc774d36bad5d98d89218e97362b703841265913c43a2e"
+        },
+        {
+          "bytes": 65535,
+          "path": "parts/ad5566a33720ed8e0a6729f66052e0bd3f0650d3fe14d06f5bbe4a97c45916e7.bin",
+          "sha256": "ad5566a33720ed8e0a6729f66052e0bd3f0650d3fe14d06f5bbe4a97c45916e7"
+        },
+        {
+          "bytes": 65535,
+          "path": "parts/c168e4bf1932e6bd0ab5813b75eb333614ffdefe8b9d620ab595163cf1de8bf0.bin",
+          "sha256": "c168e4bf1932e6bd0ab5813b75eb333614ffdefe8b9d620ab595163cf1de8bf0"
+        },
+        {
+          "bytes": 65535,
+          "path": "parts/c3af50db4f8d43a955d7da90e7e083c86735407901c502f6f133aec4af094c75.bin",
+          "sha256": "c3af50db4f8d43a955d7da90e7e083c86735407901c502f6f133aec4af094c75"
+        },
+        {
+          "bytes": 65535,
+          "path": "parts/c78232087362270057bf2854bd860c19b36f82960c0d67c27935a8c4960a493c.bin",
+          "sha256": "c78232087362270057bf2854bd860c19b36f82960c0d67c27935a8c4960a493c"
+        },
+        {
+          "bytes": 65535,
+          "path": "parts/ee0c2565fe50022ae9899370ce5b75c230e42baf152ea9925133685064e3f6e9.bin",
+          "sha256": "ee0c2565fe50022ae9899370ce5b75c230e42baf152ea9925133685064e3f6e9"
+        }
+      ],
+      "project_valid": true,
+      "review_ledger_and_seven_render_manifests_unchanged": true,
+      "root": "archive-restore",
+      "verification": {
+        "bundle": "/workspace/scratch/368aa013e993/hatch-delivery/restored-pilot/reviews-source-bundle/sources-index.json",
+        "bundle_sha256": "454bfdb6daad191cdcf1c20ea8dfe487dae0bb7a3576d2258cbe6c8b4f99c5dc",
+        "file_count": 1,
+        "files": [
+          {
+            "bytes": 4167150,
+            "path": "production-workflow.json",
+            "sha256": "cce42c52460d4525f18eb00f7525f8df8d99ebda9e31b3d875dccba6d93220d4"
+          }
+        ],
+        "fixture": false,
+        "origin": "Verbatim actual assistant-scoped pilot review history as inspectable UTF-8 JSON bytes. Exact source, renderer and rendered-artifact bindings remain mandatory; this transport never grants approval.",
+        "production_art_acceptance": false,
+        "provenance_paths": [],
+        "provider_called": false,
+        "scope": "Exact selected source and provenance bytes; complete project and artwork review are separate.",
+        "total_bytes": 4167150,
+        "unique_part_bytes": 4167150,
+        "unique_part_count": 64,
+        "verified": true,
+        "visual_review_performed": false
+      }
+    }
+  ],
+  "schema_version": 1
+}

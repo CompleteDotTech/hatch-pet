@@ -2,7 +2,7 @@
 
 The current pilot has two original, non-fixture imagegen characters, **20 reusable clips**, five shots, and two completed audiovisual scenes. Both scenes select the same `milo@3.0.0` and `luma@3.0.0` assets. The original artwork, construction decisions, original dialogue, actual acquisition history, scoped reviews, and deterministic rendering evidence remain distinct.
 
-**Delivery status:** implementation and local validation are complete. Public transfer of the remaining source, audio and review-history parts is blocked by automatic approval review; see [delivery blockers](evidence/delivery-blockers.json). The public branch must not be described as a complete source distribution or merged delivery until those exact media uploads are authorized and finished. The complete local films and review evidence already exist.
+**Delivery status:** all previously missing artwork/audio fragments and the original review-history index have been recovered from preservation commit `ebdb5d64a0d36e6a2fd6fbf5cb574fc6968f4404`. Ten historical inspection PNGs were reconstructed byte-for-byte and checked against their pre-existing review hashes. See the [current delivery status](../../DELIVERY_STATUS.md) and [recovery audit](../../references/public-asset-recovery.json). The retained [delivery-blockers record](evidence/delivery-blockers.json) describes the earlier publication attempt; it is immutable historical evidence, not a current status feed.
 
 ![Actual completed exchange frame](../../assets/production-pilot.jpg)
 
@@ -25,7 +25,18 @@ The current pilot has two original, non-fixture imagegen characters, **20 reusab
 
 Both films are 640 × 360. Exact RGBA PNG frames, per-track layers, integer-frame manifests and 48 kHz PCM masters are authoritative. H.264/AAC MP4 files are flattened review copies. The local previews provide scrubbing, frame stepping, timing/source inspection, layer visibility and pinned comparison.
 
-The final output packages have these names. Their exact sizes, hashes and verified inventories are recorded in [render delivery](evidence/render-delivery.json). They contain compiled output files, with no original source acquisition files or repository code.
+### Public downloads
+
+| Scene | Review movie | Sampled storyboard | Layered drawing |
+| --- | --- | --- | --- |
+| Seed exchange | [36-second MP4](media/seed-exchange.mp4) | [16 sampled frames](media/seed-exchange.png) | [Frame 144 OpenRaster](media/seed-exchange-frame-144.ora) |
+| Garden promise | [22-second MP4](media/garden-promise.mp4) | [16 sampled frames](media/garden-promise.png) | [Frame 144 OpenRaster](media/garden-promise-frame-144.ora) |
+
+These files come from the successful Linux job in [public CI run 39405174981](https://github.com/CompleteDotTech/hatch-pet/actions/runs/39405174981/job/118569242079). The [media provenance](media/provenance.json) records their exact hashes, acquisition, automated validation and limited visual inspection. Every file is pinned by the delivery manifest and checked by `verify-delivery`. All **696 rendered frame hashes** match the original final-shot review dependencies; the [comparison record](../../references/public-historical-frame-comparison.json) preserves that check. This does not make the old review current for a changed renderer or establish human approval. Full PNG/PCM masters, browser previews and complete handoffs are reproduced with the commands below.
+
+### Historical package records
+
+The original private delivery used the following package names. Their historical sizes, hashes and inventories remain in [render delivery](evidence/render-delivery.json). These names are not public download links. The public reconstruction commands produce complete current renders, previews and editor handoffs directly from the retained inputs; CI retains its actual reports, portable project, storyboards, review movies and OpenRaster snapshots as run artifacts.
 
 | File | Contents |
 | --- | --- |
@@ -51,6 +62,9 @@ After rebuilding or restoring a project, open `renders/seed-exchange/preview.htm
 | [source index](source-bundle/sources-index.json) | Exact four original imagegen outputs and their retained acquisition/canonical source files, transported as bounded content-addressed parts |
 | [audio index](audio-source-bundle/sources-index.json) | Five original local Flite TTS WAVs, authored text, actual synthesis receipts and supplied package attribution |
 | [review-history index](reviews-source-bundle/sources-index.json) | Exact UTF-8 bytes of the actual production workflow/review history; transport is not a new approval |
+| [historical image index](evidence-source-bundle/sources-index.json) | Five inspection sheets and five reviewed frames whose exact bytes match the historical ledger |
+| [exact project index](project-source-bundle/sources-index.json) | Original serialized project and derived PNG/PCM bytes, preserving every pre-existing model hash across platforms |
+| [delivery manifest](delivery-manifest.json) | Pinned inventories for all five transports, production model, supporting metadata and review-chain identity |
 | [review transport evidence](evidence/review-history-transport.json) | Decoded history hash, 20-record chain identity and exact restoration check |
 
 The current production acquisition made **four actual imagegen calls**, one turnaround and one component board per character, with one attempt each and concurrency one. The configured current limit is four calls; none remain. Provider request/model/parameter identifiers were not exposed and remain explicitly unavailable. The local claim IDs are genuine hatch correlation IDs, not invented provider IDs. Earlier lost artifacts and eight previously observed calls are disclosed separately and do not approve the replacement cast.
@@ -59,7 +73,7 @@ Original scenery and the packet are code-authored imported drawings, with their 
 
 ## Actual inspection and acceptance
 
-[Current review status](evidence/reviews-final.json) contains two construction targets, **13 used clip targets**, and five shot targets. Each shot has current decisions in all eight review dimensions. [Recording results](evidence/review-recording-results.json) identify the actual reviewer as `assistant:/root`; **human review is false**. Seven unused clips remain unreviewed rather than inheriting acceptance from related performances.
+[Historical review status](evidence/reviews-final.json) contains two construction targets, **13 used clip targets**, and five shot targets. At that recorded inspection, each shot had decisions in all eight review dimensions. [Recording results](evidence/review-recording-results.json) identify the actual reviewer as `assistant:/root`; **human review is false**. Seven unused clips remain unreviewed rather than inheriting acceptance from related performances. Reconstructed outputs must be checked against current dependencies; the retained decisions are not rewritten to approve later code.
 
 The primary assistant inspected original boards, repaired construction frames, both scene storyboards and the chronological samples listed in [inspection-sheets.json](evidence/inspection-sheets.json). Final shot decisions bind actual inspected frame files, the complete frame/layer/audio inventory, exact dependencies and the renderer version. [Actual browser playback](evidence/browser-playback.json) completed both films with audio clocks of 36 and 22 seconds and final frames 431 and 263. Browser control observations are automated evidence, separate from visual decisions.
 
@@ -73,7 +87,7 @@ The accepted scope is a limited frontal puppet production pilot. Mouth choices a
 
 At exchange frames 83, 84 and 85, both grip anchors and the packet agree at approximately **[329.990865592, 240.936492272]** world pixels. Ownership changes from Milo to Luma exactly at frame 84. See [contact evidence](evidence/contact-frame-84.json) and [authored reach geometry](evidence/authored-geometry.json). The actual visible overlap was inspected separately from the anchor calculations.
 
-The final approved rerender reused **all 432 + 264 frames**, with zero new frames: [first scene](evidence/render-seed-approved-reuse.json), [second scene](evidence/render-garden-approved-reuse.json). The garden scene uses the existing cast and idle/reaction clips, new scenery/timing/audio, and no new character generation.
+The historical approved rerender reused **all 432 + 264 frames**, with zero new frames: [first scene](evidence/render-seed-approved-reuse.json), [second scene](evidence/render-garden-approved-reuse.json). The current verification command independently checks complete-frame reuse without recording a new artistic approval. The garden scene uses the existing cast and idle/reaction clips, new scenery/timing/audio, and no new character generation.
 
 [Operational evidence](evidence/operational-evidence.json) records real isolated changes: the exchange camera affects only that shot; Milo's shared mouth rest offset affects all five shots; Milo's reaction clip affects only garden and tomorrow. Each report explains the required rerender/review work and the reusable shots. The changed experimental variants were not promoted or approved.
 
@@ -81,33 +95,30 @@ The final approved rerender reused **all 432 + 264 frames**, with zero new frame
 
 ## Reconstruct the project
 
-The [full production recipe](../../references/production-pilot.md) gives exact commands for extraction, clips, dialogue, interactions, coverage, rendering, review, reuse, archives and editor handoff. Source reconstruction makes **no model calls**. The public source/audio transports currently require completion of the blocked uploads before these commands can succeed from a fresh clone.
+The [full production recipe](../../references/production-pilot.md) gives commands for extraction, clips, dialogue, interactions, coverage, rendering, review, reuse, archives and editor handoff. Source reconstruction makes **no model or TTS calls**. Install the pinned delivery dependencies. Exact restoration uses the original serialized model and derived asset bytes; rendering records its actual platform and PNG backend.
 
 ```bash
-python scripts/production_sources.py verify --bundle examples/production-pilot/source-bundle
-python scripts/production_sources.py verify --bundle examples/production-pilot/audio-source-bundle
-python scripts/production_sources.py restore --bundle examples/production-pilot/source-bundle --destination /tmp/hatch-pilot
-python scripts/production_sources.py restore --bundle examples/production-pilot/audio-source-bundle --destination /tmp/hatch-pilot-audio
-python -c "import shutil; shutil.copytree('/tmp/hatch-pilot-audio/audio', '/tmp/hatch-pilot/audio')"
-python scripts/production_demo.py --project /tmp/hatch-pilot
-python scripts/production.py validate --project /tmp/hatch-pilot
-python scripts/production.py render --project /tmp/hatch-pilot --scene seed-exchange --destination /tmp/hatch-pilot/renders/seed-exchange --video
-python scripts/production.py render --project /tmp/hatch-pilot --scene garden-promise --destination /tmp/hatch-pilot/renders/garden-promise --video
-python -m http.server 8765 --bind 127.0.0.1 --directory /tmp/hatch-pilot
+python -m pip install -r requirements-delivery.txt
+python scripts/production_sources.py verify-delivery
+python scripts/production_sources.py restore-pilot --destination output/hatch-pilot
+python scripts/production.py validate --project output/hatch-pilot
+python scripts/production.py render --project output/hatch-pilot --scene seed-exchange --destination output/hatch-pilot/renders/seed-exchange --video
+python scripts/production.py render --project output/hatch-pilot --scene garden-promise --destination output/hatch-pilot/renders/garden-promise --video
+python -m http.server 8765 --bind 127.0.0.1 --directory output/hatch-pilot
 ```
 
 The recipe does not fabricate new approval receipts. Freshly created work requires inspection; archived decisions require exact dependency and artifact freshness. Use the recorded Python/Pillow environment when comparing exact historical pixel and renderer hashes.
 
 ## Restore the original review history
 
-Restore the reviewed complete project archive when all original evidence and masters should be preserved together. The smaller review-history transport contains the exact workflow JSON only. It supports auditing the actual decisions and generation bindings without publishing a rewritten or synthetic replacement chain:
+`restore-pilot` restores the exact workflow JSON automatically. The smaller review-history transport can also be decoded independently to inspect the actual decisions and generation bindings:
 
 ```bash
 python scripts/production_sources.py verify --bundle examples/production-pilot/reviews-source-bundle
-python scripts/production_sources.py restore --bundle examples/production-pilot/reviews-source-bundle --destination /tmp/hatch-pilot-review-history
+python scripts/production_sources.py restore --bundle examples/production-pilot/reviews-source-bundle --destination output/hatch-pilot-review-history
 ```
 
-Read `/tmp/hatch-pilot-review-history/production-workflow.json`. Do not overwrite a working project's existing history with it. Copying the chain alone cannot make missing source, inspection sheets or rendered artifacts current. `production.py reviews` explains stale dependencies and missing evidence after a legitimate complete project restoration.
+Read `output/hatch-pilot-review-history/production-workflow.json`. Do not overwrite a working project's existing history with it. `verify-delivery` verifies all 20 linked records and all 13 distinct referenced supporting images/records across the transports and metadata. During `restore-pilot`, historical sampled frames go under `historical/renders/`; their original paths and hashes remain in the ledger and `delivery-restoration.json` maps their inspection locations. New complete renders go under `renders/`. `production.py reviews` explains stale dependencies and missing current-render evidence honestly.
 
 ## Constraints and integration boundaries
 

@@ -16,37 +16,47 @@ The production pilot contains original imagegen artwork for Milo, an amber bear 
 
 ## Reconstruct the retained production project
 
-Run commands from the repository root. Install Python dependencies with `python -m pip install -r requirements-test.txt`. The recorded production renders use Python 3.12.14 and Pillow 13.0.0; use the recorded environment to compare exact raster and renderer hashes. PNG/PCM reconstruction needs no TTS or image provider when the retained source bundles are restored. FFmpeg and ffprobe are optional dependencies for MP4 review copies. A missing dependency must be reported, not replaced with invented evidence.
+Run commands from the repository root. Install Python dependencies with `python -m pip install -r requirements-delivery.txt`. The historical production renders used Python 3.12.14 and Pillow 13.0.0. Exact restoration copies the original model and derived asset bytes; it does not reauthor PNGs or animation values. New render identities record Python, Pillow, PNG backend and platform. Compare exact render bytes within the same recorded environment. PNG/PCM reconstruction needs no TTS or image provider when the retained source bundles are restored. FFmpeg and ffprobe are optional dependencies for MP4 review copies. A missing dependency must be reported, not replaced with invented evidence.
 
-The repository retains original artwork and acquisition records in `examples/production-pilot/source-bundle`, and original speech, text and local TTS records in `audio-source-bundle`. Content-addressed parts allow exact transfer without altering source bytes; their JSON indexes list every restored path, size and hash. These are source transports, not production-art approval receipts.
+The repository retains original artwork and acquisition records in `examples/production-pilot/source-bundle`, original speech, text and local TTS records in `audio-source-bundle`, the original 20-record ledger in `reviews-source-bundle`, ten historically reviewed PNGs in `evidence-source-bundle`, and all 24 original model files plus 42 hash-bound derived PNG/PCM assets in `project-source-bundle`. `delivery-manifest.json` pins all five index hashes, the production model and supporting records. `restore-pilot` verifies everything before staging and publishing the project, preserves the ledger verbatim, and never calls an image provider or TTS engine. Content-addressed parts allow exact transfer without altering source bytes; their JSON indexes list every restored path, size and hash. These are source transports, not production-art approval receipts.
 
 Choose new directories. These commands fail instead of replacing an existing restore destination:
 
 ```bash
-python scripts/production_sources.py verify --bundle examples/production-pilot/source-bundle
-python scripts/production_sources.py verify --bundle examples/production-pilot/audio-source-bundle
-python scripts/production_sources.py restore --bundle examples/production-pilot/source-bundle --destination /tmp/hatch-pilot
-python scripts/production_sources.py restore --bundle examples/production-pilot/audio-source-bundle --destination /tmp/hatch-pilot-audio
-python -c "import shutil; shutil.copytree('/tmp/hatch-pilot-audio/audio', '/tmp/hatch-pilot/audio')"
-python scripts/production_demo.py --project /tmp/hatch-pilot
-python scripts/production.py validate --project /tmp/hatch-pilot
-python scripts/production.py coverage --project /tmp/hatch-pilot --output /tmp/hatch-pilot-coverage.json
+python scripts/production_sources.py verify-delivery
+python scripts/production_sources.py restore-pilot --destination output/hatch-pilot
+python scripts/production.py validate --project output/hatch-pilot
+python scripts/production.py coverage --project output/hatch-pilot --output output/hatch-pilot-coverage.json
 ```
 
 `production_demo.py` verifies the original PNG hashes against actual generated jobs and handoff receipts. It writes measured crop/registration provenance, both character constructions, 20 clips, editable dialogue cues, two scenes and three construction inspection images. It never fabricates a provider call, source receipt, review or approval. `--without-audio` is a construction diagnostic only; it is not the complete demonstration.
 
-The retained speech build checks each original WAV, text and voice against its original local TTS receipt. It pads PCM to integer frame boundaries and does not resynthesize an existing recording. If original speech is deliberately absent, the recipe can use local FFmpeg Flite; the resulting new source and engine version are recorded, and its hashes and reviews must be assessed as new work. Retain the original source bundle when reproducing this delivery.
+The retained speech build checks each original WAV, text and voice against its original local TTS receipt. It pads PCM to integer frame boundaries and does not resynthesize an existing recording. Missing original speech fails by default, even when FFmpeg is installed. Only an explicit `production_demo.py --synthesize-missing-audio` request creates new Flite speech; its resulting source and engine version are new work and do not satisfy exact delivery reconstruction. Retain the original source bundle when reproducing this delivery.
 
 The four current model outputs, their native hatch claim/attempt histories and unavailable provider metadata are retained unchanged. Earlier workspace losses are disclosed in the acquisition audit; lost prior claims, artwork and approvals are not reconstructed as current evidence. The pilot's current acquisition cap is four calls. The separate audit counts eight earlier observed calls whose source files were lost. No new model call is needed for either reconstruction or the second scene.
+
+## Automated public-delivery gate
+
+Install Git, Node, FFmpeg/ffprobe and actual Chromium (`python -m playwright install --with-deps chromium`), then run:
+
+```bash
+python scripts/verify_public_delivery.py --destination delivery-verification --tests --render --video
+```
+
+The gate uses only this checkout's pilot, refuses private-pilot environment overrides, records input hashes before and after validation, and fails unexpected test skips. It restores the complete model, verifies a portable archive roundtrip, renders and validates 432 + 264 frames and exact PCM duration, checks unchanged-frame reuse, and exports both complete editor handoffs. Reports and actual evidence remain under the new destination. Native Krita is a separately reported optional integration.
+
+For a workstation with limited disk space, `--compact` retains full-frame/audio validation, reports, storyboards, movies and one layered drawing per scene, then removes completed frame trees. It explicitly does **not** claim the complete editor-handoff gate. CI runs the normal complete mode on Linux, Windows and macOS. A new destination is required for another run.
+
+`restore-pilot` preserves historical inspection sheets under `evidence/` and sampled historical frames under `historical/renders/`, with a path map in `delivery-restoration.json`. This keeps those samples inspectable without creating incomplete current render destinations. The original ledger remains unchanged. Current final-shot review freshness is assessed separately after complete rendering.
 
 ## Render and inspect both scenes
 
 ```bash
-python scripts/production.py render --project /tmp/hatch-pilot --scene seed-exchange --destination /tmp/hatch-pilot/renders/seed-exchange --video --output /tmp/seed-render.json
-python scripts/production.py render --project /tmp/hatch-pilot --scene garden-promise --destination /tmp/hatch-pilot/renders/garden-promise --video --output /tmp/garden-render.json
-python scripts/production.py storyboard --render-dir /tmp/hatch-pilot/renders/seed-exchange --destination /tmp/seed-storyboard.png --frames 0,24,72,96,143,154,204,227,228,229,311,326,400,431
-python scripts/production.py storyboard --render-dir /tmp/hatch-pilot/renders/garden-promise --destination /tmp/garden-storyboard.png --frames 0,12,36,65,143,144,168,183,236,263
-python -m http.server 8765 --bind 127.0.0.1 --directory /tmp/hatch-pilot
+python scripts/production.py render --project output/hatch-pilot --scene seed-exchange --destination output/hatch-pilot/renders/seed-exchange --video --output output/seed-render.json
+python scripts/production.py render --project output/hatch-pilot --scene garden-promise --destination output/hatch-pilot/renders/garden-promise --video --output output/garden-render.json
+python scripts/production.py storyboard --render-dir output/hatch-pilot/renders/seed-exchange --destination output/seed-storyboard.png --frames 0,24,72,96,143,154,204,227,228,229,311,326,400,431
+python scripts/production.py storyboard --render-dir output/hatch-pilot/renders/garden-promise --destination output/garden-storyboard.png --frames 0,12,36,65,143,144,168,183,236,263
+python -m http.server 8765 --bind 127.0.0.1 --directory output/hatch-pilot
 ```
 
 Open `http://localhost:8765/renders/seed-exchange/preview.html` or `http://localhost:8765/renders/garden-promise/preview.html`. Scrub by integer frame, use arrow keys or the previous/next buttons, inspect the frame interval and source manifest, toggle tracks, and pin a frame for comparison. Audio playback requires explicit opt-in. Serve the directory locally because browser file-URL fetch restrictions vary.
@@ -86,8 +96,8 @@ Use the production JSON contracts to author a new project and cast from explicit
 To prepare a fresh bounded acquisition of this character design, use a new run directory:
 
 ```bash
-python scripts/prepare_production_art.py --destination /tmp/new-acquisition/milo --character milo
-python scripts/hatch.py claim --run-dir /tmp/new-acquisition/milo --job base
+python scripts/prepare_production_art.py --destination output/new-acquisition/milo --character milo
+python scripts/hatch.py claim --run-dir output/new-acquisition/milo --job base
 ```
 
 Read the installed imagegen skill. Invoke it with the exact claimed prompt and every required attachment, preserve genuine output metadata or its honest unavailability, then ingest with the same token. Inspect and review the canonical base before claiming `parts`. Do not run these generation steps when merely reconstructing retained sources. For arbitrary new designs use the legacy `prepare` profile, identity and source commands in [sources and identity](sources-and-identity.md); keep project requirement bindings and bounded generation limits as described in [production operations](production-operations.md#bound-acquisition-claims-and-recovery).
@@ -109,15 +119,15 @@ The production model is a bounded reference compositor. It does not contain an a
 ## Review, reuse and diagnose changed work
 
 ```bash
-python scripts/production.py snapshot --project /tmp/hatch-pilot --output /tmp/pilot-before.json
-python scripts/production.py review-template --project /tmp/hatch-pilot --character milo --version 3.0.0 --output /tmp/milo-review.json
-python scripts/production.py review-template --project /tmp/hatch-pilot --clip milo-walk-right --version 3.0.0 --output /tmp/walk-review.json
-python scripts/production.py review-template --project /tmp/hatch-pilot --scene seed-exchange --shot exchange --render-manifest renders/seed-exchange/shots/exchange/render-manifest.json --output /tmp/exchange-review.json
+python scripts/production.py snapshot --project output/hatch-pilot --output output/pilot-before.json
+python scripts/production.py review-template --project output/hatch-pilot --character milo --version 3.0.0 --output output/milo-review.json
+python scripts/production.py review-template --project output/hatch-pilot --clip milo-walk-right --version 3.0.0 --output output/walk-review.json
+python scripts/production.py review-template --project output/hatch-pilot --scene seed-exchange --shot exchange --render-manifest renders/seed-exchange/shots/exchange/render-manifest.json --output output/exchange-review.json
 # Inspect, identify the actual reviewer, and fill exact evidence/verdicts before submitting:
-python scripts/production.py review --project /tmp/hatch-pilot --receipt /tmp/exchange-review.json
-python scripts/production.py reviews --project /tmp/hatch-pilot --scene seed-exchange --shot exchange
-python scripts/production.py coverage --project /tmp/hatch-pilot --scene garden-promise --output /tmp/garden-coverage.json
-python scripts/production.py impact --project /tmp/hatch-pilot --receipt /tmp/pilot-before.json --output /tmp/pilot-impact.json
+python scripts/production.py review --project output/hatch-pilot --receipt output/exchange-review.json
+python scripts/production.py reviews --project output/hatch-pilot --scene seed-exchange --shot exchange
+python scripts/production.py coverage --project output/hatch-pilot --scene garden-promise --output output/garden-coverage.json
+python scripts/production.py impact --project output/hatch-pilot --receipt output/pilot-before.json --output output/pilot-impact.json
 ```
 
 Templates are intentionally unreviewed. The submission command fails until the reviewer supplies actual evidence and explicit decisions. Final shot acceptance binds the persisted completed shot render and inspected frame/layer artifacts. Historical delivery reviews are separate from a fresh source reconstruction; the recipe never recreates approvals. Use archived projects to preserve a complete review history, and recheck freshness in the restored environment.
@@ -129,11 +139,11 @@ Coverage readiness requires current construction and used-clip reviews. It remai
 ## Export and restore
 
 ```bash
-python scripts/production.py export-editor --render-dir /tmp/hatch-pilot/renders/seed-exchange --destination /tmp/hatch-editor --frames 96,228,326 --exercise-krita
-python scripts/production.py archive --project /tmp/hatch-pilot --destination /tmp/hatch-pilot.zip
-python scripts/production.py restore --source /tmp/hatch-pilot.zip --destination /tmp/hatch-pilot-restored
-python scripts/production.py validate --project /tmp/hatch-pilot-restored
-python scripts/production.py reviews --project /tmp/hatch-pilot-restored --scene seed-exchange --shot exchange
+python scripts/production.py export-editor --render-dir output/hatch-pilot/renders/seed-exchange --destination output/hatch-editor --frames 96,228,326 --exercise-krita
+python scripts/production.py archive --project output/hatch-pilot --destination output/hatch-pilot.zip
+python scripts/production.py restore --source output/hatch-pilot.zip --destination output/hatch-pilot-restored
+python scripts/production.py validate --project output/hatch-pilot-restored
+python scripts/production.py reviews --project output/hatch-pilot-restored --scene seed-exchange --shot exchange
 ```
 
 The handoff exports PNG frames, WAV, timing/provenance and selected layered OpenRaster snapshots. Its own roundtrip validation reopens the ORA files and checks exact pixels and structure. `--exercise-krita` only exercises an already available executable and records an unavailable result otherwise. It neither installs Krita nor changes live settings. See [rendering](production-rendering.md#portable-editor-handoff) for actual editing instructions and the distinction between drawing import/export and timeline integration.
@@ -143,7 +153,7 @@ Archive and restoration preserve sources, versions, acquisition history, reviews
 ## Reproduce the synthetic demonstration
 
 ```bash
-python scripts/production_regression_demo.py --output-dir /tmp/hatch-production-fixture --movie
+python scripts/production_regression_demo.py --output-dir output/hatch-production-fixture --movie
 python -m unittest discover -s tests -p 'test_production_*.py' -v
 ```
 

@@ -5,6 +5,7 @@ import tempfile
 import unittest
 from fixture_workflow import hatch, build_run, small_profile
 from demonstrate import ROOT, demonstrate
+from browser_runtime import launch_chromium
 
 FAKE_CLOCK = '''
 window.testTime=0;window.timers=new Map();let serial=0;
@@ -24,12 +25,9 @@ class ExtendedBrowser(unittest.TestCase):
     def setUpClass(cls):
         from playwright.sync_api import sync_playwright
         cls.runtime=sync_playwright().start()
-        try:cls.browser=cls.runtime.chromium.launch(headless=True)
-        except Exception as exc:
-            cls.runtime.stop();raise unittest.SkipTest(str(exc))
-
-    @classmethod
-    def tearDownClass(cls):cls.browser.close();cls.runtime.stop()
+        cls.addClassCleanup(cls.runtime.stop)
+        cls.browser=launch_chromium(cls.runtime)
+        cls.addClassCleanup(cls.browser.close)
 
     def setUp(self):
         self.temp=tempfile.TemporaryDirectory(prefix='hatch-extended-browser-');self.addCleanup(self.temp.cleanup)

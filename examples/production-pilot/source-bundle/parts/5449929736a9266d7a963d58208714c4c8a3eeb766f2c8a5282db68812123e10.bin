@@ -1,0 +1,66 @@
+{
+  "job": "parts",
+  "token": "948af97bb9fd47068eb7203a2f1f5b27",
+  "generation_skill": "$imagegen",
+  "attempt": 1,
+  "prompt": "/workspace/scratch/368aa013e993/hatch-pet/examples/production-pilot/acquisition/luma/prompts/rows/parts.md",
+  "retry_prompt": "/workspace/scratch/368aa013e993/hatch-pet/examples/production-pilot/acquisition/luma/prompts/row-retries/parts.md",
+  "input_images": [
+    {
+      "path": "/workspace/scratch/368aa013e993/hatch-pet/examples/production-pilot/acquisition/luma/references/layout-guides/parts.png",
+      "role": "layout guide for 1 frame slots; do not copy guide lines"
+    },
+    {
+      "path": "/workspace/scratch/368aa013e993/hatch-pet/examples/production-pilot/acquisition/luma/references/canonical-base.png",
+      "role": "canonical identity reference"
+    }
+  ],
+  "receipt_template": {
+    "generation_skill": "$imagegen",
+    "input_hashes": {
+      "pet_request.json": "b0e58378b074606d0741a1954e85c6f0c85bdad8d4e9f0558883863a4a740bb1",
+      "prompts/rows/parts.md": "f2a8183cddcb62e40d27d83dfaaf7a61afa44ada910460fbcefa948cde4935da",
+      "prompts/row-retries/parts.md": "4b0a12e6b5a79d5fbb0d31b5d5f5e9ea0dc01b385caad933c2085002ba8d5833",
+      "references/layout-guides/parts.png": "12b10c983aff1f94e0b3d27191dac8688e38f1f2d54e0238e734fe5b1372c7e1",
+      "references/canonical-base.png": "e96b5277966d7ffd52371580647ad120937dbdad226470726e56329ab7c72e96",
+      "@generation-profile": "3fa027552a822ea67a0c3b57cd03062daafc2ab5d2289991ad23a06dc0426392"
+    },
+    "job": "parts",
+    "token": "948af97bb9fd47068eb7203a2f1f5b27"
+  },
+  "previous_failures": [],
+  "identity": {
+    "schema_version": 1,
+    "markings": [
+      "cream inner ears and muzzle",
+      "two small waistcoat buttons"
+    ],
+    "palette": {
+      "fur": "#548F8B",
+      "cream": "#E5DDC2",
+      "waistcoat": "#C69540",
+      "eyes": "#302D2B"
+    },
+    "materials": [
+      "softly painted fur",
+      "matte woven costume"
+    ],
+    "proportions": {
+      "head_to_body_height": 0.6
+    },
+    "approved_props": [
+      "ochre waistcoat"
+    ],
+    "asymmetries": [],
+    "directions": {
+      "parts": "front"
+    },
+    "forbid_mirror": true,
+    "unresolved_conflicts": []
+  },
+  "tool_arguments": {
+    "transparent_background": true
+  },
+  "attachment_rules": "View local inputs before editing. Attach every input using referenced_image_paths when all are local; otherwise num_last_images_to_include (max 5). Never use both. A brand-new text-only base omits both.",
+  "output_rules": "Follow installed imagegen skill, including image output; return selected source and QA note. Do not mutate manifests."
+}

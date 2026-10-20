@@ -1,0 +1,11 @@
+test_altered_historical_chain_cannot_be_relabelled_as_authentic (test_production_delivery.ProductionDeliveryTests.test_altered_historical_chain_cannot_be_relabelled_as_authentic) ... ok
+test_corrupt_original_prevents_project_publication (test_production_delivery.ProductionDeliveryTests.test_corrupt_original_prevents_project_publication) ... ok
+test_missing_audio_fails_even_when_ffmpeg_is_available (test_production_delivery.ProductionDeliveryTests.test_missing_audio_fails_even_when_ffmpeg_is_available) ... ok
+test_public_inventory_requires_every_original_and_authentic_review_artifact (test_production_delivery.ProductionDeliveryTests.test_public_inventory_requires_every_original_and_authentic_review_artifact) ... ok
+test_report_write_failure_preserves_the_previous_valid_checkpoint (test_production_delivery.ProductionDeliveryTests.test_report_write_failure_preserves_the_previous_valid_checkpoint) ... ok
+test_restoration_preserves_originals_ledger_and_two_scene_model_without_subprocesses (test_production_delivery.ProductionDeliveryTests.test_restoration_preserves_originals_ledger_and_two_scene_model_without_subprocesses) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 3.831s
+
+OK

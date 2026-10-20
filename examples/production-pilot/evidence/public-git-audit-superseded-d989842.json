@@ -1,0 +1,33 @@
+{
+  "actual_public_source_verification": {
+    "exception_type": "ValueError",
+    "expected_incomplete_transport_failure": true,
+    "message": "source bundle has missing or extra files outside its exact part inventory"
+  },
+  "audited_remote_commit": "d98984289984d5751c18c36a8c6b18cebf6fcafc",
+  "baseline": "857791b9503f9ff54b118751eea640866688000a",
+  "baseline_deleted_paths": [],
+  "merge_completed": false,
+  "source_transport": {
+    "audio-source-bundle": {
+      "index_published": true,
+      "indexed_parts": 39,
+      "missing_parts": 39,
+      "public_tree_parts": 0
+    },
+    "reviews-source-bundle": {
+      "index_published": false,
+      "indexed_parts": 64,
+      "missing_parts": 26,
+      "public_tree_parts": 38
+    },
+    "source-bundle": {
+      "index_published": true,
+      "indexed_parts": 207,
+      "missing_parts": 113,
+      "public_tree_parts": 94
+    }
+  },
+  "task_scope_diff_count": 249,
+  "working_files_not_mutated": true
+}

@@ -1,0 +1,1382 @@
+{
+  "characters": [
+    {
+      "current_pass": true,
+      "dimensions": {
+        "identity_construction": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "90992c439e5e1a69722831c158aa771ce0b378746cf2b7ad7993978379bd9aca",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        }
+      },
+      "history_count": 1,
+      "production_art_acceptance": true,
+      "target": {
+        "character_id": "milo",
+        "kind": "character",
+        "version": "3.0.0"
+      }
+    },
+    {
+      "current_pass": true,
+      "dimensions": {
+        "identity_construction": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "51ddbf7162bebfa22a212b6e59104cafd98a326f9753a439706478143cb61403",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        }
+      },
+      "history_count": 1,
+      "production_art_acceptance": true,
+      "target": {
+        "character_id": "luma",
+        "kind": "character",
+        "version": "3.0.0"
+      }
+    }
+  ],
+  "clips": [
+    {
+      "current_pass": true,
+      "dimensions": {
+        "contacts_interactions": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "ca7a81c013001c688fbdf03a92a359d3029a5aba551248425de71b127ba69512",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        },
+        "pose_motion": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "ca7a81c013001c688fbdf03a92a359d3029a5aba551248425de71b127ba69512",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        },
+        "timing_av_sync": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "ca7a81c013001c688fbdf03a92a359d3029a5aba551248425de71b127ba69512",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        }
+      },
+      "history_count": 1,
+      "production_art_acceptance": true,
+      "target": {
+        "clip_id": "luma-exchange",
+        "kind": "clip",
+        "version": "3.0.0"
+      }
+    },
+    {
+      "current_pass": true,
+      "dimensions": {
+        "contacts_interactions": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "b843074ed9d5c030fe4afb93d89fe1fe8b1304234f48ada130f781726e77d56d",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        },
+        "pose_motion": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "b843074ed9d5c030fe4afb93d89fe1fe8b1304234f48ada130f781726e77d56d",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        },
+        "timing_av_sync": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "b843074ed9d5c030fe4afb93d89fe1fe8b1304234f48ada130f781726e77d56d",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        }
+      },
+      "history_count": 1,
+      "production_art_acceptance": true,
+      "target": {
+        "clip_id": "luma-idle",
+        "kind": "clip",
+        "version": "3.0.0"
+      }
+    },
+    {
+      "current_pass": true,
+      "dimensions": {
+        "contacts_interactions": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "b89cca305708b6858dd40858e5620c56fdd3a9c7f80c56d7e3d9bf5fa6c02d15",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        },
+        "pose_motion": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "b89cca305708b6858dd40858e5620c56fdd3a9c7f80c56d7e3d9bf5fa6c02d15",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        },
+        "timing_av_sync": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "b89cca305708b6858dd40858e5620c56fdd3a9c7f80c56d7e3d9bf5fa6c02d15",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        }
+      },
+      "history_count": 1,
+      "production_art_acceptance": true,
+      "target": {
+        "clip_id": "luma-reaction",
+        "kind": "clip",
+        "version": "3.0.0"
+      }
+    },
+    {
+      "current_pass": true,
+      "dimensions": {
+        "contacts_interactions": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "a6c2e474a23651695f6e121e86160b062877e3885c41c2efbeb09d07a7d0df66",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        },
+        "pose_motion": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "a6c2e474a23651695f6e121e86160b062877e3885c41c2efbeb09d07a7d0df66",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        },
+        "timing_av_sync": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "a6c2e474a23651695f6e121e86160b062877e3885c41c2efbeb09d07a7d0df66",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        }
+      },
+      "history_count": 1,
+      "production_art_acceptance": true,
+      "target": {
+        "clip_id": "luma-stop",
+        "kind": "clip",
+        "version": "3.0.0"
+      }
+    },
+    {
+      "current_pass": true,
+      "dimensions": {
+        "contacts_interactions": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "0744dbfd1fe0ac14418deaa08676ddda4d510bafce1f52f0c7fbf0bfc1dec6b5",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        },
+        "pose_motion": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "0744dbfd1fe0ac14418deaa08676ddda4d510bafce1f52f0c7fbf0bfc1dec6b5",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        },
+        "timing_av_sync": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "0744dbfd1fe0ac14418deaa08676ddda4d510bafce1f52f0c7fbf0bfc1dec6b5",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        }
+      },
+      "history_count": 1,
+      "production_art_acceptance": true,
+      "target": {
+        "clip_id": "luma-walk-left",
+        "kind": "clip",
+        "version": "3.0.0"
+      }
+    },
+    {
+      "current_pass": true,
+      "dimensions": {
+        "contacts_interactions": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "ba1a7e0cf92f624346a11c3b5549bb01e014b2fdbc1903c99a03eaca0b952dea",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        },
+        "pose_motion": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "ba1a7e0cf92f624346a11c3b5549bb01e014b2fdbc1903c99a03eaca0b952dea",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        },
+        "timing_av_sync": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "ba1a7e0cf92f624346a11c3b5549bb01e014b2fdbc1903c99a03eaca0b952dea",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        }
+      },
+      "history_count": 1,
+      "production_art_acceptance": true,
+      "target": {
+        "clip_id": "luma-walk-right",
+        "kind": "clip",
+        "version": "3.0.0"
+      }
+    },
+    {
+      "current_pass": true,
+      "dimensions": {
+        "contacts_interactions": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "e8786f553fbef5635839fe0f3704bb5008bf4e9f26b972717108ad76c84d5664",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        },
+        "pose_motion": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "e8786f553fbef5635839fe0f3704bb5008bf4e9f26b972717108ad76c84d5664",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        },
+        "timing_av_sync": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "e8786f553fbef5635839fe0f3704bb5008bf4e9f26b972717108ad76c84d5664",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        }
+      },
+      "history_count": 1,
+      "production_art_acceptance": true,
+      "target": {
+        "clip_id": "luma-walk-start",
+        "kind": "clip",
+        "version": "3.0.0"
+      }
+    },
+    {
+      "current_pass": true,
+      "dimensions": {
+        "contacts_interactions": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "59ae64a711de8371597f692dcc5df43b28344888ba1feca74f5e9487856e60c4",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        },
+        "pose_motion": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "59ae64a711de8371597f692dcc5df43b28344888ba1feca74f5e9487856e60c4",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        },
+        "timing_av_sync": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "59ae64a711de8371597f692dcc5df43b28344888ba1feca74f5e9487856e60c4",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        }
+      },
+      "history_count": 1,
+      "production_art_acceptance": true,
+      "target": {
+        "clip_id": "milo-exchange",
+        "kind": "clip",
+        "version": "3.0.0"
+      }
+    },
+    {
+      "current_pass": true,
+      "dimensions": {
+        "contacts_interactions": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "1a6e1539ac1b1ad6f2160bdd565a533775403336d2a632228c7ee029b8a4c901",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        },
+        "pose_motion": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "1a6e1539ac1b1ad6f2160bdd565a533775403336d2a632228c7ee029b8a4c901",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        },
+        "timing_av_sync": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "1a6e1539ac1b1ad6f2160bdd565a533775403336d2a632228c7ee029b8a4c901",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        }
+      },
+      "history_count": 1,
+      "production_art_acceptance": true,
+      "target": {
+        "clip_id": "milo-idle",
+        "kind": "clip",
+        "version": "3.0.0"
+      }
+    },
+    {
+      "current_pass": true,
+      "dimensions": {
+        "contacts_interactions": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "cdd93cbe317bc1733db2dba549d624e3e48f5273afcea2b48944f1079aa24d8a",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        },
+        "pose_motion": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "cdd93cbe317bc1733db2dba549d624e3e48f5273afcea2b48944f1079aa24d8a",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        },
+        "timing_av_sync": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "cdd93cbe317bc1733db2dba549d624e3e48f5273afcea2b48944f1079aa24d8a",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        }
+      },
+      "history_count": 1,
+      "production_art_acceptance": true,
+      "target": {
+        "clip_id": "milo-reaction",
+        "kind": "clip",
+        "version": "3.0.0"
+      }
+    },
+    {
+      "current_pass": true,
+      "dimensions": {
+        "contacts_interactions": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "55377f7f12e9877e3e02da78d5ad471bea2adb7eb0001ecc80d8a304686a6e47",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        },
+        "pose_motion": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "55377f7f12e9877e3e02da78d5ad471bea2adb7eb0001ecc80d8a304686a6e47",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        },
+        "timing_av_sync": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "55377f7f12e9877e3e02da78d5ad471bea2adb7eb0001ecc80d8a304686a6e47",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        }
+      },
+      "history_count": 1,
+      "production_art_acceptance": true,
+      "target": {
+        "clip_id": "milo-stop",
+        "kind": "clip",
+        "version": "3.0.0"
+      }
+    },
+    {
+      "current_pass": true,
+      "dimensions": {
+        "contacts_interactions": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "0ebff29aec247fd57c9d8bdb0ec72310be688b8a044f840b0614e0b586e828a3",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        },
+        "pose_motion": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "0ebff29aec247fd57c9d8bdb0ec72310be688b8a044f840b0614e0b586e828a3",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        },
+        "timing_av_sync": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "0ebff29aec247fd57c9d8bdb0ec72310be688b8a044f840b0614e0b586e828a3",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        }
+      },
+      "history_count": 1,
+      "production_art_acceptance": true,
+      "target": {
+        "clip_id": "milo-walk-right",
+        "kind": "clip",
+        "version": "3.0.0"
+      }
+    },
+    {
+      "current_pass": true,
+      "dimensions": {
+        "contacts_interactions": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "7e8a2fd6504136255ba2a35de971f3db54f47bb2ced1dbf47915773e3e1e49cf",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        },
+        "pose_motion": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "7e8a2fd6504136255ba2a35de971f3db54f47bb2ced1dbf47915773e3e1e49cf",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        },
+        "timing_av_sync": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "7e8a2fd6504136255ba2a35de971f3db54f47bb2ced1dbf47915773e3e1e49cf",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        }
+      },
+      "history_count": 1,
+      "production_art_acceptance": true,
+      "target": {
+        "clip_id": "milo-walk-start",
+        "kind": "clip",
+        "version": "3.0.0"
+      }
+    }
+  ],
+  "shots": [
+    {
+      "current_pass": true,
+      "dimensions": {
+        "camera_composition": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "a35638efa00a5d061fdb790b6322688c6660c7e49df863328f0942bf6a9ad425",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        },
+        "contacts_interactions": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "a35638efa00a5d061fdb790b6322688c6660c7e49df863328f0942bf6a9ad425",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        },
+        "continuity": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "a35638efa00a5d061fdb790b6322688c6660c7e49df863328f0942bf6a9ad425",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        },
+        "facial_dialogue": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "a35638efa00a5d061fdb790b6322688c6660c7e49df863328f0942bf6a9ad425",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        },
+        "final_artifacts": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "a35638efa00a5d061fdb790b6322688c6660c7e49df863328f0942bf6a9ad425",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        },
+        "identity_construction": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "a35638efa00a5d061fdb790b6322688c6660c7e49df863328f0942bf6a9ad425",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        },
+        "pose_motion": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "a35638efa00a5d061fdb790b6322688c6660c7e49df863328f0942bf6a9ad425",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        },
+        "timing_av_sync": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "a35638efa00a5d061fdb790b6322688c6660c7e49df863328f0942bf6a9ad425",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        }
+      },
+      "history_count": 1,
+      "production_art_acceptance": true,
+      "target": {
+        "kind": "shot",
+        "scene_id": "seed-exchange",
+        "shot_id": "arrival"
+      }
+    },
+    {
+      "current_pass": true,
+      "dimensions": {
+        "camera_composition": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "b7b21e80ca672bf35d4ee3af371c291d17481f955135d84bde54b721b48dd9a3",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        },
+        "contacts_interactions": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "b7b21e80ca672bf35d4ee3af371c291d17481f955135d84bde54b721b48dd9a3",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        },
+        "continuity": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "b7b21e80ca672bf35d4ee3af371c291d17481f955135d84bde54b721b48dd9a3",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        },
+        "facial_dialogue": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "b7b21e80ca672bf35d4ee3af371c291d17481f955135d84bde54b721b48dd9a3",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        },
+        "final_artifacts": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "b7b21e80ca672bf35d4ee3af371c291d17481f955135d84bde54b721b48dd9a3",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        },
+        "identity_construction": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "b7b21e80ca672bf35d4ee3af371c291d17481f955135d84bde54b721b48dd9a3",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        },
+        "pose_motion": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "b7b21e80ca672bf35d4ee3af371c291d17481f955135d84bde54b721b48dd9a3",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        },
+        "timing_av_sync": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "b7b21e80ca672bf35d4ee3af371c291d17481f955135d84bde54b721b48dd9a3",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        }
+      },
+      "history_count": 1,
+      "production_art_acceptance": true,
+      "target": {
+        "kind": "shot",
+        "scene_id": "seed-exchange",
+        "shot_id": "exchange"
+      }
+    },
+    {
+      "current_pass": true,
+      "dimensions": {
+        "camera_composition": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "b84005f074721fc5933cb040fb4074916739c8493a7e2e3cdc9b5ed5f14ecf0b",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        },
+        "contacts_interactions": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "b84005f074721fc5933cb040fb4074916739c8493a7e2e3cdc9b5ed5f14ecf0b",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        },
+        "continuity": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "b84005f074721fc5933cb040fb4074916739c8493a7e2e3cdc9b5ed5f14ecf0b",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        },
+        "facial_dialogue": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "b84005f074721fc5933cb040fb4074916739c8493a7e2e3cdc9b5ed5f14ecf0b",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        },
+        "final_artifacts": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "b84005f074721fc5933cb040fb4074916739c8493a7e2e3cdc9b5ed5f14ecf0b",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        },
+        "identity_construction": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "b84005f074721fc5933cb040fb4074916739c8493a7e2e3cdc9b5ed5f14ecf0b",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        },
+        "pose_motion": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "b84005f074721fc5933cb040fb4074916739c8493a7e2e3cdc9b5ed5f14ecf0b",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        },
+        "timing_av_sync": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "b84005f074721fc5933cb040fb4074916739c8493a7e2e3cdc9b5ed5f14ecf0b",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        }
+      },
+      "history_count": 1,
+      "production_art_acceptance": true,
+      "target": {
+        "kind": "shot",
+        "scene_id": "seed-exchange",
+        "shot_id": "departure"
+      }
+    },
+    {
+      "current_pass": true,
+      "dimensions": {
+        "camera_composition": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "7d174402a06a6b3ff5e5f64bacf3ebece5dc3549468f6ad417922cf075110786",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        },
+        "contacts_interactions": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "7d174402a06a6b3ff5e5f64bacf3ebece5dc3549468f6ad417922cf075110786",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        },
+        "continuity": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "7d174402a06a6b3ff5e5f64bacf3ebece5dc3549468f6ad417922cf075110786",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        },
+        "facial_dialogue": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "7d174402a06a6b3ff5e5f64bacf3ebece5dc3549468f6ad417922cf075110786",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        },
+        "final_artifacts": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "7d174402a06a6b3ff5e5f64bacf3ebece5dc3549468f6ad417922cf075110786",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        },
+        "identity_construction": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "7d174402a06a6b3ff5e5f64bacf3ebece5dc3549468f6ad417922cf075110786",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        },
+        "pose_motion": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "7d174402a06a6b3ff5e5f64bacf3ebece5dc3549468f6ad417922cf075110786",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        },
+        "timing_av_sync": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "7d174402a06a6b3ff5e5f64bacf3ebece5dc3549468f6ad417922cf075110786",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        }
+      },
+      "history_count": 1,
+      "production_art_acceptance": true,
+      "target": {
+        "kind": "shot",
+        "scene_id": "garden-promise",
+        "shot_id": "garden"
+      }
+    },
+    {
+      "current_pass": true,
+      "dimensions": {
+        "camera_composition": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "a02a3f5242e6c48a69053961d822f21e38aa7a32ec3d64a81679faa257198934",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        },
+        "contacts_interactions": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "a02a3f5242e6c48a69053961d822f21e38aa7a32ec3d64a81679faa257198934",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        },
+        "continuity": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "a02a3f5242e6c48a69053961d822f21e38aa7a32ec3d64a81679faa257198934",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        },
+        "facial_dialogue": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "a02a3f5242e6c48a69053961d822f21e38aa7a32ec3d64a81679faa257198934",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        },
+        "final_artifacts": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "a02a3f5242e6c48a69053961d822f21e38aa7a32ec3d64a81679faa257198934",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        },
+        "identity_construction": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "a02a3f5242e6c48a69053961d822f21e38aa7a32ec3d64a81679faa257198934",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        },
+        "pose_motion": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "a02a3f5242e6c48a69053961d822f21e38aa7a32ec3d64a81679faa257198934",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        },
+        "timing_av_sync": {
+          "changed_dependencies": [],
+          "human_review": false,
+          "production_art_acceptance": true,
+          "receipt_sha256": "a02a3f5242e6c48a69053961d822f21e38aa7a32ec3d64a81679faa257198934",
+          "reviewer": {
+            "id": "assistant:/root",
+            "kind": "assistant",
+            "name": "ChatGPT, primary production reviewer"
+          },
+          "stale_reason": null,
+          "status": "pass",
+          "synthetic_gate_only": false
+        }
+      },
+      "history_count": 1,
+      "production_art_acceptance": true,
+      "target": {
+        "kind": "shot",
+        "scene_id": "garden-promise",
+        "shot_id": "tomorrow"
+      }
+    }
+  ]
+}
