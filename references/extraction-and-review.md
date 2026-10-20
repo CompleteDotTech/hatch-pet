@@ -2,6 +2,8 @@
 
 The default is conservative, eight-connected component/core/bridge analysis in equal source slots. A slot must contain one identifiable pose. Missing poses, extra major components, boundary crossings and suspicious bridges fail. Alpha is preserved, including antialiasing and intentional holes. Chroma uses edge-connected masking; enclosed key colors are preserved unless `holes=key` explicitly classifies them as holes.
 
+For semantic parts within a single character, use the separate [character decomposition workflow](character-decomposition.md). Its binary ownership masks may split one connected silhouette or join disconnected details under an explicit semantic label. These masks and their review receipts do not change the conservative frame-slot annotation contract below.
+
 Failure diagnostics are `qa/extraction-diagnostics/STATE.png` and `.json`: red component boxes, blue default boundaries, exact error, component areas and source dimensions. Clipping is rejected before output. Diagnostics are evidence, not automatic permission to waive a failure.
 
 The diagnostic preview scales large sources to a bounded canvas and wraps the full error above the image. Its JSON retains original coordinates and the preview scale; use the original source for pixel-level decisions.
