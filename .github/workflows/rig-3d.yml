@@ -2,6 +2,10 @@ name: 3D rigging and compatibility gates
 on: [push, pull_request, workflow_dispatch]
 permissions:
   contents: read
+defaults:
+  run:
+    # Retained tee logs must preserve the Python command's failure status.
+    shell: bash --noprofile --norc -eo pipefail {0}
 jobs:
   compatibility-2d:
     name: Existing 2D compatibility

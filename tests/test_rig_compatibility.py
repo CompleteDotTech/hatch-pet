@@ -30,3 +30,32 @@ sys.argv=['hatch.py','capabilities'];hatch.main()
     def test_cli_failure_is_nonzero_and_structured(self):
         process=subprocess.run([sys.executable,'scripts/rig.py','status','--run-dir','/nonexistent/hatch-test-rig'],cwd=ROOT,capture_output=True,text=True)
         self.assertNotEqual(process.returncode,0);self.assertIn('"ok": false',process.stdout);self.assertIn('"error"',process.stdout)
+    def test_public_delivery_discovers_all_2d_tests_without_3d_dependencies(self):
+        code="""import sys,importlib.abc,unittest
+sys.path.insert(0,'scripts')
+class Block(importlib.abc.MetaPathFinder):
+ def find_spec(self,fullname,path=None,target=None):
+  if fullname.split('.')[0] in ('numpy','pygltflib','bpy'):raise ImportError('3D import forbidden: '+fullname)
+sys.meta_path.insert(0,Block())
+from verify_public_delivery import build_regression_suite
+def flatten(suite):
+ for item in suite:
+  if isinstance(item,unittest.TestSuite):yield from flatten(item)
+  else:yield item
+cases=list(flatten(build_regression_suite()))
+ids=[case.id() for case in cases]
+failed=[case for case in cases if type(case).__name__=='_FailedTest']
+assert not failed,[(case.id(),str(case._exception)) for case in failed]
+assert len(ids)>=790,len(ids)
+assert len(ids)==len(set(ids)),'duplicate test discovery'
+assert not any(name.startswith('test_rig_') for name in ids),ids
+assert sum(name.startswith('test_production_pilot.') for name in ids)==13
+assert any(name.startswith('test_production_workflow.') for name in ids)
+assert any(name.startswith('test_decomposition_review.') for name in ids)
+assert any(name.startswith('test_production_preview.') for name in ids)
+assert not any(name in sys.modules for name in ('numpy','pygltflib','bpy'))
+print('Discovered',len(ids),'2D tests without optional 3D dependencies')
+"""
+        process=subprocess.run([sys.executable,'-c',code],cwd=ROOT,capture_output=True,text=True)
+        self.assertEqual(process.returncode,0,process.stdout+process.stderr)
+        print(process.stdout.strip())

@@ -2,8 +2,9 @@
 """Reproduce the public delivery gates using only this checkout's pinned inputs.
 
 The default restores the production project and verifies a portable archive.
---tests runs every regression; --render validates both complete films and editor
-handoffs. --video additionally requires working FFmpeg/ffprobe. --compact keeps
+--tests runs every 2D regression; --test-scope all also includes optional 3D
+regressions and requires their tools. --render validates both complete films and
+editor handoffs. --video additionally requires working FFmpeg/ffprobe. --compact keeps
 all frame/audio checks but retains only reports, storyboards, movies and one
 layered drawing per scene; complete editor handoffs are exercised in normal mode.
 No provider, new TTS recording or artistic approval is requested or inferred.
@@ -72,11 +73,25 @@ def checkout_snapshot():
     return {name: file_sha(ROOT / name) for name in paths if (ROOT / name).is_file()}
 
 
-def run_tests(destination):
+def build_regression_suite(scope='2d'):
+    """Select modules before import so 2D delivery needs no optional 3D tools."""
+    if scope not in ('2d', 'all'):
+        raise ValueError('unknown regression scope: ' + str(scope))
+    directory = ROOT / 'tests'
+    sys.path.insert(0, str(directory))
+    loader = unittest.TestLoader()
+    suite = unittest.TestSuite()
+    for path in sorted(directory.glob('test_*.py')):
+        if scope == '2d' and path.name.startswith('test_rig_'):
+            continue
+        suite.addTests(loader.discover(str(directory), pattern=path.name))
+    return suite
+
+
+def run_tests(destination, *, scope='2d'):
     """Missing required dependencies and unexpected skips fail the delivery gate."""
     os.environ['HATCH_DECOMPOSITION_BROWSER_TEST'] = '1'
-    sys.path.insert(0, str(ROOT / 'tests'))
-    suite = unittest.defaultTestLoader.discover(str(ROOT / 'tests'))
+    suite = build_regression_suite(scope)
     started = time.monotonic()
     with (destination / 'tests.log').open('w', encoding='utf-8', newline='\n') as log:
         with contextlib.redirect_stdout(log), contextlib.redirect_stderr(log):
@@ -86,7 +101,7 @@ def run_tests(destination):
     if os.name == 'nt' and not hasattr(os, 'mkfifo'):
         allowed.add(WINDOWS_NO_FIFO)
     unexpected = [item for item in skipped if item['test'] not in allowed]
-    return {'ok': result.wasSuccessful() and not unexpected,
+    return {'ok': result.wasSuccessful() and not unexpected, 'scope': scope,
             'run': result.testsRun, 'failures': len(result.failures), 'errors': len(result.errors),
             'skipped': skipped, 'unexpected_skips': unexpected,
             'seconds': round(time.monotonic() - started, 3), 'log': 'tests.log',
@@ -179,7 +194,9 @@ def render_delivery(project, destination, *, compact, video, checkpoint):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--destination', required=True, help='New directory for reports and reconstructed outputs')
-    parser.add_argument('--tests', action='store_true', help='Run the complete suite with strict skip accounting')
+    parser.add_argument('--tests', action='store_true', help='Run the selected regression scope with strict skip accounting')
+    parser.add_argument('--test-scope', choices=('2d', 'all'), default='2d',
+                        help='2d includes every existing delivery test; all also requires optional 3D dependencies/tools')
     parser.add_argument('--render', action='store_true', help='Render both entire production scenes')
     parser.add_argument('--video', action='store_true', help='Require and validate H.264/AAC movies as well')
     parser.add_argument('--compact', action='store_true', help='Keep reports and media; remove completed frame trees')
@@ -198,7 +215,8 @@ def main():
     report = {'schema_version': 1, 'kind': 'hatch-public-delivery-verification', 'status': 'running',
               'revision': revision, 'python': platform.python_version(), 'pillow': pillow_version,
               'platform': platform.system(), 'fixture': False, 'private_asset_override': False,
-              'options': {'tests': args.tests, 'render': args.render, 'video': args.video, 'compact': args.compact},
+              'options': {'tests': args.tests, 'test_scope': args.test_scope,
+                          'render': args.render, 'video': args.video, 'compact': args.compact},
               'provider_called': False, 'tts_called': False, 'new_approval_recorded': False}
     report['checkout_files_sha256'] = checkout_snapshot()
     report['worktree_dirty'] = bool(subprocess.run(
@@ -216,8 +234,8 @@ def main():
         report['archive'] = archive_roundtrip(project, destination)
         write_json(report_path, report)
         if args.tests:
-            print('Running the complete regression suite; detailed progress is in tests.log.', flush=True)
-            report['tests'] = run_tests(destination)
+            print('Running the complete ' + args.test_scope + ' regression scope; detailed progress is in tests.log.', flush=True)
+            report['tests'] = run_tests(destination, scope=args.test_scope)
             write_json(report_path, report)
             if not report['tests']['ok']:
                 raise ValueError('required regression failed or skipped; inspect report.json and tests.log')
