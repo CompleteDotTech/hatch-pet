@@ -12,7 +12,7 @@ The later [anonymous-public proof](../tests/results/public-delivery-anonymous-fi
 
 ## Verified three-platform delivery
 
-The complete gate passed on Linux, macOS and Windows for implementation commit [`bb79992`](https://github.com/CompleteDotTech/hatch-pet/commit/bb799921eb3ded5eef9eb5d27bb4ff3375b86a78). The PR checkout `c6de0f6` has the identical Git tree, `109884f147b92e7ab9e11b4b4a797c33485d2624`. The [CI evidence index](../tests/results/public-delivery-ci.json) binds actual reports, logs, artifact digests and jobs. Later documentation-only commits are covered by the final PR checks; the reports retain their original execution revision.
+The complete gate passed on Linux, macOS and Windows for implementation commit [`bb79992`](https://github.com/CompleteDotTech/hatch-pet/commit/bb799921eb3ded5eef9eb5d27bb4ff3375b86a78). The PR checkout `c6de0f6` has the identical Git tree, `109884f147b92e7ab9e11b4b4a797c33485d2624`. The [CI evidence index](../tests/results/public-delivery-ci.json) binds actual reports, logs, artifact digests and jobs. Later evidence and checkout-portability commits are covered by the final PR checks; the reports retain their original execution revision.
 
 | Platform | Python | Tests | Failures / errors | Recorded exceptions | Regression time |
 | --- | --- | ---: | --- | --- | ---: |
@@ -72,3 +72,5 @@ The [derived-source recovery audit](public-derived-recovery.json) records 42 ori
 The Mac failure diagnosed eight PNGs with identical decoded RGBA pixels but different compression bytes, and four walk clips with last-decimal floating-point differences. Those discrepancies are preserved in the audit. Render identity now records the actual PNG backend and platform; a backend change invalidates cached frames. Repeat renders in the same recorded environment must still preserve exact frame and manifest hashes. Cross-platform MP4 or PNG byte equality is not asserted.
 
 The Windows runner additionally exposed a mandatory acquisition-lock byte being included in portable archives. The repair excludes only the exact runtime locks held by the archive operation, preserving all acquisition metadata. Archive creation and project restoration now share exclusive publication, with regressions proving that racing files and empty directories survive unchanged.
+
+The Git newline regression also covers preserved CI JSON reports and logs. It reproduced CRLF byte changes before the explicit evidence attributes were added, then passed with those attributes. Recorded report/log hashes therefore survive Windows checkouts without rewriting the actual evidence.

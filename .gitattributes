@@ -13,5 +13,8 @@ examples/production-pilot/media/*.ora binary
 examples/production-pilot/**/*.json -text
 examples/production-pilot/**/*.txt -text
 examples/production-pilot/evidence/** -text
+# Validation records carry exact byte digests, including on CRLF checkouts.
+tests/results/*.json -text
+tests/results/*.log -text
 scripts/*.py text eol=lf
 profiles/*.json text eol=lf

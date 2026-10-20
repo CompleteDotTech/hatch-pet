@@ -133,12 +133,17 @@ class ProductionSourcesTests(unittest.TestCase):
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_bytes(b'Original metadata line one\nLine two\n')
             expected[path.relative_to(checkout).as_posix()] = path.read_bytes()
+        for name in ('tests/results/public-delivery-fixture.json', 'tests/results/public-delivery-fixture.log'):
+            path = checkout / name
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(b'Verbatim validation evidence\nExact recorded checksum\n')
+            expected[name] = path.read_bytes()
         self.assertTrue(any(len(data) == sources.MAX_PART_BYTES and data.endswith(b'\t\n')
                             for data in expected.values()))
         control = checkout / 'unprotected-control.txt'
         control_bytes = b'ordinary text\nsecond line\n'
         control.write_bytes(control_bytes)
-        git('add', '--', '.gitattributes', control.name, 'examples')
+        git('add', '--', '.gitattributes', control.name, 'examples', 'tests/results')
         for relative, data in expected.items():
             with self.subTest(path=relative, phase='staging'):
                 self.assertEqual(git('show', ':' + relative), data)
