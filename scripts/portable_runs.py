@@ -100,7 +100,7 @@ def verify_archive(path):
             raise ValueError('archive duplicate, entry count or decompressed size bound exceeded')
         for entry in entries:
             path = PurePosixPath(entry.filename)
-            if (not entry.filename or path.as_posix() != entry.filename or entry.filename == '.' or
+            if (entry.orig_filename != entry.filename or not entry.filename or path.as_posix() != entry.filename or entry.filename == '.' or
                     path.is_absolute() or '..' in path.parts or '\\' in entry.filename or ':' in entry.filename or
                     (entry.external_attr >> 16) & 0o170000 == 0o120000):
                 raise ValueError('unsafe archive member: ' + entry.filename)

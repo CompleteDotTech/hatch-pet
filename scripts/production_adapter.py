@@ -146,6 +146,8 @@ def read_openraster(source):
         if sum(entry.file_size for entry in infos) > MAX_ARCHIVE_BYTES:
             raise ValueError("OpenRaster decompressed content exceeds 1 GiB bound")
         for entry in infos:
+            if entry.orig_filename != entry.filename:
+                raise ValueError("unsafe normalized OpenRaster member: " + entry.orig_filename)
             _member_path(entry.filename.rstrip("/"))
             if stat.S_ISLNK(entry.external_attr >> 16) or entry.compress_type not in (zipfile.ZIP_STORED, zipfile.ZIP_DEFLATED):
                 raise ValueError("OpenRaster links and nonbaseline compression are unsupported")

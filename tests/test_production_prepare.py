@@ -169,7 +169,7 @@ class ProductionPrepareTests(unittest.TestCase):
                 self.assertEqual(acquisition.CHARACTERS[character]['palette'], request['identity']['palette'])
                 self.assertEqual(acquisition.CHARACTERS[character]['asymmetries'], request['identity']['asymmetries'])
                 self.assertTrue(request['identity']['forbid_mirror'])
-                self.assertEqual(profile, json.loads((self.root / (character + '-profile.json')).read_text()))
+                self.assertEqual(profile, json.loads((self.root / (character + '-profile.json')).read_text(encoding="utf-8")))
                 self.assertEqual([1000], profile['states'][0]['durations'])
                 self.assertTrue((destination / 'references/layout-guides/parts.png').is_file())
                 self.assertFalse(list((destination / 'decoded').glob('*.png')))

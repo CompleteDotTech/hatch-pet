@@ -1,0 +1,1067 @@
+{
+  "schema_version": 1,
+  "category": "painting-drawing",
+  "styles": [
+    {
+      "id": "painterly",
+      "name": "Painterly",
+      "category": "painting-drawing",
+      "kind": "technique",
+      "description": "Simplified brush-painted mascot with readable color masses, controlled texture and deliberate silhouette clarity.",
+      "tags": [
+        "brushwork",
+        "painted",
+        "broad-forms",
+        "matte-color"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use opaque hand-painted color with visible but simplified brush character.",
+        "forms": "Shape the body as a few readable masses rather than a collection of tiny painted details.",
+        "linework": "Define edges with confident painted boundaries and selective darker overlap strokes.",
+        "shading": "Build light and shade from broad blended planes with a few deliberate brush accents.",
+        "palette": "Maintain a stable approved palette with limited warm-cool shifts within each material.",
+        "texture": "Add restrained brush texture on larger planes while keeping the face and contour clear.",
+        "rendering": "Paint an isolated mascot with crisp-enough edges for clean extraction and consistent brush scale across poses."
+      },
+      "negative_constraints": [
+        "Avoid loose paint flecks, atmospheric background washes or a ground shadow.",
+        "Do not use texture to obscure anatomy, markings or approved props."
+      ],
+      "use_cases": [
+        "Brush-textured companion pets",
+        "Reusable painted character sets"
+      ],
+      "limitations": [
+        "Tiny brush detail can disappear at the target size; broad shape and palette must carry identity."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Prefer alpha for painted edges; inspect downsampled texture and ensure all strokes remain within the silhouette.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "watercolor",
+      "name": "Watercolor",
+      "category": "painting-drawing",
+      "kind": "technique",
+      "description": "Translucent-looking pigment washes with soft interior blooms, pooled color edges and a carefully bounded character silhouette.",
+      "tags": [
+        "wash",
+        "pigment",
+        "translucent-paint",
+        "soft-bloom"
+      ],
+      "aliases": [
+        "watercolour"
+      ],
+      "instructions": {
+        "materials": "Suggest watercolor pigment suspended in layered washes over a light character-only substrate.",
+        "forms": "Build gentle rounded forms from a few overlapping wash shapes with clear facial landmarks.",
+        "linework": "Use selective fine pigment contours and slightly darker pooled edges where forms overlap.",
+        "shading": "Model volume with transparent-looking wash layers and broad gentle value transitions.",
+        "palette": "Let approved hues mix softly within each material while preserving distinct body color regions.",
+        "texture": "Include restrained granulation and interior pigment blooms, keeping the exterior edge intentionally clean.",
+        "rendering": "Render an isolated watercolor mascot with retained alpha around the bounded wash silhouette and no paper rectangle."
+      },
+      "negative_constraints": [
+        "Avoid watery halos, detached droplets, paper backgrounds or uncontrolled bleeding outside the body.",
+        "Do not make essential eyes or markings so translucent that they disappear against the host UI."
+      ],
+      "use_cases": [
+        "Gentle painted pets",
+        "Soft narrative and educational characters"
+      ],
+      "limitations": [
+        "Chroma removal can damage pale wash edges and pigment blooms; alpha is strongly preferred."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Keep any pale substrate inside the character silhouette and inspect the alpha edge for fringe on both dark and light backgrounds.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "gouache",
+      "name": "Gouache",
+      "category": "painting-drawing",
+      "kind": "technique",
+      "description": "Opaque matte paint with velvety flat color, crisp brushed shapes and small visible overpainted corrections.",
+      "tags": [
+        "opaque-paint",
+        "matte",
+        "flat-brush",
+        "gouache"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use dense opaque gouache-like paint with a chalky matte finish.",
+        "forms": "Construct rounded or blocky body masses as clearly layered painted shapes.",
+        "linework": "Define contours with a firm loaded brush edge and selective contrasting outline strokes.",
+        "shading": "Shade using adjacent opaque color planes rather than transparent blended washes.",
+        "palette": "Choose rich but softly muted approved hues with visible light-dark separation.",
+        "texture": "Show subtle brush ridges and a little uneven coverage inside broad paint regions.",
+        "rendering": "Paint an isolated character with deliberate overlapping opaque strokes and a clean bounded silhouette."
+      },
+      "negative_constraints": [
+        "Avoid watery transparency, glossy oil-like reflections or full-paper texture outside the subject.",
+        "Do not leave stray brush scraps beyond the character outline."
+      ],
+      "use_cases": [
+        "Matte storybook pets",
+        "Bold painted illustration families"
+      ],
+      "limitations": [
+        "Small overpainted edges need restraint so the character looks intentional rather than poorly extracted."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Use one downsampling pass to retain broad brush texture without creating pale chroma fringes.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "acrylic",
+      "name": "Acrylic Paint",
+      "category": "painting-drawing",
+      "kind": "technique",
+      "description": "Opaque layered paint with firm color blocking, visible flat-brush stroke ends and selectively dry-brushed surface accents.",
+      "tags": [
+        "opaque-layering",
+        "flat-brush",
+        "acrylic",
+        "dry-brush"
+      ],
+      "aliases": [
+        "acrylic-paint"
+      ],
+      "instructions": {
+        "materials": "Suggest opaque acrylic paint with a mostly matte surface and occasional slight satin patches.",
+        "forms": "Build sturdy simple forms from overlapping blocks of painted local color.",
+        "linework": "Use decisive flat-brush contour edges with a few short painted outline accents.",
+        "shading": "Layer light and shadow as firm opaque strokes with limited wet blending.",
+        "palette": "Keep approved colors vivid and separated, using a small shared set of mixed shadow hues.",
+        "texture": "Include controlled dry-brush tracks and broad bristle marks on large planes only.",
+        "rendering": "Render the isolated mascot as a layered acrylic painting with fully resolved edges and no canvas ground."
+      },
+      "negative_constraints": [
+        "Avoid photographic canvas scenery, detached paint scrapings or a visible easel.",
+        "Do not add random dry-brush holes that break the body silhouette."
+      ],
+      "use_cases": [
+        "Bold painted pets",
+        "Craft and studio-themed mascots"
+      ],
+      "limitations": [
+        "Dry-brush texture can resemble alpha damage if it is too sparse near the perimeter."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Keep dry-brush gaps within opaque body color; final edge pixels should describe a coherent complete form.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "oil-paint",
+      "name": "Oil Paint",
+      "category": "painting-drawing",
+      "kind": "technique",
+      "description": "Brush-modeled character with blended color transitions, rich opaque paint and restrained directional brush strokes.",
+      "tags": [
+        "oil-painting",
+        "blended-brush",
+        "rich-color",
+        "modeled-volume"
+      ],
+      "aliases": [
+        "oil-painting"
+      ],
+      "instructions": {
+        "materials": "Use rich opaque oil-like paint with a subdued satin surface rather than mirror gloss.",
+        "forms": "Model broad sculptural body forms with softly connected facial and limb planes.",
+        "linework": "Let painted value transitions define most contours, adding firm edges at crucial overlaps.",
+        "shading": "Blend broad light and shade masses while retaining visible directional brush strokes.",
+        "palette": "Use deep approved local colors with restrained warm-cool mixing and luminous light accents.",
+        "texture": "Show smooth brush drag and a few thicker loaded strokes on large illuminated planes.",
+        "rendering": "Paint an isolated oil-style mascot with controlled edge hierarchy and no canvas or framed portrait background."
+      },
+      "negative_constraints": [
+        "Avoid extreme varnish glare, elaborate still-life settings or a ground-shadow vignette.",
+        "Do not soften the entire contour into atmospheric paint haze."
+      ],
+      "use_cases": [
+        "Richly painted character portraits",
+        "Dimensional artistic companion pets"
+      ],
+      "limitations": [
+        "Soft edge hierarchy must retain enough boundary contrast for clean extraction at the target cell size."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Inspect subtle dark-painted boundaries before keying; prefer alpha so edge transitions retain their original color.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "impasto",
+      "name": "Impasto",
+      "category": "painting-drawing",
+      "kind": "technique",
+      "description": "Thick sculptural paint strokes with short raised ridges, visibly loaded color and simplified palette-knife planes.",
+      "tags": [
+        "thick-paint",
+        "palette-knife",
+        "raised-ridges",
+        "tactile"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Suggest heavy opaque paint deposited in short raised ridges and flattened palette-knife slabs.",
+        "forms": "Build the mascot from broad chunky paint masses while keeping the face simply constructed.",
+        "linework": "Define the outline with decisive thick paint edges, smoothing only dangerous protruding ridges.",
+        "shading": "Use the raised stroke planes to catch broad highlights and cast tiny interior crevice shadows.",
+        "palette": "Place approved colors as distinct loaded strokes with restrained mixing between adjacent planes.",
+        "texture": "Show a small number of large directional ridges rather than dense microscopic paint peaks.",
+        "rendering": "Render the isolated paint-built character with a stable stroke pattern and lighting direction across poses."
+      },
+      "negative_constraints": [
+        "Avoid paint chips, detached knife scrapings or thick drips outside the silhouette.",
+        "Do not obscure eyes and markings beneath excessive relief or specular glare."
+      ],
+      "use_cases": [
+        "Tactile painted mascots",
+        "Art-material character studies"
+      ],
+      "limitations": [
+        "Highly raised texture can change apparent anatomy; broad ridge placement must stay tied to the approved body forms."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Use alpha around uneven paint edges and inspect ridge highlights in motion for inconsistent texture regeneration.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "pastel",
+      "name": "Soft Pastel",
+      "category": "painting-drawing",
+      "kind": "technique",
+      "description": "Velvety dry-pigment character with broad rubbed color planes, broken stroke edges and soft interior blending.",
+      "tags": [
+        "dry-pigment",
+        "velvety",
+        "rubbed-color",
+        "pastel"
+      ],
+      "aliases": [
+        "soft-pastel"
+      ],
+      "instructions": {
+        "materials": "Use powdery opaque pastel pigment with a soft matte finish inside the character form.",
+        "forms": "Model broad rounded masses with simple expressive facial features and generous color planes.",
+        "linework": "Use blunt soft-pastel contour accents with slightly broken texture but a coherent outer boundary.",
+        "shading": "Blend broad pigment fields by rubbing, leaving a few unblended strokes on the lit surfaces.",
+        "palette": "Choose stable approved hues with neighboring warm and cool pastel notes for volume.",
+        "texture": "Show velvety pigment grain and visible broad stick strokes away from the face.",
+        "rendering": "Render an isolated pastel mascot with restrained tooth texture and a deliberately clean external alpha edge."
+      },
+      "negative_constraints": [
+        "Avoid powder dust, loose pigment speckles or a colored paper rectangle.",
+        "Do not blur eyes, mouth and identifying markings along with the soft body shading."
+      ],
+      "use_cases": [
+        "Soft tactile illustration pets",
+        "Gentle artistic character portraits"
+      ],
+      "limitations": [
+        "Powdery edges require careful alpha review because chroma cleanup can remove desirable pigment softness."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Keep the soft-pigment impression inside a controlled contour; do not rely on background texture to communicate the medium.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "chalk",
+      "name": "Chalk Drawing",
+      "category": "painting-drawing",
+      "kind": "technique",
+      "description": "Broad chalk-stick marks with bright grainy deposits, broken interior strokes and intentionally simple contour construction.",
+      "tags": [
+        "chalk-stick",
+        "grainy-mark",
+        "dry-drawing",
+        "broken-stroke"
+      ],
+      "aliases": [
+        "chalk-drawing"
+      ],
+      "instructions": {
+        "materials": "Use opaque chalk-like deposits with a brittle grain distinct from smooth blended pastel.",
+        "forms": "Build simple chunky body forms using a small number of broad stick marks.",
+        "linework": "Draw firm chalk contours with irregular interior coverage and strong continuous overall shape.",
+        "shading": "Shade with sparse parallel or diagonal broad chalk passes rather than smooth gradients.",
+        "palette": "Keep chalk colors distinct and bright enough against varied host backgrounds, preserving identity accents.",
+        "texture": "Show coarse granular fill breaks inside large marks without detached dust particles.",
+        "rendering": "Render only the isolated chalk character, retaining a clear silhouette without a chalkboard or paper panel."
+      },
+      "negative_constraints": [
+        "Avoid blackboard rectangles, written equations or loose chalk dust outside the body.",
+        "Do not use faint crumbly facial marks that become illegible after reduction."
+      ],
+      "use_cases": [
+        "Educational character mascots",
+        "Chalk-textured illustration pets"
+      ],
+      "limitations": [
+        "Light chalk alone may disappear against pale interfaces; use approved dark accents or stronger local contrast."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Review the texture at final size; reduce grain frequency before increasing opacity or blurring the whole drawing.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "crayon",
+      "name": "Crayon",
+      "category": "painting-drawing",
+      "kind": "technique",
+      "description": "Waxy broad-stroke character with visible overlapping scribble direction, chunky contours and saturated imperfect fills.",
+      "tags": [
+        "wax-crayon",
+        "scribble-fill",
+        "chunky-line",
+        "handmade"
+      ],
+      "aliases": [
+        "wax-crayon"
+      ],
+      "instructions": {
+        "materials": "Suggest opaque wax-crayon deposits with small resist-like gaps inside broad colored marks.",
+        "forms": "Build a naive but repeatable character from simple rounded shapes and stubby limbs.",
+        "linework": "Use blunt thick crayon contours with slightly uneven pressure and rounded stroke ends.",
+        "shading": "Shade by overlapping darker crayon passes in a few large regions.",
+        "palette": "Use clear approved wax colors with purposeful overlap mixtures and strong facial marks.",
+        "texture": "Keep visible directional scribble tracks that follow each body part rather than random noise.",
+        "rendering": "Render an isolated crayon mascot whose playful marks remain bounded by a complete readable outline."
+      },
+      "negative_constraints": [
+        "Avoid loose scribbles, paper scenery or color marks detached from the subject.",
+        "Do not let intentionally naive drawing change the number or placement of limbs."
+      ],
+      "use_cases": [
+        "Playful craft mascots",
+        "Friendly educational character sets"
+      ],
+      "limitations": [
+        "Crayon gaps and overlapping strokes should stay larger than subpixel noise at the final scale."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Preserve the waxy stroke direction during reduction and keep key color out of the internal resist-like gaps.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "colored-pencil",
+      "name": "Colored Pencil",
+      "category": "painting-drawing",
+      "kind": "technique",
+      "description": "Layered dry pencil strokes that follow anatomy, with fine contour accents and controlled translucent-looking color buildup.",
+      "tags": [
+        "pencil",
+        "layered-strokes",
+        "directional-hatching",
+        "colored"
+      ],
+      "aliases": [
+        "coloured-pencil",
+        "color-pencil"
+      ],
+      "instructions": {
+        "materials": "Use waxy or dry colored-pencil marks layered over a light character-only base.",
+        "forms": "Establish softly rounded body volumes with clean simple features and readable paws or hands.",
+        "linework": "Draw precise colored contour accents, reserving darker pencil for eyes and overlaps.",
+        "shading": "Build shading from directional hatch layers that curve around major body forms.",
+        "palette": "Mix approved hues through visible overlapping strokes instead of smooth digital gradients.",
+        "texture": "Show fine but grouped pencil striations with restrained tooth inside broad color planes.",
+        "rendering": "Render an isolated pencil character with a coherent external contour and simplified hatch detail near the face."
+      },
+      "negative_constraints": [
+        "Avoid a full paper background, construction notes or loose pencil shavings.",
+        "Do not use hair-fine texture that collapses into gray noise at small size."
+      ],
+      "use_cases": [
+        "Hand-drawn artistic pets",
+        "Soft educational illustrations"
+      ],
+      "limitations": [
+        "Individual pencil strokes need grouping into broader tonal regions before downsampling."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Prefer alpha to protect light pencil edges and inspect whether the chosen final filter preserves broad hatch direction.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "graphite",
+      "name": "Graphite Drawing",
+      "category": "painting-drawing",
+      "kind": "technique",
+      "description": "Tonal graphite rendering with softly rubbed planes, sharpened dark accents and a disciplined value structure.",
+      "tags": [
+        "graphite",
+        "tonal-drawing",
+        "rubbed-shading",
+        "monochrome-medium"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use graphite-like dark marks and smooth rubbed gray deposits over opaque light body regions.",
+        "forms": "Model rounded compact volumes with clearly grouped facial and limb planes.",
+        "linework": "Keep contours subtle on lit sides and sharpen selected dark edges at overlaps.",
+        "shading": "Build volume with broad blended graphite tones and a few precise hatch accents.",
+        "palette": "Use a stable light-to-dark graphite scale while retaining explicit identity color exceptions if required.",
+        "texture": "Add fine directional pencil grain in larger midtone regions without covering the whole canvas.",
+        "rendering": "Render an isolated finished graphite character with deliberate highlights and clean alpha beyond the body."
+      },
+      "negative_constraints": [
+        "Avoid a sketchbook page, eraser debris or smudges extending outside the character.",
+        "Do not darken the entire figure until eyes and markings merge into the shading."
+      ],
+      "use_cases": [
+        "Tonal drawing mascots",
+        "Monochrome artistic character portraits"
+      ],
+      "limitations": [
+        "Value-only translation may lose identity carried by color; preserve required color accents explicitly."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Opaque light form areas are artwork; retain them during extraction instead of making every light tone transparent.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "charcoal",
+      "name": "Charcoal",
+      "category": "painting-drawing",
+      "kind": "technique",
+      "description": "Bold compressed-charcoal character with broad velvety blacks, dragged grain and erased light planes.",
+      "tags": [
+        "charcoal",
+        "compressed-stick",
+        "velvety-black",
+        "erased-light"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use dense charcoal-like deposits with matte black masses and softer rubbed gray areas.",
+        "forms": "Simplify the body into large sculptural shapes that can hold strong dark and light planes.",
+        "linework": "Draw broad decisive charcoal edges with controlled breaks inside a continuous readable outline.",
+        "shading": "Carve light with large erased-looking patches and soften a few internal shadow transitions.",
+        "palette": "Use a strong dark-to-light value design with any required color markers retained as clear adapted accents.",
+        "texture": "Show dragged stick grain on broad planes and a few rubbed transitions near overlaps.",
+        "rendering": "Render the isolated charcoal mascot with all loose dust removed and facial landmarks firmly stated."
+      },
+      "negative_constraints": [
+        "Avoid detached dust clouds, smoky halos or full-sheet charcoal smudging.",
+        "Do not sacrifice clean silhouette boundaries to expressive roughness."
+      ],
+      "use_cases": [
+        "Dramatic drawing pets",
+        "Expressive black-material character studies"
+      ],
+      "limitations": [
+        "Charcoal’s dark masses can swallow small features; the canonical base needs explicit light separation around the face."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Use true alpha for rubbed boundary transitions and reject exterior smudges during visual review.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "ink-wash",
+      "name": "Ink Wash",
+      "category": "painting-drawing",
+      "kind": "technique",
+      "description": "Brush-drawn form modeled through diluted ink planes, darker pooled boundaries and spare strong ink accents.",
+      "tags": [
+        "wash",
+        "diluted-ink",
+        "brush-volume",
+        "tonal"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use ink diluted into broad light and dark wash areas over a bounded light character form.",
+        "forms": "Build rounded body masses from a few sweeping wash shapes with clearly anchored eyes and limbs.",
+        "linework": "Add selected concentrated-ink contours at important overlaps and facial landmarks.",
+        "shading": "Layer translucent-looking wash planes to describe volume, allowing restrained darker pooling inside forms.",
+        "palette": "Use a cohesive ink-value family with approved colored accents preserved where identity requires them.",
+        "texture": "Show gentle wash granulation and a few brush-loading variations within broad regions.",
+        "rendering": "Render an isolated ink-wash mascot with a controlled outer silhouette and no surrounding wash field."
+      },
+      "negative_constraints": [
+        "Avoid bleeding outside the body, detached ink droplets or landscape-like wash backgrounds.",
+        "Do not let the lightest body region disappear into unintended transparency."
+      ],
+      "use_cases": [
+        "Brush-wash illustration pets",
+        "Restrained tonal character sequences"
+      ],
+      "limitations": [
+        "Pale wash edges are vulnerable to chroma contamination and need multi-background alpha inspection."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Separate the style’s translucent-looking pigment from actual output alpha; the face and key identity markings must remain legible.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "sumi-e",
+      "name": "Sumi-e-Inspired Brush",
+      "category": "painting-drawing",
+      "kind": "technique",
+      "description": "Economical ink-brush character built from pressure-shaped strokes, broad ink gradients and purposeful unpainted spaces.",
+      "tags": [
+        "ink-brush",
+        "pressure-strokes",
+        "spare-marks",
+        "brush-loading"
+      ],
+      "aliases": [
+        "sumie"
+      ],
+      "instructions": {
+        "materials": "Use black or deeply toned brush ink with visible changes from loaded to dry stroke sections.",
+        "forms": "Express the mascot through a few sweeping body strokes and simple rounded feature marks.",
+        "linework": "Let brush pressure create thick-to-thin contours with intentional tapered stroke endings.",
+        "shading": "Suggest volume through the natural dark-to-light gradient within a loaded brush stroke.",
+        "palette": "Keep a restrained ink family and retain explicitly required identity colors as deliberate small accents.",
+        "texture": "Show selected bristle splits within major strokes, keeping the surrounding alpha pristine.",
+        "rendering": "Render an isolated brush-built mascot with fixed stroke landmarks and no calligraphy, seal or landscape setting."
+      },
+      "negative_constraints": [
+        "Avoid decorative calligraphy, red seals, detached ink flecks or landscape washes.",
+        "Do not use cultural ornament as a substitute for the specific brush technique."
+      ],
+      "use_cases": [
+        "Economical brush mascots",
+        "Expressive ink-stroke character studies"
+      ],
+      "limitations": [
+        "A very small number of strokes still needs stable anatomy; face and limb landmarks must be repeatable."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Prefer alpha around tapered brush strokes and inspect that expressive dry-brush gaps do not disconnect limbs.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "tempera",
+      "name": "Tempera",
+      "category": "painting-drawing",
+      "kind": "technique",
+      "description": "Matte fine-stroke painting with crisp layered planes, restrained hatching and luminous small-scale color structure.",
+      "tags": [
+        "matte-paint",
+        "fine-strokes",
+        "layered-planes",
+        "tempera"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Suggest opaque matte tempera-like paint applied in thin controlled layers.",
+        "forms": "Construct clear compact body planes with a slightly sculptural, carefully drawn face.",
+        "linework": "Keep precise painted contours and small linear accents where forms overlap.",
+        "shading": "Build light through short fine parallel strokes layered over stable midtone color.",
+        "palette": "Use luminous approved hues with subtle cool-warm plane changes and limited deep accents.",
+        "texture": "Show orderly fine brush hatching only on large surfaces, leaving the silhouette and eyes clean.",
+        "rendering": "Render an isolated tempera-style character with crisp form boundaries and no panel or gilded background."
+      },
+      "negative_constraints": [
+        "Avoid decorative framing, gold backgrounds or manuscript ornament unless explicitly required as attached identity.",
+        "Do not overfill small body regions with microscopic crosshatching."
+      ],
+      "use_cases": [
+        "Carefully painted artistic pets",
+        "Matte illustrative character portraits"
+      ],
+      "limitations": [
+        "Fine layered brushwork must be broadened at mascot scale to avoid unstable texture between frames."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Downsample once with alpha preserved and check that the fine-stroke impression remains tonal rather than noisy.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "marker",
+      "name": "Marker Illustration",
+      "category": "painting-drawing",
+      "kind": "technique",
+      "description": "Clean felt-marker drawing with broad translucent-looking passes, darker overlaps and crisp pen-defined features.",
+      "tags": [
+        "marker",
+        "felt-tip",
+        "broad-passes",
+        "overlap-color"
+      ],
+      "aliases": [
+        "marker-art"
+      ],
+      "instructions": {
+        "materials": "Use felt-marker-like color passes with a smooth matte surface and slight ink pooling at overlaps.",
+        "forms": "Build compact rounded forms with broad regions large enough to show marker stroke direction.",
+        "linework": "Use confident fine-tip contours and heavier marker edges around the main silhouette.",
+        "shading": "Shade by layering one darker marker pass across each major form.",
+        "palette": "Choose clear approved colors whose layered overlaps create controlled deeper variants.",
+        "texture": "Show a few broad parallel stroke bands and slight interior pass edges instead of paper grain.",
+        "rendering": "Render an isolated marker mascot with bounded ink edges and stable stroke direction through the body."
+      },
+      "negative_constraints": [
+        "Avoid marker bleed beyond the silhouette, test swatches or sketchpad backgrounds.",
+        "Do not stripe small faces with so many passes that features become muddy."
+      ],
+      "use_cases": [
+        "Friendly marker-drawn pets",
+        "Concept-illustration character systems"
+      ],
+      "limitations": [
+        "Overlapping strokes should support anatomy and must not be mistaken for additional permanent markings."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Use alpha around subtle marker-edge opacity and approve which stroke bands are part of the repeatable surface treatment.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "airbrush",
+      "name": "Airbrush",
+      "category": "painting-drawing",
+      "kind": "technique",
+      "description": "Smooth spray-painted character with broad feathered interior gradients, masked clean contours and restrained glossy accents.",
+      "tags": [
+        "spray-gradient",
+        "smooth-modeling",
+        "masked-edge",
+        "airbrush"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Suggest smoothly sprayed opaque paint with a satin finish and minimal surface grain.",
+        "forms": "Form rounded inflated-looking body masses with broad cheeks and simple clear features.",
+        "linework": "Define the silhouette by a clean mask edge, using very few drawn contour accents.",
+        "shading": "Build volume through broad feathered gradients and a small set of soft highlight shapes.",
+        "palette": "Keep approved hue families consistent and use smooth value shifts without rainbow color drift.",
+        "texture": "Leave surfaces nearly grain-free, with any spray speckle contained inside large shaded regions.",
+        "rendering": "Render an isolated airbrushed mascot whose outer edge stays sharp enough for clean alpha compositing."
+      },
+      "negative_constraints": [
+        "Avoid overspray halos, canvas-wide mist or blurred silhouette boundaries.",
+        "Do not add neon glows, reflective scenery or detached specular sparkles."
+      ],
+      "use_cases": [
+        "Smooth retro illustration pets",
+        "Softly dimensional mascot portraits"
+      ],
+      "limitations": [
+        "Very smooth gradients can lose contrast at small scale; strong facial landmarks remain necessary."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Prefer true alpha rather than trying to key through feathered overspray; the intended mask edge should remain coherent.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "pencil-sketch",
+      "name": "Pencil Sketch",
+      "category": "painting-drawing",
+      "kind": "technique",
+      "description": "Economical graphite line drawing with lightly restated contours, directional hatch patches and visible drawing gesture.",
+      "tags": [
+        "pencil-line",
+        "sketch",
+        "gestural",
+        "sparse-hatching"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use dry graphite-like line marks with sparse light hatch deposits.",
+        "forms": "Establish the body through simple gestural curves and a few clear construction masses.",
+        "linework": "Use lightly restated pencil contours with a stronger final line around the approved silhouette.",
+        "shading": "Add brief directional hatch patches under overlaps instead of fully blended tonal shading.",
+        "palette": "Keep a restrained pencil-value range with required identity color accents retained if specified.",
+        "texture": "Show small grouped pencil striations while leaving most body interiors open and clear.",
+        "rendering": "Render an isolated resolved sketch with no unused construction geometry outside the mascot."
+      },
+      "negative_constraints": [
+        "Avoid sketchbook pages, measurement notes or exploratory duplicate limbs.",
+        "Do not retain loose construction circles that interfere with the approved face or body."
+      ],
+      "use_cases": [
+        "Sketchbook-style pets",
+        "Lightweight hand-drawn character sequences"
+      ],
+      "limitations": [
+        "The final silhouette must be intentional even when internal lines look exploratory."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Preserve purposeful faint interior lines but require stronger external contours and facial features at actual size.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "ink-sketch",
+      "name": "Ink Sketch",
+      "category": "painting-drawing",
+      "kind": "technique",
+      "description": "Quick pen drawing with angular searching strokes, concise crosshatch shadows and a clearly resolved final contour.",
+      "tags": [
+        "pen-sketch",
+        "crosshatch",
+        "brisk-strokes",
+        "line-drawing"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use opaque pen ink with a dry quick-drawing character and very limited flat fill.",
+        "forms": "Describe the body through decisive angular curves and clear simplified pose landmarks.",
+        "linework": "Let short searching strokes meet a stronger continuous outer contour at major body edges.",
+        "shading": "Indicate shade with sparse directional crosshatch bundles and small filled overlap wedges.",
+        "palette": "Use dark ink against light body regions, retaining required color accents as controlled washes.",
+        "texture": "Keep fine pen drag visible inside larger marks without speckle or splatter.",
+        "rendering": "Render an isolated brisk ink sketch with every limb and facial feature resolved unambiguously."
+      },
+      "negative_constraints": [
+        "Avoid scribbled captions, arrows, page borders or disconnected exploratory strokes.",
+        "Do not let loose sketch linework create extra fingers, ears or competing outlines."
+      ],
+      "use_cases": [
+        "Lively pen-drawn pets",
+        "Expressive sketch character studies"
+      ],
+      "limitations": [
+        "Dense crosshatching must be reduced before the artwork is scaled to a compact cell."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Prefer alpha for tapered pen edges; preserve only line variation that remains readable at the target size.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    },
+    {
+      "id": "colored-ink",
+      "name": "Colored Ink",
+      "category": "painting-drawing",
+      "kind": "technique",
+      "description": "Luminous colored brush-ink drawing with saturated overlapping marks, tapered edges and controlled pooled accents.",
+      "tags": [
+        "colored-ink",
+        "brush-pen",
+        "saturated-wash",
+        "tapered-mark"
+      ],
+      "aliases": [
+        "coloured-ink"
+      ],
+      "instructions": {
+        "materials": "Use strongly colored ink marks with transparent-looking overlaps over a bounded light body form.",
+        "forms": "Build compact expressive anatomy from broad colored brush shapes and clearly placed facial details.",
+        "linework": "Draw tapered contours in darker local-color ink rather than uniform black outlines.",
+        "shading": "Layer translucent-looking colored strokes to create deep clean shadows at overlaps.",
+        "palette": "Keep saturated approved hues distinct and limit mixtures to compatible neighboring color regions.",
+        "texture": "Show modest pooling at stroke ends and a few brush-loading streaks inside the silhouette.",
+        "rendering": "Render an isolated colored-ink mascot with crisp expressive marks and no surrounding wash or paper."
+      },
+      "negative_constraints": [
+        "Avoid uncontrolled color bleeding across approved markings or outside the body.",
+        "Do not introduce bright splatter droplets, ink bottles or separate swatch marks."
+      ],
+      "use_cases": [
+        "Vivid drawn pets",
+        "Expressive brush-ink character sets"
+      ],
+      "limitations": [
+        "Layered ink hues can accidentally alter brand colors; keep flat identity anchors in the approved palette."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Render with sufficient source detail, then downsample once with the recommended filter into the existing profile cells; inspect the final silhouette at actual size.",
+        "notes": [
+          "Use alpha to retain the color of tapered marks and inspect pooled edge regions for background-key contamination.",
+          "Keep texture and shading inside the isolated silhouette; preserve the same approved pattern placement across animation states."
+        ]
+      }
+    }
+  ]
+}

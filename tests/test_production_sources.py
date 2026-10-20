@@ -116,7 +116,7 @@ class ProductionSourcesTests(unittest.TestCase):
             bundle = checkout / 'examples/production-pilot' / name
             sources.create_source_bundle(original, list(payloads), bundle,
                 fixture=True, origin='Synthetic Git checkout fixture.', provenance_paths=['receipt.json'])
-            index = json.loads((bundle / sources.SOURCE_INDEX).read_text())
+            index = json.loads((bundle / sources.SOURCE_INDEX).read_text(encoding="utf-8"))
             bundles.append(bundle)
             for part in index['parts']:
                 path = bundle / part['path']

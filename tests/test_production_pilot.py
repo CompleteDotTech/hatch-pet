@@ -328,7 +328,7 @@ class ProductionPilotTests(unittest.TestCase):
                 self.assertEqual(file_hash(self.root/operation["tts_receipt"]["path"]), operation["tts_receipt"]["sha256"])
                 self.assertEqual(receipt["audio"], source)
                 self.assertEqual(receipt["text"], operation["text"])
-                self.assertEqual((self.root/operation["text"]["path"]).read_text(), audio["text"])
+                self.assertEqual((self.root/operation["text"]["path"]).read_text(encoding="utf-8"), audio["text"])
                 self.assertEqual(file_hash(self.root/operation["text"]["path"]), operation["text"]["sha256"])
                 with wave.open(str(self.root/source["path"]), "rb") as original:
                     unpadded = original.readframes(original.getnframes())

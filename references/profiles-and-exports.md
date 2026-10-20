@@ -11,7 +11,7 @@ A profile contains `id`, `schema_version`, `layout` (`columns`, `cell_width`, `c
 - `slot` preserves each full source slot, including vertical displacement. All frames in a row share one viewport and scale; a taller or wider pose never triggers per-frame fitting.
 - `center` explicitly recenters each pose within that viewport; `baseline` explicitly bottom-aligns each pose. These policies remove intended displacement and should not be used for jumping.
 - `row` fits the full row viewport inside the padded destination cell. `none` uses source pixels at 1:1 and rejects clipping. `shared` uses a single positive finite scale from calibration (`configure --shared-scale`) or a common profile `alignment.scale`. Conflicting explicit shared scales are rejected. Source resolutions must be comparable for a pixel multiplier to represent a common character scale.
-- `alignment.resampling` selects nearest, bilinear, bicubic or lanczos (the unchanged default). `anchor` positions the scaled viewport in the destination's available space. `pivot` is exported metadata for consumers; it does not change raster pixels. Both remain in `animation.json` and do not imply an engine integration.
+- `alignment.resampling` explicitly selects nearest, bilinear, bicubic or lanczos. If omitted, new runs use the frozen style's recorded fallback; historical runs without one retain lanczos. No profile dimensions or timing change to accommodate a style. `anchor` positions the scaled viewport in the destination's available space. `pivot` is exported metadata for consumers; it does not change raster pixels. Both remain in `animation.json` and do not imply an engine integration.
 
 Generated production states use `generation.skill: imagegen` and `requires_identity_reference: true`. Top-level and state `generation.instructions` and `generation.requirements` provide semantic guidance to base/row/retry prompts. Allowed derivations contain at most one `horizontal-mirror` record with a source state and `requires_explicit_approval: true`; declaring it never grants approval. The default permits only `running-right` to `running-left`.
 
@@ -29,7 +29,13 @@ Top-level `validation.require_provenance` must be true; weaker acceptance is uns
 
 Reports include measured values, thresholds, pairwise comparisons, cross-row area measurements, and uncertainty. These are review signals; changed visible surfaces can affect area and color without identity drift. Suspicious ordering uses an adjacent-transition outlier heuristic. None can prove action semantics, direction, identity, or good animation.
 
-`export.formats` supports `frames`, `atlas`, `gif`, `webp` (animated), `browser`, `cards`, `flipbook`, `board`, `stimuli`, `cursor`, and `craft`; `static_state` and `static_frame` select the overall still alternative. Other states use their first frame as their still. `events` maps application event names to stable state IDs.
+`export.formats` supports `frames`, `atlas`, `gif`, `webp` (animated), `browser`, `cards`, `flipbook`, `board`, `stimuli`, `cursor`, and `craft`; `static_state` and `static_frame` select the overall still alternative. Other states default to their first frame. An explicit state `playback.reduced_motion_frame` overrides that state's still selection. `events` maps application event names to stable state IDs. GIF and WebP exports honor loop/once/hold behavior; cross-state completion and event rules execute only in the browser runtime.
+
+## Catalog-generated character profiles
+
+Use `python scripts/hatch.py states` to search canonical states, inspect anatomy/prop requirements, compose packs and compile selected definitions. The [character state library](character-states.md) produces ordinary validated character profiles and separate `.selection.json` evidence. It does not add catalog-only keys to this strict runtime schema. Compiled profiles use `codex_compatible: false`; the fixed Codex consumer still supports exactly its nine original rows.
+
+Preparation discovers an adjacent selection manifest or accepts `--state-selection`. It validates the profile binding and required identity props before creating the run. The original selection becomes hash-bound run evidence and accompanies review, archives and exports. Permitted later profile revisions retain that original selection as historical provenance; exported metadata reports whether the current profile is an exact match. Compile a new selection into a new run when changing state order/membership.
 
 ## Export and preview
 
@@ -53,7 +59,9 @@ For OBS, use `examples/obs-mascot.json` and point a browser source at the export
 
 ## Representative examples
 
-Every JSON in `examples/` is a complete supported profile usable by the same preparation/extraction/export pipeline. These are example adaptations; they do not establish production integration.
+All profile versions use the same [style registry](style-catalog.md). Their own subject and generation requirements remain authoritative. Controller exports retain the complete frozen style under `provenance.json.resolved_style`; reviewed packages add hashed `style-provenance.json` without changing `pet.json` or atlas dimensions. These are requested artistic specifications, with separate actual source origins and review evidence.
+
+The top-level `examples/*.json` files are complete supported runtime profiles usable by the same preparation/extraction/export pipeline. Files in `examples/state-selections/` are saved compiler inputs, and `examples/state-packs/` contains pack definitions; compile those selections before preparation. These are example adaptations; they do not establish production integration.
 
 | Profile | Local capability | Remaining integration |
 | --- | --- | --- |

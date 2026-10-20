@@ -298,7 +298,7 @@ def _record_synthetic_reviews(root, bundle, render_paths):
         for dimension, verdict in receipt['dimensions'].items():
             chosen = copy.deepcopy(evidence)
             if manifest and dimension in ('final_artifacts', 'timing_av_sync'):
-                frame_path = str(Path(manifest).parent / 'frames/000000.png')
+                frame_path = (Path(manifest).parent / 'frames/000000.png').as_posix()
                 chosen = {'path': frame_path, 'sha256': file_sha(root / frame_path), 'frames': [0],
                           'note': 'Exact completed synthetic raster inventory verified by the renderer.', 'method': 'automated_check'}
             verdict.update(verdict='pass', notes='Synthetic regression contract passed; no production visual or human approval.', evidence=[chosen])

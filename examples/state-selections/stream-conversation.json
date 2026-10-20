@@ -1,0 +1,7 @@
+{
+  "schema_version": 1,
+  "profile_id": "stream-conversation",
+  "recipe": "stream-conversation",
+  "archetype": "humanoid",
+  "anatomy_policy": "error"
+}

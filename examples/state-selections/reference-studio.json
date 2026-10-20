@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "profile_id": "reference-studio-chapter",
+  "packs": ["complete-character-studio"],
+  "states": [
+    "idle", "relaxed-idle", "alert-idle", "breathing", "looking-around",
+    "happy", "excited", "content", "curious", "sad", "frustrated",
+    "confused", "thinking", "investigating", "realization", "planning",
+    "approaching", "retreating", "greeting", "acknowledging", "sleeping",
+    "waking", "playing", "ready", "running", "review", "successful",
+    "failed", "notification-safe", "entering", "exiting", "return-to-idle"
+  ],
+  "archetype": "generic",
+  "anatomy_policy": "error"
+}

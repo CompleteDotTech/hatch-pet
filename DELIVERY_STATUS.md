@@ -1,5 +1,15 @@
 # Production workflow delivery status
 
+## Current repair audit (2026-10-20 UTC)
+
+The current request authorizes PR repair and merge. The outstanding production payload is not available in this checkout or its fetched Git history: the source transport lacks 113 parts (5,910,402 bytes, affecting 30 original files), and the audio transport lacks all 39 parts (1,715,251 bytes, affecting 16 original files). The review-history index is also absent. The prior author's private-environment validation below does not establish fresh-checkout reproducibility.
+
+The integration repair preserves the merged style catalog and character-state library. UTF-8 test reads now preserve the exact Unicode metadata on Windows. The synthetic scene demo now writes portable forward-slash review references; an explicit Windows/POSIX regression covers the original failure. Its three scenes can be reproduced without the missing production payload.
+
+The retained-pilot test remains enabled and fails at exact source-inventory verification. Restore the original complete source/audio bundles, verify them with `production_sources.py verify`, and rerun the complete suite before merging. No replacement artwork, synthetic substitute, fabricated review, or skipped pilot check has been introduced.
+
+## Earlier author validation
+
 The feature branch implements versioned casts, layered components, reusable motion and facial tracks, dialogue and coordinated props, scene/camera contracts, deterministic rendering, local previews, scoped review, dependency tracking, portable archives and an OpenRaster handoff. Existing Codex asset contracts remain unchanged.
 
 The [final local regression](references/production-public-validation.md) ran 299 tests: 298 passed and one optional external-application check was skipped. Its public test output is distinct from the production media/evidence held pending authorization.

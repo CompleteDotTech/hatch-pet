@@ -105,6 +105,17 @@ def manifest(root):
         raise ValueError('unsupported run schema; use hatch.py migrate --run-dir PATH for schema 2, or recover into a separate run')
     profile = load_profile(root / 'profile.json')
     request = read(root / 'pet_request.json')
+    from state_selection import prepared_selection
+    prepared_selection(root)
+    if 'style_sha256' in result and request.get('resolved_style') is None:
+        raise ValueError('manifest style hash requires the saved resolved style snapshot; restore the intact pet_request.json')
+    if request.get('resolved_style') is not None:
+        from style_registry import validate_snapshot
+        snapshot = validate_snapshot(request['resolved_style'])
+        if request.get('style_contract') != snapshot['contract']:
+            raise ValueError('saved style contract differs from resolved style snapshot')
+        if result.get('style_sha256') != snapshot['sha256']:
+            raise ValueError('manifest style hash differs from resolved style snapshot')
     original_references = {str(resolve_ref(root, ref['copied_path'], result.get('original_root'))) for ref in request.get('references', [])}
     specs = {s['id']: s for s in profile['states']}
     jobs = result['jobs']
@@ -143,11 +154,35 @@ def manifest(root):
             origins = [key for key in ('generation_receipt', 'derivation_receipt', 'import_receipt') if key in job]
             if len(origins) != 1 or not isinstance(job.get('input_hashes'), dict) or not job.get('output_hash'):
                 raise ValueError('generated job needs exactly one origin receipt and input/output hashes: ' + name)
+            origin = source_origin(job)
+            if 'source_origin' in job and job['source_origin'] != origin:
+                raise ValueError('source origin label differs from its receipt: ' + name)
+            receipt_fixture = (origin == 'fixture') if origin in ('fixture', 'imagegen') else job.get('import_receipt', {}).get('fixture')
+            if origin != 'derived' and (type(receipt_fixture) is not bool or receipt_fixture != result['fixture_mode']):
+                raise ValueError('source receipt fixture label differs from the run: ' + name)
             if job.get('derivation_receipt'):
                 source = job['derivation_receipt'].get('source')
                 if not any(d['source'] == source for d in specs[name]['allowed_derivations']):
                     raise ValueError('active derivation is no longer permitted by the profile: ' + name)
     return result
+
+
+def source_origin(job):
+    """Describe the origin receipt; an editable display label is not evidence."""
+    origins = [key for key in ('generation_receipt', 'derivation_receipt', 'import_receipt') if key in job]
+    if len(origins) > 1:
+        raise ValueError('source has conflicting origin receipts: ' + job['id'])
+    if not origins:
+        return 'unrecorded'
+    origin = origins[0]
+    if not isinstance(job[origin], dict):
+        raise ValueError('source origin receipt must be an object: ' + job['id'])
+    if origin == 'generation_receipt':
+        skill = job[origin].get('generation_skill')
+        if skill not in ('$fixture', '$imagegen'):
+            raise ValueError('unsupported generation origin receipt: ' + job['id'])
+        return 'fixture' if skill == '$fixture' else 'imagegen'
+    return 'import' if origin == 'import_receipt' else 'derived'
 
 
 def save(root, data):
@@ -305,22 +340,24 @@ def prepare(root, args):
     transaction = root.parent / ('.' + root.name + '.prepare.json')
     try:
         cmd = ['--output-dir', stage, '--pet-name', args.pet_name, '--pet-notes', args.pet_notes]
-        for flag in ('profile', 'constraints', 'identity', 'reference_roles', 'brand_discovery_file', 'brand_name', 'brand_brief',
+        for flag in ('profile', 'state_selection', 'constraints', 'identity', 'reference_roles', 'brand_discovery_file', 'brand_name', 'brand_brief',
                      'chroma_key', 'style_preset', 'style_notes', 'description', 'pet_id', 'display_name', 'background'):
             value = getattr(args, flag, None)
             if value:
                 cmd.extend(['--' + flag.replace('_', '-'), value])
-        for flag in ('reference', 'avoid', 'require', 'brand_source'):
+        for flag in ('reference', 'avoid', 'require', 'brand_source', 'style_modifier'):
             for value in getattr(args, flag, []):
                 cmd.extend(['--' + flag.replace('_', '-'), value])
         execute('prepare_pet_run.py', *cmd)
+        request = _relocate(read(stage / 'pet_request.json'), stage, root)
         data = _relocate(read(stage / 'imagegen-jobs.json'), stage, root)
         data.update(schema_version=SCHEMA, run_id=uuid.uuid4().hex, run_dir=str(root), gates={},
                     history=[], fixture_mode=args.fixture_mode, previous_run_id=previous_id,
                     versions=versions(), limits={'attempts_per_job': 3, 'concurrency': 1, 'generation_calls': None, 'estimated_units_per_call': None, 'unit_budget': None})
+        data['style_sha256'] = request['resolved_style']['sha256']
         for job in data['jobs']:
             job.update(attempts=0, history=[])
-        atomic(stage / 'pet_request.json', _relocate(read(stage / 'pet_request.json'), stage, root))
+        atomic(stage / 'pet_request.json', request)
         atomic(stage / 'imagegen-jobs.json', data)
         backup = root.with_name(root.name + '.previous-' + uuid.uuid4().hex)
         previous_manifest_hash = digest(root / 'imagegen-jobs.json') if (root / 'imagegen-jobs.json').is_file() else None
@@ -330,7 +367,9 @@ def prepare(root, args):
             os.replace(root, backup)
         os.replace(stage, root)
         transaction.unlink()
-        return {'run_id': data['run_id'], 'run': str(root), 'previous': str(backup) if backup.exists() else None}
+        return {'run_id': data['run_id'], 'run': str(root), 'previous': str(backup) if backup.exists() else None,
+                'style_id': request['resolved_style']['resolved_id'], 'style_sha256': data['style_sha256'],
+                'warnings': request.get('style_warnings', [])}
     finally:
         if stage.exists() and not transaction.exists():
             shutil.rmtree(stage)
@@ -404,11 +443,12 @@ def claim(root, data, name):
                started_at=time.time(), attempts=job.get('attempts', 0) + 1)
     selected_prompt = job.get('retry_prompt_file', job['prompt_file']) if job['attempts'] > 1 else job['prompt_file']
     prompt_bytes = inside(root, selected_prompt).read_bytes()
+    request = read(root / 'pet_request.json')
     job['history'].append({'event': 'claim', 'time': time.time(), 'token': job['token'], 'input_hashes': hashes,
         'prompt_snapshot': {'path': selected_prompt, 'sha256': hashlib.sha256(prompt_bytes).hexdigest(),
                             'utf8': prompt_bytes.decode('utf-8')},
         'input_images': json.loads(json.dumps(job['input_images'])),
-        'identity': read(root / 'pet_request.json').get('identity', {})})
+        'identity': request.get('identity', {}), 'resolved_style': request.get('resolved_style')})
     save(root, data)
     return {'job': name, 'token': job['token'], 'generation_skill': '$imagegen', 'attempt': job['attempts'],
             'prompt': str(root / selected_prompt),
@@ -418,12 +458,14 @@ def claim(root, data, name):
                                  'input_hashes': hashes, 'job': name, 'token': job['token']},
             'previous_failures': [e for e in job['history'] if e.get('event') in ('failed', 'repair')],
             'identity': read(root / 'pet_request.json').get('identity', {}),
+            'resolved_style': request.get('resolved_style'),
+            'style_warnings': style_warnings(root),
             'tool_arguments': {'transparent_background': read(root / 'extraction-settings.json').get('background') != 'chroma'} if name != 'base' else {'transparent_background': read(root / 'pet_request.json')['extraction']['background'] != 'chroma'},
             'attachment_rules': 'View local inputs before editing. Attach every input using referenced_image_paths when all are local; otherwise num_last_images_to_include (max 5). Never use both. A brand-new text-only base omits both.',
             'output_rules': 'Follow installed imagegen skill, including image output; return selected source and QA note. Do not mutate manifests.'}
 
 
-def select_base(root, data):
+def select_base(root, data, source_origin=None):
     """Calibrate from the actual selected image, never a text-only fallback guess."""
     from prepare_pet_run import CHROMA_KEY_CANDIDATES, parse_hex_color, regenerate_prompts
     from extract_strip_frames import mask_background, pixels
@@ -464,6 +506,11 @@ def select_base(root, data):
                 'key_collision_pixels': collisions, 'sampled_foreground': len(foreground),
                 'candidates': [{'name': c[2], 'hex': c[3], 'collision_pixels': c[0]} for c in candidates],
                 'warnings': warnings}
+    if source_origin is not None and request.get('resolved_style') is not None:
+        settings['canonical_source_origin'] = source_origin
+    from style_registry import compatibility_warnings
+    settings['style_warnings'] = compatibility_warnings(request.get('resolved_style'), load_profile(root / 'profile.json'),
+                                                       settings['background'], settings.get('resampling'))
     atomic(root / 'extraction-settings.json', settings)
     if data.get('base_review'):
         event(data, 'preserved-base-review', previous=data['base_review'])
@@ -535,7 +582,7 @@ def ingest(root, data, name, source, token, note, used_inputs, fixture=False):
     os.replace(temp, output)
     if name == 'base':
         shutil.copy2(output, root / 'references/canonical-base.png')
-        select_base(root, data)
+        select_base(root, data, source_origin='fixture' if fixture else 'imagegen')
         job['canonical_hash'] = digest(root / 'references/canonical-base.png')
     for field in ('derived_from', 'derivation_receipt', 'import_receipt'):
         job.pop(field, None)
@@ -594,7 +641,7 @@ def configure(root, data, args):
         raise ValueError('reconcile running handoffs before changing extraction settings')
     settings = read(root / 'extraction-settings.json')
     previous = dict(settings)
-    for key in ('background', 'holes', 'shared_scale', 'key_threshold'):
+    for key in ('background', 'holes', 'shared_scale', 'key_threshold', 'resampling'):
         value = getattr(args, key, None)
         if value is not None:
             settings[key] = value
@@ -606,6 +653,10 @@ def configure(root, data, args):
         raise ValueError('shared scale must be >0 and <=100')
     if not 0 <= settings.get('key_threshold', 48) <= 441.7:
         raise ValueError('key threshold must be between 0 and 441.7')
+    if 'resampling' in settings:
+        from style_registry import RESAMPLING
+        if settings['resampling'] not in RESAMPLING:
+            raise ValueError('unsupported resampling; use nearest, bilinear, bicubic or lanczos')
     # Re-measure the new key against the selected identity, not against stale scores.
     from extract_strip_frames import mask_background, pixels
     request = read(root / 'pet_request.json')
@@ -622,8 +673,11 @@ def configure(root, data, args):
     settings['warnings'] = list(mask.get('warnings', []))
     if settings['key_collision_pixels']:
         settings['warnings'].append('Selected key overlaps sampled canonical colors; inspect before row generation.')
+    from style_registry import compatibility_warnings
+    settings['style_warnings'] = compatibility_warnings(request.get('resolved_style'), load_profile(root / 'profile.json'),
+                                                       settings['background'], settings.get('resampling'))
     from prepare_pet_run import regenerate_prompts
-    changed = [key for key in ('background', 'holes', 'shared_scale', 'key_threshold', 'chroma_key') if settings.get(key) != previous.get(key)]
+    changed = [key for key in ('background', 'holes', 'shared_scale', 'key_threshold', 'chroma_key', 'resampling') if settings.get(key) != previous.get(key)]
     if not changed:
         return {'settings': settings, 'pending': [], 'changed': []}
     generation_change = bool(set(changed) & {'background', 'chroma_key'})
@@ -691,13 +745,13 @@ def derive(root, data, name, reason, approved):
 
 def artifact_hashes(root):
     files = ['pet_request.json', 'profile.json', 'extraction-settings.json', 'frames/frames-manifest.json',
-             'qa/contact-sheet.png', 'qa/review.json']
+             'qa/contact-sheet.png', 'qa/review.json', 'state-selection.json']
     for folder in ('references', 'prompts', 'decoded', 'frames', 'final', 'qa/previews', 'annotations'):
         files += [p.relative_to(root).as_posix() for p in sorted((root / folder).rglob('*'))
                   if p.is_file() and not p.name.endswith(('.tmp', '.lock'))]
     result = {p: digest(inside(root, p)) for p in sorted(set(files)) if inside(root, p).is_file()}
     data = manifest(root)
-    keys = ('id', 'status', 'input_hashes', 'input_images', 'output_hash', 'generation_receipt', 'derivation_receipt', 'import_receipt', 'canonical_hash')
+    keys = ('id', 'status', 'input_hashes', 'input_images', 'output_hash', 'generation_receipt', 'derivation_receipt', 'import_receipt', 'source_origin', 'canonical_hash')
     result['@generation'] = object_hash([{k: j[k] for k in keys if k in j} for j in data['jobs']])
     result['@base-review'] = object_hash(data.get('base_review'))
     result['@pipeline'] = object_hash(versions())
@@ -773,10 +827,28 @@ def require_valid(root, data):
         raise ValueError('validation failed')
 
 
+def style_warnings(root):
+    from style_registry import compatibility_warnings
+    request = read(root / 'pet_request.json')
+    settings = read(root / 'extraction-settings.json') if (root / 'extraction-settings.json').is_file() else request.get('extraction', {})
+    return compatibility_warnings(request.get('resolved_style'), load_profile(root / 'profile.json'),
+                                  settings.get('background', 'auto'), settings.get('resampling'))
+
+
+def style_provenance(root, data):
+    request = read(root / 'pet_request.json')
+    return {'schema_version': 1, 'resolved_style': request.get('resolved_style'),
+            'legacy_style_preset': request.get('style_preset'), 'style_contract': request.get('style_contract'),
+            'warnings': style_warnings(root),
+            'source_origins': {j['id']: source_origin(j) for j in data['jobs']},
+            'interpretation': 'Requested generation guidance, not proof of style quality or imagegen origin. Imported pixels retain their original rendering. Passing visual review is recorded separately.'}
+
+
 def review_template(root, data):
     require_valid(root, data)
     metrics = read(root / 'qa/review.json')
-    warnings = {r['state']: r['warnings'] + metrics.get('consistency_metrics', {}).get('warnings', []) for r in metrics['rows']}
+    style_risks = style_warnings(root)
+    warnings = {r['state']: list(dict.fromkeys(r['warnings'] + metrics.get('consistency_metrics', {}).get('warnings', []) + style_risks)) for r in metrics['rows']}
     return {'schema_version': 2, 'reviewer': '', 'fixture': data['fixture_mode'], 'artifact_hashes': artifact_hashes(root),
             'evidence': {'canonical_reference_viewed': False, 'contact_sheet_viewed': False, 'playback_states': []},
             'rows': {s['id']: {'verdict': 'unreviewed', 'notes': '',
@@ -854,6 +926,8 @@ def export(root, data, destination):
         try:
             export_assets(root / 'frames', stage, load_profile(root / 'profile.json'))
             atomic(stage / 'provenance.json', {'run_id': data['run_id'], 'fixture': data['fixture_mode'],
+                   'resolved_style': read(root / 'pet_request.json').get('resolved_style'),
+                   'style': style_provenance(root, data),
                    'artifact_hashes': artifact_hashes(root), 'generation_jobs': data['jobs'],
                    'deterministic_metrics': read(root / 'qa/review.json'),
                    'visual_review': read(root / 'qa/visual-review.json') if _review_ok(root, data) else None,
@@ -897,6 +971,7 @@ def package(root, data, destination):
                        'description': request['description'], 'spritesheetPath': 'spritesheet.webp'})
             shutil.copy2(root / 'qa/visual-review.json', stage / 'visual-review.json')
             shutil.copy2(root / 'qa/review.json', stage / 'metrics.json')
+            atomic(stage / 'style-provenance.json', style_provenance(root, data))
             from export_assets import write_export_receipt
             write_export_receipt(stage, profile)
             atomic(stage / 'receipt.json', {'schema_version': 2, 'run_id': data['run_id'], 'fixture': data['fixture_mode'],
@@ -1170,6 +1245,8 @@ def status(root, data):
               'artifact_hashes': artifact_hashes(root), 'app_integration_verified': False,
               'retention': data.get('retention')}
     result['limits'] = data.get('limits', {})
+    result['resolved_style'] = read(root / 'pet_request.json').get('resolved_style')
+    result['style_warnings'] = style_warnings(root)
     result['claims'] = [{'job': j['id'], 'token': j['token'], 'age_seconds': round(time.time() - j['started_at']),
         'state': 'stale-awaiting-reconciliation' if j.get('stale') else 'active-awaiting-result',
         'stale_reason': j.get('stale_reason'),
@@ -1274,9 +1351,17 @@ def calibrate(root, data, path, apply=False):
 
 
 def main():
+    if len(sys.argv) > 1 and sys.argv[1] == 'states':
+        from state_catalog import main as catalog_main
+        raise SystemExit(catalog_main(sys.argv[2:]))
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument('command', choices=['prepare', 'status', 'claim', 'ingest', 'import-source', 'base-review', 'fail', 'resume', 'repair', 'configure', 'revise-profile', 'derive', 'validate', 'review-template', 'review-ui', 'review', 'export', 'package', 'install', 'rollback', 'cleanup', 'doctor', 'capabilities', 'limits', 'annotate', 'calibrate', 'archive', 'restore', 'migrate'])
-    p.add_argument('--run-dir', help='Required except for doctor and capabilities')
+    p.add_argument('command', choices=['states', 'prepare', 'status', 'claim', 'ingest', 'import-source', 'base-review', 'fail', 'resume', 'repair', 'configure', 'revise-profile', 'derive', 'validate', 'review-template', 'review-ui', 'review', 'export', 'package', 'install', 'rollback', 'cleanup', 'doctor', 'capabilities', 'limits', 'annotate', 'calibrate', 'archive', 'restore', 'migrate', 'styles', 'style', 'style-modifiers'])
+    p.add_argument('--run-dir', help='Required for lifecycle commands; omit for doctor, capabilities, state discovery and style discovery')
+    p.add_argument('--search', default='', help='Style keyword, name or category search')
+    p.add_argument('--category', help='Filter styles by stable category ID')
+    p.add_argument('--json', action='store_true', help='Machine-readable style discovery with complete metadata')
+    p.add_argument('--style-modifier', action='append', default=[], help='Optional thematic modifier; repeat up to four times')
+    p.add_argument('--resampling', choices=['nearest', 'bilinear', 'bicubic', 'lanczos'], help='Configure extraction fallback; explicit per-state profile filters take precedence')
     for flag in ('job', 'token', 'source', 'receipt', 'destination', 'package-path', 'out'):
         p.add_argument('--' + flag)
     p.add_argument('--note', default='')
@@ -1285,7 +1370,7 @@ def main():
     p.add_argument('--mode', choices=['repair', 'minimal-delivery'], default='repair')
     p.add_argument('--pet-name', default='')
     p.add_argument('--pet-notes', default='')
-    for flag in ('profile', 'constraints', 'identity', 'reference-roles', 'brand-discovery-file', 'brand-name', 'brand-brief', 'chroma-key', 'style-preset', 'style-notes', 'description', 'pet-id', 'display-name'):
+    for flag in ('profile', 'state-selection', 'constraints', 'identity', 'reference-roles', 'brand-discovery-file', 'brand-name', 'brand-brief', 'chroma-key', 'style-preset', 'style-notes', 'description', 'pet-id', 'display-name'):
         p.add_argument('--' + flag)
     p.add_argument('--background', choices=['auto', 'alpha', 'chroma'])
     p.add_argument('--holes', choices=['preserve', 'key'])
@@ -1309,6 +1394,17 @@ def main():
     for name in required.get(args.command, ()):
         if not getattr(args, name):
             p.error(args.command + ' requires --' + name.replace('_', '-'))
+    if args.command in ('styles', 'style', 'style-modifiers'):
+        from style_registry import discover, format_discovery
+        try:
+            result = discover(args.command, args.search, args.category, args.style_preset,
+                              load_profile(args.profile) if args.profile else None, args.background or 'auto')
+            if args.out:
+                atomic(Path(args.out).expanduser().resolve(), result)
+            print(json.dumps(result, indent=2, ensure_ascii=False) if args.json else format_discovery(args.command, result))
+        except (ValueError, OSError, TypeError) as exc:
+            p.error(str(exc))
+        return
     if args.command in ('doctor', 'capabilities'):
         from doctor import doctor, capabilities
         result = capabilities() if args.command == 'capabilities' else doctor(args.destination, args.profile)

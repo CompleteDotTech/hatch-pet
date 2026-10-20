@@ -1,0 +1,159 @@
+{
+  "schema_version": 1,
+  "modifiers": [
+    {
+      "id": "fantasy",
+      "name": "Fantasy",
+      "description": "Suggest a magical world through approved costume and ornament cues.",
+      "instructions": "Use a small story-driven heraldic curve, carved motif or approved costume seam within existing forms; keep magic implicit in the approved character design, not floating spells.",
+      "negative_constraints": [
+        "No extra weapons, wings, runes or spell effects unless explicitly part of the approved identity."
+      ],
+      "aliases": [],
+      "conflicts": []
+    },
+    {
+      "id": "cyberpunk",
+      "name": "Cyberpunk",
+      "description": "Add restrained urban technology cues within the approved design.",
+      "instructions": "Use integrated panel seams, compact circuitry accents or approved synthetic garment details; preserve the chosen art medium and keep luminous accents inside opaque forms.",
+      "negative_constraints": [
+        "No detached neon signage, rain, city scenes, floating interfaces or unapproved implants."
+      ],
+      "aliases": [],
+      "conflicts": []
+    },
+    {
+      "id": "steampunk",
+      "name": "Steampunk",
+      "description": "Suggest mechanical craft through contained Victorian-inspired details.",
+      "instructions": "Place broad rivet rhythms, a visible hinge or brass-like accents only on already approved parts; favor a few large mechanical shapes over many tiny gears.",
+      "negative_constraints": [
+        "No new goggles, hats, machinery, smoke plumes or extra gear unless approved."
+      ],
+      "aliases": [],
+      "conflicts": []
+    },
+    {
+      "id": "cottagecore",
+      "name": "Cottagecore",
+      "description": "Suggest handmade rural comfort through subtle domestic motifs.",
+      "instructions": "Use simple stitched or painted botanical repeats and modest handcrafted finish on approved surfaces; maintain the original palette when specified and leave the background empty.",
+      "negative_constraints": [
+        "No cottages, gardens, baskets or additional accessories unless already approved."
+      ],
+      "aliases": [],
+      "conflicts": []
+    },
+    {
+      "id": "solarpunk",
+      "name": "Solarpunk",
+      "description": "Suggest optimistic ecological technology in existing components.",
+      "instructions": "Use integrated leaflike contours or a small solar-cell pattern on approved surfaces; combine organic form cues with orderly functional details without changing the selected medium.",
+      "negative_constraints": [
+        "No cityscape, new plants, solar-panel props or added devices without approval."
+      ],
+      "aliases": [],
+      "conflicts": []
+    },
+    {
+      "id": "gothic",
+      "name": "Gothic",
+      "description": "Suggest dramatic ornamental architecture through contained shape cues.",
+      "instructions": "Use pointed-arch seam rhythms, scalloped trims or restrained tracery within existing forms; preserve readable eyes and separation between body masses even in dark required palettes.",
+      "negative_constraints": [
+        "No architecture backdrop, lace haze, floating bats or newly invented jewelry."
+      ],
+      "aliases": [],
+      "conflicts": []
+    },
+    {
+      "id": "whimsical",
+      "name": "Whimsical",
+      "description": "Add playful asymmetry to details that the identity permits.",
+      "instructions": "Use gently irregular decorative rhythm and a lively expression on approved features; keep established anatomical asymmetries, marking placement and proportions consistent across frames.",
+      "negative_constraints": [
+        "No random per-frame costume changes, surprise props or disconnected decorative swirls."
+      ],
+      "aliases": [],
+      "conflicts": []
+    },
+    {
+      "id": "cozy",
+      "name": "Cozy",
+      "description": "Express quiet warmth through a relaxed treatment of the approved subject.",
+      "instructions": "Soften expression and the rhythm of existing fabric folds or rounded edges when the chosen medium allows; preserve the explicit action and movement requirements of each state.",
+      "negative_constraints": [
+        "No blankets, mugs, fireplaces, sleep symbols or new accessories without approval."
+      ],
+      "aliases": [],
+      "conflicts": []
+    },
+    {
+      "id": "nautical",
+      "name": "Nautical",
+      "description": "Use maritime graphic rhythm on approved costume or material details.",
+      "instructions": "Apply a simple rope twist, broad wave-shaped trim or clean stripe rhythm within the existing design; retain specified colors and keep ropes or loops attached to the body.",
+      "negative_constraints": [
+        "No boats, anchors, water surface, spray or new sailing accessories unless approved."
+      ],
+      "aliases": [],
+      "conflicts": []
+    },
+    {
+      "id": "botanical",
+      "name": "Botanical",
+      "description": "Use contained plant-derived form and ornament cues.",
+      "instructions": "Simplify veins, leaf lobes or seedlike repeats into a few legible marks on approved surfaces; anchor each motif to the same anatomical location in all frames.",
+      "negative_constraints": [
+        "No surrounding foliage, scattered petals, detached vines or extra plant props."
+      ],
+      "aliases": [],
+      "conflicts": []
+    },
+    {
+      "id": "celestial",
+      "name": "Celestial",
+      "description": "Suggest astronomy through restrained in-silhouette motifs.",
+      "instructions": "Use a small crescent-shaped seam or sparse star-shaped surface marks only where decoration is permitted; render them in the chosen material with stable placement and no external glow.",
+      "negative_constraints": [
+        "No starfield, orbiting bodies, floating sparkles or added constellation labels."
+      ],
+      "aliases": [],
+      "conflicts": []
+    },
+    {
+      "id": "futuristic",
+      "name": "Futuristic",
+      "description": "Suggest advanced design through simplified integrated construction.",
+      "instructions": "Use smooth panel transitions, broad chamfers or minimal interface-like markings on approved components; keep each material response consistent with the selected rendering technique.",
+      "negative_constraints": [
+        "No HUD backdrop, levitation platform, new equipment or detached holographic widgets."
+      ],
+      "aliases": [],
+      "conflicts": []
+    },
+    {
+      "id": "spooky",
+      "name": "Spooky",
+      "description": "Create a mild eerie mood using the existing character design.",
+      "instructions": "Use restrained expression, slightly angular seam rhythms or shadow-shaped internal marks while preserving a readable friendly-scale face; keep all atmospheric cues inside the silhouette.",
+      "negative_constraints": [
+        "No fog, ghosts, blood, detached shadows or unexpected costume changes."
+      ],
+      "aliases": [],
+      "conflicts": []
+    },
+    {
+      "id": "seasonal",
+      "name": "Seasonal",
+      "description": "Adapt approved decorative details to a season named in style notes.",
+      "instructions": "Use the season explicitly identified in user notes for a few surface motifs on approved components; if no season is supplied, keep the established design without inventing a holiday or costume.",
+      "negative_constraints": [
+        "No automatic holiday hats, snowflakes, gifts, leaves or added props."
+      ],
+      "aliases": [],
+      "conflicts": []
+    }
+  ]
+}

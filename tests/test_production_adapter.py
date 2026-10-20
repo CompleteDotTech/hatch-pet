@@ -58,7 +58,7 @@ class ProductionAdapterTests(unittest.TestCase):
         moved = self.home/"moved"
         shutil.copytree(destination, moved)
         self.assertTrue(validate_handoff(moved)["ok"])
-        self.assertNotIn(str(self.home), (destination/"handoff.json").read_text())
+        self.assertNotIn(str(self.home), (destination/"handoff.json").read_text(encoding="utf-8"))
 
     def test_tampered_sequence_and_unlisted_files_fail_without_deletion(self):
         destination = self.home/"handoff"
@@ -69,7 +69,7 @@ class ProductionAdapterTests(unittest.TestCase):
             validate_handoff(destination)
         with self.assertRaisesRegex(ValueError, "must be empty"):
             export_editor_handoff(self.render, destination)
-        self.assertEqual(unrelated.read_text(), "Preserve this")
+        self.assertEqual(unrelated.read_text(encoding="utf-8"), "Preserve this")
         unrelated.unlink()
         (destination/"animation/000003.png").write_bytes(b"tampered")
         with self.assertRaisesRegex(ValueError, "missing or changed"):
@@ -156,7 +156,7 @@ class ProductionAdapterTests(unittest.TestCase):
             validate_handoff(destination)
         target.write_bytes(original_pixels)
         retained = destination/"source-render-manifest.json"
-        source = json.loads(retained.read_text())
+        source = json.loads(retained.read_text(encoding="utf-8"))
         source["renderer"]["version"] = "tampered"
         atomic_json(retained, source)
         altered = deepcopy(original)
@@ -171,7 +171,7 @@ class ProductionAdapterTests(unittest.TestCase):
         audio = destination/"audio.wav"
         audio.write_bytes(audio.read_bytes()[:-4])
         retained = destination/"source-render-manifest.json"
-        source = json.loads(retained.read_text())
+        source = json.loads(retained.read_text(encoding="utf-8"))
         source["audio"]["sha256"] = file_hash(audio)
         atomic_json(retained, source)
         handoff["files"]["audio.wav"] = file_hash(audio)
@@ -186,7 +186,7 @@ class ProductionAdapterTests(unittest.TestCase):
         destination = self.home/"handoff"
         handoff = export_editor_handoff(self.render, destination)
         retained = destination/"source-render-manifest.json"
-        source = json.loads(retained.read_text())
+        source = json.loads(retained.read_text(encoding="utf-8"))
         faster = {"numerator": 24, "denominator": 1}
         for record in (handoff, handoff["audio"], source, source["audio"], source["settings"]):
             record["fps"] = faster
@@ -202,6 +202,15 @@ class ProductionAdapterTests(unittest.TestCase):
         export_openraster(self.render, 0, source)
         with zipfile.ZipFile(source) as archive:
             members = [(info, archive.read(info.filename)) for info in archive.infolist()]
+        hidden_name = self.home/"hidden-name.ora"
+        with zipfile.ZipFile(hidden_name, 'w') as archive:
+            for info, data in members:
+                if info.filename == 'mergedimage.png':
+                    info = deepcopy(info)
+                    info.filename = info.orig_filename = 'mergedimage.png\x00disguised'
+                archive.writestr(info, data)
+        with self.assertRaisesRegex(ValueError, 'unsafe'):
+            read_openraster(hidden_name)
         for name, added in (("path", ("../escape.png", b"no")), ("duplicate", ("mimetype", b"image/openraster"))):
             target = self.home/(name+".ora")
             with warnings.catch_warnings(), zipfile.ZipFile(target, "w") as archive:

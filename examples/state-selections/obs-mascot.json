@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "profile_id": "obs-mascot-25",
+  "states": [
+    "idle", "listening", "speaking", "interrupted", "celebrating",
+    "muted", "unmuted", "reacting", "incoming-message", "notification",
+    "audience-greeting", "answering-questions", "follower-celebration",
+    "milestone-celebration", "raid-reaction", "intermission", "starting-soon",
+    "be-right-back", "stream-ending", "buffering", "connection-lost",
+    "returning-online", "clapping", "waving", "saying-goodbye"
+  ],
+  "archetype": "humanoid",
+  "anatomy_policy": "error",
+  "queue_limit": 8
+}

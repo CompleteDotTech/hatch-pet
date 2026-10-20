@@ -1,5 +1,7 @@
 # Public production validation summary
 
+**Current repair audit:** the historical passing result below used the author's retained assets. A fresh checkout is missing 113 source parts and 39 audio parts, so the retained-pilot setup currently fails. The test has not been disabled. See [current delivery status](../DELIVERY_STATUS.md) for the exact outstanding condition and portability fixes.
+
 The final local suite ran **299 tests: 298 passed, one skipped, zero failures or errors**. The [exact public test output](../tests/results/production-final-public.log) records the command, UTC interval, test results and the 91 implementation/test/configuration hashes that remained unchanged throughout the run. It contains no production source payload or render/review dependency inventory.
 
 ## What was verified

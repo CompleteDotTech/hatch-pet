@@ -262,7 +262,7 @@ class ProductionRenderTests(unittest.TestCase):
                 raise RuntimeError("deliberate interruption")
         with self.assertRaisesRegex(RuntimeError, "interruption"):
             render_shot(self.bundle, "first", destination, progress=stop)
-        checkpoint = json.loads((destination/"render-manifest.json").read_text())
+        checkpoint = json.loads((destination/"render-manifest.json").read_text(encoding="utf-8"))
         self.assertEqual(checkpoint["completed_frames"], 4)
         resumed = render_shot(self.bundle, "first", destination)
         self.assertEqual(resumed["operation"]["reused_frames"], 4)
@@ -304,7 +304,7 @@ class ProductionRenderTests(unittest.TestCase):
         audio = destination/"audio.wav"
         audio.write_bytes(audio.read_bytes()[:-4])
         manifest_path = destination/"render-manifest.json"
-        manifest = json.loads(manifest_path.read_text())
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
         manifest["audio"]["sha256"] = file_hash(audio)
         manifest_path.write_bytes(canonical(manifest))
         with self.assertRaisesRegex(ValueError, "truncated audio PCM"):
@@ -420,10 +420,10 @@ class ProductionRenderTests(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, "first-shot interruption"):
             render_scene(self.bundle, "scene-one", destination, progress=stop)
         root_manifest = destination/"render-manifest.json"
-        checkpoint = json.loads(root_manifest.read_text())
+        checkpoint = json.loads(root_manifest.read_text(encoding="utf-8"))
         self.assertEqual(checkpoint["status"], "partial")
         self.assertEqual(checkpoint["completed_frames"], 0)
-        self.assertEqual(json.loads((destination/"shots/first/render-manifest.json").read_text())["completed_frames"], 2)
+        self.assertEqual(json.loads((destination/"shots/first/render-manifest.json").read_text(encoding="utf-8"))["completed_frames"], 2)
         for legacy in (False, True):
             if legacy:
                 root_manifest.unlink()

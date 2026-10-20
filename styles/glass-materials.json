@@ -1,0 +1,1002 @@
+{
+  "schema_version": 1,
+  "category": "glass-materials",
+  "styles": [
+    {
+      "id": "stained-glass",
+      "name": "Stained Glass",
+      "category": "glass-materials",
+      "kind": "technique",
+      "description": "A mascot-shaped leaded glass assembly with broad colored panes and strong dark structural borders.",
+      "tags": [
+        "leaded-glass",
+        "colored-panes",
+        "glass-craft"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use colored stained-glass panes joined by thick dark lead cames within a complete character-shaped outer border.",
+        "forms": "Divide a compact silhouette into a few broad pane regions that follow body anatomy and preserve a solid facial core.",
+        "linework": "Use lead cames as bold structural linework with simple opaque eye and mouth shapes.",
+        "shading": "Suggest transmitted light with restrained internal pane-value shifts and no projected colored light outside the figure.",
+        "palette": "Choose a small jewel-toned glass palette with strong value contrast and stable pane colors.",
+        "texture": "Show gentle rolled-glass waviness and a few broad bubbles within selected panes, keeping the face clear.",
+        "rendering": "Render a self-contained glass character with readable opaque structure and consistent pane topology across poses."
+      },
+      "negative_constraints": [
+        "Do not add a window frame, cathedral, backlight scene, or external colored glow.",
+        "Avoid tiny shards, fragile lead lines, and nearly invisible facial panes.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Decorative jewel-colored mascots and glass-craft character emblems."
+      ],
+      "limitations": [
+        "Panes are stylized to keep a readable core; this is not a fabrication-ready glass cutting pattern."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Preserve alpha around the outer lead contour; use opaque pane simulations when chroma is selected and inspect saturated edges.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "gothic",
+        "botanical"
+      ]
+    },
+    {
+      "id": "frosted-glass",
+      "name": "Frosted Glass",
+      "category": "glass-materials",
+      "kind": "technique",
+      "description": "A softly translucent sculpted glass mascot with milky diffusion, rounded volumes, and a readable opaque core.",
+      "tags": [
+        "matte-glass",
+        "translucent",
+        "etched-surface"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use thick frosted glass with a finely etched matte surface and a milky opaque center behind facial features.",
+        "forms": "Shape broad rounded glass volumes with short thick limbs and no narrow transparent extremities.",
+        "linework": "Define the contour with a restrained bright rim and keep eyes and mouth as opaque inset details.",
+        "shading": "Use broad diffused internal light and gentle rim shading without transparent-background reflections or external bloom.",
+        "palette": "Choose softly tinted glass colors with darker stable facial inserts and distinct body-marking values.",
+        "texture": "Show fine satin frosting as a uniform surface treatment, with no granular noise or ice-crystal shards.",
+        "rendering": "Render a compact frosted-glass figure with partial alpha confined to controlled edge zones and a stable opaque face."
+      },
+      "negative_constraints": [
+        "Do not make the whole body nearly invisible or depend on a background for refraction.",
+        "Avoid external glow, caustic floor patterns, and sharp crystal spikes.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Soft translucent mascots and restrained glass-material collectibles."
+      ],
+      "limitations": [
+        "The frosted-glass illusion must remain recognizable against both light and dark app backgrounds."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "adapted",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "required",
+        "chroma": "unsupported",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "True alpha is required for controlled translucent edges; chroma keying would damage the milky rim and is unsupported.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "celestial",
+        "cozy"
+      ]
+    },
+    {
+      "id": "blown-glass",
+      "name": "Blown Glass",
+      "category": "glass-materials",
+      "kind": "technique",
+      "description": "A rounded hand-blown glass character with thick walls, restrained trapped bubbles, and controlled glossy reflections.",
+      "tags": [
+        "hand-blown",
+        "thick-glass",
+        "glossy"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use thick colored blown glass with visible wall thickness, a dense readable core, and a few trapped bubbles.",
+        "forms": "Build bulbous connected volumes with smoothly stretched necks and short sturdy glass extremities.",
+        "linework": "Let continuous curved glass borders define anatomy and use opaque fused-glass facial details.",
+        "shading": "Place broad stable reflections and gentle internal color pooling without showing a reflected room or floor caustics.",
+        "palette": "Use one dominant glass tint with a small number of fused color accents and dark readable facial inserts.",
+        "texture": "Show subtle handmade wall variation and a few fixed larger bubbles away from the face.",
+        "rendering": "Render a compact blown-glass character with soft controlled edge translucency and consistent reflection placement across poses."
+      },
+      "negative_constraints": [
+        "Do not generate background-dependent refraction or an invisible clear-glass body.",
+        "Avoid detached glass beads, sharp handles, and bright reflections covering the eyes.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Art-glass collectible mascots and rounded decorative characters."
+      ],
+      "limitations": [
+        "Real-world optical refraction is simplified so the sprite can work on arbitrary backgrounds."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "adapted",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "required",
+        "chroma": "unsupported",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Use genuine alpha for glass borders while retaining an opaque identity core; chroma cannot preserve these edge effects reliably.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "celestial",
+        "nautical"
+      ]
+    },
+    {
+      "id": "enamel-pin",
+      "name": "Enamel Pin",
+      "category": "glass-materials",
+      "kind": "technique",
+      "description": "A flat hard-enamel mascot with thick raised metal borders and smooth opaque colored inlays.",
+      "tags": [
+        "hard-enamel",
+        "metal-border",
+        "collectible-pin"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use opaque hard-enamel color fills bounded by raised polished metal channels with a concealed pin back.",
+        "forms": "Construct a compact badge-like character silhouette with broad inlay regions and robust attached limbs.",
+        "linework": "Use continuous metal borders for contour and internal divisions, keeping facial marks thick and simple.",
+        "shading": "Add narrow stable metal highlights and nearly flat enamel fills with only slight glossy curvature.",
+        "palette": "Choose a limited enamel palette and one consistent metal finish such as gold, silver, or dark nickel.",
+        "texture": "Keep enamel smooth and uniform, with occasional broad reflections rather than glitter or surface speckles.",
+        "rendering": "Render an isolated front-readable enamel character with consistent channel widths and no packaging or display card."
+      },
+      "negative_constraints": [
+        "Do not show pin needles, clasps, product cards, or an external shadow.",
+        "Avoid hairline metal partitions and tiny colored inlays that disappear at cell size.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Collectible badge mascots and highly readable character icons."
+      ],
+      "limitations": [
+        "Artwork suggests a pin design but does not certify manufacturing tolerances or metal separation."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "recommended",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Opaque enamel supports verified chroma keying; preserve antialiased metal borders and inspect small highlight gaps.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "nautical",
+        "celestial"
+      ]
+    },
+    {
+      "id": "cloisonne",
+      "name": "Cloisonné",
+      "category": "glass-materials",
+      "kind": "technique",
+      "description": "A rounded enamel character decorated with broad wire-separated jewel-toned cells on a sculpted metal body.",
+      "tags": [
+        "wire-enamel",
+        "decorative-metalwork",
+        "jewel-tones"
+      ],
+      "aliases": [
+        "cloisonne-enamel"
+      ],
+      "instructions": {
+        "materials": "Use enamel fused into raised metal-wire compartments over a gently rounded metal character form.",
+        "forms": "Build a compact sculpted silhouette and divide broad body regions into a restrained ornamental cell pattern.",
+        "linework": "Trace cells with slender but readable metal wires, keeping the face larger and less ornamented.",
+        "shading": "Use gentle enamel curvature and narrow wire highlights with a single consistent lighting direction.",
+        "palette": "Choose a coordinated jewel-toned enamel palette with one metal wire color and stable motif colors.",
+        "texture": "Show smooth fired enamel with slight handcrafted pooling near wire boundaries and no granular glitter.",
+        "rendering": "Render a small cloisonné figure with a fixed ornamental map and no pedestal, jewelry chain, or surrounding ornament."
+      },
+      "negative_constraints": [
+        "Do not flatten every region into a modern pin outline with no rounded enamel volume.",
+        "Avoid intricate filigree, tiny wire cells, and ornament covering the facial expression.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Ornamental collectible characters and decorative metalwork mascots."
+      ],
+      "limitations": [
+        "Traditional dense ornament must be reduced to a few stable large cells for compact animation."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Use antialiased metal wires and verify that key removal does not erode bright enamel near the contour.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "botanical",
+        "celestial"
+      ]
+    },
+    {
+      "id": "mosaic-tile",
+      "name": "Mosaic Tile",
+      "category": "glass-materials",
+      "kind": "technique",
+      "description": "A character-shaped assembly of broad ceramic or glass tesserae with clearly controlled grout lines.",
+      "tags": [
+        "tesserae",
+        "tile-mosaic",
+        "grout"
+      ],
+      "aliases": [
+        "tile-mosaic"
+      ],
+      "instructions": {
+        "materials": "Use a few dozen broad opaque ceramic or glass tesserae separated by narrow consistent grout channels.",
+        "forms": "Build the silhouette from attached tile clusters with larger uninterrupted tile groups for the face.",
+        "linework": "Use grout channels as secondary linework and darker tile clusters for eyes, mouth, and major contours.",
+        "shading": "Shade through discrete tile value groups with only subtle individual tile relief and no floor shadow.",
+        "palette": "Choose a limited tile palette with planned value groupings and stable color assignments for each region.",
+        "texture": "Show slight tile-edge irregularity and restrained glaze variation without noisy chip patterns.",
+        "rendering": "Render an isolated mosaic mascot with a fixed tessera layout and no wall, circular medallion, or background field."
+      },
+      "negative_constraints": [
+        "Do not add a rectangular mosaic panel or grout outside the character silhouette.",
+        "Avoid hundreds of tiny tiles and facial features split into unreadable fragments.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Decorative craft mascots and robust tile-inspired icons."
+      ],
+      "limitations": [
+        "Tile scale must be exaggerated; the image is not a fabrication layout or tile-count guarantee."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Keep grout opaque and preserve only intended exterior alpha; inspect dark grout for mistaken background holes.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "botanical",
+        "nautical"
+      ]
+    },
+    {
+      "id": "perler-beads",
+      "name": "Perler Beads",
+      "category": "glass-materials",
+      "kind": "technique",
+      "description": "A fuse-bead mascot arranged on a regular square peg grid with visible bead centers.",
+      "tags": [
+        "fuse-beads",
+        "pegboard",
+        "bead-grid"
+      ],
+      "aliases": [
+        "fuse-beads",
+        "perler-bead"
+      ],
+      "instructions": {
+        "materials": "Use opaque cylindrical fuse beads with visible central holes and lightly fused contact points.",
+        "forms": "Build a compact stepped silhouette entirely from aligned whole beads on a regular square grid.",
+        "linework": "Use darker bead rows as contour and clustered bead colors for simple readable facial features.",
+        "shading": "Keep bead shading minimal and repeat one small consistent rim highlight per bead.",
+        "palette": "Choose a small bead-color set with high contrast and no isolated decorative beads outside the figure.",
+        "texture": "Show round bead rims and central holes consistently, with the same bead pitch across every frame.",
+        "rendering": "Render the fused-bead character on transparency without a pegboard, ironing paper, or craft tools."
+      },
+      "negative_constraints": [
+        "Do not rotate beads off-grid, use fractional beads, or blur them into smooth vector regions.",
+        "Avoid a visible pegboard and random missing beads in the face or limbs.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Craft-grid mascots and fuse-bead-inspired pixel characters."
+      ],
+      "limitations": [
+        "Visual bead patterns require separate fabrication checks before use as physical craft instructions."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "recommended",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "recommended"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "hard",
+        "resampling": "nearest",
+        "scaling": "Keep the fixed target cell geometry; prefer integer artwork scaling with nearest-neighbor resampling and inspect every pixel cluster at actual size.",
+        "notes": [
+          "Use nearest resampling and preserve deliberate bead holes; keep grid pitch fixed without changing target cell geometry.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "whimsical"
+      ]
+    },
+    {
+      "id": "beadwork",
+      "name": "Beadwork",
+      "category": "glass-materials",
+      "kind": "technique",
+      "description": "A compact mascot woven from rounded seed-bead clusters with stable rows and reflective bead surfaces.",
+      "tags": [
+        "seed-beads",
+        "woven-beads",
+        "bead-craft"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use opaque glass seed beads woven into attached fabric-like clusters with concealed connecting thread.",
+        "forms": "Build a broad compact character shape with bead rows following each body region and no dangling fringe.",
+        "linework": "Use dark bead bands for facial features and major boundaries instead of drawn outlines.",
+        "shading": "Apply small repeated bead highlights and broad group-value shading to preserve body readability.",
+        "palette": "Choose a limited bead palette with distinct body and face colors and restrained metallic accents.",
+        "texture": "Show rounded individual bead units at a readable scale with stable row order across poses.",
+        "rendering": "Render an isolated woven-bead character with consistent bead size and no loose beads or string ends."
+      },
+      "negative_constraints": [
+        "Do not switch to square fuse-bead geometry or stretch beads into amorphous lumps.",
+        "Avoid glitter scatter, dangling beaded chains, and microscopic seed-bead density.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Tactile decorative mascots and woven-bead character emblems."
+      ],
+      "limitations": [
+        "Literal jewelry-scale detail must be coarsened to keep expression and silhouette clear."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Use alpha around bead clusters; keep dark gaps within dense woven regions opaque unless explicitly designed as holes.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "botanical",
+        "celestial"
+      ]
+    },
+    {
+      "id": "crystal",
+      "name": "Crystal",
+      "category": "glass-materials",
+      "kind": "technique",
+      "description": "A faceted translucent mineral character with broad angular planes and a dense, readable central body.",
+      "tags": [
+        "faceted-mineral",
+        "translucent",
+        "crystal-sculpture"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use a single tinted crystal material with a dense opaque core and translucent peripheral facets.",
+        "forms": "Construct broad faceted body masses and short blunt crystalline limbs without outward sprays of spikes.",
+        "linework": "Define anatomy through clear facet intersections and opaque inset facial marks rather than fine outlines.",
+        "shading": "Shade large crystal planes with controlled value steps and a few internal light bands without external glow.",
+        "palette": "Choose one dominant mineral tint with a small stable highlight range and contrasting facial inserts.",
+        "texture": "Show a few fixed broad inclusions or growth bands inside major planes, avoiding glitter-like noise.",
+        "rendering": "Render a compact crystal figure with a stable facet map, restrained edge translucency, and no background refraction."
+      },
+      "negative_constraints": [
+        "Do not add floating crystals, sharp outward clusters, or a cavern background.",
+        "Avoid invisible body regions, dense rainbow refraction, and sparkles detached from the silhouette.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Mineral collectible mascots and angular fantasy companions."
+      ],
+      "limitations": [
+        "Transparency and facets need simplification; the face must remain opaque and readable against arbitrary backgrounds."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "adapted",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "required",
+        "chroma": "unsupported",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Require true alpha for controlled translucent edges; chroma cannot safely reconstruct colored crystal translucency.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "fantasy",
+        "celestial"
+      ]
+    },
+    {
+      "id": "gemstone",
+      "name": "Gemstone",
+      "category": "glass-materials",
+      "kind": "technique",
+      "description": "A polished lapidary mascot built from broad cabochon and cut-gem surfaces with rich internal color.",
+      "tags": [
+        "lapidary",
+        "polished-stone",
+        "cabochon"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use polished colored gemstone with an opaque or dense body, rounded cabochon regions, and a few broad cut facets.",
+        "forms": "Shape a compact carved jewel character with rounded facial planes and sturdy integrated limbs.",
+        "linework": "Use clear material boundaries and shallow carved facial marks, avoiding dense metal jewelry settings.",
+        "shading": "Place broad polished highlights and deep stable internal color gradients without a mirrored environment.",
+        "palette": "Choose a specific gemstone color family with restrained mineral banding and strong facial value contrast.",
+        "texture": "Show a few broad fixed mineral inclusions or agate-like bands rather than glitter or random crystal specks.",
+        "rendering": "Render an isolated lapidary character with polished surfaces and consistent mineral markings in every pose."
+      },
+      "negative_constraints": [
+        "Do not generate rings, chains, pedestals, or loose decorative gems.",
+        "Avoid sharp faceted sprays, eye-obscuring reflections, and random mineral patterns between frames.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Polished stone collectible mascots and jewel-like icons."
+      ],
+      "limitations": [
+        "Real internal optics are simplified; mineral banding must function as stable identity markings."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Keep the core opaque; preserve antialiased jewel edges and check saturated highlights against any chroma key.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "celestial",
+        "nautical"
+      ]
+    },
+    {
+      "id": "holographic-foil",
+      "name": "Holographic Foil",
+      "category": "glass-materials",
+      "kind": "technique",
+      "description": "An opaque embossed foil mascot with controlled diffraction bands following a stable surface pattern.",
+      "tags": [
+        "diffraction-foil",
+        "embossed-foil",
+        "rainbow-sheen"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use opaque laminated holographic foil with a shallow embossed surface and a readable matte face treatment.",
+        "forms": "Keep the character as broad solid shapes with minimal folded relief and clearly attached extremities.",
+        "linework": "Use dark stable contour and facial marks to separate the figure from its changing-looking foil sheen.",
+        "shading": "Apply a few broad diffraction bands following a fixed light direction, with no external bloom or transparent body.",
+        "palette": "Use restrained spectral color bands over a stable base tone while preserving identity colors in designated matte regions.",
+        "texture": "Show a single broad embossed diffraction motif with stable placement rather than dense glitter particles.",
+        "rendering": "Render an isolated opaque foil character whose sheen supports the silhouette and remains consistent across the sequence."
+      },
+      "negative_constraints": [
+        "Do not make the mascot a see-through hologram or fill it with random sparkling noise.",
+        "Avoid frame-to-frame rainbow cycling and highlights that erase facial features.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Foil-sticker mascots and distinctive material-finish character variants."
+      ],
+      "limitations": [
+        "Printed exports can depict the foil effect but cannot reproduce physical diffraction."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "adapted",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Preserve an opaque core and antialiased foil contour; broad spectral bands make chroma choice especially sensitive.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "futuristic",
+        "celestial"
+      ]
+    },
+    {
+      "id": "metallic-foil",
+      "name": "Metallic Foil",
+      "category": "glass-materials",
+      "kind": "technique",
+      "description": "A shaped foil character with broad crimped folds and controlled metallic highlights.",
+      "tags": [
+        "crimped-foil",
+        "metallic-sheet",
+        "foil-craft"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use thin metallic foil pressed over simple character forms, showing broad folds and lightly crimped edges.",
+        "forms": "Build a compact padded silhouette with rounded volumes and a small number of readable foil creases.",
+        "linework": "Define contours with folded foil edges and opaque painted or embossed facial marks.",
+        "shading": "Use broad alternating light and dark reflection bands tied to fold direction without reflecting a scene.",
+        "palette": "Choose one coherent foil metal color with a restrained dark facial accent and minimal painted markings.",
+        "texture": "Show a few broad creases and compressed foil wrinkles, avoiding dense high-frequency crumple noise.",
+        "rendering": "Render an isolated shaped-foil character with stable fold landmarks and a consistent reflection arrangement."
+      },
+      "negative_constraints": [
+        "Do not replace folded foil with smooth chrome sculpture or glitter.",
+        "Avoid torn foil ribbons, sharp disconnected fragments, and reflections swallowing the face.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Metallic craft mascots and celebratory foil character illustrations."
+      ],
+      "limitations": [
+        "Literal crumpled-foil complexity needs reduction to a few clear folds for animation consistency."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Keep foil opaque with antialiased borders; inspect bright contour reflections on both dark and light backgrounds.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "seasonal",
+        "futuristic"
+      ]
+    },
+    {
+      "id": "iridescent-finish",
+      "name": "Iridescent Finish",
+      "category": "glass-materials",
+      "kind": "treatment",
+      "description": "A compositional surface treatment that adds restrained pearlescent hue shifts to an otherwise stable mascot material.",
+      "tags": [
+        "pearlescent",
+        "surface-finish",
+        "angle-color"
+      ],
+      "aliases": [
+        "pearlescent"
+      ],
+      "instructions": {
+        "materials": "Use a smooth opaque rounded toy material by default, or retain an explicitly approved base material, then apply a thin pearlescent coating.",
+        "forms": "Preserve the underlying character volumes and silhouette; introduce no new anatomy or decorative growths.",
+        "linework": "Keep existing contour and facial linework opaque and unchanged beneath the iridescent treatment.",
+        "shading": "Use broad pearly highlights with limited angle-dependent hue shifts tied to one stable light setup.",
+        "palette": "Retain the identity palette in midtones and confine two or three complementary sheen colors to highlight bands.",
+        "texture": "Keep the coating smooth or softly nacreous without glitter specks or holographic patterning.",
+        "rendering": "Render the same approved character with a restrained finish that stays stable across adjacent frames."
+      },
+      "negative_constraints": [
+        "Do not replace identity colors with unrestricted rainbow cycling.",
+        "Avoid transparent body regions, detached glints, and sheen covering facial landmarks.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "An optional pearlescent treatment for rounded toy or illustrated mascots."
+      ],
+      "limitations": [
+        "This is a material finish treatment and is not counted as a distinct base artistic technique."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "adapted",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Maintain opaque body colors and alpha only at existing edges; inspect hue-shift bands before choosing a chroma key.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "celestial"
+      ]
+    },
+    {
+      "id": "rubber-figurine",
+      "name": "Rubber Figurine",
+      "category": "glass-materials",
+      "kind": "technique",
+      "description": "A flexible molded rubber mascot with rounded seams, matte surfaces, and softly compressed forms.",
+      "tags": [
+        "molded-rubber",
+        "soft-matte",
+        "flexible-toy"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use opaque molded rubber with a fine matte surface, subtle parting seams, and simple inset or printed features.",
+        "forms": "Build rounded resilient body masses with thick flexible limbs and controlled squash at contact points.",
+        "linework": "Define edges by the molded silhouette and use shallow embossed marks or opaque paint for facial details.",
+        "shading": "Use broad matte highlights and gentle compression shading, avoiding the gloss of vinyl or resin.",
+        "palette": "Choose solid rubber pigment colors with limited contrasting painted markings and consistent material tone.",
+        "texture": "Show a very fine rubber grain and a few shallow molding seams without pores or sticky residue.",
+        "rendering": "Render a compact rubber character whose flexible deformation preserves approved markings and facial proportions."
+      },
+      "negative_constraints": [
+        "Do not add shiny wet plastic, translucent jelly, or latex wrinkles.",
+        "Avoid exaggerated stretching that changes the approved silhouette or detached molding flash.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Flexible toy companions and playful squash-and-stretch mascots."
+      ],
+      "limitations": [
+        "Material flexibility is a visual cue; deformation must still obey the approved identity and frame layout."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "supported",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Opaque rubber supports verified chroma extraction; retain antialiased matte edges and embossed facial contrast.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "whimsical"
+      ]
+    },
+    {
+      "id": "jelly-toy",
+      "name": "Jelly Toy",
+      "category": "glass-materials",
+      "kind": "technique",
+      "description": "A soft translucent gel character with rounded lobes, restrained internal color, and a readable dense facial core.",
+      "tags": [
+        "translucent-gel",
+        "squishy-toy",
+        "soft-volume"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use tinted soft gel with a dense opaque center behind the face and controlled translucency near outer lobes.",
+        "forms": "Build broad rounded squishy masses with thick attached limbs and stable compact proportions.",
+        "linework": "Define the contour through clean gel borders and use opaque embedded facial features without thin outlines.",
+        "shading": "Use broad soft internal shading and a few stable glossy highlights without external glow or caustics.",
+        "palette": "Choose one or two gel tints with distinct opaque eye and mouth colors and stable marking values.",
+        "texture": "Keep gel smooth with only a few fixed internal bubbles away from facial landmarks.",
+        "rendering": "Render a self-contained jelly toy with restrained edge alpha and no puddle, drips, or background refraction."
+      },
+      "negative_constraints": [
+        "Do not make the main body invisible or turn it into dripping liquid.",
+        "Avoid bubbles outside the silhouette, detached droplets, and specular glare over the eyes.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Soft translucent companions and rounded squishy character assets."
+      ],
+      "limitations": [
+        "Gel deformation must not change identity; background-independent readability takes priority over realistic transparency."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "adapted",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "required",
+        "chroma": "unsupported",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Require genuine alpha for translucent gel edges while retaining an opaque identity core; chroma is unsupported.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "whimsical",
+        "nautical"
+      ]
+    },
+    {
+      "id": "wax-sculpture",
+      "name": "Wax Sculpture",
+      "category": "glass-materials",
+      "kind": "technique",
+      "description": "A small sculpted wax mascot with softly translucent surface depth and broad tool-smoothed forms.",
+      "tags": [
+        "sculpted-wax",
+        "soft-luster",
+        "carved-material"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use solid colored wax with a soft satin luster and slight subsurface warmth confined inside an opaque body.",
+        "forms": "Sculpt simple rounded masses with shallow carved features and short sturdy limbs.",
+        "linework": "Define anatomy through clean carved edges and broad incised facial marks with contrasting wax inserts if needed.",
+        "shading": "Use gentle internal warmth and soft highlights to describe wax thickness without glow outside the figure.",
+        "palette": "Choose a few muted wax pigment colors with darker facial features and stable marking boundaries.",
+        "texture": "Show restrained tool smoothing and a few shallow carving traces, avoiding greasy shine or porous clay grain.",
+        "rendering": "Render an intact wax character with consistent carved landmarks and no candle flame, wick, or melted pool."
+      },
+      "negative_constraints": [
+        "Do not add burning candles, wax drips, or melting anatomy.",
+        "Avoid photoreal human skin effects and translucent faces with unreadable features.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Sculptural material mascots and soft-luster collectible characters."
+      ],
+      "limitations": [
+        "Subsurface color is simulated inside opaque forms to support reliable sprite compositing."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Preserve antialiased wax borders and keep warm internal shading opaque rather than treating it as edge transparency.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "cozy",
+        "seasonal"
+      ]
+    },
+    {
+      "id": "carved-soap",
+      "name": "Carved Soap",
+      "category": "glass-materials",
+      "kind": "technique",
+      "description": "A compact soap carving with satin translucent depth, shallow gouge marks, and rounded carved edges.",
+      "tags": [
+        "soap-carving",
+        "satin-surface",
+        "shallow-gouges"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use a solid bar-soap material with satin translucency, a dense opaque center, and lightly polished carved surfaces.",
+        "forms": "Carve broad compact body forms with shallow relief markings and rounded edges that suggest a single soap block.",
+        "linework": "Use a few shallow knife or gouge cuts to define the face and body divisions without fine etched detail.",
+        "shading": "Apply soft milky shading and restrained highlights along rounded cuts without a wet reflective surface.",
+        "palette": "Choose one soap color family with subtly darker carved recesses and optional stable embedded color regions.",
+        "texture": "Show broad smooth carving facets and a few controlled gouge traces, with no foam or crumbly dust.",
+        "rendering": "Render an isolated carved-soap character with consistent cut landmarks and no bathroom setting or loose shavings."
+      },
+      "negative_constraints": [
+        "Do not add bubbles, lather, water droplets, or a soap dish.",
+        "Avoid sharp fragile carving filigree and changing gouge patterns between frames.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Gentle carved-material mascots and restrained craft illustrations."
+      ],
+      "limitations": [
+        "Soap material cues are subtle; retain readable broad cuts and avoid relying on realistic transparency."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "recommended",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "preferred",
+        "chroma": "caution",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "Keep the soap core opaque and preserve antialiased rounded edges; inspect pale soap against light key colors.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "botanical",
+        "cozy"
+      ]
+    },
+    {
+      "id": "resin-art",
+      "name": "Resin Art",
+      "category": "glass-materials",
+      "kind": "technique",
+      "description": "A cast resin mascot distinguished by stable embedded pigment ribbons and restrained internal inclusions.",
+      "tags": [
+        "cast-resin",
+        "pigment-pour",
+        "embedded-color"
+      ],
+      "aliases": [],
+      "instructions": {
+        "materials": "Use dense cast resin containing broad opaque pigment ribbons and a few fixed inclusions inside a readable body core.",
+        "forms": "Build smooth compact molded volumes with simple integrated limbs and clear uninterrupted facial planes.",
+        "linework": "Define the contour through polished resin edges and use opaque inset or painted facial features.",
+        "shading": "Use broad stable gloss reflections and gentle internal pigment depth without an externally reflected environment.",
+        "palette": "Choose a coordinated resin base and two pigment ribbon colors, preserving their placement as identity markings.",
+        "texture": "Show broad marbled pigment flow and a few fixed internal flecks instead of loose glitter or random bubbles.",
+        "rendering": "Render an isolated resin-art character with controlled edge translucency and identical inclusion landmarks across states."
+      },
+      "negative_constraints": [
+        "Do not randomize pigment swirls or inclusions between animation frames.",
+        "Avoid transparent facial regions, floating glitter outside the body, and resin-pouring tools.",
+        "No scenery, floor shadows, detached decorations, clipped extremities, or changing surface motifs between animation frames."
+      ],
+      "use_cases": [
+        "Art-resin collectibles and mascots with distinctive embedded material markings."
+      ],
+      "limitations": [
+        "Swirls are identity landmarks; this direction needs stricter visual review than a plain opaque resin figure."
+      ],
+      "applicability": {
+        "character": "recommended",
+        "sequence": "adapted",
+        "icon": "adapted",
+        "print": "adapted",
+        "grid": "unsuitable"
+      },
+      "compatibility": {
+        "alpha": "required",
+        "chroma": "unsupported",
+        "edge_mode": "antialiased",
+        "resampling": "lanczos",
+        "scaling": "Keep the fixed target cell geometry; downsample the isolated artwork once with the recommended filter, preserve alpha, and inspect facial details at actual size.",
+        "notes": [
+          "True alpha is required for translucent resin borders; preserve an opaque face and do not infer transparency from chroma colors.",
+          "Keep texture landmarks and material highlights anchored to the approved character across all poses."
+        ]
+      },
+      "recommended_modifiers": [
+        "celestial",
+        "nautical"
+      ]
+    }
+  ]
+}

@@ -75,6 +75,8 @@ Roles are `identity`, `front`, `side`, `back`, `detail`, `style`, and `edit-targ
 
 ## Imagegen handoff and provenance
 
+Handoffs and attempt history also retain the complete resolved style snapshot. The approved rendering of an imported canonical base remains authoritative in generated states; a requested preset never authorizes silent restyling. Imported pixels keep their origin and never acquire an imagegen receipt from style selection. Package/export style metadata records requested guidance separately from actual source origin and visual review.
+
 `claim` returns the prompt, image roles/paths/hashes, identity, token, failure history and output rules. Read the installed imagegen skill, inspect local inputs, then attach all required images. Use `referenced_image_paths` when all inputs have local paths; otherwise the recent-image mechanism must include every target within its supported limit. Never pass both. A brand-new unreferenced base omits both mechanisms. If all required references cannot be attached, resolve that constraint before calling.
 
 Hatch receipts are attestations, not independent proof of a provider call. Optional `model_call` records genuine `id`, `model`, `parameters`, or nulls with `unavailable_reason`. Hatch tokens are never substituted for provider IDs. The installed skill's image-display and project-save requirements remain in force.

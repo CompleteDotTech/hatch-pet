@@ -1,6 +1,6 @@
 ---
 name: hatch-pet
-description: Create, import, animate, review and reuse layered 2D casts across scenes, or produce Codex pets and reusable raster sequences such as process illustrations, product variants, printable frames, pictograms, research stimuli, cursors and craft grids. Uses installed imagegen for production artwork, versioned cast and clip contracts, deterministic scene rendering and explicit review. Does not install, publish or certify external integrations implicitly.
+description: Create, import, animate, review and reuse layered 2D casts across scenes, or produce Codex pets and reusable raster sequences. Combine character state packs by anatomy, compile profiles and event recipes, or make process illustrations, product variants, printable frames, pictograms, research stimuli, cursors and craft grids. Uses installed imagegen, versioned cast and clip contracts, deterministic rendering and explicit review. Does not install, publish or certify external integrations implicitly.
 ---
 
 # Hatch Pet
@@ -16,6 +16,31 @@ For a cast performing in scenes, use `scripts/production.py` and the separate pr
 - **Develop/test:** use labeled synthetic fixtures. A fixture receipt tests the gate; it is not production artwork acceptance. Never relabel fixtures as user artwork or model output.
 
 Run `python scripts/hatch.py doctor` before unfamiliar workflows; `capabilities` lists bounded interfaces. Use [workflow](references/workflow.md) for lifecycle commands. Unsupported formats, policies and excessive allocations must fail clearly.
+
+## Select expanded character states
+
+Read [character states](references/character-states.md) for catalog discovery, packs, archetypes, recipes and complete examples. Use `python scripts/hatch.py states list`, `states search curious`, `states show running`, `states packs` and `states archetypes` to inspect definitions and generation requirements. The catalog's `running` remains task processing; directional running uses separate identifiers.
+
+Compile a selected subset before preparing artwork:
+
+```bash
+python scripts/hatch.py states compile --selection examples/state-selections/expressive-cat.json --output output/cat-profile.json
+python scripts/hatch.py prepare --run-dir output/cat-run --profile output/cat-profile.json --pet-name Miso --reference art/cat.png
+```
+
+Read the compilation estimates, substitutions and omissions. Confirm the chosen archetype/capabilities against the actual reference; presets are assumptions. Use explicit `--anatomy-policy substitute` or `filter` only when that behavior is intended. Reconcile required props with `identity.approved_props`. The adjacent `.selection.json` is validated, copied into the run, and retained with review/export evidence. Keep it with the profile. Select new states in a new run; `revise-profile` retains original selection provenance as history.
+
+Treat every catalog entry as a definition, not generated artwork. `states preview` reports available assets and their origin/review status; an ungenerated state has no animation preview. Never build or generate the Complete Character Studio as one atlas. Use bounded subsets, inspect state/frame/memory/call estimates, and retain the existing attempt/concurrency/budget controls. Use `--reduced-motion` at compilation for one expressive still per selected state, or the ordinary per-state still alternatives in browser playback. Expanded profiles are custom exports; they do not extend Codex's fixed nine rows.
+
+## Select and preserve visual style
+
+Use `python scripts/hatch.py styles` to enumerate the versioned visual library, `styles --search WORD` or `--category ID` to narrow it, and `style --style-preset ID` to inspect the full artistic direction and limitations. Add `--json` for agent-readable metadata. Read [the style catalog](references/style-catalog.md) for every ID, category quick starts, composition rules and contributor instructions; do not load the entire catalog into a generation prompt.
+
+Select a stable ID or declared alias with the existing `--style-preset`. Add explicit refinements with `--style-notes` and zero to four separate themes with repeated `--style-modifier`; enumerate those with `style-modifiers`. Keep themes, treatments and aliases separate from the technique count. Preserve the original nine presets and existing profile semantics.
+
+Resolve the style once during preparation. Keep `pet_request.json.resolved_style`, its version/hash and exact contract unchanged across canonical-base generation, rows, retries, repair, resume and archive restoration. Every profile receives the complete selected instructions. Explicit requirements/avoidances, approved references/identity and the profile contract take precedence. For an imported base, preserve its approved existing rendering; do not restyle it or label it generated because a preset was requested. For reference-guided `auto`, lock the exact rendering through canonical visual review.
+
+Read compatibility warnings before generation. Adapt glass, light effects, fibers, fine marks and decorative techniques into a readable isolated silhouette. Resolve unsupported chroma combinations using alpha or a deliberate supported adaptation before proceeding. New runs use the style's recommended extraction fallback; explicit profile filters win. Use nearest for crisp grids and filtered edges for continuous media, preserving fixed geometry. Review actual-size consistency and edge quality; record notes for every current warning. Automated catalog tests do not establish subjective imagegen artwork quality.
 
 ## Execute and preserve evidence
 
@@ -50,10 +75,13 @@ When authorized to delegate, one worker may own one existing generation claim or
 ## Reference map
 
 - [Workflow](references/workflow.md): preparation, acquisition, validation, review and delivery commands.
+- [Style catalog](references/style-catalog.md): complete IDs, aliases, thematic modifiers, materials, compatibility, frozen specifications and extension schema.
 - [Sources and identity](references/sources-and-identity.md): schemas and complete import recipe.
 - [Extraction and review](references/extraction-and-review.md): annotations, filters, calibration and evidence UI.
 - [Portability and operations](references/portability-and-operations.md): limits, stale work, schema migration, archives and restore.
 - [Playback and extensions](references/playback-and-extensions.md): state-machine and exporter/consumer contracts.
+- [Character states](references/character-states.md): versioned catalog, composable packs, anatomy rules, compilation, selective generation and migration.
+- [Character state validation](references/character-state-validation.md): acceptance mapping, tested workflows and capability boundaries.
 - [Ten uses](references/additional-uses.md): inputs, semantics, constraints, commands and external requirements.
 - [Profiles and exports](references/profiles-and-exports.md), [QA rubric](references/qa-rubric.md), [Codex contract](references/codex-pet-contract.md), [default animation table](references/animation-rows.md).
 - [Traceability](references/traceability.md): L01–L10 / I01–I10 / U01–U10 and validation evidence.
