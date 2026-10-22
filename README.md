@@ -367,6 +367,10 @@ Run `python -m unittest discover -s tests -v` for the complete local regression 
 
 The complete development suite uses `requirements-test.txt` and a local Playwright Chromium binary. Install them if missing with `python -m pip install -r requirements-test.txt` and `python -m playwright install chromium`. The standalone `scripts/doctor.py` reports local capabilities without requiring browser tools.
 
+### Director engineering baseline
+
+The [Director baseline audit](references/director-baseline.md) records the exact starting revision, source-delivery and regression evidence, repository coordination, and legacy compatibility boundaries for issue #23. Its [requirement and interface map](references/director-requirements-map.md) identifies existing subsystem owners and the remaining Director work. Audit completion does not imply that Director planning, full 3D scene production, or its silent-video demonstrations are implemented.
+
 <br>
 
 <div align="center">
