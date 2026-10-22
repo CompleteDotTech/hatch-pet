@@ -1,0 +1,17 @@
+test_antiparallel_rotation_is_finite_and_exact (test_rig_math.RigMathTests.test_antiparallel_rotation_is_finite_and_exact) ... ok
+test_blender_conversion_is_proper_and_reversible (test_rig_math.RigMathTests.test_blender_conversion_is_proper_and_reversible) ... ok
+test_column_vector_transform_against_literal_matrix (test_rig_math.RigMathTests.test_column_vector_transform_against_literal_matrix) ... ok
+test_duplicate_cycle_missing_parent_and_false_head_are_rejected (test_rig_math.RigMathTests.test_duplicate_cycle_missing_parent_and_false_head_are_rejected) ... ok
+test_fk_parent_rotation_propagates_without_mutation (test_rig_math.RigMathTests.test_fk_parent_rotation_propagates_without_mutation) ... ok
+test_invalid_transforms_fail_closed (test_rig_math.RigMathTests.test_invalid_transforms_fail_closed) ... ok
+test_seeded_random_trees_reconstruct_independent_translations (test_rig_math.RigMathTests.test_seeded_random_trees_reconstruct_independent_translations) ... ok
+test_slerp_handles_opposite_sign_and_half_angle (test_rig_math.RigMathTests.test_slerp_handles_opposite_sign_and_half_angle) ... ok
+test_cli_failure_is_nonzero_and_structured (test_rig_compatibility.RigCompatibilityTests.test_cli_failure_is_nonzero_and_structured) ... ok
+test_existing_capabilities_work_with_3d_imports_blocked (test_rig_compatibility.RigCompatibilityTests.test_existing_capabilities_work_with_3d_imports_blocked) ... ok
+test_existing_contract_bytes_are_unchanged (test_rig_compatibility.RigCompatibilityTests.test_existing_contract_bytes_are_unchanged) ... ok
+test_public_delivery_discovers_all_2d_tests_without_3d_dependencies (test_rig_compatibility.RigCompatibilityTests.test_public_delivery_discovers_all_2d_tests_without_3d_dependencies) ... ok
+
+----------------------------------------------------------------------
+Ran 12 tests in 1.258s
+
+OK
