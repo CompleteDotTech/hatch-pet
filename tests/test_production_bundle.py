@@ -1,7 +1,9 @@
 """Bundled transport preserves strict archive and review semantics; fixtures only."""
 from __future__ import annotations
 import copy
+from contextlib import redirect_stderr, redirect_stdout
 import hashlib
+import io
 import json
 from pathlib import Path
 import subprocess
@@ -12,6 +14,7 @@ from unittest.mock import patch
 import zipfile
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'scripts'))
 import production_bundle as bundle
+import production_sources as sources
 import production_workflow as workflow
 import portable_runs
 from production_fixture import build_fixture_project
@@ -180,6 +183,58 @@ class ProductionBundleTests(unittest.TestCase):
             bundle.verify_bundle(self.index)
         with patch.object(bundle, 'MAX_BUNDLE_PARTS', 1), self.assertRaisesRegex(ValueError, 'parts'):
             bundle.verify_bundle(self.index)
+
+    def test_create_cli_preserves_destination_created_during_stage_verification(self):
+        destination = self.home / 'racing-verification'
+        original_verify = bundle.verify_bundle
+        created = []
+        def other_writer(stage):
+            result = original_verify(stage)
+            self.assertTrue(result['verified'])
+            destination.mkdir()
+            created.append(destination.stat().st_ino)
+            return result
+        stdout, stderr = io.StringIO(), io.StringIO()
+        with patch.object(bundle, 'verify_bundle', side_effect=other_writer):
+            with redirect_stdout(stdout), redirect_stderr(stderr):
+                result = bundle.main(['create', '--archive', str(self.archive),
+                                      '--destination', str(destination)])
+        self.assertEqual(result, 2)
+        self.assertEqual(stdout.getvalue(), '')
+        error = json.loads(stderr.getvalue())
+        self.assertIn('must not exist', error['error'])
+        self.assertFalse(error['provider_called'])
+        self.assertEqual(len(created), 1)
+        self.assertEqual(destination.stat().st_ino, created[0])
+        self.assertEqual(list(destination.iterdir()), [])
+        self.assertFalse(list(self.home.glob('.hatch-production-parts-*')))
+
+    def test_bundle_creation_preserves_destination_racing_exclusive_publication(self):
+        destination = self.home / 'racing-publication'
+        original_publish = sources._rename_no_replace
+        created = []
+        def other_writer(stage, target):
+            self.assertTrue(bundle.verify_bundle(stage)['verified'])
+            target.mkdir()
+            created.append(target.stat().st_ino)
+            return original_publish(stage, target)
+        with patch.object(sources, '_rename_no_replace', side_effect=other_writer):
+            with self.assertRaises(FileExistsError):
+                bundle.create_bundle(self.archive, destination, part_size=1024)
+        self.assertEqual(len(created), 1)
+        self.assertEqual(destination.stat().st_ino, created[0])
+        self.assertEqual(list(destination.iterdir()), [])
+        self.assertFalse(list(self.home.glob('.hatch-production-parts-*')))
+
+    def test_bundle_creation_rejects_a_dangling_destination_without_following_it(self):
+        destination = self.home / 'already-present-link'
+        missing_target = self.home / 'unrelated-target'
+        destination.symlink_to(missing_target, target_is_directory=True)
+        with self.assertRaisesRegex(ValueError, 'must not exist'):
+            bundle.create_bundle(self.archive, destination)
+        self.assertTrue(destination.is_symlink())
+        self.assertFalse(missing_target.exists())
+        self.assertFalse(list(self.home.glob('.hatch-production-parts-*')))
 
     def test_cli_verifies_bundle_and_rejects_invalid_inputs(self):
         script = Path(__file__).resolve().parents[1] / 'scripts' / 'production_bundle.py'
