@@ -14,6 +14,7 @@ from fixture_workflow import build_run, small_profile, ingest_fixture, record_fi
 from asset_contracts import check_image, check_resources, generation_projection, validate_identity
 from extraction_annotations import annotated_source
 import extract_strip_frames as extraction
+import portable_runs
 from portable_runs import archive_run, restore_run, migrate, verify_archive
 from source_interface import import_source
 from profile_spec import load_profile
@@ -163,6 +164,36 @@ class CapabilityTests(unittest.TestCase):
         self.assertEqual(data['run_id'],self.data['run_id']);self.assertEqual(data['jobs'],self.data['jobs'])
         self.assertTrue(hatch.status(restored,data)['reviewed'])
         self.assertEqual(hatch.read(restored/'pet_request.json'),hatch.read(self.root/'pet_request.json'))
+
+    def test_restore_preserves_empty_destination_racing_publication(self):
+        self.build(validate=True)
+        record_fixture_review(self.root, self.data)
+        archive = self.home / 'archive.zip'
+        archive_run(self.root, self.data, archive)
+        destination = self.home / 'restored'
+        unrelated = self.home / '.hatch-restore-unrelated'
+        unrelated.mkdir()
+        (unrelated / 'keep.txt').write_bytes(b'Independent staging directory')
+        original_publish = portable_runs._rename_no_replace
+        staged, created = [], []
+
+        def race(stage, target):
+            staged.append(stage)
+            target.mkdir()
+            status = target.stat()
+            created.append((status.st_dev, status.st_ino))
+            return original_publish(stage, target)
+
+        with patch.object(portable_runs, '_rename_no_replace', side_effect=race):
+            with self.assertRaises(FileExistsError):
+                restore_run(archive, destination)
+        self.assertEqual(len(created), 1)
+        status = destination.stat()
+        self.assertEqual((status.st_dev, status.st_ino), created[0])
+        self.assertEqual(list(destination.iterdir()), [])
+        self.assertFalse(staged[0].exists())
+        self.assertEqual(list(self.home.glob('.hatch-restore-*')), [unrelated])
+        self.assertEqual((unrelated / 'keep.txt').read_bytes(), b'Independent staging directory')
 
     def test_archive_version_change_requires_revalidation(self):
         self.build(validate=True);record_fixture_review(self.root,self.data)

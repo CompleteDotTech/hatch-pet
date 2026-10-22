@@ -50,4 +50,6 @@ New claims retain exact UTF-8 prompt snapshots, input roles/hashes and identity.
 
 `archive` requires reconciled generation claims and includes the full deterministic/review artifacts in a hash-verified ZIP. Restoration checks the complete inventory, member hashes, sizes, traversal/links and versions before promotion into a new directory. Run identity and history survive. Compatible full snapshots retain only evidence whose hashes still validate. Tool-version changes or compact archives explicitly require revalidation. External package/install receipts are preserved as history and are not treated as current installations on the new host.
 
+The restore destination must remain absent until publication. If another writer creates it during restoration, even as an empty directory, restoration fails and preserves that directory. Only this attempt's temporary extraction directory is removed.
+
 Cleanup's compact repair archive can also be restored, but requires rebuilding removed deterministic artifacts. `minimal-delivery` omits decoded rows and therefore may need matching originals or new generation. Never use cleanup as an incidental way to delete external imagegen results, user art or unrelated files. Installed packages remain separate and require explicit installation authority.

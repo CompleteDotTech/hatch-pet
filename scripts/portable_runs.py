@@ -7,6 +7,7 @@ import shutil
 import tempfile
 import zipfile
 from asset_contracts import versions
+from atomic_publish import _rename_no_replace
 
 MAX_ARCHIVE_BYTES = 1024 * 1024 * 1024
 
@@ -157,7 +158,7 @@ def restore_run(archive_path, destination):
             revalidate = True
             hatch.invalidate(data, 'restored artifacts do not satisfy current validation and review')
             hatch.save(stage, data)
-        os.replace(stage, destination)
+        _rename_no_replace(stage, destination)
     finally:
         if stage.exists():
             shutil.rmtree(stage)
