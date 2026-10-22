@@ -78,6 +78,14 @@ class RigExternalIntegrationTests(unittest.TestCase):
         from rig_blender import export_blender
         report=export_blender(self.rig,Path(self.temp.name)/'editable.blend');self.assertTrue(report['ok']);self.assertTrue(report['reopened'])
         self.assertLess(report['max_vertex_error_m'],.01);self.assertGreater(report['compared_vertices'],0)
+        self.assertEqual(report['schema_version'],1);self.assertEqual(report['format'],'blend')
+    @unittest.skipUnless(os.environ.get('HATCH_RIG_BLENDER_TEST')=='1','Enable HATCH_RIG_BLENDER_TEST=1 for pinned Blender integration.')
+    def test_blender_creation_receipt_does_not_claim_reopen(self):
+        from rig_blender import export_blender
+        report=export_blender(self.rig,Path(self.temp.name)/'created.blend',verify=False)
+        self.assertTrue(report['ok']);self.assertFalse(report['reopened'])
+        self.assertEqual(report['schema_version'],1);self.assertEqual(report['format'],'blend')
+        self.assertNotIn('roundtrip_sha256',report);self.assertNotIn('compared_vertices',report)
     @unittest.skipUnless(os.environ.get('HATCH_RIG_BLENDER_TEST')=='1','Enable HATCH_RIG_BLENDER_TEST=1 for actual Blender CPU rendering.')
     def test_blender_cpu_preview_renders_distinct_transparent_poses(self):
         from rig_blender import render_blender_preview

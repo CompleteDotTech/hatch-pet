@@ -1,0 +1,159 @@
+{
+  "evidence_class": "engineering_contracts_and_synthetic_fixture_exports_not_production_art_approval",
+  "base_commit": "7b966a639bcaf23bd3a0d037f46f29e2edfcc273",
+  "implementation_and_test_sha256": {
+    "profiles/rig-animation.schema.json": "1477949cd7803c40f5304ea79c7dc0f5f21443e6f7d7b29bd5754321cb1b6cd1",
+    "profiles/rig-correction.schema.json": "218a39346e467aeee05376492807664b1bec9c2752c0817b4f52d2430b5b98fc",
+    "profiles/rig-export.schema.json": "4db2c35f5580c3b4414fd0741cdea95f3fcd7af45af4bb40d8c2b0ef3da53fba",
+    "profiles/rig-job.schema.json": "1c674f55d0a005cd3dd683cbd1c0a18a49a56526d3b3577c2932ba2bbff7c588",
+    "profiles/rig-pose.schema.json": "282601205b2679111b197572a09210c979df101ab0870eb59f3511c6f67a35e1",
+    "profiles/rig-retarget.schema.json": "e40723e0460e89d4d64dfefec06562bc8fdbc7fa61015b0af65ec53f8738cc64",
+    "profiles/rig-review.schema.json": "5e9845cd16984f9b7b7e4b9dfe2cbd57b89d958d4a532c97eee8f95ed7a95acc",
+    "profiles/rig-template.schema.json": "1feb184f00e2b160edd9804d29dde154e1273820a053b805330b47c545c00454",
+    "profiles/rig.schema.json": "aa57fc1b61a540d4b667ed2c64d764aab1fee33c8bf2af02103900a87db7a078",
+    "scripts/rig_animation.py": "cd70d02d55e5cec26324d7745b90ee0bd9b2c6674fe67ef821fc32dfaf65b4ef",
+    "scripts/rig_api.py": "5501d22ac2a55ec39574a43edeaa35c0e641dbe1f2fd6f7ffc0fe0902e9b0a29",
+    "scripts/rig_attachments.py": "748cf941486db4bf3ec00f58314d8d729443b5d856aa5ec24b74351790a62d2a",
+    "scripts/rig_blender.py": "05e8cb76c0e96726a198e498a96aadeec879bae87d80757435dd9f9b33a703d6",
+    "scripts/rig_blender_worker.py": "9bb648de87c547390bc104a0afc3f20bc39d7c083ac7c5163e3fee0dcf52a6f4",
+    "scripts/rig_browser.py": "e9dc330d2dad24110f4fa7aa1c4444973ece02ec1d06c6d2e60dce80b610a16c",
+    "scripts/rig_constraints.py": "f6ce8e02bc10d2a2d746e5bf59cd2db65193327c42177f47562756455320c74b",
+    "scripts/rig_contracts.py": "6a5c2474c80478892eae5d087b51920e17c9c0c080a790781bc7b5273376a60d",
+    "scripts/rig_corrections.py": "7f79fd47d8065a6e66556584a6184e1132c37cc986ba1f0ce5d06c23a49c07c6",
+    "scripts/rig_demo.py": "0f01c3808ca86c84a46328afba093bc5a016d70bb10c87a5b35c13f661009716",
+    "scripts/rig_doctor.py": "33f4692a54fd54881d44f540f8ea9046898fcf68902675e6d5df3edb23b0c8aa",
+    "scripts/rig_errors.py": "8e23cf08acfe0e4e3dd794f127383748734662b7cc1090f36b7a651e388b1a55",
+    "scripts/rig_facial.py": "fee3deb4a8d6522500200a96d6174bd173c603da695091d1a625766d1ab7b556",
+    "scripts/rig_geometry.py": "2d759526bfa7b36b08566509e66fba0786e6db5571c42e14bde3830e5f14b92d",
+    "scripts/rig_gltf.py": "3d5117c5f6c69df785abefab1fe19fe0b867c821a0e3764da5777f0b841fab92",
+    "scripts/rig_http.py": "ea1003613470080b9c264fc4d6c983e21a27907d99bfe41d8bc29c3a74da2d45",
+    "scripts/rig_ik.py": "15836eb2d126f5832068862e0ef4363b04631d3fcea4186b1efaba60d647b72c",
+    "scripts/rig_import.py": "a05f0baa3a12f275219e97942d9aebeb0bff2b789f031f1ccf09588711281108",
+    "scripts/rig_interop.py": "4a10b6414e1b9c117137539be61cc37b5c6a45433bd0c8064d0ede962bd29fed",
+    "scripts/rig_jobs.py": "023e36143cfad9ee181735490a2978e88585b0bbd269f3bd9d28c707d6ea5283",
+    "scripts/rig_math.py": "2bb7c84179af828c9f84f41e9510e59e4e88c68367b91c7e6e41279a77ee0f2c",
+    "scripts/rig_models.py": "fadd03340ebee772391dd28a488c0fab011450e940c26816ade49d0c5f98d81d",
+    "scripts/rig_obj.py": "5f71cb8a2af97c7b3a258b1c6493ff333364ffeed52a309c3ab89d3167d729be",
+    "scripts/rig_operations.py": "9adea240e380334ed9d314dd5912b382b3b24aa0d090510eba80754486bf5e1b",
+    "scripts/rig_package.py": "0da62bd2381ba16995cc0eb508ab3e2b606d3222605ab4126398a2c8d48c8b35",
+    "scripts/rig_render.py": "bae42673adc336f940493928589d39bc9ed88bd4fca591ce28acf0449a7abe3e",
+    "scripts/rig_retarget.py": "91eab4ff7cf2746b5eebcb2f7a5ef1c06be256b8c046de8a891981cf4c672d71",
+    "scripts/rig_review.py": "4ff7a6fb56fbb8a5db8ac07023b2d9a279495048b3951dbd3c4a1c3af5c63e16",
+    "scripts/rig_skeleton.py": "acf14f37834f16b2717fb4b6aae8fd6ae5e1e8ebe14034999ba5e8ae88424f90",
+    "scripts/rig_skinning.py": "fae879f86c1d5d4274af492f3e683bb041e1167aa09e5f4f7dfcf040f9522288",
+    "scripts/rig_states.py": "92bf99c7060936e00121d436a987ea6664b74a2e943f006bdf708b38a60826ca",
+    "scripts/rig_templates.py": "746e8e2dc3a4893f9b8c350e41e585499b8037a1a1852c768a66200e0e70bc5b",
+    "scripts/rig_validation.py": "6923c2cd8b740249485b7d5eaab8908cc5747d5834a0b454d51b96a4245914c5",
+    "scripts/rig_viewer.py": "2efbc55ac182d1c331de5a9e67cfdb91dab9602aa3dfa0eb2d10a0851246ce2f",
+    "scripts/test_rig_gate.py": "c6d207006772d226db49653862c3b4f650393528bb4ccd820feae597d09917f4",
+    "tests/test_rig_animation.py": "f7d317db9f48f55233383027948bbf1b9f36f9937860154606be4d794ed0f616",
+    "tests/test_rig_compatibility.py": "43308d59528c3630ae54aab5af1aa5972b16d59b2b3271d48c73d8a4e177b17e",
+    "tests/test_rig_contracts.py": "2476ab9d4814ce94164536dd2e5f574e8015abac54abfd9d1704d14335eed6fa",
+    "tests/test_rig_controls.py": "55f7b27b0fa09990823d1d4a87f775ab7f317ab2af7fcf4800de569f482d01a7",
+    "tests/test_rig_http.py": "181e408f3e2ba97d3bd48b66199f352690241d9e6683472da168c1db519545bd",
+    "tests/test_rig_interop.py": "93e53e916e0f61c5eae39b6046add399c17d6b34e1087a2877ec2995b1fff434",
+    "tests/test_rig_math.py": "b41ee07955f55c9b6c311743bbec94142be5851196226d46cf0d02d366fe5138",
+    "tests/test_rig_morph_authoring.py": "32a665714244cc04df5f1544e6e74d363df629b6fd844aa7e0fb138cfc6896e4",
+    "tests/test_rig_render.py": "93f45b1bc39adf410bd7e39e6555f789192b8b8e106e2e4442036432bb1f3727",
+    "tests/test_rig_skinning.py": "079ed15f6030b954ace3eaa8415665490fb71d417df8592b74c25ca83e44ddd9",
+    "tests/test_rig_specializations.py": "50b95338cee222cc082ad03b9f45cb785453130650fb4a19e33e5a4465cb2a9a",
+    "tests/test_rig_workflow.py": "640043d73b82850baeca173bd61977446a91910343bf51282a2c0d1bc8c2c35a"
+  },
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.39",
+  "packages": {
+    "numpy": "2.3.5",
+    "jsonschema": "4.25.1",
+    "Pillow": "12.3.0",
+    "playwright": "1.55.0",
+    "pygltflib": "1.16.5"
+  },
+  "full_rig_suite": {
+    "command": "python -m unittest discover -s tests -p 'test_rig_*.py' -v",
+    "environment": {
+      "HATCH_RIG_INTEROP_TEST": "1",
+      "HATCH_RIG_BLENDER_TEST": "1",
+      "HATCH_RIG_BROWSER_TEST": "1",
+      "HATCH_BLENDER": "/workspace/scratch/36752e25b9f2/hatch-tools/blender-4.5.3-linux-x64/blender",
+      "PLAYWRIGHT_BROWSERS_PATH": "/workspace/scratch/36752e25b9f2/hatch-issue-51-browsers"
+    },
+    "tests": 83,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "duration_seconds": 13.62,
+    "log": "rig-suite.log",
+    "sandbox": "escalated to allow loopback HTTP and browser"
+  },
+  "initial_restricted_attempt": {
+    "tests": 83,
+    "errors": 4,
+    "skips": 2,
+    "duration_seconds": 9.005,
+    "cause": "socket.socket blocked by sandbox in four HTTP cases",
+    "log": "rig-suite-sandbox-blocked.log",
+    "used_as_passing_evidence": false
+  },
+  "legacy_full_suite_baseline": {
+    "source_commit": "7b966a639bcaf23bd3a0d037f46f29e2edfcc273",
+    "independent_stream_pr": 193,
+    "evidence_commit": "6951b198f6bab4c89fd9bf0ce848b336d6ae0308",
+    "tests": 790,
+    "failures": 0,
+    "errors": 0,
+    "skips": 1,
+    "skip_reason": "optional native Krita unavailable",
+    "duration_seconds": 282.918,
+    "log_sha256": "934c3be1db3eaac4706b9327fcc65ddb34c57d433a72a9ce974a964ee2441adb",
+    "changed_head_full_2d_run": false
+  },
+  "artifacts": [
+    {
+      "receipt": "glb-export.json",
+      "file": "/workspace/scratch/36752e25b9f2/hatch-rig51-evidence/exports/character-cli.glb",
+      "bytes": 75956,
+      "sha256": "88e715465fa22d7a0c4aa177310696af45813e620d632bcdee906ce3676a268c"
+    },
+    {
+      "receipt": "gltf-export.json",
+      "file": "/workspace/scratch/36752e25b9f2/hatch-rig51-evidence/exports/character.gltf",
+      "bytes": 94967,
+      "sha256": "fb37f137013ce739745044b315867e8aeec2384867b64eac67ae10f38ed23029"
+    },
+    {
+      "receipt": "blender-export.json",
+      "file": "/workspace/scratch/36752e25b9f2/hatch-rig51-evidence/exports/character.blend",
+      "bytes": 134875,
+      "sha256": "a359c7583770b0890066a9c3c0bfa620db12c18680f9f2d1816d9b3855b40313"
+    },
+    {
+      "receipt": "blender-export.json",
+      "file": "/workspace/scratch/36752e25b9f2/hatch-rig51-evidence/exports/character.roundtrip.glb",
+      "bytes": 76904,
+      "sha256": "f45bcf21854434255f3264f2dd780e59937aa400a2166446ea5612c64bb1bdaf"
+    }
+  ],
+  "artifact_retention": "Generated export bytes remain in the recorded local evidence directory; JSON receipts and logs are committed. Reproduction creates fresh fixture provenance and .blend metadata, so byte hashes may differ.",
+  "source_delivery": "source-delivery.json",
+  "compatibility": "compatibility.json",
+  "schema_check": {
+    "command": "python scripts/generate_schemas.py --check",
+    "exit_code": 0
+  },
+  "template_check": {
+    "command": "python scripts/generate_rig_templates.py --check",
+    "exit_code": 0
+  },
+  "evidence_sha256": {
+    ".gitattributes": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da",
+    "blender-export.json": "3dc69d90f6e3b4009e5c7e7958eac62f5f74417deb01e1dd56116dc9eec9c8f8",
+    "compatibility.json": "808d4b252c03950cd759e4ea52076ac85ff4a1bfe02129dc10a40ef27a83e66f",
+    "demo.json": "e7aad7281d30fb2eb86932ed2745b7b4bc7ec56f723bc991a922d1d631f87d1f",
+    "glb-export.json": "0089294d9b1a84165ce4a0d7b3c8559e331682bbc633fd05717f51ebf743e779",
+    "gltf-export.json": "492252b19036443b00f7f6092d1eeb3ff160d03a1b55c3d2e4ed91ffa345fd36",
+    "khronos.json": "aa7dca83984bdca2673b8750ced47ee65096ebbe743fc041b04d4bd7ec25020a",
+    "rig-suite-sandbox-blocked.log": "5bcf2f4cfa0c9aa5a16f53f5e04a2d062df6ad12e51903e620c5c97b530d024e",
+    "rig-suite.log": "b82bec4ecd4aca693c83a27bc98368f35afd128336ca781781ec3fd39c1766f5",
+    "source-delivery.json": "7d59ca4103d32ae90d1ba145e50d0827d9b061616ea1b560bbe3aaba76747ec8"
+  }
+}

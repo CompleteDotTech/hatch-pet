@@ -35,6 +35,19 @@ def validate_chain(skeleton: dict, chain: dict) -> None:
     require(all(bones[b]['parent'] == a for a, b in zip(names, names[1:])),
             'RIG_IK_CHAIN', 'IK chains must follow direct parent relationships.')
     require(chain['solver'] != 'two-bone' or len(names) == 3, 'RIG_IK_CHAIN', 'Two-bone IK needs two segments and an endpoint.')
+    if 'orientation' in chain:
+        quaternion(chain['orientation'], strict=True)
+
+
+def validate_controllers(skeleton: dict, controllers: dict) -> None:
+    """Validate every declared controller, including chains unused by clips."""
+    validate_contract(controllers, 'RigController')
+    ids = set()
+    for chain in controllers['ik']:
+        require(chain['id'] not in ids, 'RIG_IK_ID', 'IK chain IDs must be unique.', asset=chain['id'])
+        ids.add(chain['id'])
+        validate_chain(skeleton, chain)
+    constraint_order(skeleton, controllers['constraints'])
 
 
 def _orient_chain(skeleton: dict, pose: dict, names: list[str], targets: np.ndarray) -> dict:

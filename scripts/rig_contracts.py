@@ -174,6 +174,36 @@ def definitions() -> dict:
                        mapping=mapping(identifier, 256), root_scale=positive,
                        orientation_offsets=mapping(quat, 256), omissions=arr(text, 0, 256),
                        morph_mapping=mapping(identifier, 128)))
+    # Export receipts describe the files actually written by each adapter. They
+    # are not validation reports and do not confer independent verification.
+    count = dict(type='integer', minimum=1, maximum=2_000_000_000)
+    error_distance = dict(type='number', minimum=0, maximum=1e9)
+    gltf_export = obj(dict(schema_version={'const': 1}, format={'enum': ['glb', 'gltf']},
+                           path=text, sha256=digest, rig_sha256=digest, vertices=count,
+                           skins=count, joints=count, animations=arr(identifier, 0, 64),
+                           keyframes=integer, independently_verified={'const': False}))
+    blender_sample = obj(dict(clip=identifier, time=dict(type='number', minimum=0, maximum=120),
+                              matched=arr(text), meshes=mapping(arr(vec)), bones=mapping(vec)))
+    blender_fields = dict(schema_version={'const': 1}, format={'const': 'blend'},
+                          blender_version=text, meshes=count, vertices=count, armatures=count,
+                          bones=count, armature_modifiers=count, vertex_groups=count,
+                          shape_keys=mapping(arr(text)),
+                          actions=arr(obj(dict(name=text, slots=arr(text)))),
+                          nla=mapping(arr(text)), controls=arr(text), constraints=integer,
+                          samples=arr(blender_sample), ok=boolean, command=arr(text, 1, 64),
+                          path=text, sha256=digest, independent={'const': True},
+                          reader={'const': 'Blender'}, reopened=boolean,
+                          rig_sha256=digest, source_glb_sha256=digest)
+    verification_fields = dict(max_vertex_error_m=error_distance, max_joint_error_m=error_distance,
+                               compared_vertices=count, tolerance_m=positive,
+                               roundtrip_path=text, roundtrip_sha256=digest)
+    blender_export = obj({**blender_fields, **verification_fields}, list(blender_fields))
+    blender_export['allOf'] = [{
+        'if': {'properties': {'reopened': {'const': True}}},
+        'then': {'required': list(verification_fields)},
+        'else': {'not': {'anyOf': [{'required': [field]} for field in verification_fields]}}
+    }]
+    export_receipt = {'oneOf': [ref('RigGltfExportReceipt'), ref('RigBlenderExportReceipt')]}
     return dict(Character3D=character, GeometryAsset=geometry, Skeleton=skeleton, Bone=bone,
                 SkinBinding=skin, VertexInfluence=obj(dict(joint=identifier, weight=dict(type='number', minimum=0, maximum=1))),
                 RigTemplate=template, RigController=controller, IKChain=ik, JointConstraint=constraint,
@@ -181,13 +211,14 @@ def definitions() -> dict:
                 MorphTarget=obj(dict(schema_version={'const': 1}, id=identifier, mesh=identifier, data=file_ref)),
                 Pose=pose, AnimationClip=clip, AnimationTrack=track, AnimationEvent=event,
                 RetargetProfile=retarget, RigValidationReport=report, RigCorrection=correction,
-                RigReviewReceipt=review, RigJob=job, RigExportReceipt=report, Rig=rig,
+                RigReviewReceipt=review, RigJob=job, RigExportReceipt=export_receipt,
+                RigGltfExportReceipt=gltf_export, RigBlenderExportReceipt=blender_export, Rig=rig,
                 Provenance=provenance, Limits=limits)
 
 
 KINDS = {'rig': 'Rig', 'rig-template': 'RigTemplate', 'rig-animation': 'AnimationClip',
          'rig-correction': 'RigCorrection', 'rig-job': 'RigJob', 'rig-review': 'RigReviewReceipt',
-         'rig-pose': 'Pose', 'rig-retarget': 'RetargetProfile'}
+         'rig-pose': 'Pose', 'rig-retarget': 'RetargetProfile', 'rig-export': 'RigExportReceipt'}
 
 
 @lru_cache(maxsize=1)
