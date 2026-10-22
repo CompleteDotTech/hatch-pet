@@ -1,0 +1,443 @@
+{
+  "schema_version": 1,
+  "kind": "hatch-continuity-audit-baseline",
+  "issue": 112,
+  "revision": "7b966a639bcaf23bd3a0d037f46f29e2edfcc273",
+  "checkout": "/workspace/scratch/f637139fcc7a/hatch-pet",
+  "final_worktree_status": "",
+  "environment": {
+    "python": "3.12.14",
+    "platform": "Linux-6.18.55-x86_64-with-glibc2.39",
+    "packages": {
+      "Pillow": "13.0.0",
+      "jsonschema": "4.26.0",
+      "playwright": "1.64.0",
+      "numpy": "2.3.5",
+      "pygltflib": "1.16.5"
+    },
+    "browser": "/root/.cache/ms-playwright/chromium_headless_shell-1248/chrome-headless-shell-linux64/chrome-headless-shell",
+    "browser_sha256": "4fa61f0ba0b4f89b7bec242c32ca16d3bccf69dbfef0651924a9ba8fede5f9d6",
+    "env": {
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "PYTHONUNBUFFERED": "1",
+      "TMPDIR": "/workspace/scratch/f637139fcc7a/baseline-evidence/tmp",
+      "HATCH_BROWSER_EXECUTABLE": "/root/.cache/ms-playwright/chromium_headless_shell-1248/chrome-headless-shell-linux64/chrome-headless-shell",
+      "HATCH_DECOMPOSITION_BROWSER_TEST": "1",
+      "HATCH_DECOMPOSITION_SCREENSHOT": "/workspace/scratch/f637139fcc7a/baseline-evidence/decomposition-review.png"
+    },
+    "node_version": "v24.19.0",
+    "ffmpeg_version": "ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers",
+    "ffprobe_version": "ffprobe version 6.1.1-3ubuntu5 Copyright (c) 2007-2023 the FFmpeg developers",
+    "git_version": "git version 2.51.1",
+    "browser_version": "Google Chrome for Testing 156.0.8078.4",
+    "checkout_sha": "7b966a639bcaf23bd3a0d037f46f29e2edfcc273",
+    "worktree_status": ""
+  },
+  "full_suite": {
+    "command": [
+      "/workspace/scratch/f637139fcc7a/baseline-evidence/venv/bin/python",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests",
+      "-v"
+    ],
+    "cwd": "/workspace/scratch/f637139fcc7a/hatch-pet",
+    "started_at": "2026-10-22T18:27:06.516562+00:00",
+    "exit_code": 0,
+    "seconds": 313.442,
+    "log": "unittest-all.log",
+    "log_sha256": "a2497cc17640cb9e4d5bc38c784397d944e91fb86be636b9d90a8ce92926d52b",
+    "tests_run": 867,
+    "summary": [
+      "Ran 867 tests in 312.499s",
+      "",
+      "OK (skipped=5)"
+    ],
+    "tests_passed": 862,
+    "tests_failed": 0,
+    "tests_errored": 0,
+    "skipped": [
+      {
+        "test": "test_production_adapter.ProductionAdapterTests.test_actual_local_krita_import_export_and_layer_roundtrip",
+        "reason": "Krita not available; adapter tests remain separate from integration"
+      },
+      {
+        "test": "test_rig_interop.RigExternalIntegrationTests.test_blender_cpu_preview_renders_distinct_transparent_poses",
+        "reason": "Enable HATCH_RIG_BLENDER_TEST=1 for actual Blender CPU rendering."
+      },
+      {
+        "test": "test_rig_interop.RigExternalIntegrationTests.test_blender_reopen_has_actual_armature_and_deformation",
+        "reason": "Enable HATCH_RIG_BLENDER_TEST=1 for pinned Blender integration."
+      },
+      {
+        "test": "test_rig_interop.RigExternalIntegrationTests.test_browser_actual_vertices_and_ui_controls",
+        "reason": "Enable HATCH_RIG_BROWSER_TEST=1 for independent Three.js browser integration."
+      },
+      {
+        "test": "test_rig_interop.RigInterchangeTests.test_khronos_and_independent_pygltflib_read_actual_skin",
+        "reason": "Enable HATCH_RIG_INTEROP_TEST=1 for independent optional validators."
+      }
+    ],
+    "scope": "All existing 2D and optional Python 3D test modules; native integrations are gated separately."
+  },
+  "separate_rig_browser": {
+    "command": [
+      "/workspace/scratch/f637139fcc7a/baseline-evidence/venv/bin/python",
+      "-m",
+      "unittest",
+      "test_rig_interop.RigExternalIntegrationTests.test_browser_actual_vertices_and_ui_controls",
+      "-v"
+    ],
+    "cwd": "/workspace/scratch/f637139fcc7a/hatch-pet",
+    "started_at": "2026-10-22T18:30:15.075401+00:00",
+    "exit_code": 0,
+    "seconds": 3.103,
+    "log": "rig-browser-integration.log",
+    "log_sha256": "165659507a10a0006df1f6d30121f2822cfa4aed1a0b23f2ba9d7e528918c071",
+    "tests_run": 1,
+    "summary": [
+      "Ran 1 test in 2.825s",
+      "",
+      "OK"
+    ],
+    "tests_passed": 1,
+    "tests_failed": 0,
+    "tests_errored": 0,
+    "skipped": [],
+    "additional_environment": {
+      "HATCH_RIG_BROWSER_TEST": "1",
+      "PYTHONPATH": "/workspace/scratch/f637139fcc7a/hatch-pet/tests:/workspace/scratch/f637139fcc7a/hatch-pet/scripts"
+    },
+    "scope": "Separate execution of the full-suite gated Three.js external browser test using the installed real browser."
+  },
+  "baseline_checks": [
+    {
+      "command": [
+        "/workspace/scratch/f637139fcc7a/baseline-evidence/venv/bin/python",
+        "scripts/production_sources.py",
+        "verify-delivery"
+      ],
+      "cwd": "/workspace/scratch/f637139fcc7a/hatch-pet",
+      "started_at": "2026-10-22T18:27:07.897815+00:00",
+      "exit_code": 0,
+      "seconds": 0.663,
+      "log": "verify-delivery.log",
+      "log_sha256": "7d59ca4103d32ae90d1ba145e50d0827d9b061616ea1b560bbe3aaba76747ec8"
+    },
+    {
+      "command": [
+        "/workspace/scratch/f637139fcc7a/baseline-evidence/venv/bin/python",
+        "scripts/verify_public_delivery.py",
+        "--destination",
+        "/workspace/scratch/f637139fcc7a/baseline-evidence/public-delivery"
+      ],
+      "cwd": "/workspace/scratch/f637139fcc7a/hatch-pet",
+      "started_at": "2026-10-22T18:27:08.562083+00:00",
+      "exit_code": 0,
+      "seconds": 3.613,
+      "log": "public-delivery.log",
+      "log_sha256": "3ae6eb44340edaa6d6a10657f4f9dc15242a29136c56e960d3bd9b95f6d6ad9f"
+    },
+    {
+      "command": [
+        "/workspace/scratch/f637139fcc7a/baseline-evidence/venv/bin/python",
+        "scripts/doctor.py",
+        "--destination",
+        "/workspace/scratch/f637139fcc7a/baseline-evidence/tmp"
+      ],
+      "cwd": "/workspace/scratch/f637139fcc7a/hatch-pet",
+      "started_at": "2026-10-22T18:27:12.175534+00:00",
+      "exit_code": 0,
+      "seconds": 0.31,
+      "log": "doctor.log",
+      "log_sha256": "68503ddf281a15b1160bf59607eb4e31d3d87b7bebeab8b242a28e271ba90491"
+    },
+    {
+      "command": [
+        "/workspace/scratch/f637139fcc7a/baseline-evidence/venv/bin/python",
+        "scripts/rig.py",
+        "doctor"
+      ],
+      "cwd": "/workspace/scratch/f637139fcc7a/hatch-pet",
+      "started_at": "2026-10-22T18:27:12.485710+00:00",
+      "exit_code": 0,
+      "seconds": 0.097,
+      "log": "rig-doctor.log",
+      "log_sha256": "512e7b3aa4ec7600c04bd7632e7b044516ea9e5c76b19823a88b3dfafc057656"
+    },
+    {
+      "command": [
+        "/workspace/scratch/f637139fcc7a/baseline-evidence/venv/bin/python",
+        "scripts/generate_schemas.py",
+        "--check"
+      ],
+      "cwd": "/workspace/scratch/f637139fcc7a/hatch-pet",
+      "started_at": "2026-10-22T18:27:12.583448+00:00",
+      "exit_code": 0,
+      "seconds": 0.153,
+      "log": "schemas-check.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "/workspace/scratch/f637139fcc7a/baseline-evidence/venv/bin/python",
+        "scripts/generate_rig_templates.py",
+        "--check"
+      ],
+      "cwd": "/workspace/scratch/f637139fcc7a/hatch-pet",
+      "started_at": "2026-10-22T18:27:12.736492+00:00",
+      "exit_code": 0,
+      "seconds": 0.148,
+      "log": "rig-templates-check.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "historical_delivery": {
+    "status": "passed",
+    "checkout_unchanged": true,
+    "complete_delivery_gate": false,
+    "options": {
+      "compact": false,
+      "render": false,
+      "test_scope": "2d",
+      "tests": false,
+      "video": false
+    },
+    "bundle_count": 5,
+    "bundle_file_count": 129,
+    "bundles": {
+      "artwork": {
+        "bundle_sha256": "7ed8daad15ba0be16aee297e77e1ee9ca9561a866c9668800c27850aafd41fe6",
+        "file_count": 36,
+        "total_bytes": 14921593,
+        "unique_part_bytes": 11856017,
+        "unique_part_count": 207
+      },
+      "audio": {
+        "bundle_sha256": "62a25bf2764210d0616e374cf04c0202fa311e18682f4208f7ea0e27b7ecb6e9",
+        "file_count": 16,
+        "total_bytes": 1715251,
+        "unique_part_bytes": 1715251,
+        "unique_part_count": 39
+      },
+      "evidence": {
+        "bundle_sha256": "008567c7346b7bd76156e8050a2e51bbfb3ce18cbcb185897c1affab924aea40",
+        "file_count": 10,
+        "total_bytes": 3560571,
+        "unique_part_bytes": 3560571,
+        "unique_part_count": 60
+      },
+      "reconstruction": {
+        "bundle_sha256": "59757fc164dd4538d6bc8593b55010ec01b194ec0c6f1e5781c9249528d5ccf1",
+        "file_count": 66,
+        "total_bytes": 2506254,
+        "unique_part_bytes": 2506254,
+        "unique_part_count": 92
+      },
+      "reviews": {
+        "bundle_sha256": "454bfdb6daad191cdcf1c20ea8dfe487dae0bb7a3576d2258cbe6c8b4f99c5dc",
+        "file_count": 1,
+        "total_bytes": 4167150,
+        "unique_part_bytes": 4167150,
+        "unique_part_count": 64
+      }
+    },
+    "original_acquisition_records": 4,
+    "original_audio_recordings": 5,
+    "public_files_verified": 7,
+    "history": {
+      "chain_verified": true,
+      "evidence_verified": true,
+      "human_review": false,
+      "last_review_sha256": "a02a3f5242e6c48a69053961d822f21e38aa7a32ec3d64a81679faa257198934",
+      "records": 20,
+      "reviewer_kinds": [
+        "assistant"
+      ],
+      "sha256": "cce42c52460d4525f18eb00f7525f8df8d99ebda9e31b3d875dccba6d93220d4",
+      "supporting_evidence_files": 13
+    },
+    "reconstruction": {
+      "characters": 2,
+      "clips": 20,
+      "scenes": [
+        {
+          "frames": 432,
+          "id": "seed-exchange"
+        },
+        {
+          "frames": 264,
+          "id": "garden-promise"
+        }
+      ],
+      "reconstructed": true,
+      "reconstruction_method": "Exact original model and derived assets from pinned transports; no native PNG re-encoding or floating-point authoring.",
+      "recipe_reauthored": false,
+      "review_freshness": "Original ledger retained verbatim. Historical sampled frames are separate; final render reviews must be revalidated against the current renderer and complete outputs."
+    },
+    "archive": {
+      "external_integration_verified": false,
+      "file_count": 168,
+      "path": "portable-project.zip",
+      "renderer_changed": false,
+      "restoration_event_appended": true,
+      "review_records_preserved": 20,
+      "sha256": "6be90590c3ef7ca8bd42a5823cc9ef9aa77f157c936f2604d51baab372dd6126",
+      "verified": true
+    },
+    "provider_called": false,
+    "tts_called": false,
+    "new_approval_recorded": false,
+    "visual_review_performed": false
+  },
+  "protected_source_sha256": {
+    "profiles/codex-v1.json": "f4e0279f8634ea53ef544ecb49b9a71ec2565c61ec5b8e63163ecc5ead478a6b",
+    "scripts/production_contracts.py": "7b0c7f873a5b8cd129cf6d550cb5d1ba7ac7a367c399b1a300ccebacb98e2a46",
+    "scripts/production_performance.py": "6d282e15b541d7f13dab076529a6c395e004b10bd596a065b5cdf17a4f03a26c",
+    "scripts/production_workflow.py": "4dc71e4819adf0e8a1ea2839687664f8fcef36dd0cff1311f38d293a455b1c40",
+    "scripts/production_render.py": "981b6fbafdcd0fcf009dca02b0f695bfb3742b58bd9e9a11068f0e0dd085c9be",
+    "scripts/production_delivery.py": "0718298e8c747ad3865033507500fe15f555c1c4a5686787ad6b9a124b36c6c2",
+    "scripts/production_sources.py": "71670d5823eee6e26392183f8a743eec8eb693414ebf247057a7098a388ce35b",
+    "scripts/rig_models.py": "fadd03340ebee772391dd28a488c0fab011450e940c26816ade49d0c5f98d81d",
+    "scripts/rig_animation.py": "cd70d02d55e5cec26324d7745b90ee0bd9b2c6674fe67ef821fc32dfaf65b4ef",
+    "scripts/rig_skinning.py": "fae879f86c1d5d4274af492f3e683bb041e1167aa09e5f4f7dfcf040f9522288",
+    "profiles/profile.schema.json": "afba01bc16c4f6c297d1b95b62803c7a5b989e0fa9b967c33e5d50471091163c",
+    "assets/playback.js": "9aa7d5228de0a57cd443b70c14b160cb22238d21a861a0fb06f6b4bcc6ccbc79",
+    "state-library/catalog.json": "970139db7291c4233ef75e37ffd6abe0385c8f165dd37b339326a4e8647f3de9",
+    "profiles/production-project.schema.json": "cd33410c713660e33c6805df19aa94512de5f0cb64f71f6b3db74ce05d2c4c21",
+    "profiles/production-cast.schema.json": "8a76d77027e3006ab6f6bde67ef191d5fea6254cb05ea36658705beb8cfa3afc",
+    "profiles/production-clip.schema.json": "11fab0fc3d038e9b40a60beeb8e7a14d78bd8ecabb4d3680ba35ce0d7ae59a19",
+    "profiles/production-scene.schema.json": "1d01d66903b3d730f4670951daf2f30239e05d27b1f50d68be080173585974ad",
+    "profiles/production-shot.schema.json": "12cc14e67a72da0a022f18ed44df3fd2d5ad3919ab583a225dfaabb9593ea4b3",
+    "scripts/rig_math.py": "2bb7c84179af828c9f84f41e9510e59e4e88c68367b91c7e6e41279a77ee0f2c",
+    "scripts/rig_contracts.py": "7d976626cbf8b9b0ae2bddb52b1b176d3805803906b4dd809bd539b3c5e0408c"
+  },
+  "evidence_sha256": {
+    "unittest-all.log": "a2497cc17640cb9e4d5bc38c784397d944e91fb86be636b9d90a8ce92926d52b",
+    "rig-browser-integration.log": "165659507a10a0006df1f6d30121f2822cfa4aed1a0b23f2ba9d7e528918c071",
+    "verify-delivery.log": "7d59ca4103d32ae90d1ba145e50d0827d9b061616ea1b560bbe3aaba76747ec8",
+    "public-delivery.log": "3ae6eb44340edaa6d6a10657f4f9dc15242a29136c56e960d3bd9b95f6d6ad9f",
+    "public-delivery/report.json": "cb300a45aaf6df48480c76edb559b9b2c608a15b98fdbc83817f5d78181dbb08",
+    "doctor.log": "68503ddf281a15b1160bf59607eb4e31d3d87b7bebeab8b242a28e271ba90491",
+    "rig-doctor.log": "512e7b3aa4ec7600c04bd7632e7b044516ea9e5c76b19823a88b3dfafc057656",
+    "schemas-check.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "rig-templates-check.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "environment.json": "f4166a01f64f0fd0c4f359c2290cbf33a48012b306270e2a08983e268c4d64cd",
+    "environment-events.json": "1fbd418e0722dfa006cf52bf2887c81ead08ae7a821f87db1ac4688a15db35c5",
+    "install.log": "4aa0d4bdd42e92449113bd0131d79d4b704b434e470151638fae2493eb30649f",
+    "install-escalated.log": "e833815a445a8ddb1b748b758f850b6728f252f82c18c0cc3fec0b3456c0fa43",
+    "browser-install.log": "ef653c53e5d595a2bbaec553b5e067ec737b6fd4b9508a1bb963819f77043241"
+  },
+  "environment_failure_history": {
+    "schema_version": 1,
+    "scope": "Baseline environment setup history; these observations are separate from repository test results.",
+    "events": [
+      {
+        "command": "python -m venv --system-site-packages /workspace/scratch/f637139fcc7a/baseline-evidence/venv; venv/bin/python -m pip install -r requirements-delivery.txt pygltflib==1.16.5",
+        "status": "environment_blocked",
+        "context": "default process sandbox",
+        "observed_error": "ProxyError: Cannot connect to proxy; Operation not permitted",
+        "log": "install.log",
+        "resolution": "The same dependency installation was authorized by automatic approval review with require_escalated and completed successfully; see install-escalated.log."
+      },
+      {
+        "command": "PLAYWRIGHT_BROWSERS_PATH=/workspace/scratch/f637139fcc7a/baseline-evidence/browsers venv/bin/python -m playwright install --only-shell chromium",
+        "status": "download_failed",
+        "context": "approved escalated dependency installation",
+        "observed_error": "End of central directory record signature not found. Either not a zip file, or file is truncated.",
+        "log": "browser-install.log",
+        "resolution": "No repeated download requested. A pre-existing matching Chromium 156.0.8078.4 binary was discovered and selected explicitly using HATCH_BROWSER_EXECUTABLE."
+      },
+      {
+        "command": "Python Playwright launch smoke probe with installed chrome-headless-shell v1248",
+        "status": "environment_blocked",
+        "context": "default process sandbox",
+        "observed_error": "FATAL:content/browser/sandbox_host_linux.cc:41: shutdown: Operation not permitted (1)",
+        "log": null,
+        "evidence": "Observed in exec tool output; this JSON records the excerpt, not a captured original log.",
+        "resolution": "The full regression runner was authorized with require_escalated so Chromium and local loopback HTTP tests can run. Do not count the earlier smoke-probe failure as a repository regression."
+      }
+    ]
+  },
+  "unexecuted_integrations": [
+    {
+      "name": "native Krita",
+      "reason": "Krita executable is unavailable; native application test skipped."
+    },
+    {
+      "name": "Blender save/reopen and CPU rendering",
+      "reason": "Blender executable is unavailable; two external integration tests skipped."
+    },
+    {
+      "name": "Khronos glTF validator",
+      "reason": "Node validator dependencies are not installed; gated validation test skipped. pygltflib is installed but that combined test was not executed."
+    }
+  ],
+  "scope_limits": [
+    "Baseline suite uses delivery-pinned Pillow/jsonschema/Playwright, NumPy 2.3.5 and pygltflib 1.16.5; it is not an exact recreation of the separate requirements-rig-test.txt environment.",
+    "Five skips remain in the full-suite transcript; the Three.js case subsequently passed in a separate one-test run. Do not rewrite the original full-suite counts.",
+    "Source verification and portable reconstruction succeeded without missing approved historical media. No source assets, audio or review records were synthesized.",
+    "This audit did not regenerate both complete films or execute the full public delivery gate. Existing test fixtures and selected actual-source checks are not new production-art approval.",
+    "Initial dependency/download/browser sandbox setup failures are recorded separately; the authorized regression command ran successfully with real local browser and loopback access."
+  ],
+  "retained_evidence": {
+    "unittest-all.log": {
+      "repository_path": "tests/results/continuity-baseline.log",
+      "sha256": "a2497cc17640cb9e4d5bc38c784397d944e91fb86be636b9d90a8ce92926d52b"
+    },
+    "rig-browser-integration.log": {
+      "repository_path": "tests/results/continuity-browser.log",
+      "sha256": "165659507a10a0006df1f6d30121f2822cfa4aed1a0b23f2ba9d7e528918c071"
+    },
+    "verify-delivery.log": {
+      "repository_path": "tests/results/continuity-source-verification.log",
+      "sha256": "7d59ca4103d32ae90d1ba145e50d0827d9b061616ea1b560bbe3aaba76747ec8"
+    },
+    "public-delivery/report.json": {
+      "repository_path": "tests/results/continuity-source-delivery.json",
+      "sha256": "cb300a45aaf6df48480c76edb559b9b2c608a15b98fdbc83817f5d78181dbb08"
+    },
+    "doctor.log": {
+      "repository_path": "tests/results/continuity-doctor.log",
+      "sha256": "68503ddf281a15b1160bf59607eb4e31d3d87b7bebeab8b242a28e271ba90491"
+    },
+    "rig-doctor.log": {
+      "repository_path": "tests/results/continuity-rig-doctor.log",
+      "sha256": "512e7b3aa4ec7600c04bd7632e7b044516ea9e5c76b19823a88b3dfafc057656"
+    }
+  },
+  "unretained_setup_logs_note": "Setup log digests identify the original local transcripts; those installer/environment logs are not included in this PR. Their observed errors and resolutions are retained in environment_failure_history. Empty schema/template drift-check output and all command exit statuses are recorded above.",
+  "behavior_probe": {
+    "command": [
+      "/workspace/scratch/f637139fcc7a/baseline-evidence/venv/bin/python",
+      "tests/continuity_baseline_probe.py"
+    ],
+    "cwd": "/workspace/scratch/f637139fcc7a/hatch-continuity-audit",
+    "exit_code": 0,
+    "probe_path": "tests/continuity_baseline_probe.py",
+    "probe_sha256": "1b2bd34f57cc8c0a73ad7b496f0ce07a78161aab6adcff478c41dc9f1b69149b",
+    "result_path": "tests/results/continuity-baseline-probes.json",
+    "result_sha256": "a4c0b798acbb813dbb4549b01742f6104b07abe4f1acb815725e7ebf0d9e4d8e",
+    "scope": "Observed supported and unsupported v1 behavior on synthetic temporary fixtures, not production-art approval or assertions freezing limitations."
+  },
+  "github_observation": {
+    "default_branch": "main",
+    "sha": "7b966a639bcaf23bd3a0d037f46f29e2edfcc273",
+    "open_issues": 180,
+    "open_pull_requests": 0,
+    "labels_on_open_issues": [],
+    "milestones_on_open_issues": [],
+    "sub_issues": 168,
+    "active_other_audit_claims": [
+      23,
+      166
+    ],
+    "claim_comment": "https://github.com/CompleteTech-Skills/hatch-pet/issues/112#issuecomment-6348213225",
+    "default_branch_runs": [
+      39421253425,
+      39421253433
+    ]
+  }
+}

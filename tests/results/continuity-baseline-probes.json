@@ -1,0 +1,57 @@
+{
+  "authored_reset_without_link": {
+    "accepted": true
+  },
+  "declared_position_mismatch": {
+    "accepted": false,
+    "error": "continuity position mismatch for a@1.0.0"
+  },
+  "different_character_owner": {
+    "accepted": false,
+    "error": "continuity prop ownership mismatch"
+  },
+  "different_instance_same_character_owner": {
+    "accepted": true
+  },
+  "evidence_kind": "synthetic_software_contract_probe",
+  "ownership_at_handoff": {
+    "12": {
+      "attachment": {
+        "anchor": "grip",
+        "component": "hand",
+        "instance": "b"
+      },
+      "owner": "b"
+    },
+    "5": {
+      "attachment": {
+        "anchor": "grip",
+        "component": "hand",
+        "instance": "a"
+      },
+      "owner": "a"
+    },
+    "6": {
+      "attachment": {
+        "anchor": "grip",
+        "component": "hand",
+        "instance": "b"
+      },
+      "owner": "b"
+    }
+  },
+  "production_art_approval": false,
+  "same_owner_attachment_change": {
+    "accepted": true
+  },
+  "terminal_root_position": {
+    "11": [
+      111.0,
+      140.0
+    ],
+    "12": [
+      112,
+      140
+    ]
+  }
+}

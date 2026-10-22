@@ -1,0 +1,189 @@
+{
+  "python": "3.12.14",
+  "python_supported": true,
+  "capabilities": {
+    "interface_version": 1,
+    "rig_3d": {
+      "schema_version": 1,
+      "command": "python scripts/hatch.py rig",
+      "optional": true,
+      "inputs": [
+        "glb",
+        "gltf",
+        "obj",
+        "blend"
+      ],
+      "coordinate_system": "RH +Y up +Z forward; meters; XYZW quaternions",
+      "templates": [
+        "humanoid",
+        "quadruped",
+        "winged-creature",
+        "robotic",
+        "custom"
+      ],
+      "exports": [
+        "glb",
+        "gltf",
+        "blend",
+        "transparent-frames",
+        "portable-zip"
+      ],
+      "review": "Hash-bound numerical evidence and separate visual approval; synthetic fixtures retain their provenance.",
+      "generation_provider": "No remote 3D provider is configured. Import genuine generated meshes with their provenance."
+    },
+    "sources": {
+      "imagegen": [
+        "image",
+        "strip"
+      ],
+      "import": [
+        "image",
+        "strip",
+        "frames"
+      ]
+    },
+    "extraction": [
+      "conservative-slots",
+      "source-bound-rectangles"
+    ],
+    "decomposition": {
+      "schema_version": 1,
+      "sources": [
+        "png",
+        "jpeg",
+        "webp"
+      ],
+      "semantic_input": [
+        "source-bound-masks",
+        "polygons",
+        "color-seeds",
+        "offline-review"
+      ],
+      "semantic_model": "Optional external image-understanding capability; none called by this controller.",
+      "modes": [
+        "faithful",
+        "explicit-assisted-hidden-reconstruction"
+      ],
+      "reuse": [
+        "portable-directory",
+        "portable-zip",
+        "forward-generation-import"
+      ],
+      "automatic_rigging": false
+    },
+    "resampling": [
+      "nearest",
+      "bilinear",
+      "bicubic",
+      "lanczos"
+    ],
+    "styles": {
+      "schema_version": 1,
+      "catalog": "styles/catalog.json",
+      "discovery": [
+        "styles",
+        "style",
+        "style-modifiers"
+      ],
+      "immutable_run_specification": true,
+      "thematic_modifiers": true
+    },
+    "exporters": [
+      "frames",
+      "atlas",
+      "gif",
+      "webp",
+      "browser",
+      "cards",
+      "flipbook",
+      "board",
+      "stimuli",
+      "cursor",
+      "craft"
+    ],
+    "consumers": [
+      "browser-state-machine-v2",
+      "communication-board-v1",
+      "Xcursor-v1",
+      "local-cursor-v1",
+      "print-layout-v1",
+      "stimuli-csv-v1",
+      "craft-grid-v1"
+    ],
+    "state_library": {
+      "interface_version": 1,
+      "command": "python scripts/hatch.py states",
+      "discovery": [
+        "list",
+        "search",
+        "show",
+        "packs",
+        "archetypes",
+        "recipes",
+        "preview"
+      ],
+      "compilation": "Selected definitions compile to an ordinary validated custom profile and a separate provenance manifest.",
+      "generation": "Selective installed imagegen handoffs or explicit imports; compilation performs no model calls.",
+      "codex_extension": false
+    },
+    "unsupported": "No dynamic plugins, arbitrary code hooks, remote generation clients or automatic external installation."
+  },
+  "codecs": {
+    "webp": true,
+    "jpg": true,
+    "zlib": true,
+    "freetype2": true
+  },
+  "errors": [],
+  "warnings": [],
+  "pillow": "13.0.0",
+  "optional": {
+    "playwright_python": true,
+    "imagegen": "External installed skill/tool; availability cannot be probed by Python."
+  },
+  "state_library": {
+    "catalog_version": "1.0.0",
+    "catalog_sha256": "5de72dedb3262ee0e350d1c5b45fa1cd4455d763b4760fa69ff20914f1895795",
+    "states": 416,
+    "aliases": 408,
+    "categories": 16,
+    "packs": 16,
+    "archetypes": 15,
+    "capabilities": 19,
+    "transition_recipes": 9,
+    "animation_recipes": 9,
+    "category_counts": {
+      "neutral-idle": 34,
+      "positive-emotions": 26,
+      "difficult-emotions": 30,
+      "cognition": 29,
+      "locomotion": 40,
+      "social-gestures": 32,
+      "pet-daily-life": 49,
+      "agent-workflows": 43,
+      "activities-hobbies": 19,
+      "game-rpg": 29,
+      "streaming-communication": 17,
+      "environmental-reactions": 14,
+      "narrative-cinematic": 13,
+      "transitions-microexpressions": 14,
+      "lifecycle-progression": 14,
+      "accessibility": 13
+    },
+    "artwork_status": "definitions-only"
+  },
+  "style_catalog": {
+    "version": "1.0.0",
+    "sha256": "be2cc5f8e194a61f28b0828edbb2baef295865757d099fdf1ab25c801bfcf747",
+    "styles": 205,
+    "techniques": 195,
+    "categories": 14,
+    "modifiers": 14
+  },
+  "filesystem": {
+    "existing_parent": "/workspace/scratch/f637139fcc7a/baseline-evidence/tmp",
+    "free_bytes": 13847105536,
+    "atomic_rename_probe": true
+  },
+  "ok": true
+}
