@@ -52,7 +52,11 @@
       "unittest_seconds": 1.734,
       "failures": 4,
       "errors": 0,
-      "skips": 0
+      "skips": 0,
+      "explicit_environment": {
+        "PYTHONPATH": "tests:scripts",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      }
     },
     {
       "command": [
@@ -79,7 +83,11 @@
       "unittest_seconds": 1.784,
       "failures": 0,
       "errors": 0,
-      "skips": 0
+      "skips": 0,
+      "explicit_environment": {
+        "PYTHONPATH": "tests:scripts",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      }
     },
     {
       "command": [
