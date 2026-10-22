@@ -27,7 +27,7 @@
     "scripts/rig_geometry.py": "2d759526bfa7b36b08566509e66fba0786e6db5571c42e14bde3830e5f14b92d",
     "scripts/rig_gltf.py": "3d5117c5f6c69df785abefab1fe19fe0b867c821a0e3764da5777f0b841fab92",
     "scripts/rig_http.py": "ea1003613470080b9c264fc4d6c983e21a27907d99bfe41d8bc29c3a74da2d45",
-    "scripts/rig_ik.py": "15836eb2d126f5832068862e0ef4363b04631d3fcea4186b1efaba60d647b72c",
+    "scripts/rig_ik.py": "47229ac03fda6a49864d2a325ee1b3311f878b091492e2fb52173420792e62f9",
     "scripts/rig_import.py": "a05f0baa3a12f275219e97942d9aebeb0bff2b789f031f1ccf09588711281108",
     "scripts/rig_interop.py": "4a10b6414e1b9c117137539be61cc37b5c6a45433bd0c8064d0ede962bd29fed",
     "scripts/rig_jobs.py": "023e36143cfad9ee181735490a2978e88585b0bbd269f3bd9d28c707d6ea5283",
@@ -48,7 +48,7 @@
     "scripts/test_rig_gate.py": "c6d207006772d226db49653862c3b4f650393528bb4ccd820feae597d09917f4",
     "tests/test_rig_animation.py": "f7d317db9f48f55233383027948bbf1b9f36f9937860154606be4d794ed0f616",
     "tests/test_rig_compatibility.py": "43308d59528c3630ae54aab5af1aa5972b16d59b2b3271d48c73d8a4e177b17e",
-    "tests/test_rig_contracts.py": "2476ab9d4814ce94164536dd2e5f574e8015abac54abfd9d1704d14335eed6fa",
+    "tests/test_rig_contracts.py": "b44a9a7cf491a1cae0044f71503fea86712d8004110feb3122fbdde6f12adbc3",
     "tests/test_rig_controls.py": "55f7b27b0fa09990823d1d4a87f775ab7f317ab2af7fcf4800de569f482d01a7",
     "tests/test_rig_http.py": "181e408f3e2ba97d3bd48b66199f352690241d9e6683472da168c1db519545bd",
     "tests/test_rig_interop.py": "93e53e916e0f61c5eae39b6046add399c17d6b34e1087a2877ec2995b1fff434",
@@ -77,12 +77,12 @@
       "HATCH_BLENDER": "/workspace/scratch/36752e25b9f2/hatch-tools/blender-4.5.3-linux-x64/blender",
       "PLAYWRIGHT_BROWSERS_PATH": "/workspace/scratch/36752e25b9f2/hatch-issue-51-browsers"
     },
-    "tests": 83,
+    "tests": 86,
     "failures": 0,
     "errors": 0,
     "skips": 0,
-    "duration_seconds": 13.62,
-    "log": "rig-suite.log",
+    "duration_seconds": 14.907,
+    "log": "ik-length-review/rig-suite.log",
     "sandbox": "escalated to allow loopback HTTP and browser"
   },
   "initial_restricted_attempt": {
@@ -109,31 +109,31 @@
   },
   "artifacts": [
     {
-      "receipt": "glb-export.json",
-      "file": "/workspace/scratch/36752e25b9f2/hatch-rig51-evidence/exports/character-cli.glb",
+      "receipt": "ik-length-review/glb-export.json",
+      "file": "/workspace/scratch/36752e25b9f2/hatch-rig51-ik-review/character.glb",
       "bytes": 75956,
       "sha256": "88e715465fa22d7a0c4aa177310696af45813e620d632bcdee906ce3676a268c"
     },
     {
-      "receipt": "gltf-export.json",
-      "file": "/workspace/scratch/36752e25b9f2/hatch-rig51-evidence/exports/character.gltf",
+      "receipt": "ik-length-review/gltf-export.json",
+      "file": "/workspace/scratch/36752e25b9f2/hatch-rig51-ik-review/character.gltf",
       "bytes": 94967,
       "sha256": "fb37f137013ce739745044b315867e8aeec2384867b64eac67ae10f38ed23029"
     },
     {
-      "receipt": "blender-export.json",
-      "file": "/workspace/scratch/36752e25b9f2/hatch-rig51-evidence/exports/character.blend",
-      "bytes": 134875,
-      "sha256": "a359c7583770b0890066a9c3c0bfa620db12c18680f9f2d1816d9b3855b40313"
+      "receipt": "ik-length-review/blender-export.json",
+      "file": "/workspace/scratch/36752e25b9f2/hatch-rig51-ik-review/character.blend",
+      "bytes": 135173,
+      "sha256": "4511758f8e9aaf122a4eb8f1a996b1e5a3dd788710ab79ac2c75253cce106ead"
     },
     {
-      "receipt": "blender-export.json",
-      "file": "/workspace/scratch/36752e25b9f2/hatch-rig51-evidence/exports/character.roundtrip.glb",
+      "receipt": "ik-length-review/blender-export.json",
+      "file": "/workspace/scratch/36752e25b9f2/hatch-rig51-ik-review/character.roundtrip.glb",
       "bytes": 76904,
       "sha256": "f45bcf21854434255f3264f2dd780e59937aa400a2166446ea5612c64bb1bdaf"
     }
   ],
-  "artifact_retention": "Generated export bytes remain in the recorded local evidence directory; JSON receipts and logs are committed. Reproduction creates fresh fixture provenance and .blend metadata, so byte hashes may differ.",
+  "artifact_retention": "The current CLI export bytes were freshly written from the previously saved robotic fixture to hatch-rig51-ik-review. Current receipts are under ik-length-review/. Original pre-fix receipts and bytes remain separately retained and are identified by results-before-ik-length-review.json.",
   "source_delivery": "source-delivery.json",
   "compatibility": "compatibility.json",
   "schema_check": {
@@ -151,9 +151,86 @@
     "demo.json": "e7aad7281d30fb2eb86932ed2745b7b4bc7ec56f723bc991a922d1d631f87d1f",
     "glb-export.json": "0089294d9b1a84165ce4a0d7b3c8559e331682bbc633fd05717f51ebf743e779",
     "gltf-export.json": "492252b19036443b00f7f6092d1eeb3ff160d03a1b55c3d2e4ed91ffa345fd36",
+    "ik-length-review/before.log": "82cc8ec6c068db8ac304a2325e6b45a490b89fffdabcc0f2bbbf4c3e7448b405",
+    "ik-length-review/blender-export.json": "09974e38e522e61ccf9f7ef71252a4362d09e0217076d78998a261ab1cc0fe8f",
+    "ik-length-review/contracts.log": "48ded04bc451d342d3e3195c16d18b1bfe785c623090177b36152b95210298b8",
+    "ik-length-review/glb-export.json": "9ea3e28a1236eeda06e4ec4458d7116271e3e92777eca235f636ad3b2321c792",
+    "ik-length-review/gltf-export.json": "0fbd02647d8eca6990c6ae4d775f921c68d8a40b2029678e8d4b79aa80d2eca1",
+    "ik-length-review/khronos.json": "ba0c895721747de64fdedfe3ed22eb2ec60dbf812d0b292c4c9963e2b8f408c6",
+    "ik-length-review/rig-suite.log": "543a277891736e568d69693ca9d7266c0fe709b1dba3434c4bea0ce926d0101a",
     "khronos.json": "aa7dca83984bdca2673b8750ced47ee65096ebbe743fc041b04d4bd7ec25020a",
+    "results-before-ik-length-review.json": "2d83d4ec45cb38ef1db568b133171234498cae75e6c54e0b4fa83b3c222108a4",
     "rig-suite-sandbox-blocked.log": "5bcf2f4cfa0c9aa5a16f53f5e04a2d062df6ad12e51903e620c5c97b530d024e",
     "rig-suite.log": "b82bec4ecd4aca693c83a27bc98368f35afd128336ca781781ec3fd39c1766f5",
     "source-delivery.json": "7d59ca4103d32ae90d1ba145e50d0827d9b061616ea1b560bbe3aaba76747ec8"
+  },
+  "recorded_utc": "2026-10-22T19:21:41Z",
+  "revision_parent": "287b25c8257302f1ee620ca422a53996caeb1a72",
+  "previous_evidence": {
+    "source_commit": "287b25c8257302f1ee620ca422a53996caeb1a72",
+    "record": "results-before-ik-length-review.json",
+    "scope": "Original 83-test run and original CLI receipts, before the independently identified segment-length defect was corrected."
+  },
+  "review_fix": {
+    "reviews": [
+      "https://github.com/CompleteTech-Skills/hatch-pet/pull/200#pullrequestreview-5619512428",
+      "https://github.com/CompleteTech-Skills/hatch-pet/pull/200#pullrequestreview-5619567130"
+    ],
+    "shared_guard": "Consecutive evaluated FK origin distances must each be strictly greater than 1e-8 meters in both declared rest pose and supplied runtime pose.",
+    "solvers": [
+      "two-bone",
+      "fabrik"
+    ],
+    "rejected_rest_lengths_m": [
+      0,
+      1e-09,
+      1e-08
+    ],
+    "accepted_rest_lengths_m": [
+      1.01e-08,
+      1
+    ],
+    "preserved_formats": [
+      "glb",
+      "gltf"
+    ],
+    "runtime_pose_boundary_cases": 12,
+    "before": {
+      "implementation_commit": "287b25c8257302f1ee620ca422a53996caeb1a72",
+      "new_test_file_sha256": "b44a9a7cf491a1cae0044f71503fea86712d8004110feb3122fbdde6f12adbc3",
+      "command": "python -m unittest discover -s tests -p 'test_rig_contracts.py' -v",
+      "tests": 8,
+      "failed_boundary_subcases": 6,
+      "duration_seconds": 1.762,
+      "log": "ik-length-review/before.log",
+      "used_as_passing_evidence": false,
+      "log_normalization": {
+        "operation": "Removed trailing horizontal whitespace from the retained copy of unittest output; test content and conclusions are unchanged.",
+        "raw_log_sha256": "5e1c6b9f07cbac4346d1568b2eeb6faad8f65a75b3e41e35bc502934ae82dcda",
+        "raw_local_log": "/workspace/scratch/36752e25b9f2/rig51-ik-boundary-before.log"
+      }
+    },
+    "after": {
+      "command": "python -m unittest discover -s tests -p 'test_rig_contracts.py' -v",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "duration_seconds": 1.66,
+      "log": "ik-length-review/contracts.log"
+    }
+  },
+  "current_cli_exports": {
+    "input_run": "/workspace/scratch/36752e25b9f2/hatch-rig51-evidence",
+    "input_manifest_sha256": "9a33f58e816fd8d32ff48b62951767f0365bacb12dfba5e8801eb337df4353bb",
+    "destination": "/workspace/scratch/36752e25b9f2/hatch-rig51-ik-review",
+    "commands": [
+      "python scripts/rig.py export --run-dir /workspace/scratch/36752e25b9f2/hatch-rig51-evidence --format glb --destination /workspace/scratch/36752e25b9f2/hatch-rig51-ik-review/character.glb",
+      "python scripts/rig.py export --run-dir /workspace/scratch/36752e25b9f2/hatch-rig51-evidence --format gltf --destination /workspace/scratch/36752e25b9f2/hatch-rig51-ik-review/character.gltf",
+      "python scripts/rig.py export --run-dir /workspace/scratch/36752e25b9f2/hatch-rig51-evidence --format blender --destination /workspace/scratch/36752e25b9f2/hatch-rig51-ik-review/character.blend",
+      "python scripts/rig.py export-validate --file /workspace/scratch/36752e25b9f2/hatch-rig51-ik-review/character.glb"
+    ],
+    "all_exit_codes": 0,
+    "khronos_report": "ik-length-review/khronos.json"
   }
 }

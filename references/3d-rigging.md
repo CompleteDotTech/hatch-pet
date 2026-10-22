@@ -103,7 +103,7 @@ The viewer downloads a correction bound to the current revision. A later edit ma
 
 FK evaluates parent-to-child TRS without mutating the rest pose. Analytical two-bone IK uses a pole target; FABRIK handles longer chains. Both measure the actual evaluated endpoint, handle unreachable targets and obey bounded iterations. Constraints include hinges, swing/twist, ball limits, locked rotation axes, translation limits, aiming and transform copying, with dependency-cycle rejection.
 
-Structural validation checks every declared IK chain, even when no clip or contact uses it. Chain IDs must be unique, bone references must exist, the ordered bones must follow direct parent relationships, and an optional target orientation must be a valid unit quaternion. GLB/glTF export runs these checks before writing output; Blender export uses that same validated native export boundary.
+Structural validation checks every declared IK chain, even when no clip or contact uses it. Chain IDs must be unique, bone references must exist, the ordered bones must follow direct parent relationships, and an optional target orientation must be a valid unit quaternion. Every evaluated rest-pose segment between consecutive joint origins must be strictly longer than `1e-8` meters, matching the existing solver threshold; positive authored bone head-to-tail lengths alone do not establish this separation. Both two-bone and FABRIK solvers also enforce that same length guard on the supplied runtime pose. GLB/glTF export runs declaration checks before writing output; Blender export uses that same validated native export boundary.
 
 ```bash
 python scripts/rig.py pose --run-dir output/character --clip wave --time 0.75 --destination output/wave-pose.json

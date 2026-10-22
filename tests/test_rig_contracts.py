@@ -12,6 +12,11 @@ from rig_test_helpers import fixture
 from rig_contracts import schemas, validate_contract
 from rig_errors import RigError, sha256
 from rig_gltf import export_gltf
+from rig_ik import solve_ik, validate_chain
+from rig_jobs import save_rig
+from rig_models import load_rig
+from rig_skeleton import neutral_pose, skeleton_from_heads
+from rig_skinning import generate_skin_weights
 from rig_validation import validate_rig
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -65,6 +70,75 @@ class RigContractTests(unittest.TestCase):
                 with self.assertRaises(RigError):
                     export_gltf(invalid, output)
                 self.assertEqual(output.read_bytes(), original)
+
+    def chain_fixture(self, solver, segment_length):
+        root = self.root / f'{solver}-{segment_length}'
+        rig = fixture(root, animated=False)
+        # Every authored bone is one meter long. The IK segments are the
+        # distances between evaluated joint origins, which can still collapse.
+        rig.manifest['skeleton'] = skeleton_from_heads([
+            dict(id=f'b{i}', role=f'joint-{i}', parent=f'b{i-1}' if i else None,
+                 head=[0, i * segment_length, 0],
+                 tail=[0, i * segment_length + 1, 0], deform=True)
+            for i in range(3)
+        ], source='procedural-fixture', reference='IK segment boundary fixture', confidence=1.)
+        rig.manifest['controllers']['ik'][0]['solver'] = solver
+        rig.weights = generate_skin_weights(rig.geometry, rig.skeleton)
+        save_rig(rig, operation='test-ik-segment-boundary')
+        return load_rig(rig.root)
+
+    def test_unused_chains_reject_unmeasurable_rest_segments_before_export(self):
+        for solver in ('two-bone', 'fabrik'):
+            for length in (0., 1e-9, 1e-8):
+                with self.subTest(solver=solver, segment_length=length):
+                    rig = self.chain_fixture(solver, length)
+                    self.assertFalse(rig.clips)
+                    report = validate_rig(rig)
+                    self.assertFalse(report['ok'])
+                    self.assertEqual(report['checks'][0]['name'], 'structure')
+                    self.assertEqual(report['checks'][0]['status'], 'failed')
+                    chain = rig.manifest['controllers']['ik'][0]
+                    with self.assertRaises(RigError) as error:
+                        validate_chain(rig.skeleton, chain)
+                    self.assertEqual(error.exception.report['code'], 'RIG_IK_LENGTH')
+                    for extension in ('glb', 'gltf'):
+                        output = rig.root / ('preserved.' + extension)
+                        original = b'previous output remains intact'
+                        output.write_bytes(original)
+                        with self.assertRaises(RigError) as error:
+                            export_gltf(rig, output)
+                        self.assertEqual(error.exception.report['code'], 'RIG_IK_LENGTH')
+                        self.assertEqual(output.read_bytes(), original)
+
+    def test_measurable_chain_boundaries_remain_usable(self):
+        for solver in ('two-bone', 'fabrik'):
+            for length in (1.01e-8, 1.):
+                with self.subTest(solver=solver, segment_length=length):
+                    rig = self.chain_fixture(solver, length)
+                    self.assertFalse(rig.clips)
+                    self.assertTrue(validate_rig(rig)['ok'])
+                    chain = rig.manifest['controllers']['ik'][0]
+                    solved = solve_ik(rig.skeleton, neutral_pose(rig.skeleton),
+                                      chain, [0, 2 * length, 0])
+                    self.assertTrue(solved.converged, solved.report())
+                    for extension in ('glb', 'gltf'):
+                        output = rig.root / ('accepted.' + extension)
+                        receipt = export_gltf(rig, output)
+                        self.assertEqual(receipt['sha256'], sha256(output))
+
+    def test_runtime_pose_keeps_segment_length_guard(self):
+        for solver in ('two-bone', 'fabrik'):
+            chain = deepcopy(self.rig.manifest['controllers']['ik'][0])
+            chain['solver'] = solver
+            validate_chain(self.rig.skeleton, chain)
+            for bone in ('b1', 'b2'):
+                for length in (0., 1e-9, 1e-8):
+                    with self.subTest(solver=solver, bone=bone, segment_length=length):
+                        pose = neutral_pose(self.rig.skeleton)
+                        pose['bones'][bone] = {'translation': [0, length, 0]}
+                        with self.assertRaises(RigError) as error:
+                            solve_ik(self.rig.skeleton, pose, chain, [0, 2, 0])
+                        self.assertEqual(error.exception.report['code'], 'RIG_IK_LENGTH')
 
     def test_real_glb_and_gltf_receipts_match_published_schema_and_bytes(self):
         schema = schemas()['rig-export.schema.json']

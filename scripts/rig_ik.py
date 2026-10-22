@@ -27,6 +27,15 @@ class IKResult:
                     constraints_applied=self.constraints_applied)
 
 
+def _chain_points_and_lengths(skeleton: dict, names: list[str], pose=None):
+    """Use the same evaluated segment boundary for rest and runtime poses."""
+    world = evaluate_fk(skeleton, pose)
+    points = np.array([world[name][:3, 3] for name in names])
+    lengths = np.linalg.norm(np.diff(points, axis=0), axis=1)
+    require(np.all(lengths > 1e-8), 'RIG_IK_LENGTH', 'IK segments must have measurable length.')
+    return points, lengths
+
+
 def validate_chain(skeleton: dict, chain: dict) -> None:
     validate_contract(chain, 'IKChain')
     bones = {b['id']: b for b in skeleton['bones']}
@@ -37,6 +46,7 @@ def validate_chain(skeleton: dict, chain: dict) -> None:
     require(chain['solver'] != 'two-bone' or len(names) == 3, 'RIG_IK_CHAIN', 'Two-bone IK needs two segments and an endpoint.')
     if 'orientation' in chain:
         quaternion(chain['orientation'], strict=True)
+    _chain_points_and_lengths(skeleton, names)
 
 
 def validate_controllers(skeleton: dict, controllers: dict) -> None:
@@ -78,11 +88,8 @@ def solve_ik(skeleton: dict, pose: dict, chain: dict, target, *, pole=None,
     validate_chain(skeleton, chain)
     target = vector(target);pole = vector(pole if pole is not None else chain['pole'])
     result = deepcopy(pose)
-    world = evaluate_fk(skeleton, result)
     names = chain['bones']
-    points = np.array([world[name][:3, 3] for name in names])
-    lengths = np.linalg.norm(np.diff(points, axis=0), axis=1)
-    require(np.all(lengths > 1e-8), 'RIG_IK_LENGTH', 'IK segments must have measurable length.')
+    points, lengths = _chain_points_and_lengths(skeleton, names, result)
     origin = points[0].copy()
     distance = float(np.linalg.norm(target-origin))
     lower = max(0., float(2*lengths.max()-lengths.sum()))
