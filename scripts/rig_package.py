@@ -48,7 +48,7 @@ def restore_rig(archive_path,destination,*,limits=None):
     limits=limits or DEFAULT_LIMITS;archive_path=Path(archive_path);destination=Path(destination).absolute()
     require(archive_path.is_file() and not archive_path.is_symlink(),'RIG_ARCHIVE','Archive must be a regular file.')
     require(archive_path.stat().st_size <= limits['archive_bytes'],'RIG_ARCHIVE_LIMIT','Compressed archive exceeds its byte budget.')
-    require(not destination.exists(),'RIG_RESTORE_EXISTS','Restore into a new directory.')
+    require(not destination.exists() and not destination.is_symlink(),'RIG_RESTORE_EXISTS','Restore into a new directory.')
     destination.parent.mkdir(parents=True,exist_ok=True)
     temporary=Path(tempfile.mkdtemp(prefix='.rig-restore-',dir=destination.parent))
     try:

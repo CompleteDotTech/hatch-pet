@@ -2,8 +2,11 @@
 import argparse
 import copy
 import json
+import os
 from pathlib import Path
 import shutil
+import subprocess
+import sys
 import tempfile
 import unittest
 import zipfile
@@ -28,6 +31,14 @@ class CapabilityTests(unittest.TestCase):
 
     def build(self, validate=False, profile=None):
         self.data=build_run(self.root,profile,validate=validate);return self.data
+
+    def directory_symlink(self, link, target):
+        try:
+            link.symlink_to(target, target_is_directory=True)
+        except OSError as error:
+            if os.name == 'nt' and getattr(error, 'winerror', None) == 1314:
+                self.skipTest('Windows symlink creation privilege is unavailable: ' + str(error))
+            raise
 
     def test_import_origin_is_distinct_and_source_still_gets_reviewed(self):
         self.build();hatch.repair(self.root,self.data,'jump','Import the approved existing strip.')
@@ -164,6 +175,113 @@ class CapabilityTests(unittest.TestCase):
         self.assertEqual(data['run_id'],self.data['run_id']);self.assertEqual(data['jobs'],self.data['jobs'])
         self.assertTrue(hatch.status(restored,data)['reviewed'])
         self.assertEqual(hatch.read(restored/'pet_request.json'),hatch.read(self.root/'pet_request.json'))
+
+    def test_restore_rejects_dangling_destination_symlink_before_extraction(self):
+        self.build(validate=True)
+        record_fixture_review(self.root, self.data)
+        archive = self.home / 'archive.zip'
+        archive_run(self.root, self.data, archive)
+        destination = self.home / 'restored'
+        target = self.home / 'missing-target'
+        self.directory_symlink(destination, target)
+        before = destination.lstat()
+        linked_target = destination.readlink()
+
+        with patch.object(portable_runs.tempfile, 'mkdtemp', wraps=tempfile.mkdtemp) as create_stage:
+            with self.assertRaisesRegex(ValueError, 'destination must not exist'):
+                restore_run(archive, destination)
+        create_stage.assert_not_called()
+        self.assertTrue(destination.is_symlink())
+        after = destination.lstat()
+        self.assertEqual((after.st_dev, after.st_ino), (before.st_dev, before.st_ino))
+        self.assertEqual(destination.readlink(), linked_target)
+        self.assertFalse(target.exists())
+        self.assertFalse(list(self.home.glob('.hatch-restore-*')))
+
+    def test_restore_cli_rejects_dangling_destination_symlink(self):
+        self.build(validate=True)
+        record_fixture_review(self.root, self.data)
+        archive = self.home / 'archive.zip'
+        archive_run(self.root, self.data, archive)
+        destination = self.home / 'restored'
+        target = self.home / 'missing-target'
+        self.directory_symlink(destination, target)
+        before = destination.lstat()
+        linked_target = destination.readlink()
+        script = Path(__file__).resolve().parents[1] / 'scripts/hatch.py'
+
+        process = subprocess.run([sys.executable, str(script), 'restore', '--source', str(archive),
+                                  '--run-dir', str(destination)], capture_output=True, text=True)
+        self.assertNotEqual(process.returncode, 0, process.stdout + process.stderr)
+        self.assertIn('restore destination must not exist', process.stderr)
+        self.assertTrue(destination.is_symlink())
+        after = destination.lstat()
+        self.assertEqual((after.st_dev, after.st_ino), (before.st_dev, before.st_ino))
+        self.assertEqual(destination.readlink(), linked_target)
+        self.assertFalse(target.exists())
+        self.assertFalse((self.home / '.missing-target.hatch.lock').exists())
+        self.assertFalse(list(self.home.glob('.hatch-restore-*')))
+
+    def test_restore_preserves_destination_symlink_created_after_initial_check(self):
+        self.build(validate=True)
+        record_fixture_review(self.root, self.data)
+        archive = self.home / 'archive.zip'
+        archive_run(self.root, self.data, archive)
+        destination = self.home / 'restored'
+        target = self.home / 'missing-target'
+        probe = self.home / 'symlink-capability'
+        self.directory_symlink(probe, target)
+        probe.unlink()
+        original_is_symlink = Path.is_symlink
+        created = []
+
+        def race(candidate):
+            result = original_is_symlink(candidate)
+            if candidate == destination and not created:
+                self.assertFalse(result)
+                destination.symlink_to(target, target_is_directory=True)
+                status = destination.lstat()
+                created.append((status.st_dev, status.st_ino, destination.readlink()))
+            return result
+
+        with patch.object(Path, 'is_symlink', race):
+            with self.assertRaises(FileExistsError):
+                restore_run(archive, destination)
+        self.assertEqual(len(created), 1)
+        self.assertTrue(destination.is_symlink())
+        status = destination.lstat()
+        self.assertEqual((status.st_dev, status.st_ino, destination.readlink()), created[0])
+        self.assertFalse(target.exists())
+        self.assertFalse(list(self.home.glob('.hatch-restore-*')))
+
+    def test_restore_resolves_symlink_parent_without_following_destination_leaf(self):
+        self.build(validate=True)
+        record_fixture_review(self.root, self.data)
+        archive = self.home / 'archive.zip'
+        archive_run(self.root, self.data, archive)
+        parent = self.home / 'actual-parent'
+        parent.mkdir()
+        alias = self.home / 'parent-alias'
+        self.directory_symlink(alias, parent)
+
+        result = restore_run(archive, alias / 'restored')
+        destination = parent / 'restored'
+        self.assertEqual(result['restored'], str(destination.resolve()))
+        self.assertFalse(result['revalidation_required'])
+        self.assertTrue(alias.is_symlink())
+        restored = hatch.manifest(destination)
+        self.assertEqual(restored['run_id'], self.data['run_id'])
+        self.assertTrue(hatch.status(destination, restored)['reviewed'])
+
+        script = Path(__file__).resolve().parents[1] / 'scripts/hatch.py'
+        process = subprocess.run([sys.executable, str(script), 'restore', '--source', str(archive),
+                                  '--run-dir', str(alias / 'cli-restored')], capture_output=True, text=True)
+        self.assertEqual(process.returncode, 0, process.stdout + process.stderr)
+        self.assertEqual(json.loads(process.stdout)['restored'], str((parent / 'cli-restored').resolve()))
+        restored = hatch.manifest(parent / 'cli-restored')
+        self.assertEqual(restored['run_id'], self.data['run_id'])
+        self.assertTrue(hatch.status(parent / 'cli-restored', restored)['reviewed'])
+        self.assertFalse(list(parent.glob('.hatch-restore-*')))
 
     def test_restore_preserves_empty_destination_racing_publication(self):
         self.build(validate=True)

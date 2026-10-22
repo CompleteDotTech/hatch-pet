@@ -1,4 +1,5 @@
 from copy import deepcopy
+import os
 from pathlib import Path
 import tempfile
 import unittest
@@ -72,6 +73,32 @@ class RigWorkflowTests(unittest.TestCase):
         with zipfile.ZipFile(Path(self.temp.name)/'bad.zip','w') as z:z.writestr('../escape','bad')
         with self.assertRaises(RigError):restore_rig(Path(self.temp.name)/'bad.zip',Path(self.temp.name)/'bad')
         self.assertFalse((Path(self.temp.name)/'escape').exists())
+    def test_restore_rejects_dangling_destination_symlink_before_extraction(self):
+        home = Path(self.temp.name)
+        archive = home / 'rig.zip'
+        package_rig(self.rig.root, archive)
+        destination = home / 'restored'
+        target = home / 'missing-target'
+        try:
+            destination.symlink_to(target, target_is_directory=True)
+        except OSError as error:
+            if os.name == 'nt' and getattr(error, 'winerror', None) == 1314:
+                self.skipTest('Windows symlink creation privilege is unavailable: ' + str(error))
+            raise
+        before = destination.lstat()
+        linked_target = destination.readlink()
+
+        with patch.object(rig_package.tempfile, 'mkdtemp', wraps=tempfile.mkdtemp) as create_stage:
+            with self.assertRaises(RigError) as error:
+                restore_rig(archive, destination)
+        self.assertEqual(error.exception.report['code'], 'RIG_RESTORE_EXISTS')
+        create_stage.assert_not_called()
+        self.assertTrue(destination.is_symlink())
+        after = destination.lstat()
+        self.assertEqual((after.st_dev, after.st_ino), (before.st_dev, before.st_ino))
+        self.assertEqual(destination.readlink(), linked_target)
+        self.assertFalse(target.exists())
+        self.assertFalse(list(home.glob('.rig-restore-*')))
     def test_restore_preserves_empty_destination_racing_publication(self):
         home = Path(self.temp.name)
         archive = home / 'rig.zip'

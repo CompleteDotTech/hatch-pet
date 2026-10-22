@@ -124,9 +124,11 @@ def verify_archive(path):
 def restore_run(archive_path, destination):
     import hatch
     receipt = verify_archive(archive_path)
-    destination = Path(destination).resolve()
-    if destination.exists():
+    destination = Path(destination)
+    if destination.exists() or destination.is_symlink():
         raise ValueError('restore destination must not exist; use a new directory')
+    # Resolve parent aliases without following a destination link created after the check.
+    destination = destination.parent.resolve() / destination.name
     destination.parent.mkdir(parents=True, exist_ok=True)
     stage = Path(tempfile.mkdtemp(prefix='.hatch-restore-', dir=destination.parent))
     try:
