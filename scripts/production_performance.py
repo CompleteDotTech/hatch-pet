@@ -5,6 +5,7 @@ historical pre-loss test results are not evidence for these files.
 """
 from __future__ import annotations
 
+from collections import Counter
 import copy
 import hashlib
 import json
@@ -303,9 +304,23 @@ def validate_continuity(bundle):
                         if math.dist(a, b) > 1e-6:
                             raise ValueError('continuity position mismatch for ' + character)
             if 'prop_ownership' in link['requirements']:
+                # Shot-local aliases are unambiguous only when the character
+                # occurs once at both endpoints, including ownership-only links.
+                repeated_characters = {
+                    character
+                    for shot in (before, after)
+                    for character, count in Counter(i['character'] for i in shot['instances']).items()
+                    if count > 1
+                }
                 def owners(shot, frame):
                     actors = {i['id']: i['character'] for i in shot['instances']}
-                    return {p['id']: (p['prop'], actors.get(prop_owner(p, frame)['owner'])) for p in shot['props']}
+                    result = {}
+                    for prop in shot['props']:
+                        owner = prop_owner(prop, frame)['owner']
+                        character = actors.get(owner)
+                        result[prop['id']] = (prop['prop'], character,
+                                              owner if character in repeated_characters else None)
+                    return result
                 if owners(before, before['duration_frames']) != owners(after, 0):
                     raise ValueError('continuity prop ownership mismatch')
 
