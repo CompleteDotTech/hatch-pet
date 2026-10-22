@@ -236,6 +236,62 @@ class ProductionBundleTests(unittest.TestCase):
         self.assertFalse(missing_target.exists())
         self.assertFalse(list(self.home.glob('.hatch-production-parts-*')))
 
+    def test_bundle_creation_preserves_a_destination_link_racing_normalization(self):
+        destination = self.home / 'racing-normalization'
+        missing_target = self.home / 'unrequested-normalization-parent' / 'target'
+        original_check = Path.is_symlink
+        created = []
+        def other_writer(path):
+            result = original_check(path)
+            if path == destination and not created:
+                self.assertFalse(result)
+                destination.symlink_to(missing_target, target_is_directory=True)
+                created.append((destination.lstat().st_ino, destination.readlink()))
+            return result
+        with patch.object(Path, 'is_symlink', other_writer):
+            with self.assertRaisesRegex(ValueError, 'must not exist'):
+                bundle.create_bundle(self.archive, destination, part_size=1024)
+        self.assertEqual(len(created), 1)
+        self.assertTrue(destination.is_symlink())
+        self.assertEqual(destination.lstat().st_ino, created[0][0])
+        self.assertEqual(destination.readlink(), created[0][1])
+        self.assertFalse(missing_target.parent.exists())
+        self.assertFalse(list(self.home.glob('.hatch-production-parts-*')))
+
+    def test_bundle_creation_preserves_a_destination_link_racing_publication_lock(self):
+        destination = self.home / 'racing-lock'
+        missing_target = self.home / 'unrequested-lock-parent' / 'target'
+        original_ownership = workflow.hatch.ownership
+        created = []
+        def other_writer(root, **kwargs):
+            self.assertEqual(root, destination)
+            destination.symlink_to(missing_target, target_is_directory=True)
+            created.append((destination.lstat().st_ino, destination.readlink()))
+            return original_ownership(root, **kwargs)
+        with patch.object(workflow.hatch, 'ownership', side_effect=other_writer):
+            with self.assertRaisesRegex(ValueError, 'must not exist'):
+                bundle.create_bundle(self.archive, destination, part_size=1024)
+        self.assertEqual(len(created), 1)
+        self.assertTrue(destination.is_symlink())
+        self.assertEqual(destination.lstat().st_ino, created[0][0])
+        self.assertEqual(destination.readlink(), created[0][1])
+        self.assertFalse(missing_target.parent.exists())
+        self.assertFalse(list(self.home.glob('.hatch-production-parts-*')))
+
+    def test_bundle_creation_supports_a_parent_directory_alias(self):
+        parent = self.home / 'actual-parent'
+        parent.mkdir()
+        alias = self.home / 'parent-alias'
+        alias.symlink_to(parent, target_is_directory=True)
+        linked_parent = alias.readlink()
+        destination = alias / 'new-parts'
+        result = bundle.create_bundle(self.archive, destination, part_size=1024)
+        self.assertTrue(result['created'])
+        self.assertEqual(result['bundle'], str(parent / 'new-parts' / bundle.BUNDLE_INDEX))
+        self.assertEqual(bundle.verify_bundle(destination)['archive_sha256'], workflow.file_hash(self.archive))
+        self.assertTrue(alias.is_symlink())
+        self.assertEqual(alias.readlink(), linked_parent)
+
     def test_cli_verifies_bundle_and_rejects_invalid_inputs(self):
         script = Path(__file__).resolve().parents[1] / 'scripts' / 'production_bundle.py'
         result = subprocess.run([sys.executable, str(script), 'verify', '--bundle', str(self.index)],
