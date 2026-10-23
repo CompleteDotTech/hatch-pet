@@ -1,0 +1,217 @@
+{
+  "base_commit": "7b966a639bcaf23bd3a0d037f46f29e2edfcc273",
+  "all_protected_inputs_match_base": true,
+  "protected_files": [
+    {
+      "path": "assets/playback.js",
+      "bytes": 10618,
+      "sha256": "9aa7d5228de0a57cd443b70c14b160cb22238d21a861a0fb06f6b4bcc6ccbc79",
+      "matches_base": true
+    },
+    {
+      "path": "profiles/asset-inputs.schema.json",
+      "bytes": 4909,
+      "sha256": "ffb9709040d6c528b50bf1a0c9533706ada117b55f5f6e1249284c367a41973e",
+      "matches_base": true
+    },
+    {
+      "path": "profiles/codex-v1.json",
+      "bytes": 13287,
+      "sha256": "f4e0279f8634ea53ef544ecb49b9a71ec2565c61ec5b8e63163ecc5ead478a6b",
+      "matches_base": true
+    },
+    {
+      "path": "profiles/decomposition-annotations.schema.json",
+      "bytes": 12609,
+      "sha256": "ae93aa42d2dfbc4add37208acb404f6ba697416be12cfcee70a7bf7b7a910416",
+      "matches_base": true
+    },
+    {
+      "path": "profiles/decomposition.schema.json",
+      "bytes": 33474,
+      "sha256": "252e7a7def2ba75ef5c1e4e60d4bd8f618974e652385f46b8cbbcf6e2f05603b",
+      "matches_base": true
+    },
+    {
+      "path": "profiles/production-cast.schema.json",
+      "bytes": 57158,
+      "sha256": "8a76d77027e3006ab6f6bde67ef191d5fea6254cb05ea36658705beb8cfa3afc",
+      "matches_base": true
+    },
+    {
+      "path": "profiles/production-clip.schema.json",
+      "bytes": 57158,
+      "sha256": "11fab0fc3d038e9b40a60beeb8e7a14d78bd8ecabb4d3680ba35ce0d7ae59a19",
+      "matches_base": true
+    },
+    {
+      "path": "profiles/production-project.schema.json",
+      "bytes": 57164,
+      "sha256": "cd33410c713660e33c6805df19aa94512de5f0cb64f71f6b3db74ce05d2c4c21",
+      "matches_base": true
+    },
+    {
+      "path": "profiles/production-scene.schema.json",
+      "bytes": 57160,
+      "sha256": "1d01d66903b3d730f4670951daf2f30239e05d27b1f50d68be080173585974ad",
+      "matches_base": true
+    },
+    {
+      "path": "profiles/production-shot.schema.json",
+      "bytes": 57158,
+      "sha256": "12cc14e67a72da0a022f18ed44df3fd2d5ad3919ab583a225dfaabb9593ea4b3",
+      "matches_base": true
+    },
+    {
+      "path": "profiles/profile.schema.json",
+      "bytes": 12272,
+      "sha256": "afba01bc16c4f6c297d1b95b62803c7a5b989e0fa9b967c33e5d50471091163c",
+      "matches_base": true
+    },
+    {
+      "path": "profiles/style-catalog.schema.json",
+      "bytes": 18287,
+      "sha256": "915595ee2fe990c9600040e1669ee2b50c0079d132d6a168eef089eb4889ec3c",
+      "matches_base": true
+    },
+    {
+      "path": "state-library/catalog.json",
+      "bytes": 2582572,
+      "sha256": "970139db7291c4233ef75e37ffd6abe0385c8f165dd37b339326a4e8647f3de9",
+      "matches_base": true
+    }
+  ],
+  "catalog": {
+    "version": "1.0.0",
+    "states": 416,
+    "aliases": 408,
+    "packs": 16,
+    "animation_recipes": 9,
+    "sha256": "5de72dedb3262ee0e350d1c5b45fa1cd4455d763b4760fa69ff20914f1895795"
+  },
+  "codex_atlas": {
+    "columns": 8,
+    "rows": 9,
+    "cell_width": 192,
+    "cell_height": 208,
+    "states": [
+      {
+        "id": "idle",
+        "frames": 6,
+        "durations_ms": [
+          280,
+          110,
+          110,
+          140,
+          140,
+          320
+        ]
+      },
+      {
+        "id": "running-right",
+        "frames": 8,
+        "durations_ms": [
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          220
+        ]
+      },
+      {
+        "id": "running-left",
+        "frames": 8,
+        "durations_ms": [
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          220
+        ]
+      },
+      {
+        "id": "waving",
+        "frames": 4,
+        "durations_ms": [
+          140,
+          140,
+          140,
+          280
+        ]
+      },
+      {
+        "id": "jumping",
+        "frames": 5,
+        "durations_ms": [
+          140,
+          140,
+          140,
+          140,
+          280
+        ]
+      },
+      {
+        "id": "failed",
+        "frames": 8,
+        "durations_ms": [
+          140,
+          140,
+          140,
+          140,
+          140,
+          140,
+          140,
+          240
+        ]
+      },
+      {
+        "id": "waiting",
+        "frames": 6,
+        "durations_ms": [
+          150,
+          150,
+          150,
+          150,
+          150,
+          260
+        ]
+      },
+      {
+        "id": "running",
+        "frames": 6,
+        "durations_ms": [
+          120,
+          120,
+          120,
+          120,
+          120,
+          220
+        ]
+      },
+      {
+        "id": "review",
+        "frames": 6,
+        "durations_ms": [
+          150,
+          150,
+          150,
+          150,
+          150,
+          280
+        ]
+      }
+    ]
+  },
+  "production_delivery": {
+    "report": "source-delivery.json",
+    "verified": true,
+    "new_approval_recorded": false,
+    "visual_review_performed": false
+  }
+}

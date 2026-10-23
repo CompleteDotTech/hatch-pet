@@ -14,7 +14,7 @@ import struct
 from urllib.parse import unquote, urlsplit
 import numpy as np
 
-from rig_contracts import DEFAULT_LIMITS
+from rig_contracts import DEFAULT_LIMITS, validate_contract
 from rig_errors import RigError, atomic_bytes, decode_json, require, safe_path
 from rig_math import compose, qmatrix, quaternion, vector
 
@@ -304,9 +304,11 @@ def export_gltf(rig, destination: str | Path, *, bake=True) -> dict:
     from rig_animation import bake_clip, validate_animation
     from rig_errors import sha256
     from rig_models import rig_signature
+    from rig_ik import validate_controllers
     from rig_skinning import validate_skin
     from rig_skeleton import validate_skeleton
     validate_skeleton(rig.skeleton, rig.manifest.get('limits'))
+    validate_controllers(rig.skeleton, rig.manifest['controllers'])
     require(set(rig.weights) == set(rig.geometry.by_id()), 'RIG_MISSING_SKIN', 'Cannot export a rig with missing bindings.')
     for mesh in rig.geometry.meshes:validate_skin(rig.weights[mesh.id], mesh, rig.skeleton, rig.manifest.get('limits'))
     builder = GltfBuilder();bones = rig.skeleton['bones']
@@ -345,7 +347,8 @@ def export_gltf(rig, destination: str | Path, *, bake=True) -> dict:
         source_sha256=rig.manifest['source']['sha256'], review_status=rig.manifest['review']['status'],
         authoring_controls='Native/Blender only; exported joint and morph channels are evaluated motion.'))
     builder.write(destination)
-    return dict(schema_version=1, format=Path(destination).suffix[1:], path=str(destination), sha256=sha256(destination),
+    receipt = dict(schema_version=1, format=Path(destination).suffix[1:].lower(), path=str(destination), sha256=sha256(destination),
                 rig_sha256=rig_signature(rig.manifest), vertices=rig.geometry.vertex_count,
                 skins=len(rig.weights), joints=len(bones), animations=list(rig.clips), keyframes=key_count,
                 independently_verified=False)
+    return validate_contract(receipt, 'RigExportReceipt')

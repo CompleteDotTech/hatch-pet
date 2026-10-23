@@ -5,10 +5,11 @@ from copy import deepcopy
 import math
 import numpy as np
 from rig_animation import evaluate_animation, validate_animation
-from rig_constraints import apply_constraints, constraint_order
+from rig_constraints import apply_constraints
 from rig_contracts import validate_contract
 from rig_errors import RigError, object_hash, timestamp
 from rig_geometry import deformation_metrics
+from rig_ik import validate_controllers
 from rig_math import axis_angle
 from rig_models import rig_signature, validate_geometry
 from rig_skeleton import evaluate_fk, neutral_pose, rotate_bone, validate_skeleton
@@ -51,7 +52,7 @@ def validate_rig(rig, *, require_animation=False) -> dict:
     try:
         validate_contract(rig.manifest, 'Rig');validate_geometry(rig.geometry, rig.manifest['limits'])
         skeleton_report = validate_skeleton(rig.skeleton, rig.manifest['limits'])
-        constraint_order(rig.skeleton, rig.manifest['controllers']['constraints'])
+        validate_controllers(rig.skeleton, rig.manifest['controllers'])
         _check(report, 'structure', True, 'Finite acyclic skeleton, geometry and controller graph.', 0)
         report['metrics'].update(hierarchy_cycles=0, invalid_joint_references=0, bones=skeleton_report['bones'],
                                   vertices=rig.geometry.vertex_count, triangles=rig.geometry.triangle_count)

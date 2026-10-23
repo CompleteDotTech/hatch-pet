@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "format": "gltf",
+  "path": "/workspace/scratch/36752e25b9f2/hatch-rig51-evidence/exports/character.gltf",
+  "sha256": "fb37f137013ce739745044b315867e8aeec2384867b64eac67ae10f38ed23029",
+  "rig_sha256": "b4ee34584569abba47cc35034cedaf7e82bfd4725e5b0cfd5abe913ec2692f15",
+  "vertices": 706,
+  "skins": 11,
+  "joints": 7,
+  "animations": [
+    "gripper-slide",
+    "hinge-sweep",
+    "neutral"
+  ],
+  "keyframes": 127,
+  "independently_verified": false
+}

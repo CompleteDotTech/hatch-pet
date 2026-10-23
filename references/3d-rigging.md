@@ -41,6 +41,8 @@ The offline review renderer vendors Three.js 0.180.0, with its MIT license and f
 
 Transforms must be finite and nonsingular. Rest transforms that contain shear or a reflection are rejected for the skeletal core; apply those transforms in an editor first. Static reflected geometry is baked with corrected winding. Original files are copied byte for byte and hash checked. `identity.json` locks the source identity, origin, fixture classification and import scale. An imported procedural fixture stays a fixture when exported and reimported.
 
+The canonical definitions live in `scripts/rig_contracts.py`. Generated Draft 2020-12 schemas under `profiles/rig*.schema.json` cover rigs, templates, clips, poses, retarget profiles, corrections, reviews, jobs and export receipts. Nested definitions cover skeletons, bones, skin bindings and controllers. JSON Schema checks structure and field types; the runtime also checks reference graphs, unit quaternions, bind reconstruction, source hashes and safe local resource paths. See the [contract acceptance audit](rig-contracts-acceptance.md) for the current compatibility baseline and requirement-to-test mapping.
+
 ## Import, analyze, fit and bind
 
 ```bash
@@ -101,6 +103,8 @@ The viewer downloads a correction bound to the current revision. A later edit ma
 
 FK evaluates parent-to-child TRS without mutating the rest pose. Analytical two-bone IK uses a pole target; FABRIK handles longer chains. Both measure the actual evaluated endpoint, handle unreachable targets and obey bounded iterations. Constraints include hinges, swing/twist, ball limits, locked rotation axes, translation limits, aiming and transform copying, with dependency-cycle rejection.
 
+Structural validation checks every declared IK chain, even when no clip or contact uses it. Chain IDs must be unique, bone references must exist, the ordered bones must follow direct parent relationships, and an optional target orientation must be a valid unit quaternion. Every evaluated rest-pose segment between consecutive joint origins must be strictly longer than `1e-8` meters, matching the existing solver threshold; positive authored bone head-to-tail lengths alone do not establish this separation. Both two-bone and FABRIK solvers also enforce that same length guard on the supplied runtime pose. GLB/glTF export runs declaration checks before writing output; Blender export uses that same validated native export boundary.
+
 ```bash
 python scripts/rig.py pose --run-dir output/character --clip wave --time 0.75 --destination output/wave-pose.json
 python scripts/rig.py solve-ik --run-dir output/character --chain arm.right --target 0.35 1.25 0.45 --destination output/reach.json
@@ -157,6 +161,8 @@ Blender export imports the real animated GLB, retains editable armatures/vertex 
 `render --engine blender` produces an actual Cycles CPU render of the evaluated pose through the fixed worker, with transparent alpha, a fitted camera and the imported materials. The Python API `render_blender_preview(rig, destination, clip='walk', times=[0, .65], blend_path=...)` can render multiple samples from an existing saved project with one camera fitted across all samples. It retains each frame's time/hash and the exact `.blend` hash. Dimensions, sample count, estimated scene buffers and subprocess time are bounded. Saved-project changes should be reviewed against their own recorded hash.
 
 The independent checks have separate scopes: Khronos validates glTF semantics; Blender verifies editability and independently evaluated deformation; Three.js loads the file and evaluates real skinned vertices while browser automation exercises playback/overlays. A successful self-import alone is not independent evidence.
+
+`profiles/rig-export.schema.json` is the strict version-1 contract for the receipts returned by `export_gltf` and `export_blender`. Native GLB/glTF receipts retain the output/rig hashes, mesh and channel counts, and `independently_verified: false`; a later independent validator has its own report. The native `joints` count includes every exported skeleton bone/node, including a nondeforming root; it can exceed the union of glTF `skins[].joints`. Blender receipts retain their existing application, armature, action, sample, command and hash fields, and add `schema_version: 1` and `format: "blend"`. The Blender `bones` count measures the actual imported armature. A reopened Blender receipt must contain the numerical comparison and round-trip file evidence. The Python `verify=False` option produces a creation-only receipt with `reopened: false` and no reopen comparison fields. `independent: true` identifies the external Blender reader and does not override that distinction. Schema conformance alone does not establish artifact integrity or artistic approval. Frame manifests and portable archive inventories keep their separate existing contracts.
 
 ## Review UI and visual acceptance
 

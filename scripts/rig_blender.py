@@ -5,6 +5,7 @@ import shutil
 import subprocess
 import tempfile
 import numpy as np
+from rig_contracts import validate_contract
 from rig_errors import RigError, atomic_json, read_json, require, sha256
 
 
@@ -61,9 +62,9 @@ def export_blender(rig,destination,*,executable=None,timeout=None,verify=True):
                           tolerance_m=.01,roundtrip_path=str(exported),roundtrip_sha256=sha256(exported))
             report['ok']=report['ok'] and maximum<=.01 and joint_max<=.01
         from rig_models import rig_signature
-        report.update(path=str(destination),sha256=sha256(destination),independent=True,reader='Blender',reopened=verify,
+        report.update(schema_version=1,format='blend',path=str(destination),sha256=sha256(destination),independent=True,reader='Blender',reopened=verify,
                       rig_sha256=rig_signature(rig.manifest),source_glb_sha256=sha256(source))
-        return report
+        return validate_contract(report, 'RigExportReceipt')
 
 
 def import_blend(path,*,scale=1.,limits=None,executable=None):

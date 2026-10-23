@@ -2862,38 +2862,148 @@
       ]
     },
     "RigExportReceipt": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/RigGltfExportReceipt"
+        },
+        {
+          "$ref": "#/$defs/RigBlenderExportReceipt"
+        }
+      ]
+    },
+    "RigGltfExportReceipt": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
         "schema_version": {
           "const": 1
         },
-        "kind": {
+        "format": {
+          "enum": [
+            "glb",
+            "gltf"
+          ]
+        },
+        "path": {
           "type": "string",
           "minLength": 1,
           "maxLength": 4096
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
         },
         "rig_sha256": {
           "type": "string",
           "pattern": "^[0-9a-f]{64}$"
         },
-        "ok": {
-          "type": "boolean"
+        "vertices": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2000000000
         },
-        "metrics": {
+        "skins": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2000000000
+        },
+        "joints": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2000000000
+        },
+        "animations": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
+          },
+          "minItems": 0,
+          "maxItems": 64
+        },
+        "keyframes": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2000000000
+        },
+        "independently_verified": {
+          "const": false
+        }
+      },
+      "required": [
+        "schema_version",
+        "format",
+        "path",
+        "sha256",
+        "rig_sha256",
+        "vertices",
+        "skins",
+        "joints",
+        "animations",
+        "keyframes",
+        "independently_verified"
+      ]
+    },
+    "RigBlenderExportReceipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "format": {
+          "const": "blend"
+        },
+        "blender_version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "meshes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2000000000
+        },
+        "vertices": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2000000000
+        },
+        "armatures": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2000000000
+        },
+        "bones": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2000000000
+        },
+        "armature_modifiers": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2000000000
+        },
+        "vertex_groups": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2000000000
+        },
+        "shape_keys": {
           "type": "object",
           "additionalProperties": {
-            "type": [
-              "number",
-              "integer",
-              "boolean",
-              "null",
-              "string"
-            ]
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096
+            },
+            "minItems": 0,
+            "maxItems": 250000
           },
           "maxProperties": 10000
         },
-        "checks": {
+        "actions": {
           "type": "array",
           "items": {
             "type": "object",
@@ -2904,78 +3014,275 @@
                 "minLength": 1,
                 "maxLength": 4096
               },
-              "status": {
-                "enum": [
-                  "passed",
-                  "failed",
-                  "unavailable",
-                  "warning"
-                ]
-              },
-              "message": {
-                "type": "string",
-                "minLength": 1,
-                "maxLength": 4096
-              },
-              "value": {
-                "type": [
-                  "number",
-                  "integer",
-                  "boolean",
-                  "null",
-                  "string"
-                ]
+              "slots": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4096
+                },
+                "minItems": 0,
+                "maxItems": 250000
               }
             },
             "required": [
               "name",
-              "status",
-              "message",
-              "value"
+              "slots"
             ]
           },
           "minItems": 0,
           "maxItems": 250000
         },
-        "artifacts": {
+        "nla": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096
+            },
+            "minItems": 0,
+            "maxItems": 250000
+          },
+          "maxProperties": 10000
+        },
+        "controls": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          },
+          "minItems": 0,
+          "maxItems": 250000
+        },
+        "constraints": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2000000000
+        },
+        "samples": {
           "type": "array",
           "items": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
-              "path": {
+              "clip": {
                 "type": "string",
-                "minLength": 1,
-                "maxLength": 4096
+                "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$"
               },
-              "sha256": {
-                "type": "string",
-                "pattern": "^[0-9a-f]{64}$"
+              "time": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 120
+              },
+              "matched": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4096
+                },
+                "minItems": 0,
+                "maxItems": 250000
+              },
+              "meshes": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": "number",
+                      "minimum": -1000000000.0,
+                      "maximum": 1000000000.0
+                    },
+                    "minItems": 3,
+                    "maxItems": 3
+                  },
+                  "minItems": 0,
+                  "maxItems": 250000
+                },
+                "maxProperties": 10000
+              },
+              "bones": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "array",
+                  "items": {
+                    "type": "number",
+                    "minimum": -1000000000.0,
+                    "maximum": 1000000000.0
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                },
+                "maxProperties": 10000
               }
             },
             "required": [
-              "path",
-              "sha256"
+              "clip",
+              "time",
+              "matched",
+              "meshes",
+              "bones"
             ]
           },
           "minItems": 0,
           "maxItems": 250000
         },
-        "created_at": {
+        "ok": {
+          "type": "boolean"
+        },
+        "command": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          },
+          "minItems": 1,
+          "maxItems": 64
+        },
+        "path": {
           "type": "string",
           "minLength": 1,
           "maxLength": 4096
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "independent": {
+          "const": true
+        },
+        "reader": {
+          "const": "Blender"
+        },
+        "reopened": {
+          "type": "boolean"
+        },
+        "rig_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "source_glb_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "max_vertex_error_m": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1000000000.0
+        },
+        "max_joint_error_m": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1000000000.0
+        },
+        "compared_vertices": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2000000000
+        },
+        "tolerance_m": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 1000000000.0
+        },
+        "roundtrip_path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "roundtrip_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
         }
       },
       "required": [
         "schema_version",
-        "kind",
-        "rig_sha256",
+        "format",
+        "blender_version",
+        "meshes",
+        "vertices",
+        "armatures",
+        "bones",
+        "armature_modifiers",
+        "vertex_groups",
+        "shape_keys",
+        "actions",
+        "nla",
+        "controls",
+        "constraints",
+        "samples",
         "ok",
-        "metrics",
-        "checks",
-        "artifacts",
-        "created_at"
+        "command",
+        "path",
+        "sha256",
+        "independent",
+        "reader",
+        "reopened",
+        "rig_sha256",
+        "source_glb_sha256"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "reopened": {
+                "const": true
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "max_vertex_error_m",
+              "max_joint_error_m",
+              "compared_vertices",
+              "tolerance_m",
+              "roundtrip_path",
+              "roundtrip_sha256"
+            ]
+          },
+          "else": {
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "max_vertex_error_m"
+                  ]
+                },
+                {
+                  "required": [
+                    "max_joint_error_m"
+                  ]
+                },
+                {
+                  "required": [
+                    "compared_vertices"
+                  ]
+                },
+                {
+                  "required": [
+                    "tolerance_m"
+                  ]
+                },
+                {
+                  "required": [
+                    "roundtrip_path"
+                  ]
+                },
+                {
+                  "required": [
+                    "roundtrip_sha256"
+                  ]
+                }
+              ]
+            }
+          }
+        }
       ]
     },
     "Rig": {
