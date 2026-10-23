@@ -1,0 +1,55 @@
+{
+  "issue": "https://github.com/CompleteTech-Skills/hatch-pet/issues/191",
+  "base_sha": "7b966a639bcaf23bd3a0d037f46f29e2edfcc273",
+  "branch": "agent/issue-191-prop-owner-f637",
+  "worktree": "/workspace/scratch/f637139fcc7a/hatch-prop-owner-fix",
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "commands": [
+    {
+      "stage": "before_runtime_fix",
+      "command": "/workspace/scratch/f637139fcc7a/baseline-evidence/venv/bin/python -m unittest discover -s tests -p test_production_contracts.py -v",
+      "log": "contracts-before.log",
+      "exit_code": 1,
+      "tests_run": 31,
+      "failures": 3,
+      "errors": 0,
+      "skips": 0,
+      "log_sha256": "e752a32d7e7d60b2888c1f1fe856e4d1cae0fd55b9476380c552dfbe1a3a5e83",
+      "retained_log": "tests/results/prop-owner-before.log"
+    },
+    {
+      "stage": "after_runtime_fix",
+      "command": "/workspace/scratch/f637139fcc7a/baseline-evidence/venv/bin/python -m unittest discover -s tests -p test_production_contracts.py -v",
+      "log": "contracts-after.log",
+      "exit_code": 0,
+      "tests_run": 31,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "log_sha256": "36d2aac042220fd104c36133b40661d2721ef1f77998e9b4c591761bc4448ca7",
+      "retained_log": "tests/results/prop-owner-after.log"
+    },
+    {
+      "stage": "affected_regressions",
+      "command": "PYTHONPATH=tests:scripts /workspace/scratch/f637139fcc7a/baseline-evidence/venv/bin/python -m unittest -v test_production_contracts test_production_performance test_production_workflow test_production_render test_production_review_regressions test_production_provenance test_rig_compatibility",
+      "log": "affected-suites.log",
+      "exit_code": 0,
+      "tests_run": 125,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "log_sha256": "23b27ace399dbfeac61b43c6b535a71990a390aa9844d3a8a82896f3315cc0b5",
+      "retained_log": "tests/results/prop-owner-regression.log"
+    }
+  ],
+  "changed_files": {
+    "scripts/production_performance.py": "7791cf281a7d718237188b8aec5ed707ae21eb43d0b6874b081fdb04d11866b8",
+    "tests/test_production_contracts.py": "cc418354d70c35c83a3c491089f852d79cc20fbf9548bfa442bf99ba8688692c",
+    "references/production-contracts.md": "eca71f350f0ad75e051c8b5bf60fe0f4f17b40656d41882be549f217c7748749"
+  },
+  "patch_sha256": "0440367f61a0cfdfc72494cdd052343c8c589911aaa4b99cc1c828f33b78e034",
+  "scope": "Existing v1 prop ownership boundary validator only; synthetic regression fixtures, no production-art approval or persistent 3D continuity claim.",
+  "compatibility_note": "Existing renderer_identity includes production_performance.py; old render dependencies and corresponding reviews become stale under the established policy. Original assets and historical receipts were not changed.",
+  "record_scope": "Implementation-stage execution evidence before publication; GitHub records carry later review/CI/merge lifecycle status.",
+  "raw_log_note": "The unchanged failing-before unittest transcript contains an emitted trailing space on its subtest announcement line. Preserve those bytes and the recorded digest; source/test/documentation whitespace checks pass."
+}
