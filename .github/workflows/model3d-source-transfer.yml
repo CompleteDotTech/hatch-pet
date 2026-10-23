@@ -1,0 +1,164 @@
+name: Transfer verified Model3D source objects
+on:
+  push:
+    branches: ['agent/roadmap-capture-20261023']
+    paths: ['.github/workflows/model3d-source-transfer.yml', 'operations/model3d-transfer-20261023/**']
+permissions:
+  contents: write
+jobs:
+  transfer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Verify tested patch and create unreferenced Git objects
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import base64
+          import hashlib
+          import json
+          import lzma
+          import os
+          from pathlib import Path
+          import subprocess
+          import tempfile
+          import urllib.request
+
+          # This operational transfer does not execute the new implementation,
+          # create commits, update refs, merge PRs, or claim test/review success.
+          repository = 'CompleteTech-Skills/hatch-pet'
+          base_commit = '6943607c4e678a447536384566ea6230cc1a1d27'
+          base_tree = '3d2a43f48d08f8bb6b9e6d7c95dbe2281ef2b24c'
+          target_tree = '855c0ea383d21f24aa8aee154ae4d2dfd668f995'
+          compressed_sha = '8841623b504b421767d7ba90888f9029eb35fc7d11c90b29f1ae23c3f9ab4955'
+          patch_sha = 'fbea47fc7be0e785d8e64eb8f347b4719419a006d664507d8cfa2b8104a16739'
+          allowed = set('''
+          .github/workflows/model3d-contracts.yml
+          README.md
+          SKILL.md
+          examples/model3d-contracts/README.md
+          examples/model3d-contracts/robotic.json
+          profiles/model3d.schema.json
+          references/model3d-audit.md
+          references/model3d-contracts.md
+          scripts/doctor.py
+          scripts/generate_schemas.py
+          scripts/model3d.py
+          scripts/model3d_contracts.py
+          scripts/model3d_validation.py
+          scripts/test_rig_gate.py
+          scripts/verify_public_delivery.py
+          tests/results/model3d-contracts-20261023/capabilities.json
+          tests/results/model3d-contracts-20261023/contracts.log
+          tests/results/model3d-contracts-20261023/full-suite-summary.txt
+          tests/results/model3d-contracts-20261023/results.json
+          tests/results/model3d-contracts-20261023/robotic-inspection.json
+          tests/test_model3d_contracts.py
+          tests/test_rig_compatibility.py
+          '''.split())
+
+          source_root = Path.cwd()
+          transport = source_root / 'operations/model3d-transfer-20261023'
+          encoded = ''.join((transport / f'part-{n}.b64').read_text('ascii').strip()
+                            for n in range(1, 5))
+          if len(encoded) != 44856:
+              raise ValueError('Unexpected encoded payload length')
+          compressed = base64.b64decode(encoded, validate=True)
+          if hashlib.sha256(compressed).hexdigest() != compressed_sha:
+              raise ValueError('Compressed patch checksum mismatch')
+          decoder = lzma.LZMADecompressor(memlimit=128 * 1024 * 1024)
+          patch = decoder.decompress(compressed, max_length=1024 * 1024)
+          if not decoder.eof or decoder.unused_data or len(patch) != 182035:
+              raise ValueError('Incomplete, oversized, or trailing patch data')
+          if hashlib.sha256(patch).hexdigest() != patch_sha:
+              raise ValueError('Patch checksum mismatch')
+
+          def git(*args, cwd=source_root, data=None):
+              return subprocess.run(['git', *args], cwd=cwd, input=data,
+                                    check=True, stdout=subprocess.PIPE,
+                                    stderr=subprocess.PIPE, timeout=60).stdout
+
+          if git('rev-parse', base_commit + '^{tree}').decode().strip() != base_tree:
+              raise ValueError('Base tree changed')
+
+          class NoRedirect(urllib.request.HTTPRedirectHandler):
+              def redirect_request(self, req, fp, code, msg, headers, newurl):
+                  raise ValueError('API redirects are forbidden')
+
+          opener = urllib.request.build_opener(NoRedirect())
+          endpoint = 'https://api.github.com/repos/' + repository
+          headers = {'Authorization': 'Bearer ' + os.environ['GH_TOKEN'],
+                     'Accept': 'application/vnd.github+json',
+                     'Content-Type': 'application/json',
+                     'X-GitHub-Api-Version': '2022-11-28',
+                     'User-Agent': 'hatch-pet-exact-source-transfer'}
+
+          def post(kind, payload):
+              if kind not in ('blobs', 'trees'):
+                  raise ValueError('Only unreferenced blobs and trees may be written')
+              request = urllib.request.Request(endpoint + '/git/' + kind,
+                      data=json.dumps(payload).encode('utf-8'),
+                      headers=headers, method='POST')
+              with opener.open(request, timeout=45) as response:
+                  return json.load(response)
+
+          receipt = {'repository': repository, 'base_commit': base_commit,
+                     'base_tree': base_tree, 'target_tree': target_tree,
+                     'compressed_patch_sha256': compressed_sha,
+                     'patch_sha256': patch_sha, 'files': [],
+                     'branch_updated': False, 'implementation_executed': False}
+          with tempfile.TemporaryDirectory(prefix='hatch-model3d-transfer-') as temp:
+              worktree = Path(temp) / 'source'
+              git('worktree', 'add', '--detach', str(worktree), base_commit)
+              try:
+                  git('apply', '--check', '--index', cwd=worktree, data=patch)
+                  git('apply', '--index', cwd=worktree, data=patch)
+                  git('diff', '--cached', '--check', cwd=worktree)
+                  actual_tree = git('write-tree', cwd=worktree).decode().strip()
+                  if actual_tree != target_tree:
+                      raise ValueError('Transferred tree differs from tested tree')
+                  changed = git('diff', '--cached', '--name-only', '-z', cwd=worktree)
+                  names = {p.decode('utf-8') for p in changed.split(b'\0') if p}
+                  if names != allowed:
+                      raise ValueError('Unexpected changed-file inventory')
+                  entries = []
+                  for path in sorted(names):
+                      metadata = git('ls-files', '--stage', '--', path, cwd=worktree).decode()
+                      mode, expected_sha, stage = metadata.split('\t', 1)[0].split()
+                      if mode != '100644' or stage != '0':
+                          raise ValueError('Unexpected mode or unresolved stage')
+                      content = git('cat-file', 'blob', expected_sha, cwd=worktree)
+                      content.decode('utf-8')
+                      created = post('blobs', {'content': base64.b64encode(content).decode(),
+                                               'encoding': 'base64'})
+                      if created['sha'] != expected_sha:
+                          raise ValueError('Uploaded blob mismatch: ' + path)
+                      entries.append({'path': path, 'mode': mode, 'type': 'blob',
+                                      'sha': expected_sha})
+                      receipt['files'].append({'path': path, 'git_blob': expected_sha,
+                          'sha256': hashlib.sha256(content).hexdigest(), 'bytes': len(content)})
+                  created_tree = post('trees', {'base_tree': base_tree, 'tree': entries})
+                  if created_tree['sha'] != target_tree:
+                      raise ValueError('Remote tree differs from tested tree')
+                  receipt['remote_tree_verified'] = True
+              finally:
+                  git('worktree', 'remove', '--force', str(worktree))
+          output = source_root / 'transfer-receipt'
+          output.mkdir()
+          (output / 'receipt.json').write_text(json.dumps(receipt, indent=2) + '\n')
+          print(json.dumps({'verified_tree': target_tree, 'files': len(receipt['files']),
+                            'branch_updated': False}))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: model3d-source-transfer-receipt
+          path: transfer-receipt/
+          if-no-files-found: error
+          retention-days: 7
