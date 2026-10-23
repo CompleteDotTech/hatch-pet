@@ -264,7 +264,8 @@ class ProductionBundleTests(unittest.TestCase):
         original_ownership = workflow.hatch.ownership
         created = []
         def other_writer(root, **kwargs):
-            self.assertEqual(root, destination)
+            self.assertEqual(root, destination.parent.resolve() / destination.name)
+            self.assertIs(kwargs.get('resolve_leaf'), False)
             destination.symlink_to(missing_target, target_is_directory=True)
             created.append((destination.lstat().st_ino, destination.readlink()))
             return original_ownership(root, **kwargs)
@@ -287,7 +288,7 @@ class ProductionBundleTests(unittest.TestCase):
         destination = alias / 'new-parts'
         result = bundle.create_bundle(self.archive, destination, part_size=1024)
         self.assertTrue(result['created'])
-        self.assertEqual(result['bundle'], str(parent / 'new-parts' / bundle.BUNDLE_INDEX))
+        self.assertEqual(result['bundle'], str(parent.resolve() / 'new-parts' / bundle.BUNDLE_INDEX))
         self.assertEqual(bundle.verify_bundle(destination)['archive_sha256'], workflow.file_hash(self.archive))
         self.assertTrue(alias.is_symlink())
         self.assertEqual(alias.readlink(), linked_parent)
