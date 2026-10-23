@@ -1,4 +1,4 @@
-name: Transfer Model3D fixture correction
+name: Transfer Model3D snapshot correction
 on:
   push:
     branches: ['agent/roadmap-capture-20261023']
@@ -12,72 +12,93 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: c08a73a3ed93ec1dbf0c9e1d34448cf3a168d3a6
+          ref: f87292ce5ea5791e9626a90b2c604a8760dd029a
           persist-credentials: false
-      - name: Verify and upload one unreferenced test blob
+      - name: Verify and upload exact tested unreferenced objects
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           python - <<'PY'
           import base64, hashlib, json, os, subprocess, urllib.request
           from pathlib import Path
-          path = 'tests/test_model3d_contracts.py'
-          data = subprocess.check_output(['git', 'show', 'HEAD:' + path])
+          base = 'f87292ce5ea5791e9626a90b2c604a8760dd029a'
+          base_tree = '04fc4b1f861c9dd1257e7970c61a60412f5360e9'
+          target_tree = '46eabedff04e6a230cea6a8cd29ead9cb7059e6b'
           def blob_sha(content):
               return hashlib.sha1(b'blob ' + str(len(content)).encode() + b'\0' + content).hexdigest()
-          assert blob_sha(data) == '07b53ffa15c5a452890f8fb03f6cc8ab91d06680'
-          text = data.decode('utf-8')
-          needle = '    path = root / (identifier + suffix)'
-          assert text.count(needle) == 1
-          text = text.replace(needle, '    # The importer returns canonical paths (macOS /private/var and Windows\n'
-              '    # expanded short names); derive the inventory from the same existing root.\n'
-              '    root = root.resolve()\n' + needle, 1)
-          test = '''    def test_fixture_and_inspection_support_aliased_workspace_root(self):
-                  actual = self.root / 'actual-workspace'
+          def source(path, expected):
+              data = subprocess.check_output(['git', 'show', 'HEAD:' + path])
+              assert blob_sha(data) == expected
+              return data.decode('utf-8')
+          test_path = 'tests/test_model3d_contracts.py'
+          test_source = source(test_path, '3dd7d3c2f3eae3a95af44d23c225c1b268c7df64')
+          test = '''    def test_snapshot_supports_aliased_system_temporary_directory(self):
+                  actual = self.root / 'actual-temporary'
                   actual.mkdir()
-                  alias = self.root / 'workspace-alias'
+                  alias = self.root / 'temporary-alias'
                   try:
                       alias.symlink_to(actual, target_is_directory=True)
                   except OSError as exc:
                       self.skipTest('Host cannot create directory symlinks: ' + str(exc))
                   link_target = alias.readlink()
-                  canonical_root = actual / 'project'
-                  canonical_root.mkdir()
-                  aliased_root = alias / 'project'
-                  for suffix in ('.glb', '.gltf'):
-                      with self.subTest(suffix=suffix):
-                          asset = asset_fixture(aliased_root, 'aliased-' + suffix[1:], suffix=suffix)
-                          report = validate_document(asset, aliased_root)
-                          self.assertTrue(report['payloads_verified'])
-                          self.assertTrue(report['geometry_inspected'])
-                          self.assertEqual(report, validate_document(asset, canonical_root))
-                          for record in asset['files']:
-                              self.assertFalse(Path(record['path']).is_absolute())
-                              self.assertEqual((aliased_root / record['path']).read_bytes(),
-                                               (canonical_root / record['path']).read_bytes())
+                  expected = validate_document(self.asset, self.root)
+                  with mock.patch('tempfile.tempdir', str(alias)):
+                      for suffix in ('.glb', '.gltf'):
+                          with self.subTest(suffix=suffix):
+                              asset = self.asset if suffix == '.glb' else asset_fixture(self.root, 'tmp-external', suffix=suffix)
+                              report = validate_document(asset, self.root)
+                              self.assertTrue(report['payloads_verified'])
+                              self.assertTrue(report['geometry_inspected'])
+                              if suffix == '.glb':
+                                  self.assertEqual(report, expected)
+                      broken = deepcopy(self.asset)
+                      broken['geometry']['sha256'] = '0' * 64
+                      self.assertInvalid(broken, payloads=True)
+                  self.assertEqual(list(actual.iterdir()), [])
                   self.assertTrue(alias.is_symlink())
                   self.assertEqual(alias.readlink(), link_target)
 
           '''
           needle = '    def test_obj_boundary_and_independent_glb_reader(self):\n'
-          assert text.count(needle) == 1
-          content = text.replace(needle, test + needle, 1).encode('utf-8')
-          expected = '3dd7d3c2f3eae3a95af44d23c225c1b268c7df64'
-          assert blob_sha(content) == expected, blob_sha(content)
+          assert test_source.count(needle) == 1
+          test_content = test_source.replace(needle, test + needle, 1).encode()
+          runtime_path = 'scripts/model3d_validation.py'
+          runtime = source(runtime_path, '19161f956f9cb076265d970015119545ad5b8140')
+          needle = '        self.root, self.destination, self.limits = root, destination, limits\n'
+          assert runtime.count(needle) == 1
+          replacement = '''        self.root, self.limits = root, limits
+                  # This is the freshly created private TemporaryDirectory, not a supplied
+                  # payload path. Match the canonical paths returned by the importer even
+                  # when the system temp parent has a macOS alias or a Windows short name.
+                  self.destination = destination.resolve(strict=True)
+          '''
+          runtime_content = runtime.replace(needle, replacement, 1).encode()
+          files = [(test_path, test_content, '75fd4bf6c7bb1e48be6a3d2a100b463c256839fb'),
+                   (runtime_path, runtime_content, 'd4b207d47732a40dfd34399a06b6dce58296ce14')]
+          for path, content, expected in files:
+              assert blob_sha(content) == expected, (path, blob_sha(content))
           class NoRedirect(urllib.request.HTTPRedirectHandler):
               def redirect_request(self, *args, **kwargs):
                   raise ValueError('Unexpected API redirect')
-          request = urllib.request.Request(
-              'https://api.github.com/repos/CompleteTech-Skills/hatch-pet/git/blobs',
-              data=json.dumps({'content': base64.b64encode(content).decode(), 'encoding': 'base64'}).encode(),
-              headers={'Authorization': 'Bearer ' + os.environ['GH_TOKEN'],
-                       'Accept': 'application/vnd.github+json', 'Content-Type': 'application/json',
-                       'X-GitHub-Api-Version': '2022-11-28'}, method='POST')
-          with urllib.request.build_opener(NoRedirect()).open(request, timeout=45) as response:
-              result = json.load(response)
-          assert result['sha'] == expected
-          receipt = {'base': 'c08a73a3ed93ec1dbf0c9e1d34448cf3a168d3a6', 'path': path,
-                     'blob': expected, 'sha256': hashlib.sha256(content).hexdigest(),
+          opener = urllib.request.build_opener(NoRedirect())
+          def post(kind, payload):
+              assert kind in ('blobs', 'trees')
+              request = urllib.request.Request(
+                  'https://api.github.com/repos/CompleteTech-Skills/hatch-pet/git/' + kind,
+                  data=json.dumps(payload).encode(),
+                  headers={'Authorization': 'Bearer ' + os.environ['GH_TOKEN'],
+                           'Accept': 'application/vnd.github+json', 'Content-Type': 'application/json',
+                           'X-GitHub-Api-Version': '2022-11-28'}, method='POST')
+              with opener.open(request, timeout=45) as response:
+                  return json.load(response)
+          entries = []
+          for path, content, expected in files:
+              result = post('blobs', {'content': base64.b64encode(content).decode(), 'encoding': 'base64'})
+              assert result['sha'] == expected
+              entries.append({'path': path, 'mode': '100644', 'type': 'blob', 'sha': expected})
+          result = post('trees', {'base_tree': base_tree, 'tree': entries})
+          assert result['sha'] == target_tree
+          receipt = {'base': base, 'tree': target_tree, 'files': entries,
                      'branch_updated': False, 'tests_executed': False}
           Path('fixture-transfer.json').write_text(json.dumps(receipt, indent=2) + '\n')
           print(json.dumps(receipt))
