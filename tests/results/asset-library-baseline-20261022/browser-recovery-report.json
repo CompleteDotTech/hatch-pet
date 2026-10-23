@@ -1,0 +1,104 @@
+{
+  "cause": "Headless shell installed; existing helper availability checks require HATCH_BROWSER_EXECUTABLE for shell-only installation. Tests and source unchanged.",
+  "runs": [
+    {
+      "command": [
+        "/workspace/scratch/2a0543d2545a/hatch-venv/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_exports.py",
+        "-v"
+      ],
+      "cwd": "/workspace/scratch/2a0543d2545a/hatch-pet",
+      "environment_overrides": {
+        "HATCH_BROWSER_EXECUTABLE": "/root/.cache/ms-playwright/chromium_headless_shell-1248/chrome-headless-shell-linux64/chrome-headless-shell"
+      },
+      "started_at": "2026-10-22T18:34:54.770089+00:00",
+      "duration_seconds": 2.559,
+      "exit_code": 0,
+      "stdout": "test_exports-browser.stdout.log",
+      "stderr": "test_exports-browser.stderr.log",
+      "unittest_summary": {
+        "run": 1,
+        "seconds": 2.441
+      },
+      "skips": [],
+      "failure_headers": [],
+      "result_line": "OK",
+      "logs_sha256": {
+        "test_exports-browser.stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "test_exports-browser.stderr.log": "c85659e48f32b639c7b41bc78482a22b214334e3cfc5cdfa1d6ade58d00ffc47"
+      }
+    },
+    {
+      "command": [
+        "/workspace/scratch/2a0543d2545a/hatch-venv/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_playback_extended.py",
+        "-v"
+      ],
+      "cwd": "/workspace/scratch/2a0543d2545a/hatch-pet",
+      "environment_overrides": {
+        "HATCH_BROWSER_EXECUTABLE": "/root/.cache/ms-playwright/chromium_headless_shell-1248/chrome-headless-shell-linux64/chrome-headless-shell"
+      },
+      "started_at": "2026-10-22T18:34:57.329930+00:00",
+      "duration_seconds": 23.342,
+      "exit_code": 0,
+      "stdout": "test_playback_extended-browser.stdout.log",
+      "stderr": "test_playback_extended-browser.stderr.log",
+      "unittest_summary": {
+        "run": 10,
+        "seconds": 23.222
+      },
+      "skips": [],
+      "failure_headers": [],
+      "result_line": "OK",
+      "logs_sha256": {
+        "test_playback_extended-browser.stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "test_playback_extended-browser.stderr.log": "d70768accd9fe0e1b3e92592d3c7c97690bf0e8cbdd2af2aadc431c1307af3be"
+      }
+    },
+    {
+      "command": [
+        "/workspace/scratch/2a0543d2545a/hatch-venv/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_production_preview.py",
+        "-v"
+      ],
+      "cwd": "/workspace/scratch/2a0543d2545a/hatch-pet",
+      "environment_overrides": {
+        "HATCH_BROWSER_EXECUTABLE": "/root/.cache/ms-playwright/chromium_headless_shell-1248/chrome-headless-shell-linux64/chrome-headless-shell"
+      },
+      "started_at": "2026-10-22T18:35:20.672109+00:00",
+      "duration_seconds": 4.256,
+      "exit_code": 0,
+      "stdout": "test_production_preview-browser.stdout.log",
+      "stderr": "test_production_preview-browser.stderr.log",
+      "unittest_summary": {
+        "run": 4,
+        "seconds": 4.13
+      },
+      "skips": [],
+      "failure_headers": [],
+      "result_line": "OK",
+      "logs_sha256": {
+        "test_production_preview-browser.stdout.log": "e03054f0abb018f6f2dd5fef6aa3674b7d5fea3c9ba2d6c7afffc2b77c06c7f7",
+        "test_production_preview-browser.stderr.log": "5e915934ce2094c4063c7e6c37e99f2376b74c7b4c764e3d9e1ac09fe969d98b"
+      }
+    }
+  ]
+}

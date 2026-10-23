@@ -1,0 +1,15 @@
+test_board_configurator_and_cursor_adapters_locally (test_playback_extended.ExtendedBrowser.test_board_configurator_and_cursor_adapters_locally) ... ok
+test_bounded_queue_hold_frame_and_higher_priority_interruption (test_playback_extended.ExtendedBrowser.test_bounded_queue_hold_frame_and_higher_priority_interruption) ... ok
+test_deadlines_visibility_cancel_and_reduced_motion (test_playback_extended.ExtendedBrowser.test_deadlines_visibility_cancel_and_reduced_motion) ... ok
+test_declared_event_default_does_not_restart_active_animation (test_playback_extended.ExtendedBrowser.test_declared_event_default_does_not_restart_active_animation) ... ok
+test_once_queue_legal_transitions_priority_and_completion (test_playback_extended.ExtendedBrowser.test_once_queue_legal_transitions_priority_and_completion) ... ok
+test_queued_event_source_is_checked_before_default_completion (test_playback_extended.ExtendedBrowser.test_queued_event_source_is_checked_before_default_completion) ... ok
+test_reduced_motion_static_export_matches_each_selected_frame (test_playback_extended.ExtendedBrowser.test_reduced_motion_static_export_matches_each_selected_frame) ... ok
+test_repeated_high_priority_events_have_bounded_queue_fairness (test_playback_extended.ExtendedBrowser.test_repeated_high_priority_events_have_bounded_queue_fairness) ... ok
+test_resumable_notification_restores_frame_and_pause_timing (test_playback_extended.ExtendedBrowser.test_resumable_notification_restores_frame_and_pause_timing) ... ok
+test_review_ui_steps_frames_and_binds_downloaded_evidence (test_playback_extended.ExtendedBrowser.test_review_ui_steps_frames_and_binds_downloaded_evidence) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 23.222s
+
+OK
