@@ -1,0 +1,264 @@
+{
+  "schema_version": 1,
+  "kind": "director-baseline-audit",
+  "issue": 23,
+  "repository": "CompleteTech-Skills/hatch-pet",
+  "baseline_sha": "7b966a639bcaf23bd3a0d037f46f29e2edfcc273",
+  "classification": "Executed repository baseline; no Director implementation or production-art acceptance.",
+  "local_environment": {
+    "observed_at": "2026-10-22T18:32:16.110591+00:00",
+    "working_directory": "/workspace/scratch/10ec880935b7/hatch-baseline",
+    "revision": "7b966a639bcaf23bd3a0d037f46f29e2edfcc273",
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "platform": "Linux-6.18.55-x86_64-with-glibc2.39",
+    "packages": {
+      "Pillow": "13.0.0",
+      "jsonschema": "4.26.0",
+      "playwright": "1.64.0",
+      "numpy": "2.3.5",
+      "pygltflib": "1.16.5"
+    },
+    "commands": [
+      {
+        "argv": [
+          "/workspace/scratch/10ec880935b7/hatch-audit-venv/bin/python",
+          "scripts/generate_schemas.py",
+          "--check"
+        ],
+        "exit_code": 0,
+        "seconds": 0.097,
+        "stdout": "",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "/workspace/scratch/10ec880935b7/hatch-audit-venv/bin/python",
+          "scripts/generate_rig_templates.py",
+          "--check"
+        ],
+        "exit_code": 0,
+        "seconds": 0.133,
+        "stdout": "",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "/workspace/scratch/10ec880935b7/hatch-audit-venv/bin/python",
+          "scripts/generate_style_reference.py",
+          "--check"
+        ],
+        "exit_code": 0,
+        "seconds": 0.084,
+        "stdout": "",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "/workspace/scratch/10ec880935b7/hatch-audit-venv/bin/python",
+          "scripts/validate_atlas.py",
+          "assets/pet/spritesheet.webp"
+        ],
+        "exit_code": 0,
+        "seconds": 0.63,
+        "stdout": "{\n  \"profile_id\": \"codex-v1\",\n  \"ok\": true,\n  \"file\": \"/workspace/scratch/10ec880935b7/hatch-baseline/assets/pet/spritesheet.webp\",\n  \"format\": \"WEBP\",\n  \"mode\": \"RGBA\",\n  \"width\": 1536,\n  \"height\": 1872,\n  \"transparent_rgb_residue_pixels\": 0,\n  \"errors\": [],\n  \"warnings\": []\n}\n",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "node",
+          "--version"
+        ],
+        "exit_code": 0,
+        "seconds": 0.009,
+        "stdout": "v24.19.0\n",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "--version"
+        ],
+        "exit_code": 0,
+        "seconds": 0.002,
+        "stdout": "git version 2.51.1\n",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "ffmpeg",
+          "-version"
+        ],
+        "exit_code": 0,
+        "seconds": 0.095,
+        "stdout": "ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers\nbuilt with gcc 13 (Ubuntu 13.2.0-23ubuntu3)\nconfiguration: --prefix=/usr --extra-version=3ubuntu5 --toolchain=hardened --libdir=/usr/lib/x86_64-linux-gnu --incdir=/usr/include/x86_64-linux-gnu --arch=amd64 --enable-gpl --disable-stripping --disable-omx --enable-gnutls --enable-libaom --enable-libass --enable-libbs2b --enable-libcaca --enable-libcdio --enable-libcodec2 --enable-libdav1d --enable-libflite --enable-libfontconfig --enable-libfreetype --enable-libfribidi --enable-libglslang --enable-libgme --enable-libgsm --enable-libharfbuzz --enable-libmp3lame --enable-libmysofa --enable-libopenjpeg --enable-libopenmpt --enable-libopus --enable-librubberband --enable-libshine --enable-libsnappy --enable-libsoxr --enable-libspeex --enable-libtheora --enable-libtwolame --enable-libvidstab --enable-libvorbis --enable-libvpx --enable-libwebp --enable-libx265 --enable-libxml2 --enable-libxvid --enable-libzimg --enable-openal --enable-opencl --enable-opengl --disable-sndio --enable-libvpl --disable-libmfx --enable-libdc1394 --enable-libdrm --enable-libiec61883 --enable-chromaprint --enable-frei0r --enable-ladspa --enable-libbluray --enable-libjack --enable-libpulse --enable-librabbitmq --enable-librist --enable-libsrt --enable-libssh --enable-libsvtav1 --enable-libx264 --enable-libzmq --enable-libzvbi --enable-lv2 --enable-sdl2 --enable-libplacebo --enable-librav1e --enable-pocketsphinx --enable-librsvg --enable-libjxl --enable-shared\nlibavutil      58. 29.100 / 58. 29.100\nlibavcodec     60. 31.102 / 60. 31.102\nlibavformat    60. 16.100 / 60. 16.100\nlibavdevice    60.  3.100 / 60.  3.100\nlibavfilter     9. 12.100 /  9. 12.100\nlibswscale      7.  5.100 /  7.  5.100\nlibswresample   4. 12.100 /  4. 12.100\nlibpostproc    57.  3.100 / 57.  3.100\n",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "ffprobe",
+          "-version"
+        ],
+        "exit_code": 0,
+        "seconds": 0.056,
+        "stdout": "ffprobe version 6.1.1-3ubuntu5 Copyright (c) 2007-2023 the FFmpeg developers\nbuilt with gcc 13 (Ubuntu 13.2.0-23ubuntu3)\nconfiguration: --prefix=/usr --extra-version=3ubuntu5 --toolchain=hardened --libdir=/usr/lib/x86_64-linux-gnu --incdir=/usr/include/x86_64-linux-gnu --arch=amd64 --enable-gpl --disable-stripping --disable-omx --enable-gnutls --enable-libaom --enable-libass --enable-libbs2b --enable-libcaca --enable-libcdio --enable-libcodec2 --enable-libdav1d --enable-libflite --enable-libfontconfig --enable-libfreetype --enable-libfribidi --enable-libglslang --enable-libgme --enable-libgsm --enable-libharfbuzz --enable-libmp3lame --enable-libmysofa --enable-libopenjpeg --enable-libopenmpt --enable-libopus --enable-librubberband --enable-libshine --enable-libsnappy --enable-libsoxr --enable-libspeex --enable-libtheora --enable-libtwolame --enable-libvidstab --enable-libvorbis --enable-libvpx --enable-libwebp --enable-libx265 --enable-libxml2 --enable-libxvid --enable-libzimg --enable-openal --enable-opencl --enable-opengl --disable-sndio --enable-libvpl --disable-libmfx --enable-libdc1394 --enable-libdrm --enable-libiec61883 --enable-chromaprint --enable-frei0r --enable-ladspa --enable-libbluray --enable-libjack --enable-libpulse --enable-librabbitmq --enable-librist --enable-libsrt --enable-libssh --enable-libsvtav1 --enable-libx264 --enable-libzmq --enable-libzvbi --enable-lv2 --enable-sdl2 --enable-libplacebo --enable-librav1e --enable-pocketsphinx --enable-librsvg --enable-libjxl --enable-shared\nlibavutil      58. 29.100 / 58. 29.100\nlibavcodec     60. 31.102 / 60. 31.102\nlibavformat    60. 16.100 / 60. 16.100\nlibavdevice    60.  3.100 / 60.  3.100\nlibavfilter     9. 12.100 /  9. 12.100\nlibswscale      7.  5.100 /  7.  5.100\nlibswresample   4. 12.100 /  4. 12.100\nlibpostproc    57.  3.100 / 57.  3.100\n",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "/root/.cache/ms-playwright/chromium_headless_shell-1248/chrome-headless-shell-linux64/chrome-headless-shell",
+          "--version"
+        ],
+        "exit_code": 0,
+        "seconds": 0.017,
+        "stdout": "Google Chrome for Testing 156.0.8078.4\n",
+        "stderr": ""
+      }
+    ],
+    "input_sha256": {
+      "README.md": "669b417eeb39a7909e976484c16517e337a283e729d3c4e204d00dd5b5dbc469",
+      "SKILL.md": "a25b9c59cf138d0fa59fab4241f1dec3a771cafd7a6dfc5c4e34c9f8565db8b5",
+      "profiles/codex-v1.json": "f4e0279f8634ea53ef544ecb49b9a71ec2565c61ec5b8e63163ecc5ead478a6b",
+      "profiles/profile.schema.json": "afba01bc16c4f6c297d1b95b62803c7a5b989e0fa9b967c33e5d50471091163c",
+      "assets/playback.js": "9aa7d5228de0a57cd443b70c14b160cb22238d21a861a0fb06f6b4bcc6ccbc79",
+      "state-library/catalog.json": "970139db7291c4233ef75e37ffd6abe0385c8f165dd37b339326a4e8647f3de9",
+      "styles/catalog.json": "96d49f6a490de78952a3dfbb78eaa12e9f8f130f318781c652107133e8142a2d",
+      "examples/production-pilot/delivery-manifest.json": "7c38aa045024d83a8874298052cf97cc138d7db17c5a8ba274fd5b88f1c42c5b",
+      "profiles/production-cast.schema.json": "8a76d77027e3006ab6f6bde67ef191d5fea6254cb05ea36658705beb8cfa3afc",
+      "profiles/production-clip.schema.json": "11fab0fc3d038e9b40a60beeb8e7a14d78bd8ecabb4d3680ba35ce0d7ae59a19",
+      "profiles/production-project.schema.json": "cd33410c713660e33c6805df19aa94512de5f0cb64f71f6b3db74ce05d2c4c21",
+      "profiles/production-scene.schema.json": "1d01d66903b3d730f4670951daf2f30239e05d27b1f50d68be080173585974ad",
+      "profiles/production-shot.schema.json": "12cc14e67a72da0a022f18ed44df3fd2d5ad3919ab583a225dfaabb9593ea4b3"
+    },
+    "instructions": {
+      "present": [
+        "README.md",
+        "SKILL.md"
+      ],
+      "absent": [
+        "AGENTS.md",
+        "CONTRIBUTING.md"
+      ]
+    },
+    "installation_note": "The pinned Chromium full-browser download failed with an invalid ZIP. The already installed matching Chromium headless shell was used through HATCH_BROWSER_EXECUTABLE for 2D and default Playwright headless discovery for 3D. Its actual version and actual browser tests are retained; no unavailable browser check was converted to success."
+  },
+  "commands": [
+    {
+      "argv": [
+        "python",
+        "scripts/verify_public_delivery.py",
+        "--destination",
+        "/workspace/scratch/10ec880935b7/hatch-audit-delivery",
+        "--tests",
+        "--test-scope",
+        "2d"
+      ],
+      "environment": {
+        "HATCH_BROWSER_EXECUTABLE": "/root/.cache/ms-playwright/chromium_headless_shell-1248/chrome-headless-shell-linux64/chrome-headless-shell"
+      },
+      "exit_code": 0,
+      "stdout": "Verifying all public bundles, provenance and historical evidence.\nRestoring the production project and verifying portable archive roundtrip.\nRunning the complete 2d regression scope; detailed progress is in tests.log.\n/workspace/scratch/10ec880935b7/hatch-audit-delivery/report.json\n",
+      "report": "director-baseline-delivery.json",
+      "tests": {
+        "errors": 0,
+        "failure_details": [],
+        "failures": 0,
+        "log": "tests.log",
+        "log_sha256": "959aff61dd88a892220a950d79f498a994c4eb8d8f75743d4b6e46d59a753715",
+        "ok": true,
+        "run": 790,
+        "scope": "2d",
+        "seconds": 288.169,
+        "skipped": [
+          {
+            "reason": "Krita not available; adapter tests remain separate from integration",
+            "test": "test_production_adapter.ProductionAdapterTests.test_actual_local_krita_import_export_and_layer_roundtrip"
+          }
+        ],
+        "unexpected_skips": []
+      },
+      "scope": "Original-source verification, restoration, archive roundtrip, and complete strict 2D regressions. No full-film render or video command requested."
+    },
+    {
+      "argv": [
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_rig_*.py",
+        "-v"
+      ],
+      "environment": {
+        "HATCH_RIG_INTEROP_TEST": "1",
+        "HATCH_RIG_BROWSER_TEST": "1"
+      },
+      "exit_code": 0,
+      "log": "director-baseline-rig.log",
+      "tests": {
+        "run": 77,
+        "seconds": 10.43,
+        "failures": 0,
+        "errors": 0,
+        "skipped": [
+          {
+            "test": "test_blender_cpu_preview_renders_distinct_transparent_poses (test_rig_interop.RigExternalIntegrationTests.test_blender_cpu_preview_renders_distinct_transparent_poses)",
+            "reason": "'Enable HATCH_RIG_BLENDER_TEST=1 for actual Blender CPU rendering.'"
+          },
+          {
+            "test": "test_blender_reopen_has_actual_armature_and_deformation (test_rig_interop.RigExternalIntegrationTests.test_blender_reopen_has_actual_armature_and_deformation)",
+            "reason": "'Enable HATCH_RIG_BLENDER_TEST=1 for pinned Blender integration.'"
+          }
+        ]
+      },
+      "scope": "All existing rig test modules; actual Khronos/pygltflib and Three.js checks enabled. Two optional Blender checks unexecuted."
+    }
+  ],
+  "source_delivery": {
+    "verified": true,
+    "fixture": false,
+    "logical_files": 129,
+    "unique_parts": 462,
+    "preserved_reviews": 20,
+    "supporting_evidence_files": 13,
+    "public_files_verified": 7,
+    "missing_historical_media_is_current_blocker": false
+  },
+  "archive": {
+    "external_integration_verified": false,
+    "file_count": 168,
+    "path": "portable-project.zip",
+    "renderer_changed": false,
+    "restoration_event_appended": true,
+    "review_records_preserved": 20,
+    "sha256": "2d22f6804d9c379dcab00dfc6ae2a59c60577904cd1bcbdbfa2e1e044cfc4401",
+    "verified": true
+  },
+  "baseline_checkout_unchanged": true,
+  "complete_local_delivery_gate": false,
+  "limitations": [
+    "Local combined dependency environment uses delivery pins plus NumPy/pygltflib; it is not the separate rig-test pinned CI environment.",
+    "Native Blender and Krita were not executed locally.",
+    "The audit did not rerender the complete 696-frame 2D films or rerun full editor handoffs; baseline CI is separately linked.",
+    "No new generation, TTS, paid provider, live installation, human signoff, artistic review, or Director production completion."
+  ],
+  "evidence": {
+    "director-baseline-delivery.json": {
+      "sha256": "b4101a11633ba94b9df9922cc99ef13b58a640b43023d290e2a6aed10b867d72",
+      "byte_size": 238043
+    },
+    "director-baseline-2d.log": {
+      "sha256": "959aff61dd88a892220a950d79f498a994c4eb8d8f75743d4b6e46d59a753715",
+      "byte_size": 135542
+    },
+    "director-baseline-rig.log": {
+      "sha256": "9802681d47370f893125b60c0011aba5ce03d95a1314bee1bb178465c75199be",
+      "byte_size": 11823
+    },
+    "director-baseline-github.json": {
+      "sha256": "4bc7eeb992f1ca6c6ad15b30d339f1976b2df17d043240a6a0c64ffcf4954bd7",
+      "byte_size": 9813
+    }
+  }
+}
