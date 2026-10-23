@@ -1,0 +1,151 @@
+name: Roadmap source and dependency capture
+on:
+  push:
+    branches: ['agent/roadmap-capture-20261023']
+  workflow_dispatch:
+permissions:
+  contents: read
+  issues: read
+  pull-requests: read
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Capture exact source history without credentials
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p capture
+          git status --porcelain=v1 > capture/checkout-status.txt
+          git rev-parse HEAD > capture/capture-revision.txt
+          git for-each-ref --format='%(refname) %(objectname)' > capture/refs.txt
+          git bundle create capture/hatch-pet.bundle --all
+          git bundle verify capture/hatch-pet.bundle
+          sha256sum capture/hatch-pet.bundle > capture/hatch-pet.bundle.sha256
+      - name: Read every roadmap issue, comment and native relationship
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python - <<'PY'
+          import concurrent.futures
+          import datetime
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+          import time
+          import urllib.error
+          import urllib.request
+
+          repo = 'CompleteTech-Skills/hatch-pet'
+          base = 'https://api.github.com/repos/' + repo
+          roots = [10, 11, 12, 13, 14, 15, 16, 17, 18, 107, 128, 153]
+          output = Path('capture')
+          started = datetime.datetime.now(datetime.timezone.utc).isoformat()
+          headers = {'Authorization': 'Bearer ' + os.environ['GH_TOKEN'],
+                     'Accept': 'application/vnd.github+json',
+                     'X-GitHub-Api-Version': '2022-11-28',
+                     'User-Agent': 'hatch-pet-roadmap-capture'}
+
+          def get(path):
+              # All requests stay inside this repository; no secrets are persisted.
+              if not path.startswith('/') or '..' in path or '://' in path:
+                  raise ValueError('Invalid repository API path')
+              request = urllib.request.Request(base + path, headers=headers)
+              for attempt in range(3):
+                  try:
+                      with urllib.request.urlopen(request, timeout=45) as response:
+                          if not response.geturl().startswith(base + '/'):
+                              raise ValueError('Unexpected API redirect')
+                          return json.load(response)
+                  except urllib.error.HTTPError as exc:
+                      if exc.code not in (429, 500, 502, 503, 504) or attempt == 2:
+                          raise
+                      time.sleep(2 ** attempt)
+              raise RuntimeError('Request exhausted')
+
+          def pages(path):
+              result = []
+              separator = '&' if '?' in path else '?'
+              for page in range(1, 101):
+                  batch = get(f'{path}{separator}per_page=100&page={page}')
+                  if not isinstance(batch, list):
+                      raise ValueError('Expected paginated array: ' + path)
+                  result.extend(batch)
+                  if len(batch) < 100:
+                      return result
+              raise RuntimeError('Pagination bound exceeded: ' + path)
+
+          all_issues = pages('/issues?state=all&sort=created&direction=asc')
+          issues = {item['number']: item for item in all_issues if 'pull_request' not in item}
+          parents, children, blocked_by, comments = {}, {}, {}, {}
+          pending, visited = set(roots), set()
+
+          def inspect(number):
+              issue = issues.get(number) or get(f'/issues/{number}')
+              subs = pages(f'/issues/{number}/sub_issues')
+              deps = pages(f'/issues/{number}/dependencies/blocked_by')
+              discussion = pages(f'/issues/{number}/comments') if issue['comments'] else []
+              return number, issue, subs, deps, discussion
+
+          while pending:
+              batch = sorted(pending - visited)
+              pending.clear()
+              if not batch:
+                  break
+              with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
+                  for number, issue, subs, deps, discussion in pool.map(inspect, batch):
+                      visited.add(number)
+                      issues[number] = issue
+                      children[number] = []
+                      for child in subs:
+                          if child['repository_url'] != base:
+                              raise ValueError('Cross-repository sub-issue: ' + child['html_url'])
+                          child_number = child['number']
+                          if child_number in parents and parents[child_number] != number:
+                              raise ValueError('Conflicting native parents')
+                          parents[child_number] = number
+                          children[number].append(child_number)
+                          issues[child_number] = child
+                          if child_number not in visited:
+                              pending.add(child_number)
+                      blocked_by[number] = [
+                          {'number': dep['number'], 'state': dep['state'],
+                           'repository_url': dep['repository_url'], 'url': dep['html_url']}
+                          for dep in deps]
+                      comments[number] = discussion
+
+          capture = {'schema_version': 1, 'repository': repo,
+                     'started_at': started,
+                     'finished_at': datetime.datetime.now(datetime.timezone.utc).isoformat(),
+                     'snapshot_is_transactional': False,
+                     'root_issues': roots, 'complete': True,
+                     'issues': {str(n): issues[n] for n in sorted(visited)},
+                     'parents': parents, 'children': children,
+                     'blocked_by': blocked_by, 'comments': comments,
+                     'open_pull_requests': pages('/pulls?state=open'),
+                     'closed_pull_requests': pages('/pulls?state=closed&sort=updated&direction=desc'),
+                     'branches': pages('/branches'),
+                     'rulesets': pages('/rulesets?includes_parents=true')}
+          data = (json.dumps(capture, indent=2, ensure_ascii=False) + '\n').encode()
+          (output / 'roadmap.json').write_bytes(data)
+          (output / 'roadmap.sha256').write_text(hashlib.sha256(data).hexdigest() + '  roadmap.json\n')
+          print(json.dumps({'issues': len(visited),
+                            'native_parent_edges': len(parents),
+                            'dependency_edges': sum(map(len, blocked_by.values())),
+                            'comments': sum(map(len, comments.values())),
+                            'sha256': hashlib.sha256(data).hexdigest()}))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: hatch-pet-roadmap-capture
+          path: capture/
+          if-no-files-found: error
+          retention-days: 7
