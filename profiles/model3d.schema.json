@@ -1,0 +1,1878 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Hatch Pet Model3D v1 contracts",
+  "description": "Structural contracts only. Runtime checks semantic references and actual payloads separately.",
+  "$defs": {
+    "file": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 268435456
+        },
+        "media_type": {
+          "enum": [
+            "model/gltf-binary",
+            "model/gltf+json",
+            "model/obj",
+            "application/octet-stream",
+            "application/json",
+            "image/png",
+            "image/jpeg",
+            "image/webp",
+            "text/plain"
+          ]
+        }
+      },
+      "required": [
+        "path",
+        "sha256",
+        "bytes",
+        "media_type"
+      ]
+    },
+    "limits": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "file_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 268435456
+        },
+        "total_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1073741824
+        },
+        "files": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4096
+        },
+        "vertices": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000000
+        },
+        "triangles": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2000000
+        },
+        "parts": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4096
+        },
+        "dependency_depth": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 16
+        },
+        "memory_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2147483648
+        }
+      },
+      "required": [
+        "file_bytes",
+        "total_bytes",
+        "files",
+        "vertices",
+        "triangles",
+        "parts",
+        "dependency_depth",
+        "memory_bytes"
+      ]
+    },
+    "transform": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "translation": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "minimum": -1000000000.0,
+            "maximum": 1000000000.0
+          },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "rotation": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "minimum": -1000000000.0,
+            "maximum": 1000000000.0
+          },
+          "minItems": 4,
+          "maxItems": 4
+        },
+        "scale": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "maximum": 1000000000.0
+          },
+          "minItems": 3,
+          "maxItems": 3
+        }
+      },
+      "required": [
+        "translation",
+        "rotation",
+        "scale"
+      ]
+    },
+    "bounds": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "minimum": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "minimum": -1000000000.0,
+            "maximum": 1000000000.0
+          },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "maximum": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "minimum": -1000000000.0,
+            "maximum": 1000000000.0
+          },
+          "minItems": 3,
+          "maxItems": 3
+        }
+      },
+      "required": [
+        "minimum",
+        "maximum"
+      ]
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "origin": {
+          "enum": [
+            "imported",
+            "generated",
+            "derived",
+            "authored",
+            "procedural-fixture"
+          ]
+        },
+        "fixture": {
+          "type": "boolean"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "tools": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "version": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 4096
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "name",
+              "version"
+            ]
+          },
+          "minItems": 0,
+          "maxItems": 32
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/file"
+          },
+          "minItems": 0,
+          "maxItems": 128
+        },
+        "license": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "identifier": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4096
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "attribution": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4096
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "redistribution": {
+              "enum": [
+                "unknown",
+                "restricted",
+                "permitted"
+              ]
+            },
+            "evidence": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/file"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "identifier",
+            "attribution",
+            "redistribution",
+            "evidence"
+          ]
+        }
+      },
+      "required": [
+        "origin",
+        "fixture",
+        "description",
+        "tools",
+        "evidence",
+        "license"
+      ]
+    },
+    "asset-reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+        },
+        "version": {
+          "type": "string",
+          "maxLength": 64,
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+        },
+        "manifest": {
+          "$ref": "#/$defs/file"
+        }
+      },
+      "required": [
+        "id",
+        "version",
+        "manifest"
+      ]
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "kind": {
+          "const": "model3d-source"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+        },
+        "version": {
+          "type": "string",
+          "maxLength": 64,
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+        },
+        "file": {
+          "$ref": "#/$defs/file"
+        },
+        "role": {
+          "enum": [
+            "geometry",
+            "front",
+            "back",
+            "left",
+            "right",
+            "top",
+            "bottom",
+            "detail",
+            "identity",
+            "sketch",
+            "texture",
+            "annotation",
+            "mask",
+            "depth",
+            "profile"
+          ]
+        },
+        "provenance": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "origin": {
+              "enum": [
+                "imported",
+                "generated",
+                "derived",
+                "authored",
+                "procedural-fixture"
+              ]
+            },
+            "fixture": {
+              "type": "boolean"
+            },
+            "description": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096
+            },
+            "tools": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "version": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 4096
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "name",
+                  "version"
+                ]
+              },
+              "minItems": 0,
+              "maxItems": 32
+            },
+            "evidence": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/file"
+              },
+              "minItems": 0,
+              "maxItems": 128
+            },
+            "license": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "identifier": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 4096
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "attribution": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 4096
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "redistribution": {
+                  "enum": [
+                    "unknown",
+                    "restricted",
+                    "permitted"
+                  ]
+                },
+                "evidence": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/$defs/file"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "identifier",
+                "attribution",
+                "redistribution",
+                "evidence"
+              ]
+            }
+          },
+          "required": [
+            "origin",
+            "fixture",
+            "description",
+            "tools",
+            "evidence",
+            "license"
+          ]
+        },
+        "camera": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "status": {
+              "enum": [
+                "unknown",
+                "supplied",
+                "estimated"
+              ]
+            },
+            "projection": {
+              "enum": [
+                "perspective",
+                "orthographic"
+              ]
+            },
+            "camera_to_world": {
+              "type": "array",
+              "items": {
+                "type": "number",
+                "minimum": -1000000000.0,
+                "maximum": 1000000000.0
+              },
+              "minItems": 16,
+              "maxItems": 16
+            },
+            "image_size": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 32768
+              },
+              "minItems": 2,
+              "maxItems": 2
+            },
+            "intrinsics": {
+              "type": "array",
+              "items": {
+                "type": "number",
+                "minimum": -1000000000.0,
+                "maximum": 1000000000.0
+              },
+              "minItems": 9,
+              "maxItems": 9
+            },
+            "orthographic_size": {
+              "type": "array",
+              "items": {
+                "type": "number",
+                "exclusiveMinimum": 0,
+                "maximum": 1000000000.0
+              },
+              "minItems": 2,
+              "maxItems": 2
+            },
+            "evidence": {
+              "$ref": "#/$defs/file"
+            }
+          },
+          "required": [
+            "status"
+          ]
+        }
+      },
+      "required": [
+        "schema_version",
+        "kind",
+        "id",
+        "version",
+        "file",
+        "role",
+        "provenance",
+        "camera"
+      ]
+    },
+    "uncertainty": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "kind": {
+          "const": "model3d-uncertainty"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+        },
+        "target": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+        },
+        "classification": {
+          "enum": [
+            "observed",
+            "multi-view-constrained",
+            "procedurally-inferred",
+            "model-inferred",
+            "manually-authored",
+            "unknown"
+          ]
+        },
+        "message": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+          },
+          "minItems": 0,
+          "maxItems": 128
+        },
+        "confidence": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "confidence_method": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "enum": [
+            "pending",
+            "accepted",
+            "corrected"
+          ]
+        }
+      },
+      "required": [
+        "schema_version",
+        "kind",
+        "id",
+        "target",
+        "classification",
+        "message",
+        "evidence",
+        "confidence",
+        "confidence_method",
+        "status"
+      ]
+    },
+    "material": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "kind": {
+          "const": "model3d-material"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+        },
+        "version": {
+          "type": "string",
+          "maxLength": 64,
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "slot": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4095
+        },
+        "base_color": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "minItems": 4,
+          "maxItems": 4
+        },
+        "metallic": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "roughness": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "alpha_mode": {
+          "enum": [
+            "OPAQUE",
+            "MASK",
+            "BLEND"
+          ]
+        },
+        "alpha_cutoff": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "double_sided": {
+          "type": "boolean"
+        },
+        "textures": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "base_color": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "file": {
+                  "$ref": "#/$defs/file"
+                },
+                "texcoord": {
+                  "enum": [
+                    0,
+                    1
+                  ]
+                },
+                "color_space": {
+                  "enum": [
+                    "srgb",
+                    "linear-data"
+                  ]
+                }
+              },
+              "required": [
+                "file",
+                "texcoord",
+                "color_space"
+              ]
+            },
+            "normal": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "file": {
+                  "$ref": "#/$defs/file"
+                },
+                "texcoord": {
+                  "enum": [
+                    0,
+                    1
+                  ]
+                },
+                "color_space": {
+                  "enum": [
+                    "srgb",
+                    "linear-data"
+                  ]
+                }
+              },
+              "required": [
+                "file",
+                "texcoord",
+                "color_space"
+              ]
+            },
+            "metallic_roughness": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "file": {
+                  "$ref": "#/$defs/file"
+                },
+                "texcoord": {
+                  "enum": [
+                    0,
+                    1
+                  ]
+                },
+                "color_space": {
+                  "enum": [
+                    "srgb",
+                    "linear-data"
+                  ]
+                }
+              },
+              "required": [
+                "file",
+                "texcoord",
+                "color_space"
+              ]
+            },
+            "occlusion": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "file": {
+                  "$ref": "#/$defs/file"
+                },
+                "texcoord": {
+                  "enum": [
+                    0,
+                    1
+                  ]
+                },
+                "color_space": {
+                  "enum": [
+                    "srgb",
+                    "linear-data"
+                  ]
+                }
+              },
+              "required": [
+                "file",
+                "texcoord",
+                "color_space"
+              ]
+            },
+            "emissive": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "file": {
+                  "$ref": "#/$defs/file"
+                },
+                "texcoord": {
+                  "enum": [
+                    0,
+                    1
+                  ]
+                },
+                "color_space": {
+                  "enum": [
+                    "srgb",
+                    "linear-data"
+                  ]
+                }
+              },
+              "required": [
+                "file",
+                "texcoord",
+                "color_space"
+              ]
+            }
+          },
+          "required": []
+        },
+        "provenance": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "origin": {
+              "enum": [
+                "imported",
+                "generated",
+                "derived",
+                "authored",
+                "procedural-fixture"
+              ]
+            },
+            "fixture": {
+              "type": "boolean"
+            },
+            "description": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096
+            },
+            "tools": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "version": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 4096
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "name",
+                  "version"
+                ]
+              },
+              "minItems": 0,
+              "maxItems": 32
+            },
+            "evidence": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/file"
+              },
+              "minItems": 0,
+              "maxItems": 128
+            },
+            "license": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "identifier": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 4096
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "attribution": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 4096
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "redistribution": {
+                  "enum": [
+                    "unknown",
+                    "restricted",
+                    "permitted"
+                  ]
+                },
+                "evidence": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/$defs/file"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "identifier",
+                "attribution",
+                "redistribution",
+                "evidence"
+              ]
+            }
+          },
+          "required": [
+            "origin",
+            "fixture",
+            "description",
+            "tools",
+            "evidence",
+            "license"
+          ]
+        }
+      },
+      "required": [
+        "schema_version",
+        "kind",
+        "id",
+        "version",
+        "name",
+        "slot",
+        "base_color",
+        "metallic",
+        "roughness",
+        "alpha_mode",
+        "alpha_cutoff",
+        "double_sided",
+        "textures",
+        "provenance"
+      ]
+    },
+    "part": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "kind": {
+          "const": "model3d-part"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "parent": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "local_transform": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "translation": {
+              "type": "array",
+              "items": {
+                "type": "number",
+                "minimum": -1000000000.0,
+                "maximum": 1000000000.0
+              },
+              "minItems": 3,
+              "maxItems": 3
+            },
+            "rotation": {
+              "type": "array",
+              "items": {
+                "type": "number",
+                "minimum": -1000000000.0,
+                "maximum": 1000000000.0
+              },
+              "minItems": 4,
+              "maxItems": 4
+            },
+            "scale": {
+              "type": "array",
+              "items": {
+                "type": "number",
+                "exclusiveMinimum": 0,
+                "maximum": 1000000000.0
+              },
+              "minItems": 3,
+              "maxItems": 3
+            }
+          },
+          "required": [
+            "translation",
+            "rotation",
+            "scale"
+          ]
+        },
+        "mesh_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+          },
+          "minItems": 0,
+          "maxItems": 4096
+        },
+        "material_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+          },
+          "minItems": 0,
+          "maxItems": 4096
+        },
+        "source_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+          },
+          "minItems": 0,
+          "maxItems": 128
+        },
+        "uncertainty_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+          },
+          "minItems": 0,
+          "maxItems": 128
+        }
+      },
+      "required": [
+        "schema_version",
+        "kind",
+        "id",
+        "name",
+        "parent",
+        "local_transform",
+        "mesh_ids",
+        "material_ids",
+        "source_ids",
+        "uncertainty_ids"
+      ]
+    },
+    "request": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "kind": {
+          "const": "model3d-request"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+        },
+        "version": {
+          "type": "string",
+          "maxLength": 64,
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+        },
+        "asset_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+        },
+        "category": {
+          "enum": [
+            "character",
+            "prop",
+            "environment",
+            "architecture",
+            "general"
+          ]
+        },
+        "method": {
+          "enum": [
+            "import",
+            "procedural",
+            "silhouette",
+            "revolution",
+            "heightfield",
+            "visual-hull",
+            "provider"
+          ]
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "negative_constraints": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          },
+          "minItems": 0,
+          "maxItems": 128
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/source"
+          },
+          "minItems": 0,
+          "maxItems": 128
+        },
+        "coordinate_system": {
+          "const": {
+            "handedness": "right",
+            "right": "+X",
+            "up": "+Y",
+            "forward": "+Z",
+            "unit": "meter",
+            "angles": "radian",
+            "quaternion": "XYZW",
+            "matrices": "column-vectors",
+            "time": "second"
+          }
+        },
+        "dimensions_m": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "maximum": 1000000000.0
+          },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "scale_evidence": {
+          "enum": [
+            "supplied",
+            "estimated",
+            "measured"
+          ]
+        },
+        "intended_use": {
+          "enum": [
+            "realtime",
+            "cinematic",
+            "web",
+            "mobile",
+            "print",
+            "editing"
+          ]
+        },
+        "formats": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "glb",
+              "gltf",
+              "obj",
+              "blend"
+            ]
+          },
+          "minItems": 1,
+          "maxItems": 4
+        },
+        "semantic_parts": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+          },
+          "minItems": 0,
+          "maxItems": 4096
+        },
+        "allowed_assumptions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          },
+          "minItems": 0,
+          "maxItems": 128
+        },
+        "identity": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/file"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "style": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/file"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "provider": {
+          "anyOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+                },
+                "model": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 4096
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "network_authorized": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "id",
+                "model",
+                "network_authorized"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "seed": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295
+        },
+        "limits": {
+          "$ref": "#/$defs/limits"
+        }
+      },
+      "required": [
+        "schema_version",
+        "kind",
+        "id",
+        "version",
+        "asset_id",
+        "category",
+        "method",
+        "description",
+        "negative_constraints",
+        "sources",
+        "coordinate_system",
+        "dimensions_m",
+        "scale_evidence",
+        "intended_use",
+        "formats",
+        "semantic_parts",
+        "allowed_assumptions",
+        "identity",
+        "style",
+        "provider",
+        "seed",
+        "limits"
+      ]
+    },
+    "asset": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "kind": {
+          "const": "model3d-asset"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+        },
+        "version": {
+          "type": "string",
+          "maxLength": 64,
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+        },
+        "category": {
+          "enum": [
+            "character",
+            "prop",
+            "environment",
+            "architecture",
+            "general"
+          ]
+        },
+        "coordinate_system": {
+          "const": {
+            "handedness": "right",
+            "right": "+X",
+            "up": "+Y",
+            "forward": "+Z",
+            "unit": "meter",
+            "angles": "radian",
+            "quaternion": "XYZW",
+            "matrices": "column-vectors",
+            "time": "second"
+          }
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/source"
+          },
+          "minItems": 1,
+          "maxItems": 128
+        },
+        "files": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/file"
+          },
+          "minItems": 1,
+          "maxItems": 4096
+        },
+        "geometry": {
+          "$ref": "#/$defs/file"
+        },
+        "measurements": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "vertices": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000000
+            },
+            "triangles": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 2000000
+            },
+            "bounds": {
+              "$ref": "#/$defs/bounds"
+            }
+          },
+          "required": [
+            "vertices",
+            "triangles",
+            "bounds"
+          ]
+        },
+        "parts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/part"
+          },
+          "minItems": 1,
+          "maxItems": 4096
+        },
+        "materials": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/material"
+          },
+          "minItems": 0,
+          "maxItems": 4096
+        },
+        "dependencies": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/asset-reference"
+          },
+          "minItems": 0,
+          "maxItems": 256
+        },
+        "uncertainties": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/uncertainty"
+          },
+          "minItems": 0,
+          "maxItems": 1024
+        },
+        "provenance": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "origin": {
+              "enum": [
+                "imported",
+                "generated",
+                "derived",
+                "authored",
+                "procedural-fixture"
+              ]
+            },
+            "fixture": {
+              "type": "boolean"
+            },
+            "description": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096
+            },
+            "tools": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "version": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 4096
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "name",
+                  "version"
+                ]
+              },
+              "minItems": 0,
+              "maxItems": 32
+            },
+            "evidence": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/file"
+              },
+              "minItems": 0,
+              "maxItems": 128
+            },
+            "license": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "identifier": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 4096
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "attribution": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 4096
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "redistribution": {
+                  "enum": [
+                    "unknown",
+                    "restricted",
+                    "permitted"
+                  ]
+                },
+                "evidence": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/$defs/file"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "identifier",
+                "attribution",
+                "redistribution",
+                "evidence"
+              ]
+            }
+          },
+          "required": [
+            "origin",
+            "fixture",
+            "description",
+            "tools",
+            "evidence",
+            "license"
+          ]
+        },
+        "review": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "status": {
+              "enum": [
+                "pending",
+                "approved",
+                "rejected"
+              ]
+            },
+            "evidence": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/file"
+              },
+              "minItems": 0,
+              "maxItems": 128
+            }
+          },
+          "required": [
+            "status",
+            "evidence"
+          ]
+        },
+        "limits": {
+          "$ref": "#/$defs/limits"
+        }
+      },
+      "required": [
+        "schema_version",
+        "kind",
+        "id",
+        "version",
+        "category",
+        "coordinate_system",
+        "sources",
+        "files",
+        "geometry",
+        "measurements",
+        "parts",
+        "materials",
+        "dependencies",
+        "uncertainties",
+        "provenance",
+        "review",
+        "limits"
+      ]
+    },
+    "job": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "kind": {
+          "const": "model3d-job"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+        },
+        "request": {
+          "$ref": "#/$defs/file"
+        },
+        "asset_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+        },
+        "status": {
+          "enum": [
+            "queued",
+            "preparing",
+            "running",
+            "waiting-provider",
+            "validating",
+            "awaiting-review",
+            "completed",
+            "failed",
+            "cancelled",
+            "interrupted"
+          ]
+        },
+        "attempts": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "maximum_attempts": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "outputs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/file"
+          },
+          "minItems": 0,
+          "maxItems": 4096
+        },
+        "error": {
+          "anyOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+                },
+                "message": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4096
+                },
+                "retryable": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "code",
+                "message",
+                "retryable"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "dependencies": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/asset-reference"
+          },
+          "minItems": 0,
+          "maxItems": 256
+        },
+        "limits": {
+          "$ref": "#/$defs/limits"
+        }
+      },
+      "required": [
+        "schema_version",
+        "kind",
+        "id",
+        "request",
+        "asset_id",
+        "status",
+        "attempts",
+        "maximum_attempts",
+        "outputs",
+        "error",
+        "dependencies",
+        "limits"
+      ]
+    },
+    "export": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "kind": {
+          "const": "model3d-export"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+        },
+        "asset": {
+          "$ref": "#/$defs/asset-reference"
+        },
+        "format": {
+          "enum": [
+            "glb",
+            "gltf",
+            "obj",
+            "blend",
+            "archive"
+          ]
+        },
+        "status": {
+          "enum": [
+            "partial",
+            "complete",
+            "failed"
+          ]
+        },
+        "files": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/file"
+          },
+          "minItems": 0,
+          "maxItems": 4096
+        },
+        "tools": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "version": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 4096
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "name",
+              "version"
+            ]
+          },
+          "minItems": 1,
+          "maxItems": 32
+        },
+        "losses": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          },
+          "minItems": 0,
+          "maxItems": 128
+        },
+        "independent_inspection": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/file"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "limits": {
+          "$ref": "#/$defs/limits"
+        }
+      },
+      "required": [
+        "schema_version",
+        "kind",
+        "id",
+        "asset",
+        "format",
+        "status",
+        "files",
+        "tools",
+        "losses",
+        "independent_inspection",
+        "limits"
+      ]
+    }
+  },
+  "oneOf": [
+    {
+      "$ref": "#/$defs/request"
+    },
+    {
+      "$ref": "#/$defs/source"
+    },
+    {
+      "$ref": "#/$defs/asset"
+    },
+    {
+      "$ref": "#/$defs/part"
+    },
+    {
+      "$ref": "#/$defs/material"
+    },
+    {
+      "$ref": "#/$defs/uncertainty"
+    },
+    {
+      "$ref": "#/$defs/job"
+    },
+    {
+      "$ref": "#/$defs/export"
+    }
+  ]
+}
