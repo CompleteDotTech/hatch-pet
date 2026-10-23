@@ -1,0 +1,156 @@
+name: Transfer Model3D stat correction
+on:
+  push:
+    branches: ['agent/roadmap-capture-20261023']
+    paths: ['.github/workflows/model3d-stat-transfer.yml']
+permissions:
+  contents: write
+jobs:
+  transfer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Transfer only checksum-bound unreferenced blobs and tree
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - <<'PY'
+          import base64, hashlib, json, os, urllib.request
+          from pathlib import Path
+          class NoRedirect(urllib.request.HTTPRedirectHandler):
+              def redirect_request(self, *args, **kwargs):
+                  raise ValueError('Unexpected API redirect')
+          opener = urllib.request.build_opener(NoRedirect())
+          endpoint = 'https://api.github.com/repos/CompleteTech-Skills/hatch-pet/git/'
+          headers = {'Authorization': 'Bearer ' + os.environ['GH_TOKEN'],
+                     'Accept': 'application/vnd.github+json', 'Content-Type': 'application/json',
+                     'X-GitHub-Api-Version': '2022-11-28'}
+          def api(path, data=None):
+              assert path.startswith(('blobs', 'trees')) and '..' not in path
+              request = urllib.request.Request(endpoint + path, headers=headers,
+                  data=None if data is None else json.dumps(data).encode(),
+                  method='GET' if data is None else 'POST')
+              with opener.open(request, timeout=45) as response:
+                  return json.load(response)
+          def digest(content):
+              return hashlib.sha1(b'blob ' + str(len(content)).encode() + b'\0' + content).hexdigest()
+          def source(sha):
+              result = api('blobs/' + sha)
+              assert result['encoding'] == 'base64'
+              content = base64.b64decode(result['content'])
+              assert digest(content) == sha
+              return content.decode('utf-8')
+          tests = source('75fd4bf6c7bb1e48be6a3d2a100b463c256839fb')
+          extra = '''    def test_descriptor_and_path_timestamp_semantics_are_independent(self):
+                  # CPython 3.12 Windows can report change time for fstat and birth time
+                  # for stat. Keep both race checks; do not compare those two clocks.
+                  from types import SimpleNamespace
+                  import os
+                  original_fstat = os.fstat
+                  def alternate_clock(fd):
+                      info = original_fstat(fd)
+                      fields = {name: getattr(info, name) for name in dir(info) if name.startswith('st_')}
+                      fields['st_ctime_ns'] += 1_000_000_000
+                      return SimpleNamespace(**fields)
+                  expected = validate_document(self.asset, self.root)
+                  with mock.patch('model3d_validation.os.fstat', side_effect=alternate_clock):
+                      actual = validate_document(self.asset, self.root)
+                  self.assertEqual(actual, expected)
+                  self.assertTrue(actual['geometry_inspected'])
+
+              def test_each_stat_clock_still_detects_changes_during_read(self):
+                  from types import SimpleNamespace
+                  import os
+                  from model3d_validation import _open_payload
+                  root = self.root.resolve()
+                  target = root / self.asset['geometry']['path']
+                  for channel in ('descriptor', 'path'):
+                      with self.subTest(channel=channel):
+                          changed = False
+                          def altered(info):
+                              fields = {name: getattr(info, name) for name in dir(info) if name.startswith('st_')}
+                              fields['st_ctime_ns'] += int(changed) * 1_000_000_000
+                              return SimpleNamespace(**fields)
+                          original_fstat, original_stat = os.fstat, Path.stat
+                          def descriptor_stat(fd):
+                              return altered(original_fstat(fd))
+                          def path_stat(path, *args, **kwargs):
+                              result = original_stat(path, *args, **kwargs)
+                              return altered(result) if path == target else result
+                          boundary = mock.patch('model3d_validation.os.fstat', side_effect=descriptor_stat) if channel == 'descriptor' else mock.patch.object(Path, 'stat', path_stat)
+                          with boundary:
+                              with self.assertRaises(RigError) as caught:
+                                  with _open_payload(root, target.name) as (stream, info):
+                                      self.assertEqual(len(stream.read()), info.st_size)
+                                      changed = True
+                              self.assertEqual(caught.exception.report['code'], 'MODEL3D_CHANGED')
+
+              def test_real_payload_modification_during_read_is_rejected(self):
+                  import os
+                  from model3d_validation import _open_payload
+                  root = self.root.resolve()
+                  target = root / self.asset['geometry']['path']
+                  original = target.read_bytes()
+                  with self.assertRaises(RigError) as caught:
+                      with _open_payload(root, target.name) as (stream, info):
+                          self.assertEqual(stream.read(), original)
+                          target.write_bytes(bytes([original[0] ^ 1]) + original[1:])
+                          os.utime(target, ns=(info.st_atime_ns, info.st_mtime_ns + 1_000_000_000))
+                  self.assertEqual(caught.exception.report['code'], 'MODEL3D_CHANGED')
+                  self.assertInvalid(self.asset, 'MODEL3D_HASH', payloads=True)
+
+          '''
+          needle = '    def test_schema_discovery_does_not_import_numpy(self):\n'
+          assert tests.count(needle) == 1
+          tests = tests.replace(needle, extra + needle, 1)
+          runtime = source('d4b207d47732a40dfd34399a06b6dce58296ce14')
+          needle = '@contextmanager\ndef _open_payload'
+          helper = '''def _stat_fingerprint(info):
+              """Compare stable metadata from the same stat API before and after a read."""
+              return (info.st_dev, info.st_ino, info.st_mode, info.st_size,
+                      info.st_mtime_ns, info.st_ctime_ns)
+
+
+          @contextmanager
+          def _open_payload'''
+          assert runtime.count(needle) == 1
+          runtime = runtime.replace(needle, helper, 1)
+          old = '''            current = safe_path(root, name, exists=True).stat()
+                      require((current.st_dev, current.st_ino) == (before.st_dev, before.st_ino),'''
+          new = '''            path_before = safe_path(root, name, exists=True).stat()
+                      require((path_before.st_dev, path_before.st_ino) == (before.st_dev, before.st_ino),'''
+          assert runtime.count(old) == 1
+          runtime = runtime.replace(old, new, 1)
+          old = '''            require((before.st_dev, before.st_ino, before.st_size, before.st_mtime_ns, before.st_ctime_ns) ==
+                              (after.st_dev, after.st_ino, after.st_size, after.st_mtime_ns, after.st_ctime_ns) and
+                              (current.st_dev, current.st_ino, current.st_size, current.st_mtime_ns, current.st_ctime_ns) ==
+                              (after.st_dev, after.st_ino, after.st_size, after.st_mtime_ns, after.st_ctime_ns),'''
+          new = '''            # Windows CPython may expose creation time through path stat and
+                      # change time through fstat. Check each channel against itself; the
+                      # inode/device comparison above binds both observations to one file.
+                      require(_stat_fingerprint(before) == _stat_fingerprint(after) and
+                              _stat_fingerprint(path_before) == _stat_fingerprint(current),'''
+          assert runtime.count(old) == 1
+          runtime = runtime.replace(old, new, 1)
+          entries = []
+          for path, text, expected in [
+              ('tests/test_model3d_contracts.py', tests, '01c9ab4757b089a1512e23d2b5100559b931ac86'),
+              ('scripts/model3d_validation.py', runtime, 'd350eeb3021098fa22e8ced467d5cd7d0214dfa3')]:
+              content = text.encode('utf-8')
+              assert digest(content) == expected, (path, digest(content))
+              result = api('blobs', {'content': base64.b64encode(content).decode(), 'encoding': 'base64'})
+              assert result['sha'] == expected
+              entries.append({'path': path, 'mode': '100644', 'type': 'blob', 'sha': expected})
+          tree = '64c81d520d526c299c6403ae68195da15d090e5e'
+          result = api('trees', {'base_tree': '46eabedff04e6a230cea6a8cd29ead9cb7059e6b', 'tree': entries})
+          assert result['sha'] == tree
+          receipt = {'tree': tree, 'files': entries, 'branch_updated': False, 'tests_executed': False}
+          Path('source-transfer.json').write_text(json.dumps(receipt, indent=2) + '\n')
+          print(json.dumps(receipt))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: model3d-stat-source-transfer
+          path: source-transfer.json
+          if-no-files-found: error
+          retention-days: 7
