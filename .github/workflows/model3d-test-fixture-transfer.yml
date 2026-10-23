@@ -59,9 +59,6 @@ jobs:
                   self.assertEqual(alias.readlink(), link_target)
 
           '''
-          # Remove the ten extra indentation spaces used by this multiline literal.
-          lines = test.splitlines(keepends=True)
-          test = lines[0] + ''.join(line[10:] if line.startswith('          ') else line for line in lines[1:])
           needle = '    def test_obj_boundary_and_independent_glb_reader(self):\n'
           assert text.count(needle) == 1
           content = text.replace(needle, test + needle, 1).encode('utf-8')
