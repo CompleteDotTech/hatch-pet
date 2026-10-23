@@ -1,0 +1,20 @@
+{
+  "evidence_class": "engineering_baseline_not_solver_or_artwork_approval",
+  "name": "schema-math",
+  "source_commit": "7b966a639bcaf23bd3a0d037f46f29e2edfcc273",
+  "command": [
+    "/workspace/scratch/36752e25b9f2/hatch-venv/bin/python",
+    "scripts/test_rig_gate.py",
+    "schema-math"
+  ],
+  "cwd": "/workspace/scratch/36752e25b9f2/hatch-issue-166",
+  "explicit_environment": {},
+  "started_utc": "2026-10-22T18:30:48.870091+00:00",
+  "finished_utc": "2026-10-22T18:30:50.253398+00:00",
+  "wall_seconds": 1.383,
+  "exit_code": 0,
+  "runner_python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.39",
+  "log": "schema-math.log",
+  "log_sha256": "8464c154800814a13e50753d4add93cf83639fc66399a0a363fff59e05a19457"
+}
