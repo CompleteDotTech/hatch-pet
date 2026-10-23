@@ -34,6 +34,9 @@ def asset_fixture(root, identifier='fixture', *, suffix='.glb'):
     from rig_gltf import export_geometry
     from rig_import import load_character_model
     from test_rig_skinning import test_geometry
+    # The importer returns canonical paths (macOS /private/var and Windows
+    # expanded short names); derive the inventory from the same existing root.
+    root = root.resolve()
     path = root / (identifier + suffix)
     export_geometry(test_geometry(), path, provenance={'fixture': True})
     if suffix == '.gltf':
@@ -110,6 +113,32 @@ class Model3DContracts(unittest.TestCase):
                 self.assertGreater(result['geometry'][0]['inspection']['vertices'], 0)
                 self.assertEqual(result['visual_approval'], 'not-assessed')
                 self.assertEqual(result['provider_execution'], 'not-assessed')
+
+    def test_fixture_and_inspection_support_aliased_workspace_root(self):
+        actual = self.root / 'actual-workspace'
+        actual.mkdir()
+        alias = self.root / 'workspace-alias'
+        try:
+            alias.symlink_to(actual, target_is_directory=True)
+        except OSError as exc:
+            self.skipTest('Host cannot create directory symlinks: ' + str(exc))
+        link_target = alias.readlink()
+        canonical_root = actual / 'project'
+        canonical_root.mkdir()
+        aliased_root = alias / 'project'
+        for suffix in ('.glb', '.gltf'):
+            with self.subTest(suffix=suffix):
+                asset = asset_fixture(aliased_root, 'aliased-' + suffix[1:], suffix=suffix)
+                report = validate_document(asset, aliased_root)
+                self.assertTrue(report['payloads_verified'])
+                self.assertTrue(report['geometry_inspected'])
+                self.assertEqual(report, validate_document(asset, canonical_root))
+                for record in asset['files']:
+                    self.assertFalse(Path(record['path']).is_absolute())
+                    self.assertEqual((aliased_root / record['path']).read_bytes(),
+                                     (canonical_root / record['path']).read_bytes())
+        self.assertTrue(alias.is_symlink())
+        self.assertEqual(alias.readlink(), link_target)
 
     def test_obj_boundary_and_independent_glb_reader(self):
         from pygltflib import GLTF2
