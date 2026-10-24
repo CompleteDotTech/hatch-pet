@@ -53,9 +53,11 @@ def atomic(path, value):
 
 
 @contextmanager
-def ownership(root):
+def ownership(root, *, resolve_leaf=True):
     """A kernel lock, released after a crash; an old lock file is harmless."""
-    root = Path(root).resolve()
+    root = Path(root)
+    # New destinations must not redirect their lock through a racing leaf link.
+    root = root.resolve() if resolve_leaf else root.parent.resolve() / root.name
     root.parent.mkdir(parents=True, exist_ok=True)
     lock = root.parent / ('.' + root.name + '.hatch.lock')
     with lock.open('a+b') as handle:
@@ -1422,12 +1424,19 @@ def main():
         raise SystemExit(0 if result.get('ok', True) else 1)
     if not args.run_dir:
         p.error('--run-dir is required for ' + args.command)
-    root = Path(args.run_dir).expanduser().resolve()
+    requested_root = Path(args.run_dir).expanduser()
+    root = (requested_root.parent.resolve() / requested_root.name
+            if args.command == 'restore' else requested_root.resolve())
     try:
+        if args.command == 'restore' and (root.exists() or root.is_symlink()):
+            raise ValueError('restore destination must not exist; use a new directory')
         if args.out and (Path(args.out).resolve() == root or Path(args.out).resolve().is_relative_to(root)):
             raise ValueError('--out must be outside the run to avoid changing reviewed artifacts')
-        with ownership(root):
-            recover_prepare(root)
+        with ownership(root, resolve_leaf=args.command != 'restore'):
+            # A restore requires a fresh destination; it must not recover or mutate
+            # an unrelated prepare transaction before validating its archive.
+            if args.command != 'restore':
+                recover_prepare(root)
             if args.command in decomposition_commands:
                 from decomposition_cli import dispatch
                 result = dispatch(root, args)
