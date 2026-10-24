@@ -1,6 +1,8 @@
 """New contracts and failure paths. All assets are synthetic, all destinations local."""
 import argparse
 import copy
+import contextlib
+import io
 import json
 import os
 from pathlib import Path
@@ -221,6 +223,62 @@ class CapabilityTests(unittest.TestCase):
         self.assertFalse(target.exists())
         self.assertFalse((self.home / '.missing-target.hatch.lock').exists())
         self.assertFalse(list(self.home.glob('.hatch-restore-*')))
+
+    def test_restore_cli_preserves_leaf_link_racing_ownership(self):
+        self.build(validate=True)
+        record_fixture_review(self.root, self.data)
+        archive = self.home / 'archive.zip'
+        archive_run(self.root, self.data, archive)
+        destination = self.home / 'restored'
+        target_parent = self.home / 'unrequested-parent'
+        target = target_parent / 'target'
+        probe = self.home / 'symlink-capability'
+        self.directory_symlink(probe, target)
+        probe.unlink()
+        original_is_symlink = Path.is_symlink
+        created = []
+
+        def race(candidate):
+            result = original_is_symlink(candidate)
+            if candidate == destination and not created:
+                self.assertFalse(result)
+                destination.symlink_to(target, target_is_directory=True)
+                status = destination.lstat()
+                created.append((status.st_dev, status.st_ino, destination.readlink()))
+            return result
+
+        stdout, stderr = io.StringIO(), io.StringIO()
+        argv = ['hatch.py', 'restore', '--source', str(archive), '--run-dir', str(destination)]
+        with patch.object(sys, 'argv', argv), patch.object(Path, 'is_symlink', race), \
+                patch.object(hatch, 'recover_prepare', side_effect=AssertionError('restore must not recover prepare')), \
+                contextlib.redirect_stdout(stdout), contextlib.redirect_stderr(stderr):
+            with self.assertRaises(SystemExit) as error:
+                hatch.main()
+        self.assertEqual(error.exception.code, 1)
+        self.assertEqual(stdout.getvalue(), '')
+        self.assertIn('restore destination must not exist', stderr.getvalue())
+        self.assertEqual(len(created), 1)
+        status = destination.lstat()
+        self.assertEqual((status.st_dev, status.st_ino, destination.readlink()), created[0])
+        self.assertFalse(target_parent.exists())
+        self.assertFalse(target.exists())
+        self.assertFalse(list(self.home.glob('.hatch-restore-*')))
+
+    def test_restore_cli_leaves_unrelated_prepare_journal_untouched(self):
+        self.build(validate=True)
+        record_fixture_review(self.root, self.data)
+        archive = self.home / 'archive.zip'
+        archive_run(self.root, self.data, archive)
+        destination = self.home / 'restored'
+        journal = self.home / '.restored.prepare.json'
+        journal.write_bytes(b'unrelated interrupted prepare journal')
+        argv = ['hatch.py', 'restore', '--source', str(archive), '--run-dir', str(destination)]
+        stdout = io.StringIO()
+        with patch.object(sys, 'argv', argv), contextlib.redirect_stdout(stdout):
+            hatch.main()
+        self.assertEqual(journal.read_bytes(), b'unrelated interrupted prepare journal')
+        self.assertEqual(hatch.manifest(destination)['run_id'], self.data['run_id'])
+        self.assertFalse(json.loads(stdout.getvalue())['revalidation_required'])
 
     def test_restore_preserves_destination_symlink_created_after_initial_check(self):
         self.build(validate=True)
