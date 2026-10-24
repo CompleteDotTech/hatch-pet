@@ -78,4 +78,5 @@ jobs:
           name: trusted-physics-${{ github.sha }}
           if-no-files-found: error
           retention-days: 30
+          include-hidden-files: true
           path: physics-evidence/
