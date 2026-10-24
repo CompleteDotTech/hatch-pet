@@ -29,12 +29,12 @@ from test_rig_skinning import test_geometry
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def image_bytes(mode='RGB', fmt='PNG', size=(16, 16)):
+def image_bytes(mode='RGB', fmt='PNG', size=(16, 16), *, progressive=False):
     rng = np.random.default_rng(7)
     channels = {'L': 1, 'RGB': 3, 'RGBA': 4, 'CMYK': 4}[mode]
     shape = (*size[::-1], channels) if channels > 1 else size[::-1]
     image = Image.fromarray(rng.integers(0, 256, shape, dtype=np.uint8), mode=mode)
-    stream = io.BytesIO();image.save(stream, format=fmt)
+    stream = io.BytesIO();image.save(stream, format=fmt, **({'progressive': progressive} if fmt == 'JPEG' else {}))
     return stream.getvalue()
 
 
@@ -117,6 +117,61 @@ class TextureIntegrityTests(unittest.TestCase):
         for suffix, external, data_uri in [('.glb', False, False), ('.gltf', False, False), ('.gltf', True, False), ('.gltf', False, True)]:
             with self.subTest(suffix=suffix, external=external, data_uri=data_uri):
                 self.assert_rejected(self.model(damaged, suffix, mime='image/jpeg', external=external, data_uri=data_uri), 'RIG_TEXTURE_DECODE')
+
+    def test_entropy_recovery_is_rejected_by_all_real_import_routes(self):
+        data = image_bytes(fmt='JPEG', size=(32, 32))
+        self.assertEqual(hashlib.sha256(data).hexdigest(), 'f7aa64cf9f5f369a45ee48c602577ff4f7d7da1bdb1fc674ea907dae6cd284ec')
+        for cut in (5, 20, 100, 300):
+            damaged = data[:-cut] + b'\xff\xd9'
+            # This is the actual old failure: strict Pillow still returns pixels.
+            with Image.open(io.BytesIO(damaged)) as image: image.load()
+            for path in [self.model(damaged, mime='image/jpeg'), self.model(damaged, '.gltf', mime='image/jpeg'),
+                         self.model(damaged, '.gltf', mime='image/jpeg', external=True),
+                         self.model(damaged, '.gltf', mime='image/jpeg', data_uri=True), self.obj(damaged, '.jpg')]:
+                with self.subTest(cut=cut, source=path.name): self.assert_rejected(path, 'RIG_TEXTURE_DECODE')
+        for path in [self.model(damaged, mime='image/jpeg'), self.model(damaged, '.gltf', mime='image/jpeg', external=True), self.obj(damaged, '.jpg')]:
+            destination = path.parent / (path.stem + '-strict-rejected')
+            before = {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in path.parent.iterdir() if p.is_file()}
+            response = subprocess.run([sys.executable, str(ROOT/'scripts/rig.py'), 'import', '--model', str(path),
+                                       '--run-dir', str(destination)], capture_output=True, text=True, timeout=30)
+            self.assertNotEqual(response.returncode, 0)
+            self.assertEqual(json.loads(response.stdout)['error']['code'], 'RIG_TEXTURE_DECODE')
+            self.assertFalse(destination.exists())
+            after = {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in path.parent.iterdir() if p.is_file()}
+            after.pop('.' + destination.name + '.rig.lock', None)
+            self.assertEqual(before, after)
+
+    def test_valid_progressive_arithmetic_and_native_byte_identity(self):
+        samples = [image_bytes(mode, 'JPEG', size=(19, 17), progressive=True) for mode in ('L', 'RGB', 'CMYK')]
+        samples += [(ROOT/'tests/fixtures'/name).read_bytes() for name in (
+            'strict-jpeg-arithmetic.jpg', 'strict-jpeg-arithmetic-progressive.jpg')]
+        for data in samples:
+            for path in [self.model(data, mime='image/jpeg'), self.model(data, '.gltf', mime='image/jpeg', external=True), self.obj(data, '.jpg')]:
+                with self.subTest(source=path.name, digest=hashlib.sha256(data).hexdigest()):
+                    self.assertEqual(load_character_model(path).geometry.images[0].data, data)
+
+    def test_missing_strict_jpeg_verifier_never_falls_back_or_publishes(self):
+        path = self.model(image_bytes(fmt='JPEG'), mime='image/jpeg')
+        with patch.dict(sys.modules, {'simplejpeg': None}):
+            self.assert_rejected(path, 'RIG_TEXTURE_VERIFIER_UNAVAILABLE')
+            png = image_bytes()
+            self.assertEqual(_decode_texture(png, DEFAULT_LIMITS), ('image/png', 16 * 16))
+        shadow = self.root/'missing-strict';shadow.mkdir()
+        (shadow/'simplejpeg.py').write_text('raise ImportError("Simulated absent optional verifier")\n')
+        destination = self.root/'unavailable-jpeg-run'
+        response = subprocess.run([sys.executable, str(ROOT/'scripts/rig.py'), 'import', '--model', str(path),
+                                   '--run-dir', str(destination)], env={**os.environ, 'PYTHONPATH': str(shadow)},
+                                  capture_output=True, text=True, timeout=30)
+        self.assertNotEqual(response.returncode, 0)
+        self.assertEqual(json.loads(response.stdout)['error']['code'], 'RIG_TEXTURE_VERIFIER_UNAVAILABLE')
+        self.assertFalse(destination.exists())
+
+    def test_strict_jpeg_aggregate_allowance_is_checked_before_native_pixels(self):
+        import simplejpeg
+        data = image_bytes(fmt='JPEG', size=(4, 4));path = self.model(data, mime='image/jpeg', images=2)
+        with patch.object(simplejpeg, 'decode_jpeg', wraps=simplejpeg.decode_jpeg) as decode:
+            self.assert_rejected(path, 'RIG_LIMIT_TEXTURE', limits={**DEFAULT_LIMITS, 'memory_bytes': 800})
+            self.assertEqual(decode.call_count, 1)
 
     def test_png_valid_crc_but_invalid_pixels_and_broken_crc_are_structured(self):
         damaged = png_with_bad_pixels();Image.open(io.BytesIO(damaged)).verify()

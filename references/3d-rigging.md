@@ -279,10 +279,17 @@ This is structural/source integrity validation, not visual or production-art
 approval. Other import, fitting and source-interoperability requirements in
 #52/#44/#139 remain separate.
 
-Successful JPEG decoding is not a proof of complete JPEG entropy integrity.
-The pinned [Pillow JPEG decoder](https://github.com/python-pillow/Pillow/blob/12.3.0/src/libImaging/JpegDecode.c)
-suppresses libjpeg warnings; a partially truncated entropy stream terminated
-with a new EOI can still decode using recovery. This patch rejects the tested
-missing-EOI JPEG and proves actual decoding, but does not establish a strict
-warning-aware JPEG validator. That known limitation remains part of the open
-native-import requirements; these issues must not be closed on this patch.
+JPEG admission also invokes the pinned warning-aware verifier from
+`requirements-rig.txt`, using the remaining aggregate memory allowance. It
+rejects the demonstrated Huffman entropy damage that Pillow silently recovers;
+missing or untested verifier installations fail with actionable
+`RIG_TEXTURE_VERIFIER_UNAVAILABLE`, never a permissive fallback. Ordinary 2D
+setup does not install or import this optional dependency. See
+[strict JPEG validation](strict-jpeg-validation.md) for limits and codec evidence.
+
+Successful format decoding cannot authenticate original intended pixels. In
+particular, arithmetic JPEG permits marker padding that can make a changed
+bitstream valid without a decoder warning. Exact preserved bytes and an
+independently supplied original SHA-256 remain the separate authenticity gate;
+neither codec success nor numerical checks create visual approval or close the
+broader #52/#44/#139 packages.

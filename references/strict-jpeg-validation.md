@@ -77,7 +77,21 @@ generated from seeded 32×32 RGB engineering pixels by the actual local
 `cjpeg` 3.2.0 encoder. Their committed bytes are independently decoded by the
 pinned verifier; tests do not require the external encoder executable.
 
-The native texture owner must integrate this function at its sole shared JPEG
-admission callsite and execute all source routes before full import-integrity
-acceptance. Standalone codec tests alone do not establish that GLB/glTF or OBJ
-actually invoked the boundary. Parent issues #52, #44 and #139 remain open.
+The native decoder now calls this verifier at its sole shared image-admission
+boundary, before accepting JPEG pixels. Real GLB bufferView, glTF embedded
+buffer, external-file and data-URI, and OBJ/MTL regressions exercise the callsite.
+They reject all four canonical warning-producing entropy cuts, preserve valid
+baseline/progressive Gray/RGB/CMYK and arithmetic bytes, and verify no run is
+published on failure or missing dependency. The three-OS workflow runs both
+the standalone codec and native-route test families; optional independent
+Khronos/Blender/browser coverage remains in the existing interoperability gate.
+
+Arithmetic coding has a concrete authenticity limit: a marker can complete a
+changed arithmetic-coded stream using legal zero padding. Eight altered
+baseline/progressive fixtures remain valid under both the strict decoder and
+independent `djpeg`, with no warning. The
+[upstream arithmetic decoder](https://github.com/libjpeg-turbo/libjpeg-turbo/blob/3.1.2/src/jdarith.c#L125)
+defines this behavior. It must not be mislabeled a malformed-source warning
+bypass or used to reject every arithmetic JPEG. Detecting a different valid
+source still requires an independently supplied original digest. Parent issues
+#52, #44 and #139 remain open.

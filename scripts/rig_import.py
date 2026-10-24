@@ -132,7 +132,13 @@ def _decode_texture(data: bytes, limits: dict, total_pixels: int = 0) -> tuple[s
                 require(0 < pixels <= 16_777_216 and (total_pixels + pixels) * 16 <= limits['memory_bytes'] // 2,
                         'RIG_LIMIT_TEXTURE', 'Decoded textures exceed the pixel/memory budget.')
                 mime = 'image/png' if image.format == 'PNG' else 'image/jpeg'
-                if image.format == 'PNG': _verify_png_raster(data, image.size)
+                if image.format == 'PNG':
+                    _verify_png_raster(data, image.size)
+                else:
+                    from rig_jpeg import verify_jpeg
+                    verify_jpeg(data, max_encoded_bytes=limits['source_bytes'],
+                                max_working_bytes=limits['memory_bytes'] // 2 - total_pixels * 16,
+                                expected_size=image.size)
                 image.verify()
             # Reopen the same immutable bytes: verify invalidates the first
             # parser and does not establish that its actual pixels can decode.

@@ -5,20 +5,22 @@ on:
     paths:
       - '.github/workflows/strict-jpeg.yml'
       - 'requirements-rig*.txt'
-      - 'scripts/rig_jpeg.py'
-      - 'scripts/rig_import.py'
-      - 'scripts/rig_obj.py'
+      - 'scripts/rig*.py'
       - 'tests/test_rig_jpeg.py'
+      - 'tests/test_rig_texture_integrity.py'
+      - 'tests/test_rig_skinning.py'
+      - 'tests/test_rig_math.py'
       - 'tests/fixtures/strict-jpeg-*.jpg'
   push:
     branches: [main]
     paths:
       - '.github/workflows/strict-jpeg.yml'
       - 'requirements-rig*.txt'
-      - 'scripts/rig_jpeg.py'
-      - 'scripts/rig_import.py'
-      - 'scripts/rig_obj.py'
+      - 'scripts/rig*.py'
       - 'tests/test_rig_jpeg.py'
+      - 'tests/test_rig_texture_integrity.py'
+      - 'tests/test_rig_skinning.py'
+      - 'tests/test_rig_math.py'
       - 'tests/fixtures/strict-jpeg-*.jpg'
   workflow_dispatch:
 
@@ -48,7 +50,9 @@ jobs:
         with:
           python-version: '3.12'
       - run: python -m pip install -r requirements-rig-test.txt
-      - run: python -m unittest discover -s tests -p test_rig_jpeg.py -v 2>&1 | tee strict-jpeg-tests.log
+      - run: |
+          python -m unittest discover -s tests -p test_rig_jpeg.py -v 2>&1 | tee strict-jpeg-tests.log
+          python -m unittest discover -s tests -p test_rig_texture_integrity.py -v 2>&1 | tee -a strict-jpeg-tests.log
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         if: always()
         with:
