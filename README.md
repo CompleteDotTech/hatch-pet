@@ -200,7 +200,7 @@ The [style validation record](references/style-validation.md) documents the styl
 Install the skill into Codex:
 
 ```bash
-git clone https://github.com/CompleteDotTech/hatch-pet "${CODEX_HOME:-$HOME/.codex}/skills/hatch-pet"
+git clone https://github.com/CompleteTech-Skills/hatch-pet "${CODEX_HOME:-$HOME/.codex}/skills/hatch-pet"
 ```
 
 Then just ask:
