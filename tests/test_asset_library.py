@@ -192,6 +192,7 @@ class AssetLibraryTests(unittest.TestCase):
         case = deepcopy(self.manifest); case['compatibility']['unit_scale'] = float('nan'); mutations.append(case)
         case = deepcopy(self.manifest); case['files'][0]['bytes'] = 0; mutations.append(case)
         case = deepcopy(self.manifest); case['identity']['name'] = 'x'*257; mutations.append(case)
+        case = deepcopy(self.manifest); case['metadata']['review_status'] = 'reviewed-externally'; mutations.append(case)
         for case in mutations:
             with self.assertRaises((RigError, ValueError)): seal(case)
         with self.assertRaises(RigError): load_manifest(b'{"schema_version":1,"schema_version":1}')

@@ -93,6 +93,9 @@ unverifiable/redirected paths fail closed. System temporary-directory aliases
 should be resolved by the caller before selecting source paths. Local execution
 covered Linux; Windows/macOS execution remains a CI gate, not an invented result.
 
+Library metadata remains `unreviewed` in this foundation; native review bytes may
+be retained without promoting them into a library review decision.
+
 Publication state is deliberately `payload-verified`, with private/project-local
 visibility and unevaluated/restricted distribution. Registration cannot produce
 public publication, human approval or geometry-ready status. License evidence is

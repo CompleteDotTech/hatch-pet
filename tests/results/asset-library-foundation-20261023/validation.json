@@ -57,17 +57,17 @@
     "profiles/asset-library-dependency.schema.json": "65fade00ac221a91732c0cae7412081d5e3a2442a7558146ea162dc93f5908fd",
     "profiles/asset-library-file.schema.json": "e38d369528223d94d1bf0da14a2b6f16bda0fdff819afb527998e022337f5f67",
     "profiles/asset-library-identity.schema.json": "bbbf8c2eb4afe6878e0731895d45d13332332b1d9cd04b7b14bfd7d2cb5b75ae",
-    "profiles/asset-library-metadata.schema.json": "69dedf986a4630cde34da55542b2a7514bba93d35ab0c8e3d39a844238ad3a33",
+    "profiles/asset-library-metadata.schema.json": "4a3dc4b365a9f8db29293fbc209ca70d64c3975607a080a573755d6401dd3181",
     "profiles/asset-library-preview.schema.json": "d0f1c45ad03b006016f56903a478e39b10ee6dfe409562da0fc5da6cf0f85839",
     "profiles/asset-library-provenance.schema.json": "5d5f16f45ba55b43b2f9918daf05e7b685820d891bcbf4c0075f8625fa65d766",
     "profiles/asset-library-publication.schema.json": "252a47d0df2e39da4fa84ed3b6f0ccb333e59dc89234ca636428f34d482e0ad8",
     "profiles/asset-library-ref.schema.json": "c8bb7ad5343bc14d416d40d0c1d928d955af5b828a5b27a8052453f75f7e057f",
-    "profiles/asset-library-version.schema.json": "5cc8dc92740eca0145b2f43cde0c408eb52f8874f2d4a8af28dd6d5454302d10",
+    "profiles/asset-library-version.schema.json": "9c730582dc1cb4a6bc43feeabbe1b9c863b13bcedef26b6b167f5cced3ea2512",
     "scripts/asset_library.py": "117def91dea6a68c49ac0c6e50448db36c5691b0efad2e833fe9e18f6dab424e",
-    "scripts/asset_library_contracts.py": "5676e86e23a75f38b0f06671100b828d4c82cb104f643763445b545aa9c80136",
+    "scripts/asset_library_contracts.py": "863f8741244102ae1f5ef69aab982bc6324a954e85e0338b76e8b9a08841aed2",
     "scripts/demonstrate_asset_library.py": "a325558e3b1512b86ceda79c62f6390216401d8708b892392676ba1d9bcfffd4",
     "scripts/generate_asset_library_schemas.py": "24461b4798f5e477015a29aff5257ee6af84210fd23268e1ae546eedc57d61c3",
-    "tests/test_asset_library.py": "fefcf182030398ee2512ebd6f6a5cf6b170600e65242bbbe20723819a118b077"
+    "tests/test_asset_library.py": "9a426e6b0275c370d438aa5bdc6142dc4d427e71cd137e825e7c6ca1ff5434d7"
   },
   "limitations": [
     "Linux local execution; Windows/macOS pending actual CI",

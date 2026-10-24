@@ -102,8 +102,7 @@
         },
         "review_status": {
           "enum": [
-            "unreviewed",
-            "reviewed-externally"
+            "unreviewed"
           ]
         }
       },

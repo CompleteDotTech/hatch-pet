@@ -70,7 +70,7 @@ def definitions():
     metadata = obj(dict(description=text(), category=ID, author=text(256), publisher=text(256),
                         source_url=text(), license=text(256), allowed_uses=STRINGS,
                         keywords=STRINGS, style_refs=arr(exact), capabilities=STRINGS,
-                        review_status=enum('unreviewed', 'reviewed-externally')))
+                        review_status=enum('unreviewed')))
     compatibility = obj(dict(coordinate_system=enum('right-handed-y-up-z-forward', 'legacy-2d'),
                              unit_scale=dict(type='number', exclusiveMinimum=0, maximum=1e6),
                              rig_signature=arr(SHA, maximum=1), skeleton_signature=arr(SHA, maximum=1),
