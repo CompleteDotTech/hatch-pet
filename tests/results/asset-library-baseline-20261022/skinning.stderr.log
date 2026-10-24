@@ -1,0 +1,12 @@
+test_actual_morph_delta_is_applied_before_skinning (test_rig_skinning.RigSkinningTests.test_actual_morph_delta_is_applied_before_skinning) ... ok
+test_bind_pose_reconstructs_geometry (test_rig_skinning.RigSkinningTests.test_bind_pose_reconstructs_geometry) ... ok
+test_diffusion_distance_rigid_and_locked_manual_weights (test_rig_skinning.RigSkinningTests.test_diffusion_distance_rigid_and_locked_manual_weights) ... ok
+test_known_pivot_rotation_moves_real_vertices (test_rig_skinning.RigSkinningTests.test_known_pivot_rotation_moves_real_vertices) ... ok
+test_portable_binary_roundtrip_and_tamper_detection (test_rig_skinning.RigSkinningTests.test_portable_binary_roundtrip_and_tamper_detection) ... ok
+test_removed_skin_and_zero_weights_cannot_pass (test_rig_skinning.RigSkinningTests.test_removed_skin_and_zero_weights_cannot_pass) ... ok
+test_wrong_joint_matrix_nonfinite_and_negative_weights_fail (test_rig_skinning.RigSkinningTests.test_wrong_joint_matrix_nonfinite_and_negative_weights_fail) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.107s
+
+OK

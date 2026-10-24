@@ -76,6 +76,8 @@ Read the [complete 3D guide](references/3d-rigging.md) for fitting uncertainty, 
 
 The 3D contracts are additive. Existing Codex atlas geometry/timing, 2D profiles/playback, decomposition and the 416-state catalog retain their original contracts. Selected actual clips map to catalog definitions; missing anatomy or animation remains explicit. Blender, WebGL and the optional 3D Python packages are unnecessary for ordinary 2D use.
 
+The [physics integration audit](references/physics-3d-audit.md) records current subsystem ownership, coordinate and timing decisions, and the executed compatibility baseline for future simulation work. No physics solver is implemented by that audit.
+
 <div align="center">
 <img src="assets/art/story-1-ready.jpg" width="24%" alt="Chapter 1: an egg in a nest of sketches and swatches">
 <img src="assets/art/story-2-imagine.jpg" width="24%" alt="Chapter 2: the egg dreams of Pip's silhouette">
@@ -382,6 +384,10 @@ More detail lives in [`SKILL.md`](SKILL.md), [`references/animation-rows.md`](re
 Run `python -m unittest discover -s tests -v` for the complete local regression suite, including model-free reconstruction checks against retained non-fixture pilot sources. These tests do not call imagegen or confer artwork approval. `python tests/fixture_workflow.py --output-dir C:/work/hatch-fixture-demo --profile examples/web-status.json` creates a clearly labeled legacy demonstration without calling imagegen or installing a pet.
 
 The complete development suite uses `requirements-test.txt` and a local Playwright Chromium binary. Install them if missing with `python -m pip install -r requirements-test.txt` and `python -m playwright install chromium`. The standalone `scripts/doctor.py` reports local capabilities without requiring browser tools.
+
+### Director engineering baseline
+
+The [Director baseline audit](references/director-baseline.md) records the exact starting revision, source-delivery and regression evidence, repository coordination, and legacy compatibility boundaries for issue #23. Its [requirement and interface map](references/director-requirements-map.md) identifies existing subsystem owners and the remaining Director work. Audit completion does not imply that Director planning, full 3D scene production, or its silent-video demonstrations are implemented.
 
 <br>
 

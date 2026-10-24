@@ -1,0 +1,20 @@
+{
+  "evidence_class": "engineering_baseline_not_solver_or_artwork_approval",
+  "name": "rig-templates",
+  "source_commit": "7b966a639bcaf23bd3a0d037f46f29e2edfcc273",
+  "command": [
+    "/workspace/scratch/36752e25b9f2/hatch-venv/bin/python",
+    "scripts/generate_rig_templates.py",
+    "--check"
+  ],
+  "cwd": "/workspace/scratch/36752e25b9f2/hatch-issue-166",
+  "explicit_environment": {},
+  "started_utc": "2026-10-22T18:30:48.887387+00:00",
+  "finished_utc": "2026-10-22T18:30:49.073376+00:00",
+  "wall_seconds": 0.186,
+  "exit_code": 0,
+  "runner_python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.39",
+  "log": "rig-templates.log",
+  "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

@@ -1,0 +1,224 @@
+{
+  "evidence_class": "legacy_contract_and_source_byte_identity",
+  "source_commit": "7b966a639bcaf23bd3a0d037f46f29e2edfcc273",
+  "recorded_utc": "2026-10-22T18:33:08.836541+00:00",
+  "scope": "These files are unchanged in this audit, not a permanent prohibition on independently reviewed future changes. Rig schemas are separately versioned and are not classified as legacy 2D.",
+  "files": [
+    {
+      "path": "assets/playback.js",
+      "bytes": 10618,
+      "sha256": "9aa7d5228de0a57cd443b70c14b160cb22238d21a861a0fb06f6b4bcc6ccbc79",
+      "matches_source_commit": true
+    },
+    {
+      "path": "assets/production-preview.html",
+      "bytes": 4991,
+      "sha256": "3d5fce3fa06ad46fcbf0dba48008a001e02a355c751295fd16402ce5f81f3efa",
+      "matches_source_commit": true
+    },
+    {
+      "path": "assets/production-preview.js",
+      "bytes": 12386,
+      "sha256": "423bf472f1f805f61d6907d7d292af168524414934b308df6cd7fd880bea8a11",
+      "matches_source_commit": true
+    },
+    {
+      "path": "profiles/asset-inputs.schema.json",
+      "bytes": 4909,
+      "sha256": "ffb9709040d6c528b50bf1a0c9533706ada117b55f5f6e1249284c367a41973e",
+      "matches_source_commit": true
+    },
+    {
+      "path": "profiles/codex-v1.json",
+      "bytes": 13287,
+      "sha256": "f4e0279f8634ea53ef544ecb49b9a71ec2565c61ec5b8e63163ecc5ead478a6b",
+      "matches_source_commit": true
+    },
+    {
+      "path": "profiles/decomposition-annotations.schema.json",
+      "bytes": 12609,
+      "sha256": "ae93aa42d2dfbc4add37208acb404f6ba697416be12cfcee70a7bf7b7a910416",
+      "matches_source_commit": true
+    },
+    {
+      "path": "profiles/decomposition.schema.json",
+      "bytes": 33474,
+      "sha256": "252e7a7def2ba75ef5c1e4e60d4bd8f618974e652385f46b8cbbcf6e2f05603b",
+      "matches_source_commit": true
+    },
+    {
+      "path": "profiles/production-cast.schema.json",
+      "bytes": 57158,
+      "sha256": "8a76d77027e3006ab6f6bde67ef191d5fea6254cb05ea36658705beb8cfa3afc",
+      "matches_source_commit": true
+    },
+    {
+      "path": "profiles/production-clip.schema.json",
+      "bytes": 57158,
+      "sha256": "11fab0fc3d038e9b40a60beeb8e7a14d78bd8ecabb4d3680ba35ce0d7ae59a19",
+      "matches_source_commit": true
+    },
+    {
+      "path": "profiles/production-project.schema.json",
+      "bytes": 57164,
+      "sha256": "cd33410c713660e33c6805df19aa94512de5f0cb64f71f6b3db74ce05d2c4c21",
+      "matches_source_commit": true
+    },
+    {
+      "path": "profiles/production-scene.schema.json",
+      "bytes": 57160,
+      "sha256": "1d01d66903b3d730f4670951daf2f30239e05d27b1f50d68be080173585974ad",
+      "matches_source_commit": true
+    },
+    {
+      "path": "profiles/production-shot.schema.json",
+      "bytes": 57158,
+      "sha256": "12cc14e67a72da0a022f18ed44df3fd2d5ad3919ab583a225dfaabb9593ea4b3",
+      "matches_source_commit": true
+    },
+    {
+      "path": "profiles/profile.schema.json",
+      "bytes": 12272,
+      "sha256": "afba01bc16c4f6c297d1b95b62803c7a5b989e0fa9b967c33e5d50471091163c",
+      "matches_source_commit": true
+    },
+    {
+      "path": "profiles/style-catalog.schema.json",
+      "bytes": 18287,
+      "sha256": "915595ee2fe990c9600040e1669ee2b50c0079d132d6a168eef089eb4889ec3c",
+      "matches_source_commit": true
+    },
+    {
+      "path": "scripts/asset_contracts.py",
+      "bytes": 8398,
+      "sha256": "ada924819e6855c592a8313f91f020521c85e61f283cd2f3ec8b2b01b204fa51",
+      "matches_source_commit": true
+    },
+    {
+      "path": "scripts/generate_schemas.py",
+      "bytes": 5345,
+      "sha256": "c173bf2f05c3679b168e6baf43feb2bd1a28fa0853efff47af1f7a3ebf334d93",
+      "matches_source_commit": true
+    },
+    {
+      "path": "scripts/hatch.py",
+      "bytes": 85742,
+      "sha256": "4c33c550b0fc919597baa6fdfe4f9920bd0f2da2953acf2f81f64ee666fd6828",
+      "matches_source_commit": true
+    },
+    {
+      "path": "scripts/portable_runs.py",
+      "bytes": 8783,
+      "sha256": "d5d2016e49bcafd754a3199939890c668e9b865fae5d14f2d9a45c2f6cace55c",
+      "matches_source_commit": true
+    },
+    {
+      "path": "scripts/production.py",
+      "bytes": 15195,
+      "sha256": "8fbed684e75a14d0db2dc97da9978993b3961db4b895942303c7babcaa2c4bd2",
+      "matches_source_commit": true
+    },
+    {
+      "path": "scripts/production_adapter.py",
+      "bytes": 29097,
+      "sha256": "2eb9e191870b09e75350937d658d38a58084fe81268049aa1b987c5a0d4d6ba1",
+      "matches_source_commit": true
+    },
+    {
+      "path": "scripts/production_bundle.py",
+      "bytes": 10513,
+      "sha256": "059acec5e25523b06ce5d5bcc6fdb65fd2607d4f4f335941c74711e175a33dc1",
+      "matches_source_commit": true
+    },
+    {
+      "path": "scripts/production_contracts.py",
+      "bytes": 59286,
+      "sha256": "7b0c7f873a5b8cd129cf6d550cb5d1ba7ac7a367c399b1a300ccebacb98e2a46",
+      "matches_source_commit": true
+    },
+    {
+      "path": "scripts/production_delivery.py",
+      "bytes": 18053,
+      "sha256": "0718298e8c747ad3865033507500fe15f555c1c4a5686787ad6b9a124b36c6c2",
+      "matches_source_commit": true
+    },
+    {
+      "path": "scripts/production_performance.py",
+      "bytes": 17089,
+      "sha256": "6d282e15b541d7f13dab076529a6c395e004b10bd596a065b5cdf17a4f03a26c",
+      "matches_source_commit": true
+    },
+    {
+      "path": "scripts/production_render.py",
+      "bytes": 67584,
+      "sha256": "981b6fbafdcd0fcf009dca02b0f695bfb3742b58bd9e9a11068f0e0dd085c9be",
+      "matches_source_commit": true
+    },
+    {
+      "path": "scripts/production_sources.py",
+      "bytes": 21707,
+      "sha256": "71670d5823eee6e26392183f8a743eec8eb693414ebf247057a7098a388ce35b",
+      "matches_source_commit": true
+    },
+    {
+      "path": "scripts/production_workflow.py",
+      "bytes": 78939,
+      "sha256": "4dc71e4819adf0e8a1ea2839687664f8fcef36dd0cff1311f38d293a455b1c40",
+      "matches_source_commit": true
+    },
+    {
+      "path": "scripts/profile_spec.py",
+      "bytes": 20394,
+      "sha256": "8cb2f80ee265cfec0168985cc7e5a4449322435f5046374a255516ed9cbd422d",
+      "matches_source_commit": true
+    },
+    {
+      "path": "scripts/source_interface.py",
+      "bytes": 4840,
+      "sha256": "85d5e93ddb17c314f6bd585797d7202a4f17d15df6a798093c214d9a451eded0",
+      "matches_source_commit": true
+    },
+    {
+      "path": "scripts/state_catalog.py",
+      "bytes": 81693,
+      "sha256": "6adae5e88fd03b3d543e4bc5059ddca284ac6ad93961d655688e7a02af417376",
+      "matches_source_commit": true
+    },
+    {
+      "path": "scripts/state_selection.py",
+      "bytes": 3426,
+      "sha256": "a910632624fbf900000118850bdad7709aa3e65f2922f8f5108bd772ee90a99c",
+      "matches_source_commit": true
+    },
+    {
+      "path": "scripts/style_registry.py",
+      "bytes": 33232,
+      "sha256": "dbf5058e9a45736f64279c1f2ab239abbaff809df1765784adaec6cfe5572054",
+      "matches_source_commit": true
+    },
+    {
+      "path": "scripts/test_rig_gate.py",
+      "bytes": 1249,
+      "sha256": "af409f660a5de4fff70752aa939ecaeed100c03f42677b07a56cbaea873ab806",
+      "matches_source_commit": true
+    },
+    {
+      "path": "state-library/catalog.json",
+      "bytes": 2582572,
+      "sha256": "970139db7291c4233ef75e37ffd6abe0385c8f165dd37b339326a4e8647f3de9",
+      "matches_source_commit": true
+    },
+    {
+      "path": "state-library/schema.json",
+      "bytes": 19057,
+      "sha256": "14bbc05edf904653d59b17b6c5bf3156bbdc646325071075a61c0e8c545f79ea",
+      "matches_source_commit": true
+    },
+    {
+      "path": "styles/catalog.json",
+      "bytes": 1305,
+      "sha256": "96d49f6a490de78952a3dfbb78eaa12e9f8f130f318781c652107133e8142a2d",
+      "matches_source_commit": true
+    }
+  ]
+}

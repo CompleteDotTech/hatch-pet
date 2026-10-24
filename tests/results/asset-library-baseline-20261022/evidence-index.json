@@ -1,0 +1,749 @@
+{
+  "commands": [
+    {
+      "command": [
+        "/workspace/scratch/2a0543d2545a/hatch-venv/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-v"
+      ],
+      "cwd": "/workspace/scratch/2a0543d2545a/hatch-pet",
+      "duration_seconds": 264.342,
+      "environment_overrides": {
+        "HATCH_BLENDER": "/workspace/scratch/2a0543d2545a/hatch-tools/blender-4.5.3-linux-x64/blender",
+        "HATCH_DECOMPOSITION_BROWSER_TEST": "1",
+        "HATCH_DECOMPOSITION_SCREENSHOT": "/workspace/scratch/2a0543d2545a/baseline-evidence/decomposition-review.png",
+        "HATCH_RIG_BLENDER_TEST": "1",
+        "HATCH_RIG_BROWSER_TEST": "1",
+        "HATCH_RIG_INTEROP_TEST": "1"
+      },
+      "exit_code": 0,
+      "purpose": "initial_full_discovery",
+      "source_report": "full-suite-report.json",
+      "started_at": "2026-10-22T18:32:48.235257+00:00",
+      "stderr": "full-suite.stderr.log",
+      "stdout": "full-suite.stdout.log"
+    },
+    {
+      "command": [
+        "/workspace/scratch/2a0543d2545a/hatch-venv/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_exports.py",
+        "-v"
+      ],
+      "cwd": "/workspace/scratch/2a0543d2545a/hatch-pet",
+      "duration_seconds": 2.559,
+      "environment_overrides": {
+        "HATCH_BROWSER_EXECUTABLE": "/root/.cache/ms-playwright/chromium_headless_shell-1248/chrome-headless-shell-linux64/chrome-headless-shell"
+      },
+      "exit_code": 0,
+      "purpose": "browser_recovery",
+      "source_report": "browser-recovery-report.json",
+      "started_at": "2026-10-22T18:34:54.770089+00:00",
+      "stderr": "test_exports-browser.stderr.log",
+      "stdout": "test_exports-browser.stdout.log"
+    },
+    {
+      "command": [
+        "/workspace/scratch/2a0543d2545a/hatch-venv/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_playback_extended.py",
+        "-v"
+      ],
+      "cwd": "/workspace/scratch/2a0543d2545a/hatch-pet",
+      "duration_seconds": 23.342,
+      "environment_overrides": {
+        "HATCH_BROWSER_EXECUTABLE": "/root/.cache/ms-playwright/chromium_headless_shell-1248/chrome-headless-shell-linux64/chrome-headless-shell"
+      },
+      "exit_code": 0,
+      "purpose": "browser_recovery",
+      "source_report": "browser-recovery-report.json",
+      "started_at": "2026-10-22T18:34:57.329930+00:00",
+      "stderr": "test_playback_extended-browser.stderr.log",
+      "stdout": "test_playback_extended-browser.stdout.log"
+    },
+    {
+      "command": [
+        "/workspace/scratch/2a0543d2545a/hatch-venv/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_production_preview.py",
+        "-v"
+      ],
+      "cwd": "/workspace/scratch/2a0543d2545a/hatch-pet",
+      "duration_seconds": 4.256,
+      "environment_overrides": {
+        "HATCH_BROWSER_EXECUTABLE": "/root/.cache/ms-playwright/chromium_headless_shell-1248/chrome-headless-shell-linux64/chrome-headless-shell"
+      },
+      "exit_code": 0,
+      "purpose": "browser_recovery",
+      "source_report": "browser-recovery-report.json",
+      "started_at": "2026-10-22T18:35:20.672109+00:00",
+      "stderr": "test_production_preview-browser.stderr.log",
+      "stdout": "test_production_preview-browser.stdout.log"
+    },
+    {
+      "command": [
+        "/workspace/scratch/2a0543d2545a/hatch-venv/bin/python",
+        "scripts/test_rig_gate.py",
+        "schema-math"
+      ],
+      "cwd": "/workspace/scratch/2a0543d2545a/hatch-pet",
+      "duration_seconds": 1.4450678639987018,
+      "exit_code": 0,
+      "purpose": "initial_focused_rig_check",
+      "source_report": "initial-nonbrowser-rig-checks.json",
+      "started_at": "2026-10-22T18:30:06.402210+00:00",
+      "stderr": "schema-math.stderr.log",
+      "stdout": "schema-math.stdout.log"
+    },
+    {
+      "command": [
+        "/workspace/scratch/2a0543d2545a/hatch-venv/bin/python",
+        "scripts/test_rig_gate.py",
+        "skinning"
+      ],
+      "cwd": "/workspace/scratch/2a0543d2545a/hatch-pet",
+      "duration_seconds": 0.34033002499927534,
+      "exit_code": 0,
+      "purpose": "initial_focused_rig_check",
+      "source_report": "initial-nonbrowser-rig-checks.json",
+      "started_at": "2026-10-22T18:30:07.847548+00:00",
+      "stderr": "skinning.stderr.log",
+      "stdout": "skinning.stdout.log"
+    },
+    {
+      "command": [
+        "/workspace/scratch/2a0543d2545a/hatch-venv/bin/python",
+        "scripts/test_rig_gate.py",
+        "animation-ik"
+      ],
+      "cwd": "/workspace/scratch/2a0543d2545a/hatch-pet",
+      "duration_seconds": 2.5785984940011986,
+      "exit_code": 0,
+      "purpose": "initial_focused_rig_check",
+      "source_report": "initial-nonbrowser-rig-checks.json",
+      "started_at": "2026-10-22T18:30:08.188100+00:00",
+      "stderr": "animation-ik.stderr.log",
+      "stdout": "animation-ik.stdout.log"
+    },
+    {
+      "command": [
+        "/workspace/scratch/2a0543d2545a/hatch-venv/bin/python",
+        "scripts/generate_schemas.py",
+        "--check"
+      ],
+      "cwd": "/workspace/scratch/2a0543d2545a/hatch-pet",
+      "duration_seconds": 0.09196425200207159,
+      "exit_code": 0,
+      "purpose": "generated_definition_check",
+      "source_report": "generated-definition-checks.json",
+      "started_at": "2026-10-22T18:30:38.422584+00:00",
+      "stderr": "schema-generation.stderr.log",
+      "stdout": "schema-generation.stdout.log"
+    },
+    {
+      "command": [
+        "/workspace/scratch/2a0543d2545a/hatch-venv/bin/python",
+        "scripts/generate_rig_templates.py",
+        "--check"
+      ],
+      "cwd": "/workspace/scratch/2a0543d2545a/hatch-pet",
+      "duration_seconds": 0.13734688900149195,
+      "exit_code": 0,
+      "purpose": "generated_definition_check",
+      "source_report": "generated-definition-checks.json",
+      "started_at": "2026-10-22T18:30:38.515301+00:00",
+      "stderr": "rig-template-generation.stderr.log",
+      "stdout": "rig-template-generation.stdout.log"
+    },
+    {
+      "capture": "Actual JSON result saved from tool output; saved report bytes retained unchanged.",
+      "command": [
+        "/workspace/scratch/2a0543d2545a/hatch-venv/bin/python",
+        "scripts/production_sources.py",
+        "verify-delivery"
+      ],
+      "cwd": "/workspace/scratch/2a0543d2545a/hatch-pet",
+      "environment_overrides": {},
+      "exit_code": 0,
+      "purpose": "verify_original_source_delivery",
+      "source_report": "verify-delivery.json",
+      "timing": "not recorded"
+    },
+    {
+      "combined_stdout_stderr": "delivery-command.log",
+      "command": [
+        "/workspace/scratch/2a0543d2545a/hatch-venv/bin/python",
+        "scripts/verify_public_delivery.py",
+        "--destination",
+        "/workspace/scratch/2a0543d2545a/director-delivery-baseline"
+      ],
+      "cwd": "/workspace/scratch/2a0543d2545a/hatch-pet",
+      "environment_overrides": {},
+      "exit_code": 0,
+      "purpose": "public_delivery_restore_archive_roundtrip",
+      "source_report": "public-delivery-report.json",
+      "timing": "not recorded"
+    }
+  ],
+  "created_at": "2026-10-22T18:42:14.837294+00:00",
+  "environment": {
+    "actual_runtime_versions_report": "test-runtime-versions.json",
+    "blender_pin": {
+      "expected_sha256": "975c58fcb244273838534bba771e64ad87739216b0f9b39a888531a49a72d845",
+      "observed_sha256": "975c58fcb244273838534bba771e64ad87739216b0f9b39a888531a49a72d845",
+      "pin_source": ".github/workflows/rig-3d.yml",
+      "report": "blender-provision.json",
+      "source": "https://download.blender.org/release/Blender4.5/blender-4.5.3-linux-x64.tar.xz",
+      "version": "Blender 4.5.3 LTS"
+    },
+    "browser_cache_override": "PLAYWRIGHT_BROWSERS_PATH remained unset. Focused recovery used the existing supported HATCH_BROWSER_EXECUTABLE setting.",
+    "execution_context": "Browser and Blender tests ran with permitted escalated local execution; the default sandbox blocks Chromium startup.",
+    "platform": "Linux-6.18.55-x86_64-with-glibc2.39",
+    "python": "3.12.14",
+    "python_packages": {
+      "Pillow": "13.0.0",
+      "jsonschema": "4.26.0",
+      "numpy": "2.3.5",
+      "playwright": "1.64.0",
+      "pygltflib": "1.16.5"
+    }
+  },
+  "evidence_classes": {
+    "combined-test-coverage.json": "Per-test-ID reconciliation of actual unchanged-source test logs across multiple commands, preserving original setup skip history.",
+    "decomposition-review.png": "Screenshot from the actual automated local decomposition editor test; not human signoff or production-art approval.",
+    "public-delivery-report.json": "Exact source integrity, restoration and portable archive evidence. Its tests/render/video options were false; it does not claim a complete production delivery gate."
+  },
+  "issue": "https://github.com/CompleteTech-Skills/hatch-pet/issues/137",
+  "kind": "hatch-asset-library-baseline-evidence",
+  "limitations": [
+    "Native Krita integration was not executed because Krita is unavailable; its existing optional skip is retained.",
+    "The initial full discovery and three browser recovery invocations are separate runs, not one claimed all-green combined run.",
+    "This execution used Linux only; it does not constitute a new macOS or Windows run.",
+    "The source/archive command did not rerender both complete production films or re-encode their final videos.",
+    "Historical assistant reviews were preserved and verified; no new visual review, artistic approval or human signoff was recorded.",
+    "Passing existing tests and restored v3 production media do not implement the proposed unified 3D Asset Library or establish unavailable external integrations.",
+    "The generated archive payload is not duplicated here; its exact hash, 168-file restoration and 20 preserved review records are retained in the unchanged public delivery report."
+  ],
+  "preservation": {
+    "files": [
+      {
+        "bytes": 4271,
+        "original_absolute_path": "/workspace/scratch/2a0543d2545a/baseline-evidence/animation-ik.stderr.log",
+        "preserved_byte_for_byte": true,
+        "retained_relative_path": "animation-ik.stderr.log",
+        "sha256": "717d713b20204beafccf26d887361530843de3f1a67f7da31b9ec6d8dc6a5d5a"
+      },
+      {
+        "bytes": 0,
+        "original_absolute_path": "/workspace/scratch/2a0543d2545a/baseline-evidence/animation-ik.stdout.log",
+        "preserved_byte_for_byte": true,
+        "retained_relative_path": "animation-ik.stdout.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "bytes": 20596,
+        "original_absolute_path": "/workspace/scratch/2a0543d2545a/baseline-evidence/baseline-source-hashes.json",
+        "preserved_byte_for_byte": true,
+        "retained_relative_path": "baseline-source-hashes.json",
+        "sha256": "6539b64d58246b4e55c1fcf69c738b2e9f9b32950bc57119d8ebed70ca4cba89"
+      },
+      {
+        "bytes": 949,
+        "original_absolute_path": "/workspace/scratch/2a0543d2545a/baseline-evidence/blender-download.stderr.log",
+        "preserved_byte_for_byte": true,
+        "retained_relative_path": "blender-download.stderr.log",
+        "sha256": "21a666f1402781cc9138f7321e6e45111fd929682a734291c861a24f005f4173"
+      },
+      {
+        "bytes": 0,
+        "original_absolute_path": "/workspace/scratch/2a0543d2545a/baseline-evidence/blender-download.stdout.log",
+        "preserved_byte_for_byte": true,
+        "retained_relative_path": "blender-download.stdout.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "bytes": 1671,
+        "original_absolute_path": "/workspace/scratch/2a0543d2545a/baseline-evidence/blender-provision.json",
+        "preserved_byte_for_byte": true,
+        "retained_relative_path": "blender-provision.json",
+        "sha256": "d6eb79fb30b493ced6299f63b6a161137916125cf34181a91ce62f27fcb1c2f6"
+      },
+      {
+        "bytes": 0,
+        "original_absolute_path": "/workspace/scratch/2a0543d2545a/baseline-evidence/blender-version.stderr.log",
+        "preserved_byte_for_byte": true,
+        "retained_relative_path": "blender-version.stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "bytes": 1560,
+        "original_absolute_path": "/workspace/scratch/2a0543d2545a/baseline-evidence/blender-version.stdout.log",
+        "preserved_byte_for_byte": true,
+        "retained_relative_path": "blender-version.stdout.log",
+        "sha256": "428d5709db7040c843aa75a2187af32b222b5019ac6b780185d666ecfa2dd638"
+      },
+      {
+        "bytes": 3625,
+        "original_absolute_path": "/workspace/scratch/2a0543d2545a/baseline-evidence/browser-recovery-report.json",
+        "preserved_byte_for_byte": true,
+        "retained_relative_path": "browser-recovery-report.json",
+        "sha256": "84a6ce0b82763d6998b2932a5dbe34e244518f03e003df1c2f28515d2b616628"
+      },
+      {
+        "bytes": 165547,
+        "original_absolute_path": "/workspace/scratch/2a0543d2545a/baseline-evidence/combined-test-coverage.json",
+        "preserved_byte_for_byte": true,
+        "retained_relative_path": "combined-test-coverage.json",
+        "sha256": "fbc571fa34f578300fc1892c133180b4076c224f1d6c5a1ddc43dba1f471787e"
+      },
+      {
+        "bytes": 426222,
+        "original_absolute_path": "/workspace/scratch/2a0543d2545a/baseline-evidence/decomposition-review.png",
+        "preserved_byte_for_byte": true,
+        "retained_relative_path": "decomposition-review.png",
+        "sha256": "ae502f0f6d4f531ccd436c35d5659d5d442fe713e3bfaa8caf51c66b3857bffe"
+      },
+      {
+        "bytes": 212,
+        "original_absolute_path": "/workspace/scratch/2a0543d2545a/baseline-evidence/delivery-command.log",
+        "preserved_byte_for_byte": true,
+        "retained_relative_path": "delivery-command.log",
+        "sha256": "898cdf8da7e5560e89197295d484257dd3f6cd9aa7b88f29b231bac16f0ec55f"
+      },
+      {
+        "bytes": 2567,
+        "original_absolute_path": "/workspace/scratch/2a0543d2545a/baseline-evidence/full-suite-report.json",
+        "preserved_byte_for_byte": true,
+        "retained_relative_path": "full-suite-report.json",
+        "sha256": "e9561a658c5c7ece92d5ef0ddfae3be9516626e81b683a65ff2d50e207052c22"
+      },
+      {
+        "bytes": 144969,
+        "original_absolute_path": "/workspace/scratch/2a0543d2545a/baseline-evidence/full-suite.stderr.log",
+        "preserved_byte_for_byte": true,
+        "retained_relative_path": "full-suite.stderr.log",
+        "sha256": "a297509509510b0294c8fac6d5ec846bbea04c9855a31f2ff078b0899f61a15e"
+      },
+      {
+        "bytes": 57,
+        "original_absolute_path": "/workspace/scratch/2a0543d2545a/baseline-evidence/full-suite.stdout.log",
+        "preserved_byte_for_byte": true,
+        "retained_relative_path": "full-suite.stdout.log",
+        "sha256": "167e55a12d734f31476184a7546d3f0cbe3ae054a8c4afa2cb88c982c33cbef9"
+      },
+      {
+        "bytes": 851,
+        "original_absolute_path": "/workspace/scratch/2a0543d2545a/baseline-evidence/generated-definition-checks.json",
+        "preserved_byte_for_byte": true,
+        "retained_relative_path": "generated-definition-checks.json",
+        "sha256": "8ed186def9757951a0c62da046333c70f0479e2bb710c1514e4829b93c8a10d5"
+      },
+      {
+        "bytes": 1573,
+        "original_absolute_path": "/workspace/scratch/2a0543d2545a/baseline-evidence/initial-nonbrowser-rig-checks.json",
+        "preserved_byte_for_byte": true,
+        "retained_relative_path": "initial-nonbrowser-rig-checks.json",
+        "sha256": "be16cc51dde7c6b8a855a551328b9caa410a5b867582c682864f9737573ce440"
+      },
+      {
+        "bytes": 237505,
+        "original_absolute_path": "/workspace/scratch/2a0543d2545a/director-delivery-baseline/report.json",
+        "preserved_byte_for_byte": true,
+        "retained_relative_path": "public-delivery-report.json",
+        "sha256": "f0eebb1a7beaae026a69b856cef26146dd2ac01a15aeb9b60788c883768ed32e"
+      },
+      {
+        "bytes": 0,
+        "original_absolute_path": "/workspace/scratch/2a0543d2545a/baseline-evidence/rig-template-generation.stderr.log",
+        "preserved_byte_for_byte": true,
+        "retained_relative_path": "rig-template-generation.stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "bytes": 0,
+        "original_absolute_path": "/workspace/scratch/2a0543d2545a/baseline-evidence/rig-template-generation.stdout.log",
+        "preserved_byte_for_byte": true,
+        "retained_relative_path": "rig-template-generation.stdout.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "bytes": 0,
+        "original_absolute_path": "/workspace/scratch/2a0543d2545a/baseline-evidence/schema-generation.stderr.log",
+        "preserved_byte_for_byte": true,
+        "retained_relative_path": "schema-generation.stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "bytes": 0,
+        "original_absolute_path": "/workspace/scratch/2a0543d2545a/baseline-evidence/schema-generation.stdout.log",
+        "preserved_byte_for_byte": true,
+        "retained_relative_path": "schema-generation.stdout.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "bytes": 1843,
+        "original_absolute_path": "/workspace/scratch/2a0543d2545a/baseline-evidence/schema-math.stderr.log",
+        "preserved_byte_for_byte": true,
+        "retained_relative_path": "schema-math.stderr.log",
+        "sha256": "2478a263b3e750cb458d72f333263415196943e7a605c704c84c06f0445fafa5"
+      },
+      {
+        "bytes": 57,
+        "original_absolute_path": "/workspace/scratch/2a0543d2545a/baseline-evidence/schema-math.stdout.log",
+        "preserved_byte_for_byte": true,
+        "retained_relative_path": "schema-math.stdout.log",
+        "sha256": "167e55a12d734f31476184a7546d3f0cbe3ae054a8c4afa2cb88c982c33cbef9"
+      },
+      {
+        "bytes": 1104,
+        "original_absolute_path": "/workspace/scratch/2a0543d2545a/baseline-evidence/skinning.stderr.log",
+        "preserved_byte_for_byte": true,
+        "retained_relative_path": "skinning.stderr.log",
+        "sha256": "ad683732761da2e0da8daafa4ed90d6332c703e9dd6175b5b5e9ac26091a4ded"
+      },
+      {
+        "bytes": 0,
+        "original_absolute_path": "/workspace/scratch/2a0543d2545a/baseline-evidence/skinning.stdout.log",
+        "preserved_byte_for_byte": true,
+        "retained_relative_path": "skinning.stdout.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "bytes": 87108,
+        "original_absolute_path": "/workspace/scratch/2a0543d2545a/baseline-evidence/test-inventory.json",
+        "preserved_byte_for_byte": true,
+        "retained_relative_path": "test-inventory.json",
+        "sha256": "7b085542d18796a571b2a2f6069f5953ee035b6cf6fbbce7eac8d6a86a107f86"
+      },
+      {
+        "bytes": 6477,
+        "original_absolute_path": "/workspace/scratch/2a0543d2545a/baseline-evidence/test-runtime-versions.json",
+        "preserved_byte_for_byte": true,
+        "retained_relative_path": "test-runtime-versions.json",
+        "sha256": "425678fc1345e9d418eeb7591114fce43a1e7a2b476515625a26a66ff4686ad8"
+      },
+      {
+        "bytes": 266,
+        "original_absolute_path": "/workspace/scratch/2a0543d2545a/baseline-evidence/test_exports-browser.stderr.log",
+        "preserved_byte_for_byte": true,
+        "retained_relative_path": "test_exports-browser.stderr.log",
+        "sha256": "c85659e48f32b639c7b41bc78482a22b214334e3cfc5cdfa1d6ade58d00ffc47"
+      },
+      {
+        "bytes": 0,
+        "original_absolute_path": "/workspace/scratch/2a0543d2545a/baseline-evidence/test_exports-browser.stdout.log",
+        "preserved_byte_for_byte": true,
+        "retained_relative_path": "test_exports-browser.stdout.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "bytes": 1764,
+        "original_absolute_path": "/workspace/scratch/2a0543d2545a/baseline-evidence/test_playback_extended-browser.stderr.log",
+        "preserved_byte_for_byte": true,
+        "retained_relative_path": "test_playback_extended-browser.stderr.log",
+        "sha256": "d70768accd9fe0e1b3e92592d3c7c97690bf0e8cbdd2af2aadc431c1307af3be"
+      },
+      {
+        "bytes": 0,
+        "original_absolute_path": "/workspace/scratch/2a0543d2545a/baseline-evidence/test_playback_extended-browser.stdout.log",
+        "preserved_byte_for_byte": true,
+        "retained_relative_path": "test_playback_extended-browser.stdout.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "bytes": 834,
+        "original_absolute_path": "/workspace/scratch/2a0543d2545a/baseline-evidence/test_production_preview-browser.stderr.log",
+        "preserved_byte_for_byte": true,
+        "retained_relative_path": "test_production_preview-browser.stderr.log",
+        "sha256": "5e915934ce2094c4063c7e6c37e99f2376b74c7b4c764e3d9e1ac09fe969d98b"
+      },
+      {
+        "bytes": 48,
+        "original_absolute_path": "/workspace/scratch/2a0543d2545a/baseline-evidence/test_production_preview-browser.stdout.log",
+        "preserved_byte_for_byte": true,
+        "retained_relative_path": "test_production_preview-browser.stdout.log",
+        "sha256": "e03054f0abb018f6f2dd5fef6aa3674b7d5fea3c9ba2d6c7afffc2b77c06c7f7"
+      },
+      {
+        "bytes": 2916,
+        "original_absolute_path": "/workspace/scratch/2a0543d2545a/baseline-evidence/verify-delivery.json",
+        "preserved_byte_for_byte": true,
+        "retained_relative_path": "verify-delivery.json",
+        "sha256": "7d59ca4103d32ae90d1ba145e50d0827d9b061616ea1b560bbe3aaba76747ec8"
+      }
+    ],
+    "index_excluded_from_own_inventory": true,
+    "indexed_file_count": 35,
+    "indexed_total_bytes": 1114592,
+    "path_policy": "Original absolute paths are provenance from this execution. Retained relative paths resolve within this directory; they do not require the original workspace.",
+    "raw_reports_and_logs_preserved_byte_for_byte": true,
+    "scope": "Additive evidence only. Existing repository runtime, tests, schemas, source assets and historical records are unchanged."
+  },
+  "schema_version": 1,
+  "source": {
+    "commit": "7b966a639bcaf23bd3a0d037f46f29e2edfcc273",
+    "default_branch": "main",
+    "original_checkout": "/workspace/scratch/2a0543d2545a/hatch-pet",
+    "repository": "https://github.com/CompleteTech-Skills/hatch-pet",
+    "tree": "9c0e9bc0f8b3bf2b0d63d8a49b5250f59b3643ab"
+  },
+  "summary": {
+    "actual_integrations_exercised": [
+      "Blender 4.5.3 LTS save/reopen with armature and deformation",
+      "Blender Cycles CPU rendering of distinct transparent poses",
+      "Khronos validation and independent pygltflib mesh/skin/animation reading",
+      "Three.js browser skinned-vertex comparison and UI controls",
+      "Decomposition browser editor",
+      "Exported HTML playback and reduced motion",
+      "Layered production browser review and pixel controls",
+      "Existing FFmpeg/media regression tests"
+    ],
+    "browser_recovery": {
+      "cause": "Headless shell installed; existing helper availability checks require HATCH_BROWSER_EXECUTABLE for shell-only installation. Tests and source unchanged.",
+      "modules": [
+        {
+          "exit_code": 0,
+          "pattern": "test_exports.py",
+          "seconds": 2.441,
+          "skips": [],
+          "stderr": "test_exports-browser.stderr.log",
+          "tests": 1
+        },
+        {
+          "exit_code": 0,
+          "pattern": "test_playback_extended.py",
+          "seconds": 23.222,
+          "skips": [],
+          "stderr": "test_playback_extended-browser.stderr.log",
+          "tests": 10
+        },
+        {
+          "exit_code": 0,
+          "pattern": "test_production_preview.py",
+          "seconds": 4.13,
+          "skips": [],
+          "stderr": "test_production_preview-browser.stderr.log",
+          "tests": 4
+        }
+      ],
+      "passed_tests": 15,
+      "report": "browser-recovery-report.json"
+    },
+    "combined_distinct_test_outcomes": {
+      "failure_ids": [],
+      "inventory": 867,
+      "method": "Union of exact existing unittest IDs across unchanged-source full discovery and three environment-corrected browser module runs; parses unittest docstring descriptions; not a single all-green combined run.",
+      "missing_outcome_ids": [],
+      "report": "combined-test-coverage.json",
+      "single_combined_green_run_claimed": false,
+      "successful_original_ids": 866,
+      "unexecuted_ids": [
+        "test_production_adapter.ProductionAdapterTests.test_actual_local_krita_import_export_and_layer_roundtrip"
+      ]
+    },
+    "initial_full_discovery": {
+      "errors": 0,
+      "exit_code": 0,
+      "failures": 0,
+      "report": "full-suite-report.json",
+      "reported_result": "OK (skipped=4)",
+      "reported_tests_run": 853,
+      "skip_details": [
+        "test_actual_export_frame_order_timing_events_and_reduced_motion (test_exports.BrowserExportTests.test_actual_export_frame_order_timing_events_and_reduced_motion) ... skipped 'Chromium is not installed; run python -m playwright install chromium'",
+        "setUpClass (test_playback_extended.ExtendedBrowser) ... skipped 'Chromium is not installed; run python -m playwright install chromium'",
+        "test_actual_local_krita_import_export_and_layer_roundtrip (test_production_adapter.ProductionAdapterTests.test_actual_local_krita_import_export_and_layer_roundtrip) ... skipped 'Krita not available; adapter tests remain separate from integration'",
+        "setUpClass (test_production_preview.ProductionPreviewTests) ... skipped 'Chromium executable unavailable; install the documented browser test dependency'"
+      ],
+      "skip_records": 4,
+      "unittest_seconds": 263.851,
+      "wall_seconds": 264.342
+    },
+    "source_delivery": {
+      "archive": {
+        "archive_payload_retained_in_this_evidence_directory": false,
+        "external_integration_verified": false,
+        "file_count": 168,
+        "path": "portable-project.zip",
+        "renderer_changed": false,
+        "restoration_event_appended": true,
+        "review_records_preserved": 20,
+        "scope": "Hash and restoration evidence are retained; the generated ZIP itself is outside this evidence directory.",
+        "sha256": "07283a0db2eef14c14f04816abffb6cf0cca70ab2c90e50a52728fddbd813f3d",
+        "verified": true
+      },
+      "fixture": false,
+      "historical_review_evidence": {
+        "chain_verified": true,
+        "evidence_verified": true,
+        "human_review": false,
+        "last_review_sha256": "a02a3f5242e6c48a69053961d822f21e38aa7a32ec3d64a81679faa257198934",
+        "records": 20,
+        "reviewer_kinds": [
+          "assistant"
+        ],
+        "sha256": "cce42c52460d4525f18eb00f7525f8df8d99ebda9e31b3d875dccba6d93220d4",
+        "supporting_evidence_files": 13
+      },
+      "logical_source_files": 129,
+      "original_acquisitions": [
+        {
+          "attempts": 1,
+          "character": "milo",
+          "job": "base",
+          "path": "art/originals/milo-turnaround-v3.png",
+          "sha256": "cb88dd18e162ee7e8d7a40da6b510e7ae4431595458b548fb4414db18eb225da"
+        },
+        {
+          "attempts": 1,
+          "character": "milo",
+          "job": "parts",
+          "path": "art/originals/milo-parts-v3.png",
+          "sha256": "84e0abc18797bbeb5224dacc281873cfd7b39ed64d7ef0ac2161947772c63588"
+        },
+        {
+          "attempts": 1,
+          "character": "luma",
+          "job": "base",
+          "path": "art/originals/luma-turnaround-v3.png",
+          "sha256": "270eb609c8cc566a61f3081d09c6e2f47390592d7650e9547872a64cb9f1cced"
+        },
+        {
+          "attempts": 1,
+          "character": "luma",
+          "job": "parts",
+          "path": "art/originals/luma-parts-v3.png",
+          "sha256": "bdfb919fd64776e45014f9654f41cf83d56bd5f34a2d1979b1bb09fd80be32f6"
+        }
+      ],
+      "original_audio_recordings": 5,
+      "project_id": "milo-luma-pilot",
+      "public_delivery_report": "public-delivery-report.json",
+      "public_files_verified": 7,
+      "readiness": {
+        "archive_roundtrip_verified": true,
+        "command_options": {
+          "compact": false,
+          "render": false,
+          "test_scope": "2d",
+          "tests": false,
+          "video": false
+        },
+        "complete_delivery_gate": false,
+        "external_integration_verified": false,
+        "full_scene_render_executed_in_this_delivery_invocation": false,
+        "human_review": false,
+        "new_approval_recorded": false,
+        "new_visual_review_performed": false,
+        "private_asset_override": false,
+        "provider_called": false,
+        "source_integrity_verified": true,
+        "tts_called": false,
+        "video_export_executed_in_this_delivery_invocation": false
+      },
+      "restoration": {
+        "characters": 2,
+        "clips": 20,
+        "method": "Exact original model and derived assets from pinned transports; no native PNG re-encoding or floating-point authoring.",
+        "reconstructed": true,
+        "review_freshness": "Original ledger retained verbatim. Historical sampled frames are separate; final render reviews must be revalidated against the current renderer and complete outputs.",
+        "scenes": [
+          {
+            "frames": 432,
+            "id": "seed-exchange"
+          },
+          {
+            "frames": 264,
+            "id": "garden-promise"
+          }
+        ],
+        "verified": true
+      },
+      "source_bundles": {
+        "artwork": {
+          "bundle_sha256": "7ed8daad15ba0be16aee297e77e1ee9ca9561a866c9668800c27850aafd41fe6",
+          "file_count": 36,
+          "total_bytes": 14921593,
+          "unique_part_bytes": 11856017,
+          "unique_part_count": 207
+        },
+        "audio": {
+          "bundle_sha256": "62a25bf2764210d0616e374cf04c0202fa311e18682f4208f7ea0e27b7ecb6e9",
+          "file_count": 16,
+          "total_bytes": 1715251,
+          "unique_part_bytes": 1715251,
+          "unique_part_count": 39
+        },
+        "evidence": {
+          "bundle_sha256": "008567c7346b7bd76156e8050a2e51bbfb3ce18cbcb185897c1affab924aea40",
+          "file_count": 10,
+          "total_bytes": 3560571,
+          "unique_part_bytes": 3560571,
+          "unique_part_count": 60
+        },
+        "reconstruction": {
+          "bundle_sha256": "59757fc164dd4538d6bc8593b55010ec01b194ec0c6f1e5781c9249528d5ccf1",
+          "file_count": 66,
+          "total_bytes": 2506254,
+          "unique_part_bytes": 2506254,
+          "unique_part_count": 92
+        },
+        "reviews": {
+          "bundle_sha256": "454bfdb6daad191cdcf1c20ea8dfe487dae0bb7a3576d2258cbe6c8b4f99c5dc",
+          "file_count": 1,
+          "total_bytes": 4167150,
+          "unique_part_bytes": 4167150,
+          "unique_part_count": 64
+        }
+      },
+      "status": "passed",
+      "transport_parts": 462,
+      "verification_report": "verify-delivery.json",
+      "verified": true,
+      "version": "3.0.0"
+    },
+    "source_integrity": {
+      "independent_public_delivery_run": {
+        "checkout_files": 1504,
+        "checkout_unchanged": true,
+        "report": "public-delivery-report.json",
+        "worktree_dirty_at_capture": false
+      },
+      "test_run": {
+        "changes": [],
+        "post_comparison_report": "full-suite-report.json",
+        "pre_hash_inventory": "baseline-source-hashes.json",
+        "roots": [
+          "scripts",
+          "tests",
+          "profiles"
+        ],
+        "tracked_paths": 197
+      }
+    },
+    "test_inventory": {
+      "all": 867,
+      "legacy_2d": 790,
+      "report": "test-inventory.json",
+      "rig_3d": 77
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "evidence_class": "engineering_baseline_not_solver_or_artwork_approval",
+  "name": "compatibility-2d",
+  "source_commit": "7b966a639bcaf23bd3a0d037f46f29e2edfcc273",
+  "command": [
+    "/workspace/scratch/36752e25b9f2/hatch-delivery-venv/bin/python",
+    "scripts/test_rig_gate.py",
+    "compatibility"
+  ],
+  "cwd": "/workspace/scratch/36752e25b9f2/hatch-issue-166",
+  "explicit_environment": {
+    "HATCH_DECOMPOSITION_BROWSER_TEST": "1",
+    "PLAYWRIGHT_BROWSERS_PATH": "/workspace/scratch/36752e25b9f2/hatch-browsers",
+    "HATCH_BROWSER_EXECUTABLE": "/workspace/scratch/36752e25b9f2/hatch-browsers/chromium-1187/chrome-linux/chrome"
+  },
+  "started_utc": "2026-10-22T18:32:21.564254+00:00",
+  "finished_utc": "2026-10-22T18:37:04.951932+00:00",
+  "wall_seconds": 283.388,
+  "exit_code": 0,
+  "runner_python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.39",
+  "log": "compatibility-2d.log",
+  "log_sha256": "934c3be1db3eaac4706b9327fcc65ddb34c57d433a72a9ce974a964ee2441adb"
+}

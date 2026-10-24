@@ -1,0 +1,22 @@
+{
+  "evidence_class": "engineering_baseline_not_solver_or_artwork_approval",
+  "name": "browser-probe",
+  "source_commit": "7b966a639bcaf23bd3a0d037f46f29e2edfcc273",
+  "command": [
+    "/workspace/scratch/36752e25b9f2/hatch-delivery-venv/bin/python",
+    "-c",
+    "from playwright.sync_api import sync_playwright; import os; p=sync_playwright().start(); b=p.chromium.launch(headless=True, executable_path=os.environ[\"HATCH_BROWSER_EXECUTABLE\"], args=[\"--no-sandbox\", \"--disable-dev-shm-usage\"]); print(\"Actual Chromium:\", b.version); page=b.new_page(); page.set_content(\"<title>Hatch baseline browser probe</title>\"); print(\"Page title:\",page.title()); b.close(); p.stop()"
+  ],
+  "cwd": "/workspace/scratch/36752e25b9f2/hatch-issue-166",
+  "explicit_environment": {
+    "HATCH_BROWSER_EXECUTABLE": "/workspace/scratch/36752e25b9f2/hatch-browsers/chromium-1187/chrome-linux/chrome"
+  },
+  "started_utc": "2026-10-22T18:32:04.595011+00:00",
+  "finished_utc": "2026-10-22T18:32:05.712570+00:00",
+  "wall_seconds": 1.118,
+  "exit_code": 0,
+  "runner_python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.39",
+  "log": "browser-probe.log",
+  "log_sha256": "607614a27613b8bbb32cab8756b6f1fa53a6d8a3118f8e29f654e985c77d910f"
+}

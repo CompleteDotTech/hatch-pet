@@ -36,6 +36,11 @@ class ProductionContractTests(unittest.TestCase):
         write_json(self.root / 'first-scene.json', scene)
         refresh_project_hashes(self.root)
 
+    def save_scenes(self, scenes):
+        for scene in scenes:
+            write_json(self.root / (scene['id'] + '.json'), scene)
+        refresh_project_hashes(self.root)
+
     def validate_shot(self):
         return validate_shot(self.shot, self.bundle['characters'], self.bundle['clips'], self.bundle['props'], True)
 
@@ -317,6 +322,87 @@ class ProductionContractTests(unittest.TestCase):
         refresh_project_hashes(self.root)
         with self.assertRaisesRegex(ValueError, 'prop ownership mismatch'):
             load_project(self.path)
+
+    def test_prop_ownership_continuity_distinguishes_repeated_character_instances(self):
+        scenes = copy.deepcopy(self.bundle['scenes'])
+        for scene in scenes:
+            shot = scene['shots'][0]
+            duplicate = copy.deepcopy(shot['instances'][1])
+            duplicate['id'] = 'b-copy'
+            shot['instances'].append(duplicate)
+        self.save_scenes(scenes)
+        load_project(self.path)  # Unchanged owner b remains valid with two actors.
+        scenes[1]['shots'][0]['props'][0].update(
+            owner='b-copy', attachment={'instance': 'b-copy', 'component': 'hand', 'anchor': 'grip'})
+        self.save_scenes(scenes)
+        with self.assertRaisesRegex(ValueError, 'prop ownership mismatch'):
+            load_project(self.path)
+
+    def test_prop_ownership_only_links_detect_repeated_actors_in_either_endpoint(self):
+        for repeated_scene in (0, 1):
+            with self.subTest(repeated_scene=repeated_scene):
+                scenes = copy.deepcopy(self.bundle['scenes'])
+                scenes[1]['continuity'][0].update(characters=[], requirements=['prop_ownership'])
+                shot = scenes[repeated_scene]['shots'][0]
+                duplicate = copy.deepcopy(shot['instances'][1])
+                duplicate['id'] = 'b-copy'
+                shot['instances'].append(duplicate)
+                self.save_scenes(scenes)
+                load_project(self.path)  # Stable b is valid even if actor counts differ.
+                incoming = scenes[1]['shots'][0]
+                if repeated_scene == 0:
+                    incoming['instances'][1]['id'] = 'b-copy'
+                    incoming['instances'][0]['bindings']['partner'] = 'b-copy'
+                incoming['props'][0].update(
+                    owner='b-copy', attachment={'instance': 'b-copy', 'component': 'hand', 'anchor': 'grip'})
+                self.save_scenes(scenes)
+                with self.assertRaisesRegex(ValueError, 'prop ownership mismatch'):
+                    load_project(self.path)
+
+    def test_prop_ownership_continuity_preserves_singleton_shot_local_aliases(self):
+        scenes = copy.deepcopy(self.bundle['scenes'])
+        incoming = scenes[1]['shots'][0]
+        incoming['instances'][1]['id'] = 'b-next-shot'
+        incoming['instances'][0]['bindings']['partner'] = 'b-next-shot'
+        incoming['props'][0].update(
+            owner='b-next-shot', attachment={'instance': 'b-next-shot', 'component': 'hand', 'anchor': 'grip'})
+        self.save_scenes(scenes)
+        loaded = load_project(self.path)
+        self.assertEqual('b-next-shot', loaded['shots']['reuse']['props'][0]['owner'])
+
+    def test_prop_ownership_continuity_preserves_free_props_and_rejects_owned_free_changes(self):
+        for free_scenes in ((0, 1), (0,), (1,)):
+            with self.subTest(free_scenes=free_scenes):
+                scenes = copy.deepcopy(self.bundle['scenes'])
+                for index in free_scenes:
+                    shot = scenes[index]['shots'][0]
+                    shot['props'][0].update(owner=None, attachment=None, ownership=[])
+                    shot['interactions'] = []
+                self.save_scenes(scenes)
+                if len(free_scenes) == 2:
+                    load_project(self.path)
+                else:
+                    with self.assertRaisesRegex(ValueError, 'prop ownership mismatch'):
+                        load_project(self.path)
+
+    def test_prop_ownership_continuity_keeps_handoff_on_last_displayed_frame(self):
+        scenes = copy.deepcopy(self.bundle['scenes'])
+        outgoing = scenes[0]['shots'][0]
+        last_frame = outgoing['duration_frames'] - 1
+        outgoing['props'][0]['ownership'][0]['frame'] = last_frame
+        outgoing['interactions'][0]['frame'] = last_frame
+        for identity in ('a', 'b'):
+            path = self.root / ('idle-' + identity + '.json')
+            clip = read_json(path)
+            clip['events'][0]['frame'] = last_frame
+            write_json(path, clip)
+        self.save_scenes(scenes)
+        loaded = load_project(self.path)
+        from production_performance import prop_owner
+        prop = loaded['shots']['exchange']['props'][0]
+        self.assertEqual('a', prop_owner(prop, last_frame - 1)['owner'])
+        self.assertEqual('b', prop_owner(prop, last_frame)['owner'])
+        self.assertEqual('b', prop_owner(prop, outgoing['duration_frames'])['owner'])
 
     def test_resource_bounds_apply_before_expensive_rendering(self):
         original = copy.deepcopy(self.bundle['project'])

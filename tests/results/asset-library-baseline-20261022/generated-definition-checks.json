@@ -1,0 +1,28 @@
+[
+  {
+    "command": [
+      "/workspace/scratch/2a0543d2545a/hatch-venv/bin/python",
+      "scripts/generate_schemas.py",
+      "--check"
+    ],
+    "cwd": "/workspace/scratch/2a0543d2545a/hatch-pet",
+    "started_at": "2026-10-22T18:30:38.422584+00:00",
+    "duration_seconds": 0.09196425200207159,
+    "exit_code": 0,
+    "stdout": "schema-generation.stdout.log",
+    "stderr": "schema-generation.stderr.log"
+  },
+  {
+    "command": [
+      "/workspace/scratch/2a0543d2545a/hatch-venv/bin/python",
+      "scripts/generate_rig_templates.py",
+      "--check"
+    ],
+    "cwd": "/workspace/scratch/2a0543d2545a/hatch-pet",
+    "started_at": "2026-10-22T18:30:38.515301+00:00",
+    "duration_seconds": 0.13734688900149195,
+    "exit_code": 0,
+    "stdout": "rig-template-generation.stdout.log",
+    "stderr": "rig-template-generation.stderr.log"
+  }
+]

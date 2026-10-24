@@ -1,0 +1,49 @@
+{
+  "started_at": "2026-10-22T18:31:52.131377+00:00",
+  "source": "https://download.blender.org/release/Blender4.5/blender-4.5.3-linux-x64.tar.xz",
+  "expected_sha256": "975c58fcb244273838534bba771e64ad87739216b0f9b39a888531a49a72d845",
+  "pin_source": ".github/workflows/rig-3d.yml",
+  "status": "available",
+  "commands": [
+    {
+      "argv": [
+        "curl",
+        "--fail",
+        "--location",
+        "--show-error",
+        "--retry",
+        "0",
+        "--connect-timeout",
+        "30",
+        "--max-time",
+        "600",
+        "https://download.blender.org/release/Blender4.5/blender-4.5.3-linux-x64.tar.xz",
+        "--output",
+        "/workspace/scratch/2a0543d2545a/hatch-tools/blender-4.5.3-linux-x64.tar.xz"
+      ],
+      "cwd": "/workspace/scratch/2a0543d2545a",
+      "stdout_log": "blender-download.stdout.log",
+      "stderr_log": "blender-download.stderr.log",
+      "returncode": 0,
+      "duration_seconds": 7.397
+    },
+    {
+      "argv": [
+        "/workspace/scratch/2a0543d2545a/hatch-tools/blender-4.5.3-linux-x64/blender",
+        "--version"
+      ],
+      "cwd": "/workspace/scratch/2a0543d2545a",
+      "stdout_log": "blender-version.stdout.log",
+      "stderr_log": "blender-version.stderr.log",
+      "returncode": 0,
+      "duration_seconds": 0.466
+    }
+  ],
+  "observed_sha256": "975c58fcb244273838534bba771e64ad87739216b0f9b39a888531a49a72d845",
+  "archive_bytes": 377397328,
+  "extracted_members": 6510,
+  "extraction_seconds": 25.834,
+  "executable": "/workspace/scratch/2a0543d2545a/hatch-tools/blender-4.5.3-linux-x64/blender",
+  "version": "Blender 4.5.3 LTS",
+  "finished_at": "2026-10-22T18:32:26.125305+00:00"
+}

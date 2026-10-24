@@ -16,6 +16,8 @@ examples/production-pilot/evidence/** -text
 # Validation records carry exact byte digests, including on CRLF checkouts.
 tests/results/*.json -text
 tests/results/*.log -text
+# The physics audit retains nested logs whose SHA-256 binds their exact bytes.
+tests/results/physics-baseline-20261022/** -text
 scripts/*.py text eol=lf
 profiles/*.json text eol=lf
 # Rig evidence and offline dependency inventories bind the exact encoded bytes.

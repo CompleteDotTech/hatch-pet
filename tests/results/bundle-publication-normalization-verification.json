@@ -1,0 +1,234 @@
+{
+  "schema_version": 1,
+  "evidence_class": "engineering_regression_not_artwork_approval",
+  "issue": 197,
+  "recorded_utc": "2026-10-22T19:24:46.844765+00:00",
+  "baseline_commit": "7b966a639bcaf23bd3a0d037f46f29e2edfcc273",
+  "prior_head": "c511fefcf6a8d238665f7559c3dd4b05145c6e5b",
+  "prior_tree": "66f709052b2bad6e0555f02d3ced8d865dfc2cc5",
+  "historical_evidence": {
+    "path": "tests/results/bundle-publication-verification.json",
+    "bytes": 5732,
+    "sha256": "a349b5000cec9415610001aebd50c5a9d1d67240027b95a878219464068d48ce",
+    "scope": "The original receipt and three original logs remain unchanged and apply to the initial c511fef publication fix, before this normalization/lock correction."
+  },
+  "scope": [
+    "Resolve parent-directory aliases without following a destination leaf introduced after its initial absence check.",
+    "Keep the publication ownership lock at the requested destination, so a racing leaf cannot create a lock or directory under its unrequested target.",
+    "Preserve the existing default ownership behavior for existing runs; only new-destination publication opts out of resolving the leaf.",
+    "Retain complete staged verification, existing archive formats, exclusive publication, fixture/provenance labeling and owned-stage cleanup."
+  ],
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.39",
+  "dependencies": {
+    "Pillow": "13.0.0",
+    "jsonschema": "4.26.0",
+    "numpy": "2.3.5",
+    "pygltflib": "1.16.5"
+  },
+  "executions": [
+    {
+      "command": [
+        "/workspace/scratch/10ec880935b7/hatch-audit-venv/bin/python",
+        "-B",
+        "-m",
+        "unittest",
+        "test_production_bundle",
+        "test_production_sources",
+        "-v"
+      ],
+      "cwd": "/workspace/scratch/10ec880935b7/hatch-issue-197",
+      "started_utc": "2026-10-22T19:21:09.825166+00:00",
+      "finished_utc": "2026-10-22T19:21:11.761643+00:00",
+      "wall_seconds": 1.9364798550013802,
+      "exit_code": 1,
+      "phase": "before",
+      "evidence": {
+        "path": "tests/results/bundle-publication-normalization-before.log",
+        "bytes": 9677,
+        "sha256": "0107a30c0529e3e3d380a90300cab00214feda127b9b9fd6c2ddc242b1b8b3c0"
+      },
+      "tests": 33,
+      "unittest_seconds": 1.734,
+      "failures": 4,
+      "errors": 0,
+      "skips": 0,
+      "explicit_environment": {
+        "PYTHONPATH": "tests:scripts",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      }
+    },
+    {
+      "command": [
+        "/workspace/scratch/10ec880935b7/hatch-audit-venv/bin/python",
+        "-B",
+        "-m",
+        "unittest",
+        "test_production_bundle",
+        "test_production_sources",
+        "-v"
+      ],
+      "cwd": "/workspace/scratch/10ec880935b7/hatch-issue-197",
+      "started_utc": "2026-10-22T19:24:00.149038+00:00",
+      "finished_utc": "2026-10-22T19:24:02.098600+00:00",
+      "wall_seconds": 1.9495744739979273,
+      "exit_code": 0,
+      "phase": "after",
+      "evidence": {
+        "path": "tests/results/bundle-publication-normalization-after.log",
+        "bytes": 6409,
+        "sha256": "7af9b7ec67a4d51fbfae0a1641246a7528e31a59dc1a717fb1dd3fc22026e5f5"
+      },
+      "tests": 33,
+      "unittest_seconds": 1.784,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "explicit_environment": {
+        "PYTHONPATH": "tests:scripts",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      }
+    },
+    {
+      "command": [
+        "/workspace/scratch/10ec880935b7/hatch-audit-venv/bin/python",
+        "-B",
+        "-m",
+        "unittest",
+        "test_production_bundle",
+        "test_production_sources",
+        "test_production_workflow",
+        "test_production_delivery",
+        "test_rig_compatibility",
+        "test_workflow",
+        "test_capabilities",
+        "-v"
+      ],
+      "cwd": "/workspace/scratch/10ec880935b7/hatch-issue-197",
+      "explicit_environment": {
+        "PYTHONPATH": "tests:scripts",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "started_utc": "2026-10-22T19:22:11.303319+00:00",
+      "finished_utc": "2026-10-22T19:23:14.660257+00:00",
+      "wall_seconds": 63.3569428280025,
+      "exit_code": 0,
+      "phase": "affected",
+      "evidence": {
+        "path": "tests/results/bundle-publication-normalization-affected.log",
+        "bytes": 21303,
+        "sha256": "e95b0239dd6b664a74112b923f5d770d2f33e75b7a82e330f8f3dcadd50ff509"
+      },
+      "tests": 121,
+      "unittest_seconds": 63.103,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    }
+  ],
+  "new_tests": {
+    "test_methods": 4,
+    "before_failure_instances": 4,
+    "before_failure_methods": 3,
+    "negative_cases": [
+      "bundle leaf race after the last absence check",
+      "bundle leaf race immediately before publication lock acquisition",
+      "source transport creation leaf race",
+      "source transport restoration leaf race"
+    ],
+    "positive_case": "bundle creation through a valid parent-directory symlink"
+  },
+  "test_portability_note": "The before and 121-test executions precede a test-only change that compares readlink() against its captured value instead of the supplied path spelling. This preserves Windows native link spelling. The final complete 33-test bundle/source run was executed after that adjustment; runtime code was unchanged.",
+  "pre_portability_test_sha256": {
+    "tests/test_production_bundle.py": "4d716078a679bb0d7f1043f4f5c7e9e42c46151dbb982e0403b84e0493f52f59",
+    "tests/test_production_sources.py": "f9c2f2020b676c5570cd55e0b7a850374d0bab5f976a51b5c8bbd3930878df3d"
+  },
+  "modified_inputs": [
+    {
+      "path": "scripts/production_bundle.py",
+      "bytes": 10449,
+      "sha256": "f708431b689298e38bfee8a06922f7e8967e34d5c85317e60b04ea6826c7a50c"
+    },
+    {
+      "path": "scripts/production_sources.py",
+      "bytes": 21831,
+      "sha256": "5b327e348cebb575ed66fcbd6c9e597e0aae7c9bf0bd1c717829e275f4174116"
+    },
+    {
+      "path": "scripts/hatch.py",
+      "bytes": 85915,
+      "sha256": "bc1254bb4146cfe8f363986f43bdf74ec3f54dfc675c097ef86a0059000cd2f4"
+    },
+    {
+      "path": "tests/test_production_bundle.py",
+      "bytes": 16863,
+      "sha256": "cf96ceddbb264fcc32f1d5d3841172db59cd8c05084586b4d90e665e45423240"
+    },
+    {
+      "path": "tests/test_production_sources.py",
+      "bytes": 24483,
+      "sha256": "3216e909e2d73a2aa9a064381060403d7f2faae9fd39fe6b6d5404e9c09fbb47"
+    },
+    {
+      "path": "references/production-operations.md",
+      "bytes": 25974,
+      "sha256": "08ecc8ed917ab99686d9acef51f86eb0d0838713346fc83529eaf89509aead9b"
+    }
+  ],
+  "unchanged_inputs": [
+    {
+      "path": "scripts/production_workflow.py",
+      "bytes": 78939,
+      "sha256": "4dc71e4819adf0e8a1ea2839687664f8fcef36dd0cff1311f38d293a455b1c40"
+    },
+    {
+      "path": "scripts/production_render.py",
+      "bytes": 67584,
+      "sha256": "981b6fbafdcd0fcf009dca02b0f695bfb3742b58bd9e9a11068f0e0dd085c9be"
+    },
+    {
+      "path": "scripts/production_performance.py",
+      "bytes": 17089,
+      "sha256": "6d282e15b541d7f13dab076529a6c395e004b10bd596a065b5cdf17a4f03a26c"
+    },
+    {
+      "path": "scripts/production_contracts.py",
+      "bytes": 59286,
+      "sha256": "7b0c7f873a5b8cd129cf6d550cb5d1ba7ac7a367c399b1a300ccebacb98e2a46"
+    },
+    {
+      "path": "scripts/portable_runs.py",
+      "bytes": 8783,
+      "sha256": "d5d2016e49bcafd754a3199939890c668e9b865fae5d14f2d9a45c2f6cace55c"
+    },
+    {
+      "path": "scripts/rig_package.py",
+      "bytes": 6234,
+      "sha256": "0da62bd2381ba16995cc0eb508ab3e2b606d3222605ab4126398a2c8d48c8b35"
+    },
+    {
+      "path": "profiles/codex-v1.json",
+      "bytes": 13287,
+      "sha256": "f4e0279f8634ea53ef544ecb49b9a71ec2565c61ec5b8e63163ecc5ead478a6b"
+    },
+    {
+      "path": "profiles/profile.schema.json",
+      "bytes": 12272,
+      "sha256": "afba01bc16c4f6c297d1b95b62803c7a5b989e0fa9b967c33e5d50471091163c"
+    },
+    {
+      "path": "assets/playback.js",
+      "bytes": 10618,
+      "sha256": "9aa7d5228de0a57cd443b70c14b160cb22238d21a861a0fb06f6b4bcc6ccbc79"
+    }
+  ],
+  "ordinary_2d_tests_discovered_without_3d_dependencies": 797,
+  "limitations": [
+    "The before log intentionally contains four failing instances in three methods; zero errors or skips.",
+    "121 affected tests passed without skips; this is not the complete repository test suite.",
+    "Local execution was Linux only; supported-platform CI and independent review remain merge gates.",
+    "Parent-directory symlink aliases are supported; these regressions cover destination-leaf races, not arbitrary replacement of ancestor directories or lock files.",
+    "No provider, TTS, production-art approval, full-film render or new external-integration acceptance was performed.",
+    "The optional ownership keyword preserves default existing-run lock behavior; ordinary code-version invalidation continues to apply."
+  ]
+}

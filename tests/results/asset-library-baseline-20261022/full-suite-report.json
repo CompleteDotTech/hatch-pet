@@ -1,0 +1,57 @@
+{
+  "command": [
+    "/workspace/scratch/2a0543d2545a/hatch-venv/bin/python",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests",
+    "-v"
+  ],
+  "cwd": "/workspace/scratch/2a0543d2545a/hatch-pet",
+  "environment_overrides": {
+    "HATCH_DECOMPOSITION_BROWSER_TEST": "1",
+    "HATCH_RIG_INTEROP_TEST": "1",
+    "HATCH_RIG_BROWSER_TEST": "1",
+    "HATCH_RIG_BLENDER_TEST": "1",
+    "HATCH_BLENDER": "/workspace/scratch/2a0543d2545a/hatch-tools/blender-4.5.3-linux-x64/blender",
+    "HATCH_DECOMPOSITION_SCREENSHOT": "/workspace/scratch/2a0543d2545a/baseline-evidence/decomposition-review.png"
+  },
+  "python": "3.12.14",
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.39",
+  "dependencies": {
+    "Pillow": "13.0.0",
+    "jsonschema": "4.26.0",
+    "playwright": "1.64.0",
+    "numpy": "2.3.5",
+    "pygltflib": "1.16.5"
+  },
+  "source_commit": "7b966a639bcaf23bd3a0d037f46f29e2edfcc273",
+  "source_tree": "9c0e9bc0f8b3bf2b0d63d8a49b5250f59b3643ab",
+  "started_at": "2026-10-22T18:32:48.235257+00:00",
+  "stdout": "full-suite.stdout.log",
+  "stderr": "full-suite.stderr.log",
+  "status": "finished",
+  "source_hashes_file": "baseline-source-hashes.json",
+  "source_hashes_sha256": "6539b64d58246b4e55c1fcf69c738b2e9f9b32950bc57119d8ebed70ca4cba89",
+  "exit_code": 0,
+  "duration_seconds": 264.342,
+  "completed_at": "2026-10-22T18:37:12.598081+00:00",
+  "unittest_summary": {
+    "run": 853,
+    "seconds": 263.851
+  },
+  "skips": [
+    "test_actual_export_frame_order_timing_events_and_reduced_motion (test_exports.BrowserExportTests.test_actual_export_frame_order_timing_events_and_reduced_motion) ... skipped 'Chromium is not installed; run python -m playwright install chromium'",
+    "setUpClass (test_playback_extended.ExtendedBrowser) ... skipped 'Chromium is not installed; run python -m playwright install chromium'",
+    "test_actual_local_krita_import_export_and_layer_roundtrip (test_production_adapter.ProductionAdapterTests.test_actual_local_krita_import_export_and_layer_roundtrip) ... skipped 'Krita not available; adapter tests remain separate from integration'",
+    "setUpClass (test_production_preview.ProductionPreviewTests) ... skipped 'Chromium executable unavailable; install the documented browser test dependency'"
+  ],
+  "failure_headers": [],
+  "result_line": "OK (skipped=4)",
+  "logs_sha256": {
+    "full-suite.stdout.log": "167e55a12d734f31476184a7546d3f0cbe3ae054a8c4afa2cb88c982c33cbef9",
+    "full-suite.stderr.log": "a297509509510b0294c8fac6d5ec846bbea04c9855a31f2ff078b0899f61a15e"
+  },
+  "source_files_changed": []
+}

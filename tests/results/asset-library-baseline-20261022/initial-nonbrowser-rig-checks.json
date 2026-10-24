@@ -1,0 +1,53 @@
+{
+  "kind": "initial-nonbrowser-rig-checks",
+  "python": "3.12.14",
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.39",
+  "dependencies": {
+    "Pillow": "13.0.0",
+    "jsonschema": "4.26.0",
+    "playwright": "1.64.0",
+    "numpy": "2.3.5",
+    "pygltflib": "1.16.5"
+  },
+  "runs": [
+    {
+      "command": [
+        "/workspace/scratch/2a0543d2545a/hatch-venv/bin/python",
+        "scripts/test_rig_gate.py",
+        "schema-math"
+      ],
+      "cwd": "/workspace/scratch/2a0543d2545a/hatch-pet",
+      "started_at": "2026-10-22T18:30:06.402210+00:00",
+      "duration_seconds": 1.4450678639987018,
+      "exit_code": 0,
+      "stdout": "schema-math.stdout.log",
+      "stderr": "schema-math.stderr.log"
+    },
+    {
+      "command": [
+        "/workspace/scratch/2a0543d2545a/hatch-venv/bin/python",
+        "scripts/test_rig_gate.py",
+        "skinning"
+      ],
+      "cwd": "/workspace/scratch/2a0543d2545a/hatch-pet",
+      "started_at": "2026-10-22T18:30:07.847548+00:00",
+      "duration_seconds": 0.34033002499927534,
+      "exit_code": 0,
+      "stdout": "skinning.stdout.log",
+      "stderr": "skinning.stderr.log"
+    },
+    {
+      "command": [
+        "/workspace/scratch/2a0543d2545a/hatch-venv/bin/python",
+        "scripts/test_rig_gate.py",
+        "animation-ik"
+      ],
+      "cwd": "/workspace/scratch/2a0543d2545a/hatch-pet",
+      "started_at": "2026-10-22T18:30:08.188100+00:00",
+      "duration_seconds": 2.5785984940011986,
+      "exit_code": 0,
+      "stdout": "animation-ik.stdout.log",
+      "stderr": "animation-ik.stderr.log"
+    }
+  ]
+}

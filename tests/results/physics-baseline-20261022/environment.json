@@ -1,0 +1,176 @@
+{
+  "recorded_utc": "2026-10-22T18:33:09.357624+00:00",
+  "source_commit": "7b966a639bcaf23bd3a0d037f46f29e2edfcc273",
+  "os": "Linux-6.18.55-x86_64-with-glibc2.39",
+  "architecture": "x86_64",
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "environments": {
+    "delivery": {
+      "python": "Python 3.12.14",
+      "requirements": "requirements-delivery.txt",
+      "packages": [
+        {
+          "name": "attrs",
+          "version": "26.1.0"
+        },
+        {
+          "name": "greenlet",
+          "version": "3.5.6"
+        },
+        {
+          "name": "jsonschema",
+          "version": "4.26.0"
+        },
+        {
+          "name": "jsonschema-specifications",
+          "version": "2025.9.1"
+        },
+        {
+          "name": "pillow",
+          "version": "13.0.0"
+        },
+        {
+          "name": "pip",
+          "version": "25.0.1"
+        },
+        {
+          "name": "playwright",
+          "version": "1.64.0"
+        },
+        {
+          "name": "pyee",
+          "version": "14.0.0"
+        },
+        {
+          "name": "referencing",
+          "version": "0.37.0"
+        },
+        {
+          "name": "rpds-py",
+          "version": "2026.9.1"
+        },
+        {
+          "name": "typing_extensions",
+          "version": "4.16.0"
+        }
+      ]
+    },
+    "rig": {
+      "python": "Python 3.12.14",
+      "requirements": "requirements-rig-test.txt",
+      "packages": [
+        {
+          "name": "attrs",
+          "version": "26.1.0"
+        },
+        {
+          "name": "dataclasses-json",
+          "version": "0.6.7"
+        },
+        {
+          "name": "Deprecated",
+          "version": "3.0.0"
+        },
+        {
+          "name": "greenlet",
+          "version": "3.5.6"
+        },
+        {
+          "name": "jsonschema",
+          "version": "4.25.1"
+        },
+        {
+          "name": "jsonschema-specifications",
+          "version": "2025.9.1"
+        },
+        {
+          "name": "marshmallow",
+          "version": "3.26.2"
+        },
+        {
+          "name": "mypy_extensions",
+          "version": "1.1.0"
+        },
+        {
+          "name": "numpy",
+          "version": "2.3.5"
+        },
+        {
+          "name": "packaging",
+          "version": "26.3"
+        },
+        {
+          "name": "pillow",
+          "version": "12.3.0"
+        },
+        {
+          "name": "pip",
+          "version": "25.0.1"
+        },
+        {
+          "name": "playwright",
+          "version": "1.55.0"
+        },
+        {
+          "name": "pyee",
+          "version": "13.0.1"
+        },
+        {
+          "name": "pygltflib",
+          "version": "1.16.5"
+        },
+        {
+          "name": "referencing",
+          "version": "0.37.0"
+        },
+        {
+          "name": "rpds-py",
+          "version": "2026.9.1"
+        },
+        {
+          "name": "typing_extensions",
+          "version": "4.16.0"
+        },
+        {
+          "name": "typing-inspect",
+          "version": "0.9.0"
+        },
+        {
+          "name": "wrapt",
+          "version": "2.5.1"
+        }
+      ]
+    }
+  },
+  "executables": {
+    "git": "git version 2.51.1",
+    "node": "v24.19.0",
+    "ffmpeg": "ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers",
+    "ffprobe": "ffprobe version 6.1.1-3ubuntu5 Copyright (c) 2007-2023 the FFmpeg developers"
+  },
+  "actual_browser": "140.0.7339.16",
+  "browser_executable_override": "HATCH_BROWSER_EXECUTABLE points to Playwright Chromium 1187 chrome-linux/chrome; confirmed by browser-probe.log",
+  "browser_setup_limits": [
+    "Playwright 1.64.0 Chromium 156 download returned an invalid ZIP from cdn.playwright.dev; not executed.",
+    "Playwright 1.55.0 installed real Chromium 140 via its Microsoft mirror, but its later optional headless-shell install exited with a stale directory-lock error. Full Chromium was launched explicitly and verified before the gate."
+  ],
+  "not_executed": [
+    "Blender",
+    "PyBullet",
+    "Khronos validator",
+    "native Krita",
+    "macOS local tests",
+    "Windows local tests",
+    "physics solver evolution",
+    "production-art visual approval"
+  ],
+  "physics_solver": {
+    "status": "not_implemented_at_source_commit",
+    "backend": null,
+    "effective_timestep": null,
+    "physical_settings": null,
+    "cache_status": "not_applicable",
+    "numerical_tolerances": null,
+    "peak_resource_measurements": null
+  }
+}
