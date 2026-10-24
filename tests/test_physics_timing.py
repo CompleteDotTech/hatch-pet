@@ -1,0 +1,204 @@
+from fractions import Fraction
+import math
+from contextlib import nullcontext
+import os
+import shutil
+from pathlib import Path
+import sys
+import tempfile
+import unittest
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'scripts'))
+from physics_timing import clock, bracket, interpolate
+from physics_backend_example import build_inputs
+import physics_backends as physics
+
+class TimingTests(unittest.TestCase):
+    def test_exact_ntsc_terminal_brackets_without_drift(self):
+        world,_=build_inputs(backend='pybullet')
+        world['fps']=dict(numerator=30000,denominator=1001)
+        value=clock(world)
+        self.assertEqual(value['last_sample_time'],dict(numerator=1001,denominator=625))
+        self.assertEqual(value['solver_steps'],385)
+        self.assertEqual(value['computed_terminal_time'],dict(numerator=77,denominator=48))
+        self.assertEqual(bracket(Fraction(1001,30000),Fraction(1,240)),(8,9,Fraction(1,125)))
+
+    def test_retained_predecessor_caches_remain_hash_verified(self):
+        root=Path(__file__).resolve().parents[1]/'tests/results/physics-backends-20261024'
+        for backend in ['blender','pybullet']:
+            report=physics.verify_cache(root/(backend+'-demo/cache'))
+            self.assertEqual(report['status'],'hash-and-contract-verified')
+
+    def test_rebound_solver_cache_cannot_disagree_with_output_and_unknown_worker_cannot_downgrade(self):
+        source=Path(__file__).resolve().parents[1]/'tests/results/physics-timing-20261024/executed/artifacts/30000-1001-0'
+        with tempfile.TemporaryDirectory() as directory:
+            cache=Path(directory)/'cache';shutil.copytree(source,cache)
+            value=physics.parse((cache/'solver-states.json').read_bytes())
+            value['samples'][16]['bodies'][0]['translation'][1]+=10
+            (cache/'solver-states.json').write_bytes(physics.canonical(value))
+            manifest=physics.parse((cache/'cache.json').read_bytes())
+            for item in manifest['files']:
+                data=(cache/item['path']).read_bytes();item.update(bytes=len(data),sha256=physics.digest(data))
+            manifest['usage']['output_bytes']=sum(item['bytes'] for item in manifest['files'])
+            (cache/'cache.json').write_bytes(physics.canonical(manifest))
+            with self.assertRaises(physics.BackendError) as raised:
+                physics._validate_solver_samples(value,physics.parse((cache/'world.json').read_bytes()),manifest['world_sha256'],manifest['fixture'],physics.parse((cache/'states.json').read_bytes()))
+            self.assertIn('disagrees',str(raised.exception))
+            for name in ['timing.json','solver-states.json']:(cache/name).unlink()
+            manifest['files']=[item for item in manifest['files'] if item['path'] not in ['timing.json','solver-states.json']]
+            manifest['usage']['output_bytes']=sum(item['bytes'] for item in manifest['files'])
+            (cache/'cache.json').write_bytes(physics.canonical(manifest))
+            with self.assertRaises(physics.BackendError) as raised:physics.verify_cache(cache)
+            self.assertIn('timing receipt',str(raised.exception))
+
+    def test_blender_rejects_injected_solver_cache_for_verify_and_seek(self):
+        source=Path(__file__).resolve().parents[1]/'tests/results/physics-backends-20261024/blender-demo/cache'
+        with tempfile.TemporaryDirectory() as directory:
+            cache=Path(directory)/'cache';shutil.copytree(source,cache)
+            data=physics.canonical(dict(kind='fabricated-adversarial-solver-cache',samples=[]))
+            (cache/'solver-states.json').write_bytes(data)
+            manifest=physics.parse((cache/'cache.json').read_bytes())
+            manifest['files'].append(dict(path='solver-states.json',bytes=len(data),sha256=physics.digest(data)))
+            manifest['usage']['output_bytes']=sum(item['bytes'] for item in manifest['files'])
+            (cache/'cache.json').write_bytes(physics.canonical(manifest))
+            for operation in [lambda:physics.verify_cache(cache),lambda:physics.inspect_time(cache,Fraction(1,24))]:
+                with self.assertRaises(physics.BackendError) as raised:operation()
+                self.assertIn('unsupported',str(raised.exception))
+
+    def test_quaternion_shortest_arc_and_endpoints(self):
+        a=dict(id='x',translation=[0,0,0],rotation=[0,0,0,1])
+        b=dict(id='x',translation=[2,0,0],rotation=[0,0,0,-1])
+        self.assertEqual(interpolate(a,b,Fraction(1,2))['translation'],[1,0,0])
+        self.assertEqual(interpolate(a,b,Fraction(1,2))['rotation'],[0,0,0,1])
+
+    def test_backend_restriction_and_stability_are_explicit(self):
+        world,_=build_inputs()
+        world['fps']=dict(numerator=30000,denominator=1001)
+        with self.assertRaises(physics.BackendError):physics.BlenderBackend('/missing').validate_scene(world)
+        world['solver']['backend']='pybullet'
+        report=physics.PyBulletBackend('/missing').validate_scene(world)
+        self.assertEqual(report['timing']['effective_solver_step'],dict(numerator=1,denominator=240))
+        world['solver']['stability']=dict(continuous_collision_detection=True)
+        with self.assertRaises(physics.BackendError) as raised:physics.PyBulletBackend('/missing').validate_scene(world)
+        self.assertEqual(raised.exception.report['code'],'PHYSICS_STABILITY_UNSUPPORTED')
+
+@unittest.skipUnless(os.environ.get('HATCH_PHYSICS_BACKEND_TEST')=='1','Explicit real solver gate')
+class NativeTimingTests(unittest.TestCase):
+    def test_real_blender_integer_and_ntsc_effective_steps(self):
+        target=os.environ.get('HATCH_TIMING_EVIDENCE')
+        retained=Path(target).parent/'blender-artifacts' if target else None
+        if retained:retained.mkdir(parents=True,exist_ok=False)
+        records=[]
+        with (nullcontext(str(retained)) if retained else tempfile.TemporaryDirectory(prefix='hatch-blender-timing-')) as directory:
+            for p,q,denominator in [(24,1,240),(30000,1001,240000)]:
+                backend=physics.BlenderBackend(os.environ['HATCH_BLENDER'])
+                world,payloads=build_inputs()
+                world['fps']=dict(numerator=p,denominator=q)
+                world['solver']['fixed_step']=dict(numerator=q,denominator=denominator)
+                prepared=backend.prepare(world,payloads)
+                try:
+                    result=backend.simulate(prepared)
+                    destination=Path(directory)/str(p)
+                    backend.bake(result,destination)
+                    self.assertEqual(physics.verify_cache(destination)['sample_count'],49)
+                    errors=[]
+                    for frame in range(1,7):
+                        sample=physics.inspect_cache(destination,frame)
+                        expected=3-9.81*(frame*q/p)**2/2
+                        errors.append(abs(sample['bodies'][0]['translation'][1]-expected))
+                        self.assertLess(errors[-1],.03)
+                        self.assertEqual(sample['sampling']['source'],'direct solved state')
+                    records.append(dict(rate=[p,q],backend=result.backend,usage=result.usage,
+                        continuous_errors=errors,tolerance=.03,solver=world['solver'],gravity=world['gravity'],materials=world['materials'],
+                        timing=clock(world),cache=physics.verify_cache(destination),states_sha256=physics.digest((destination/'states.json').read_bytes())))
+                finally:backend.cleanup(prepared)
+        if target:Path(target).with_name('blender-numerical.json').write_bytes(physics.canonical(dict(scope='real Blender native integral-step integer and NTSC free fall',records=records)))
+
+    def test_real_contact_slop_and_velocity_limit_failure(self):
+        heights=[];records=[]
+        target=os.environ.get('HATCH_TIMING_EVIDENCE')
+        for slop in [0,.05]:
+            backend=physics.PyBulletBackend(os.environ['HATCH_PYBULLET_PYTHON'])
+            world,payloads=build_inputs(backend='pybullet')
+            world['solver']['stability']=dict(contact_penetration_tolerance=slop)
+            prepared=backend.prepare(world,payloads)
+            try:
+                result=backend.simulate(prepared)
+                states=physics.parse((prepared.root/'states.json').read_bytes())
+                heights.append(states['samples'][-1]['bodies'][0]['translation'][1])
+                contacts=physics.parse((prepared.root/'contacts.json').read_bytes())
+                self.assertTrue(contacts['samples'][-1]['contacts'])
+                if target:
+                    destination=Path(target).parent/('contact-'+str(slop))
+                    backend.bake(result,destination)
+                records.append(dict(slop=slop,height=heights[-1],world_sha256=result.world_sha256,backend=result.backend,usage=result.usage))
+            finally:backend.cleanup(prepared)
+        self.assertGreater(heights[0]-heights[1],.03)
+        self.assertLess(heights[0]-heights[1],.07)
+        backend=physics.PyBulletBackend(os.environ['HATCH_PYBULLET_PYTHON'])
+        world,payloads=build_inputs(backend='pybullet')
+        world['solver']['stability']=dict(max_linear_velocity=.001)
+        prepared=backend.prepare(world,payloads)
+        try:
+            with self.assertRaises(physics.BackendError) as raised:backend.simulate(prepared)
+            self.assertEqual(raised.exception.report['category'],'numerical-instability')
+            self.assertEqual(raised.exception.report['solver_step'],1)
+            self.assertEqual(raised.exception.report['solver_time'],dict(numerator=1,denominator=240))
+            self.assertEqual(raised.exception.report['last_valid_frame'],0)
+            stderr=(prepared.root/'simulation-stderr.log').read_bytes()
+            self.assertIn(b'Numerical stability velocity limit exceeded',stderr)
+            self.assertFalse((prepared.root/'states.json').exists())
+            if target:Path(target).with_name('stability.json').write_bytes(physics.canonical(dict(contact_comparison=records,
+                contact_height_difference=heights[0]-heights[1],velocity_failure='observed real solver failure; no clamping',
+                stderr=stderr.decode(),diagnostic=raised.exception.report,world_sha256=prepared.world_sha256,limit=.001)))
+        finally:backend.cleanup(prepared)
+
+    def test_real_fractional_rates_analytic_and_pinned_repeat(self):
+        records=[]
+        target=os.environ.get('HATCH_TIMING_EVIDENCE')
+        retained=Path(target).parent/'artifacts' if target else None
+        if retained:retained.mkdir(parents=True,exist_ok=False)
+        with (nullcontext(str(retained)) if retained else tempfile.TemporaryDirectory(prefix='hatch-timing-oracles-')) as directory:
+            for p,q in [(24,1),(30000,1001),(47,2)]:
+                outputs=[]
+                for repeat in range(2):
+                    backend=physics.PyBulletBackend(os.environ['HATCH_PYBULLET_PYTHON'])
+                    world,payloads=build_inputs(backend='pybullet')
+                    world['fps']=dict(numerator=p,denominator=q)
+                    world['solver']['substeps']=2
+                    world['solver']['stability']=dict(contact_penetration_tolerance=.001,max_linear_velocity=20,max_angular_velocity=20)
+                    prepared=backend.prepare(world,payloads)
+                    try:
+                        result=backend.simulate(prepared)
+                        destination=Path(directory)/f'{p}-{q}-{repeat}'
+                        backend.bake(result,destination)
+                        self.assertEqual(physics.verify_cache(destination)['sample_count'],49)
+                        values=physics.parse((destination/'states.json').read_bytes())
+                        maximum=0.
+                        dt=Fraction(1,480)
+                        for frame in range(1,7):
+                            t=Fraction(frame*q,p)
+                            coordinate=t/dt;n=math.floor(coordinate);a=float(coordinate-n)
+                            expected=3-9.81*float(dt)**2*((1-a)*n*(n+1)+a*(n+1)*(n+2))/2
+                            observed=values['samples'][frame]['bodies'][0]['translation'][1]
+                            maximum=max(maximum,abs(expected-observed))
+                            self.assertLess(abs(expected-observed),1e-9)
+                            # Also bound numerical integration error against continuous free fall.
+                            self.assertLess(abs(observed-(3-9.81*float(t)**2/2)),.004)
+                        sought=physics.inspect_time(destination,Fraction(q,2*p))
+                        self.assertEqual(sought['bracket_frames'],[0,1])
+                        self.assertEqual(sought['sample_clock'],'solver')
+                        self.assertIn('alpha',sought)
+                        self.assertEqual(len(sought['bracket_times']),2)
+                        native=physics.parse((destination/'solver-states.json').read_bytes())
+                        self.assertEqual(len(native['samples']),clock(world)['solver_steps']+1)
+                        self.assertEqual(physics.inspect_time(destination,Fraction(48*q,p))['time'],dict(numerator=Fraction(48*q,p).numerator,denominator=Fraction(48*q,p).denominator))
+                        with self.assertRaises(physics.BackendError):physics.inspect_time(destination,Fraction(49*q,p))
+                        outputs.append(values)
+                        records.append(dict(rate=[p,q],repeat=repeat,discrete_euler_max_error=maximum,
+                            continuous_tolerance=.004,timing=clock(world),backend=result.backend,usage=result.usage,
+                            hardware=physics.hardware(),solver=world['solver'],gravity=world['gravity'],materials=world['materials'],
+                            cache=physics.verify_cache(destination),states_sha256=physics.digest((destination/'states.json').read_bytes())))
+                    finally:backend.cleanup(prepared)
+                self.assertEqual(outputs[0],outputs[1])
+            target=os.environ.get('HATCH_TIMING_EVIDENCE')
+            if target:Path(target).write_bytes(physics.canonical(dict(scope='real PyBullet; pinned same-environment paired runs only',classification='pinned-numerical for these paired runs only',maximum_paired_output_difference=0,records=records)))
