@@ -14,12 +14,14 @@ Tests use `PYTHONPATH=scripts HATCH_PHYSICS_BACKEND_TEST=1 HATCH_BLENDER=... HAT
 
 No human visual or artistic approval is implied by these numerical checks.
 
-Final runtime: ec9f120. Final test-retention HEAD: a09930f (runtime unchanged). Final local dependency is actual independent Astra PASS1682e1190c, normally merged with Scene59 integer-parity and mainB. `validation.json` binds exact source-file SHA256 values and these checks:
+Final runtime and tested source: c3e2dac. Final local dependency is actual independent Astra PASS1682e1190c, normally merged with Scene59 integer-parity and mainB. `validation.json` binds exact source-file SHA256 values and these checks:
 
-- 48 actual Blender/PyBullet lifecycle tests: PASS47.751seconds, zero skips.
-- Six timing tests: PASS34.892seconds, zero skips, including two actual Blender bakes/native reopens, six real PyBullet simulations, paired pinned-output equality, analytic physical errors, rational seeking, terminal boundaries and legacy-cache verification.
-- 22 strict physics contract tests: PASS1.543seconds.
-- 67 Scene3D contract tests: PASS12.009seconds.
+- 48 actual Blender/PyBullet lifecycle tests: PASS45.149seconds, zero skips.
+- Nine timing tests: PASS41.103seconds, zero skips. Native tests execute two actual Blender bakes/native reopens, six paired PyBullet simulations, two paired contact-slop response controls and one expected low-velocity-limit failure. Static tests cover exact clocks, legacy compatibility, solver/output disagreement, unknown-worker downgrade and public Blender solver-injection rejection.
+- 22 strict physics contract tests: PASS1.543seconds (unchanged contract/schema).
+- 67 Scene3D contract tests: PASS12.009seconds (unchanged Scene3D source).
 - Generated physics schema consistency: PASS.
 
-`executed/blender-artifacts/{24,30000}` retain actual native `.blend` caches, diagnostic PNGs, complete hash manifests and numerical states; `executed/blender-numerical.json` records numerical errors/tolerances/settings/backend/resource identities. `executed/artifacts` retains all six PyBullet sampled caches, every actual solver-step state, exact timing brackets and contacts. `executed/numerical.json` records paired reproduction classification, numerical errors/tolerances, backend/settings/seed/hardware/resource records and hashes. All remain engineering fixtures and unreviewed visually. Source files and retained #168 caches were preserved.
+`executed/blender-artifacts/{24,30000}` retain actual native `.blend` caches, diagnostic PNGs, complete hash manifests and numerical states; `executed/blender-numerical.json` records numerical errors/tolerances/settings/backend/resource identities. `executed/artifacts` retains all six PyBullet sampled caches, every actual solver-step state, exact timing brackets and actual-step contacts. `executed/numerical.json` records paired reproduction classification, numerical errors/tolerances, backend/settings/seed/hardware/resource records and hashes. `executed/contact-*` and `executed/stability.json` retain the physical contact controls and located numerical-instability failure. All remain engineering fixtures and unreviewed visually. Source files and retained #168 caches were preserved.
+
+Independent Astra review caught solver/output cross-record disagreement, arbitrary-worker legacy downgrade and cross-backend solver-cache injection. These are now rejected with regressions. The first new failure-location test exposed native body-index shadowing of the solver index; `diagnostic-index-failure.log` preserves that failed check. c3e2dac fixes the shadowing and all nine tests pass without skips or suppression. Legacy handling admits only explicit known #168 worker digests with their actual integral timing profile. Exact seek results include native/output source, bracket indices/times and alpha; native interval counts and contact timestamps record actual solver execution.

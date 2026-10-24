@@ -88,11 +88,11 @@ Fra:49 Mem:8.30M (Peak 8.39M) | Time:00:00.00 | Mem:0.09M, Peak:0.09M | Scene, V
 Fra:49 Mem:8.30M (Peak 8.39M) | Time:00:00.00 | Mem:0.09M, Peak:0.09M | Scene, ViewLayer | Updating Device | Writing constant memory
 Fra:49 Mem:8.30M (Peak 8.39M) | Time:00:00.00 | Mem:0.09M, Peak:0.09M | Scene, ViewLayer | Loading denoising kernels (may take a few minutes the first time)
 Fra:49 Mem:8.30M (Peak 8.39M) | Time:00:00.00 | Mem:0.09M, Peak:0.09M | Scene, ViewLayer | Sample 0/4
-Fra:49 Mem:9.50M (Peak 9.50M) | Time:00:00.02 | Remaining:00:00.04 | Mem:1.28M, Peak:1.28M | Scene, ViewLayer | Sample 1/4
-Fra:49 Mem:10.01M (Peak 10.51M) | Time:00:01.22 | Mem:1.28M, Peak:1.28M | Scene, ViewLayer | Sample 4/4
-Fra:49 Mem:10.01M (Peak 10.51M) | Time:00:01.22 | Mem:1.28M, Peak:1.28M | Scene, ViewLayer | Finished
-Saved: '/tmp/hatch-physics-prepared-q9xmmmy6/preview.png'
-Time: 00:01.43 (Saving: 00:00.21)
+Fra:49 Mem:9.50M (Peak 9.50M) | Time:00:00.02 | Remaining:00:00.05 | Mem:1.28M, Peak:1.28M | Scene, ViewLayer | Sample 1/4
+Fra:49 Mem:10.01M (Peak 10.51M) | Time:00:01.25 | Mem:1.28M, Peak:1.28M | Scene, ViewLayer | Sample 4/4
+Fra:49 Mem:10.01M (Peak 10.51M) | Time:00:01.25 | Mem:1.28M, Peak:1.28M | Scene, ViewLayer | Finished
+Saved: '/tmp/hatch-physics-prepared-720kgxr5/preview.png'
+Time: 00:01.44 (Saving: 00:00.19)
 
 Info: Saved as "scene.blend"
 Info: Saved as "scene.blend"

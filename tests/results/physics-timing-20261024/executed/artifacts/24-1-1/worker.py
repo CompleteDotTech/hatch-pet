@@ -116,11 +116,16 @@ def main():
                 native_margin=observed[11],margin_semantics='inherent sphere radius' if body['colliders'][0]['shape']['type']=='sphere' else 'explicit box collision margin'))
         def state():
             values=[]
-            for identifier,index in identifiers.items():
-                translation,rotation=p.getBasePositionAndOrientation(index,physicsClientId=client)
-                linear,angular=p.getBaseVelocity(index,physicsClientId=client)
+            for identifier,body_index in identifiers.items():
+                translation,rotation=p.getBasePositionAndOrientation(body_index,physicsClientId=client)
+                linear,angular=p.getBaseVelocity(body_index,physicsClientId=client)
                 for key,velocity in [('max_linear_velocity',linear),('max_angular_velocity',angular)]:
                     if key in stability and math.sqrt(sum(v*v for v in velocity))>stability[key]:
+                        failure=dict(code='PHYSICS_NUMERICAL_INSTABILITY',world_sha256=job['world_sha256'],
+                            solver_step=index,solver_time=dict(numerator=(index*step).numerator,denominator=(index*step).denominator),
+                            setting=key,limit=stability[key],observed=math.sqrt(sum(v*v for v in velocity)))
+                        temporary=root/'worker-failure.json.tmp'
+                        temporary.write_bytes(canonical(failure));temporary.replace(root/'worker-failure.json')
                         raise ValueError('Numerical stability velocity limit exceeded: '+key)
                 if not all(math.isfinite(v) for v in [*translation,*rotation]):
                     raise ValueError('Nonfinite PyBullet state.')
@@ -128,16 +133,18 @@ def main():
             return values
         samples=[]; contacts=[]
         index=0
+        observed_steps=[]
         left=right=state()
         solved=[dict(step=0,bodies=right)]
         for frame in range(frames):
             target=Fraction(frame,1)/fps/step
             upper=math.ceil(target)
+            previous=index
             while index<upper:
                 left=right
                 p.stepSimulation(physicsClientId=client)
-                right=state()
                 index+=1
+                right=state()
                 solved.append(dict(step=index,bodies=right))
             alpha=target-(upper-1) if target.denominator!=1 else Fraction(1)
             bodies=right if target.denominator==1 else [interpolate(a,b,alpha) for a,b in zip(left,right)]
@@ -147,7 +154,8 @@ def main():
                 values.append(dict(body_a=reverse[contact[1]],body_b=reverse[contact[2]],
                     position_a=list(contact[5]),position_b=list(contact[6]),normal_b=list(contact[7]),
                     distance=contact[8],normal_force=contact[9]))
-            contacts.append(dict(frame=frame,contacts=values))
+            observed_steps.append(index-previous)
+            contacts.append(dict(frame=frame,solver_step=index,solver_time=dict(numerator=(index*step).numerator,denominator=(index*step).denominator),contacts=values))
             samples.append(dict(frame=frame,bodies=bodies))
         (root/'solver-states.json').write_bytes(canonical(dict(schema_version=1,
             kind='hatch-physics-solver-states',world_sha256=job['world_sha256'],
@@ -158,7 +166,7 @@ def main():
             world_sha256=job['world_sha256'],samples=contacts)))
         (root/'worker-report.json').write_bytes(canonical(dict(ok=True,operation='simulate',
             backend=identity,connection_mode='DIRECT',sample_count=frames,object_count=len(identifiers),
-            actual_steps_per_frame=per_frame,actual_solver_steps=index,
+            maximum_steps_per_output_interval=max(observed_steps),steps_per_output_interval=observed_steps,actual_solver_steps=index,
             actual_bodies=effective,effective_engine=effective_engine,
             cache_storage='immutable native transform/contact samples',restart='clean-restart-only',
             contacts_queried=True)))
