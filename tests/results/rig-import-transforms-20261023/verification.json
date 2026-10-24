@@ -17,7 +17,7 @@
   "results": {
     "regression": "45 tests run in 6.872 seconds; 40 passed, 5 explicit optional integration skips; zero failures/errors",
     "baseline_control": "Exact original rig_import.py loaded in memory;17 expected failing subcases,zero errors;diagnostic trailing whitespace stripped only",
-    "cli": "Genuine reflected nonuniform glTF synthetic fixture explicitly labeled hatchSource.fixture=true imported, inspected, normal/tangent checked numerically, and original copied source hash and retained fixture classification verified",
+    "cli": "Genuine reflected nonuniform glTF synthetic fixture explicitly labeled hatchSource.fixture=true imported successfully. rig.py inspect returned expected RIG_NO_SKELETON because this fixture is unrigged; cli-inspect.json retains that diagnostic, not a successful skeleton inspection. Programmatic load_rig decoded geometry normal/tangent checks, copied original source hash and retained fixture classification passed.",
     "compatibility": "795 existing 2D tests discovered without 3D dependencies; not full execution",
     "checks": "all passed"
   },
