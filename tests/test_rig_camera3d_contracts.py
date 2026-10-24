@@ -1,5 +1,6 @@
 """Camera foundation admission, actual file resolution, numerical and legacy checks."""
 from copy import deepcopy
+from fractions import Fraction
 import hashlib
 import json
 import math
@@ -64,6 +65,35 @@ def fixtures():
     return values
 
 
+def save_native_closure(root, documents):
+    """Real immutable JSON fixture files; source digests are computed after refs resolve."""
+    documents={(d['kind'],d['id'],d['version']):deepcopy(d) for d in documents}
+    externals={}
+    for name in ('scene','scene-other'):
+        payload=contracts.canonical_bytes(dict(fixture='external-owner-admission-separate',id=name))
+        externals[('scene3d-scene',name,'1.0.0')]=payload
+    refs={};active=set()
+    def store(key):
+        if key in refs:return refs[key]
+        if key in active:raise AssertionError('test fixture creates an impossible circular byte-hash dependency')
+        active.add(key)
+        def replace(value):
+            if isinstance(value,dict):
+                if set(value)=={'id','version','path','sha256','kind'}:
+                    return deepcopy(store((value['kind'],value['id'],value['version'])))
+                return {k:replace(v) for k,v in value.items()}
+            if isinstance(value,list):return [replace(v) for v in value]
+            return value
+        payload=externals[key] if key in externals else contracts.canonical_bytes(replace(documents[key]))
+        path=key[1]+'.json';(root/path).write_bytes(payload)
+        refs[key]=dict(kind=key[0],id=key[1],version=key[2],path=path,sha256=hashlib.sha256(payload).hexdigest())
+        active.remove(key)
+        return refs[key]
+    for key in documents:store(key)
+    registry=fixtures()['registry'];registry['resources']=list(refs.values())
+    return registry
+
+
 class CameraContractTests(unittest.TestCase):
     def setUp(self):
         self.values=fixtures()
@@ -89,7 +119,8 @@ class CameraContractTests(unittest.TestCase):
                      lambda d:d['optics'].update(id='optics\n'),lambda d:d['optics'].update(kind='camera3d-optics\n'),
                      lambda d:d['optics'].update(sha256='0'*64+'\n'),
                      lambda d:d['optics'].update(path='../escape'),lambda d:d['optics'].update(path='a//b'),
-                     lambda d:d['optics'].update(path='CON.txt')):
+                     lambda d:d['optics'].update(path='CON.txt'),lambda d:d['optics'].update(path='a/COM¹.txt'),
+                     lambda d:d['optics'].update(path='CONIN$'),lambda d:d['optics'].update(path=' leading.json')):
             value=deepcopy(self.values['camera']);edit(value)
             self.assertFalse(validator.is_valid(value),value)
             with self.assertRaises(ValueError):contracts.validate(value)
@@ -98,6 +129,20 @@ class CameraContractTests(unittest.TestCase):
         native['timeline']=dict(id='Native.Animation:42',version='1.0.0',path='native.json',
             sha256='a'*64,kind='animation_project_3d')
         contracts.validate(native)
+
+    def test_json_schema_integral_float_numbers_remain_admitted_without_tracebacks(self):
+        edits=(('path',lambda d:d['fps'].update(numerator=24.0)),
+               ('render',lambda d:d['pixel_aspect'].update(numerator=1.0)),
+               ('evaluated',lambda d:d['time'].update(subframe_ticks=0.0)))
+        with tempfile.TemporaryDirectory() as directory:
+            for kind,edit in edits:
+                value=deepcopy(self.values[kind]);edit(value)
+                contracts.validate(value)
+                path=Path(directory)/(kind+'.json');path.write_bytes(contracts.canonical_bytes(value))
+                completed=subprocess.run([sys.executable,str(ROOT/'scripts/camera3d_contracts.py'),'--validate',str(path)],capture_output=True,text=True)
+                self.assertEqual(completed.returncode,0,completed.stderr)
+                self.assertTrue(json.loads(completed.stdout)['ok'])
+                self.assertNotIn('Traceback',completed.stderr)
 
     def test_invalid_optics_quaternion_rational_reference_and_nonfinite_rejected(self):
         cases=[('camera',lambda d:d['transform'].update(rotation=[0,0,0,0])),
@@ -218,13 +263,61 @@ class CameraContractTests(unittest.TestCase):
     def test_malformed_kind_json_values_paths_and_cli_errors_are_structured(self):
         for value in ({'kind':123}, [], {'kind':'camera3d-camera','bad':object()}):
             with self.subTest(value=str(value)),self.assertRaises(ValueError):contracts.validate(value)
-        for path in ('.','a//b','a/./b','a/../b','/a','NUL','x.','a:e','e\u0301.json'):
+        for path in ('.','a//b','a/./b','a/../b','/a','NUL','x.','a:e','e\u0301.json','a/COM¹.txt','LPT²','a/CONOUT$',' leading.json'):
             with self.subTest(path=path),self.assertRaises(ValueError):contracts.portable_path(path)
         with tempfile.TemporaryDirectory() as directory:
             path=Path(directory)/'bad.json';path.write_text('{"kind":123}')
             completed=subprocess.run([sys.executable,str(ROOT/'scripts/camera3d_contracts.py'),'--validate',str(path)],capture_output=True,text=True)
             self.assertEqual(completed.returncode,2)
             self.assertFalse(json.loads(completed.stdout)['ok']);self.assertNotIn('Traceback',completed.stderr)
+
+    def test_real_owned_reference_links_enforce_native_timeline_type_scene_and_timing(self):
+        values=deepcopy(self.values)
+        values['camera'].update(animation=pointer('animation'),constraints=[pointer('constraint')])
+        values['binding']['rig']=pointer('rig')
+        names=('optics','render','path','animation','target','constraint','camera','rig','binding','transition','shot')
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory)
+            self.assertEqual(len(contracts.load_registry(root,save_native_closure(root,[values[n] for n in names]))),11)
+            for kind,edit,message in (
+                ('path',lambda d:d.update(duration_frames=25),'animation/path timing'),
+                ('path',lambda d:d.update(fps=dict(numerator=30,denominator=1)),'animation/path timing'),
+                ('shot',lambda d:d['shot'].update(duration_frames=25),'shot/animation timing'),
+                ('camera',lambda d:d.update(parent=dict(scene=dict(id='scene-other',kind='scene3d-scene',version='1.0.0',path='scene-other.json',sha256='0'*64),node='camera-parent')),'parent belongs'),
+                ('target',lambda d:d.update(scene=dict(d['scene'],id='scene-other')),'target belongs'),
+                ('rig',lambda d:d['nodes'][0].update(camera=None),'not in bound rig')):
+                edited=deepcopy(values);edit(edited[kind])
+                registry=save_native_closure(root,[edited[n] for n in names])
+                with self.subTest(kind=kind),self.assertRaisesRegex(ValueError,message):contracts.load_registry(root,registry)
+            path_target=deepcopy(values)
+            path_target['camera']['constraints']=[]
+            path_target['path'].update(orientation='target',target=pointer('target'))
+            path_target['target']['scene']=dict(path_target['target']['scene'],id='scene-other')
+            registry=save_native_closure(root,[path_target[n] for n in names])
+            with self.assertRaisesRegex(ValueError,'target belongs'):contracts.load_registry(root,registry)
+            bad=deepcopy(values['animation']);bad.update(path=None,timeline=pointer('optics'))
+            registry=save_native_closure(root,[values['optics'],bad])
+            with self.assertRaisesRegex(ValueError,'schema'):contracts.load_registry(root,registry)
+        for attachment in ('Bone.001','Hand:R','RightHand'):
+            target=deepcopy(values['target']);target.update(space='bone',attachment=attachment)
+            contracts.validate(target)
+        target['attachment']='Hand:R\n'
+        with self.assertRaises(ValueError):contracts.validate(target)
+
+    def test_shot_local_clock_reference_at_global_cuts_and_overlaps(self):
+        # Two 24-frame shots overlap by two frames: starts0/22, end24/46.
+        # This is a contract reference; scene/animation owners map global playback.
+        for start,global_frame,local,terminal in ((0,22,22,False),(22,22,0,False),
+                                                 (0,24,24,True),(22,24,2,False),
+                                                 (22,46,24,True)):
+            sample=deepcopy(self.values['evaluated'])
+            sample['time']=dict(frame=local,subframe_ticks=0);sample['terminal']=terminal
+            contracts.validate(sample)
+            self.assertEqual(Fraction(start)+Fraction(sample['time']['frame'])+
+                Fraction(sample['time']['subframe_ticks'],1000000),Fraction(global_frame))
+        sample=deepcopy(self.values['evaluated']);sample['time']=dict(frame=23,subframe_ticks=500000)
+        contracts.validate(sample)
+        self.assertEqual(Fraction(22)+Fraction(47,2),Fraction(91,2))
 
     def test_actual_legacy_wrapper_uses_unchanged_v1_validator_and_duration(self):
         from test_production_render import fixture_project
@@ -277,6 +370,55 @@ class CameraMathTests(unittest.TestCase):
         self.values=fixtures()
         self.world=np.eye(4)
         self.projection=camera.projection_matrix(self.values['optics'],self.values['render'])
+
+    def test_inherited_vector_quaternion_and_coordinate_reference_operations(self):
+        camera,np=self.camera,self.np
+        np.testing.assert_allclose(camera.add([1,2,3],[4,5,6]),[5,7,9])
+        np.testing.assert_allclose(camera.subtract([1,2,3],[4,5,6]),[-3,-3,-3])
+        self.assertEqual(camera.dot([1,2,3],[4,5,6]),32)
+        np.testing.assert_allclose(camera.cross([1,0,0],[0,1,0]),[0,0,1])
+        self.assertEqual(camera.distance([0,0,0],[3,4,0]),5)
+        self.assertAlmostEqual(camera.angle([1,0,0],[0,1,0]),math.pi/2)
+        np.testing.assert_allclose(camera.normalize([0,0,-2]),[0,0,-1])
+        q=camera.euler_xyz([math.pi/2,0,math.pi/2])
+        # Rx(90) sends +Y to +Z; Rz(90) leaves +Z unchanged.
+        np.testing.assert_allclose(camera.quaternion_matrix(q)@[0,1,0],[0,0,1],atol=1e-12)
+        identity=camera.quaternion_multiply(q,camera.quaternion_inverse(q))
+        np.testing.assert_allclose(camera.quaternion_matrix(identity),np.eye(3),atol=1e-12)
+        midpoint=camera.quaternion_slerp([0,0,0,1],camera.euler_xyz([0,math.pi,0]),.5)
+        np.testing.assert_allclose(camera.quaternion_matrix(midpoint)@[0,0,-1],[-1,0,0],atol=1e-12)
+        with self.assertRaises(ValueError):camera.quaternion_slerp(q,q,True)
+        world=camera.world_transform(dict(translation=[1,2,3],rotation=[0,0,0,1],scale=[1,1,1]))
+        np.testing.assert_allclose(camera.world_to_camera([1,2,1],world),[0,0,-2])
+        np.testing.assert_allclose(camera.camera_to_world([0,0,-2],world),[1,2,1])
+        np.testing.assert_allclose(camera.target_offset([1,2,3],[0,1,0]),[1,3,3])
+
+    def test_actual_ray_plane_and_frustum_intersection_reference(self):
+        camera,np=self.camera,self.np
+        np.testing.assert_allclose(camera.ray_plane_intersection([0,2,0],[0,-1,0],[0,0,0],[0,1,0]),[0,0,0])
+        self.assertIsNone(camera.ray_plane_intersection([0,2,0],[1,0,0],[0,0,0],[0,1,0]))
+        self.assertIsNone(camera.ray_plane_intersection([0,2,0],[0,1,0],[0,0,0],[0,1,0]))
+        corners=camera.frustum_corners(self.world,self.projection)
+        np.testing.assert_allclose(corners[0],[-.036,.024,-.1],atol=1e-12)
+        np.testing.assert_allclose(corners[6],[36,-24,-100],atol=1e-8)
+        for point in ([0,0,-1],[-.036,.024,-.1],[36,-24,-100]):
+            self.assertTrue(camera.frustum_contains(point,self.world,self.projection))
+        for point in ([0,0,-.01],[0,0,-101],[100,0,-1],[0,0,1]):
+            self.assertFalse(camera.frustum_contains(point,self.world,self.projection))
+        np.testing.assert_allclose(camera.project_bounds([-.1,-.1,-2],[.1,.1,-1],self.world,self.projection,360,240),[130,70,230,170],atol=1e-8)
+        np.testing.assert_allclose(camera.project_bounds([-.1,-.1,-.2],[.1,.1,0],self.world,self.projection,360,240),[0,0,360,240],atol=1e-8)
+        self.assertIsNone(camera.project_bounds([100,100,-2],[101,101,-1],self.world,self.projection,360,240))
+        with self.assertRaises(ValueError):camera.project_bounds([1,0,0],[0,1,1],self.world,self.projection,360,240)
+
+    def test_integral_json_float_raster_sizes_match_schema_acceptance(self):
+        render=deepcopy(self.values['render']);render.update(width=360.0,height=240.0)
+        render['pixel_aspect'].update(numerator=1.0)
+        projection=self.camera.projection_matrix(self.values['optics'],render)
+        point=self.camera.project([0,0,-1],self.world,projection,render['width'],render['height'])
+        self.assertEqual(point['pixel'],[180,120])
+        self.np.testing.assert_allclose(self.camera.unproject(point['pixel'],point['ndc'][2],self.world,projection,360.0,240.0),[0,0,-1])
+        for width in (True,360.5,float('inf'),0,16385):
+            with self.subTest(width=width),self.assertRaises(ValueError):self.camera.project([0,0,-1],self.world,projection,width,240)
 
     def test_perspective_independent_lens_field_of_view_and_clipping_reference(self):
         camera,np=self.camera,self.np

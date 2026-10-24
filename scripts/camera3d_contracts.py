@@ -26,7 +26,7 @@ ID = {'type': 'string', 'pattern': r'^[a-z][a-z0-9_-]{0,63}(?![\s\S])'}
 VERSION = {'type': 'string', 'pattern': r'^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(?![\s\S])'}
 TEXT = {'type': 'string', 'minLength': 1, 'maxLength': 4096}
 PATH = {'type': 'string', 'minLength': 1, 'maxLength': 1024,
-        'pattern': r'^(?!/)(?!.*[\\:\x00-\x1f*?"<>|])(?!.*//)(?!.*(?:^|/)\.{1,2}(?:/|(?![\s\S])))(?!.*[. ](?:/|(?![\s\S])))(?!(?:[^/]+/)*(?:[cC][oO][nN]|[pP][rR][nN]|[aA][uU][xX]|[nN][uU][lL]|[cC][oO][mM][1-9]|[lL][pP][tT][1-9])(?:[.]|/|(?![\s\S])))[^/]+(?:/[^/]+)*(?![\s\S])'}
+        'pattern': r'^(?!/)(?!.*(?:^|/) )(?!.*[\\:\x00-\x1f*?"<>|])(?!.*//)(?!.*(?:^|/)\.{1,2}(?:/|(?![\s\S])))(?!.*[. ](?:/|(?![\s\S])))(?!(?:[^/]+/)*(?:[cC][oO][nN]|[pP][rR][nN]|[aA][uU][xX]|[nN][uU][lL]|[cC][oO][nN][iI][nN]\$|[cC][oO][nN][oO][uU][tT]\$|[cC][oO][mM][1-9¹²³]|[lL][pP][tT][1-9¹²³])(?:[.]|/|(?![\s\S])))[^/]+(?:/[^/]+)*(?![\s\S])'}
 SHA = {'type': 'string', 'pattern': r'^[0-9a-f]{64}(?![\s\S])'}
 NUM = {'type': 'number', 'minimum': -1e9, 'maximum': 1e9}
 POS = {'type': 'number', 'exclusiveMinimum': 0, 'maximum': 1e9}
@@ -103,7 +103,7 @@ def definitions():
     d['camera'] = base('camera', dict(transform=ref('trs'), parent=nullable(ref('parent')),
                                      optics=optics_ref, constraints=arr(constraint_ref, maximum=128),
                                      animation=nullable(typed('camera3d-animation')), metadata=ref('metadata')))
-    d['target'] = base('target', dict(scene=scene_ref, node=ID, attachment=nullable(ID),
+    d['target'] = base('target', dict(scene=scene_ref, node=ID, attachment=nullable(pointer_id),
                                      offset_m=vec, space=enum('world', 'node', 'bone', 'socket')))
     d['constraint'] = base('constraint', dict(type=enum('look-at', 'frame', 'focus', 'collision', 'horizon'),
         targets=arr(target_ref, maximum=128), priority=integer(0, 1000), enabled={'type': 'boolean'},
@@ -117,7 +117,7 @@ def definitions():
         orientation=enum('authored', 'tangent', 'target'), target=nullable(target_ref),
         speed=enum('parameter', 'arc-length'), metadata=ref('metadata')))
     d['animation'] = base('animation', dict(duration_frames=integer(1), fps=ref('rate'),
-        timeline=nullable(ref('reference')), path=nullable(typed('camera3d-path')),
+        timeline=nullable({'allOf': [ref('reference'), {'properties': {'kind': enum('animation_project_3d', 'animation_sequence_3d', 'animation_clip_3d')}}]}), path=nullable(typed('camera3d-path')),
         terminal_pose=nullable(sample), metadata=ref('metadata')))
     rig_node = obj(dict(id=ID, parent=nullable(ID), transform=ref('trs'), camera=nullable(camera_ref)))
     d['rig'] = base('rig', dict(nodes=arr(rig_node, 1, 4096), metadata=ref('metadata')))
@@ -189,9 +189,9 @@ def portable_path(value):
         raise ValueError('camera3d reference path is not canonical relative POSIX')
     for part in path.parts:
         stem = part.split('.')[0].upper()
-        if (unicodedata.normalize('NFC', part) != part or part.endswith((' ', '.'))
+        if (unicodedata.normalize('NFC', part) != part or part.startswith(' ') or part.endswith((' ', '.'))
                 or any(ord(c) < 32 or c in ':*?"<>|' for c in part)
-                or stem in {'CON','PRN','AUX','NUL',*(f'COM{i}' for i in range(1,10)),*(f'LPT{i}' for i in range(1,10))}):
+                or stem in {'CON','PRN','AUX','NUL','CONIN$','CONOUT$',*(f'COM{i}' for i in '123456789¹²³'),*(f'LPT{i}' for i in '123456789¹²³')}):
             raise ValueError('camera3d reference path has a nonportable component')
     return path
 
@@ -229,13 +229,13 @@ def validate(value, kind=None):
     for item in _walk(value):
         if isinstance(item, dict):
             if 'fps' in item and isinstance(item['fps'],dict):
-                fps = Fraction(item['fps']['numerator'],item['fps']['denominator'])
+                fps = Fraction(int(item['fps']['numerator']),int(item['fps']['denominator']))
                 if not Fraction(1,1000) <= fps <= 1000:
                     raise ValueError('camera3d fps outside shared 0.001..1000 range')
             if set(item) == {'id','version','path','sha256','kind'}:
                 portable_path(item['path'])
             if set(item) == {'numerator','denominator'}:
-                n, d = item['numerator'], item['denominator']
+                n, d = int(item['numerator']), int(item['denominator'])
                 if math.gcd(n, d) != 1:
                     raise ValueError('camera3d rational must be reduced')
             if set(item) == {'translation','rotation','scale'}:
@@ -290,7 +290,7 @@ def validate(value, kind=None):
         if value['type'] != 'cut' and (value['duration_frames'] == 0 or value['overlap'] != 'tail-head'):
             raise ValueError('camera3d transition requires positive overlap')
     if kind == 'evaluated':
-        frame = Fraction(value['time']['frame']) + Fraction(value['time']['subframe_ticks'], 1_000_000)
+        frame = Fraction(int(value['time']['frame'])) + Fraction(int(value['time']['subframe_ticks']), 1_000_000)
         if frame > value['duration_frames'] or (frame == value['duration_frames']) != value['terminal']:
             raise ValueError('camera3d terminal state is distinct from rendered frames')
         from camera3d_math import validate_evaluated_matrices
@@ -375,6 +375,10 @@ def _validate_bindings(documents,external_shots=None):
     def get(pointer):
         return documents.get((pointer['kind'],pointer['id'],pointer['version']))
     for doc in documents.values():
+        if doc['kind'] == 'camera3d-animation' and doc['path'] is not None:
+            path = get(doc['path'])
+            if path['fps'] != doc['fps'] or path['duration_frames'] != doc['duration_frames']:
+                raise ValueError('camera3d animation/path timing mismatch; no implicit retiming')
         if doc['kind'] == 'camera3d-camera':
             constraints = [get(p) for p in doc['constraints']]
             priorities = [c['priority'] for c in constraints if c is not None and c['enabled']]
@@ -382,6 +386,23 @@ def _validate_bindings(documents,external_shots=None):
                 raise ValueError('camera3d enabled constraints require distinct priorities')
         if doc['kind'] == 'camera3d-binding':
             camera = get(doc['camera'])
+            if camera['parent'] is not None and camera['parent']['scene'] != doc['scene']:
+                raise ValueError('camera3d camera parent belongs to another bound scene')
+            all_targets = list(doc['targets'])
+            animation_pointer = doc['animation'] or camera['animation']
+            if animation_pointer is not None:
+                animation = get(animation_pointer)
+                if animation['path'] is not None:
+                    path = get(animation['path'])
+                    if path['target'] is not None:
+                        all_targets.append(path['target'])
+            for constraint in camera['constraints'] + doc['constraints']:
+                all_targets.extend(get(constraint)['targets'])
+            if any(get(target)['scene'] != doc['scene'] for target in all_targets):
+                raise ValueError('camera3d target belongs to another bound scene')
+            if doc['rig'] is not None:
+                if doc['camera'] not in [node['camera'] for node in get(doc['rig'])['nodes']]:
+                    raise ValueError('camera3d selected camera is not in bound rig')
             combined = [get(p) for p in camera['constraints'] + doc['constraints']]
             priorities = [c['priority'] for c in combined if c is not None and c['enabled']]
             if len(priorities) != len(set(priorities)):
@@ -394,6 +415,14 @@ def _validate_bindings(documents,external_shots=None):
         if doc['kind'] == 'camera3d-shot' and doc['shot']['render_mode'] == '3d':
             if get(doc['shot']['binding'])['scene'] != doc['shot']['scene']:
                 raise ValueError('camera3d shot/binding scene mismatch')
+            binding = get(doc['shot']['binding'])
+            camera = get(binding['camera'])
+            animation_pointer = binding['animation'] or camera['animation']
+            if animation_pointer is not None:
+                animation = get(animation_pointer)
+                if animation['fps'] != doc['shot']['fps'] or animation['duration_frames'] != doc['shot']['duration_frames']:
+                    raise ValueError('camera3d shot/animation timing mismatch; no implicit retiming')
+
         if doc['kind'] == 'camera3d-evaluated':
             from camera3d_math import projection_matrix
             import numpy as np

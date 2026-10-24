@@ -7,11 +7,12 @@
   "command_results": [
     {
       "command": "/tmp/hatch-restore-venv/bin/python scripts/test_rig_gate.py schema-math",
-      "tests": 35,
+      "tests": 41,
       "failures": 0,
       "errors": 0,
       "skips": 0,
-      "seconds": 10.729
+      "seconds": 12.763,
+      "exit": 0
     },
     {
       "command": "PYTHONPATH=scripts:tests /tmp/hatch-restore-venv/bin/python -m unittest test_production_contracts test_production_render -v",
@@ -19,7 +20,8 @@
       "failures": 0,
       "errors": 0,
       "skips": 0,
-      "seconds": 10.655
+      "seconds": 8.85,
+      "exit": 0
     },
     {
       "command": "HATCH_BROWSER_EXECUTABLE=/usr/bin/chromium PYTHONPATH=scripts:tests /tmp/pr199-venv/bin/python -m unittest test_production_preview -v",
@@ -27,8 +29,9 @@
       "failures": 0,
       "errors": 0,
       "skips": 0,
-      "seconds": 10.832,
-      "browser": "Chromium 152.0.7977.82"
+      "seconds": 10.532,
+      "browser": "Chromium 152.0.7977.82",
+      "exit": 0
     },
     {
       "command": "/tmp/hatch-restore-venv/bin/python scripts/generate_schemas.py --check",
@@ -68,32 +71,56 @@
   ],
   "artifacts": {
     "schema-math.log": {
-      "sha256": "af967e32adc4b2417a7263c94c2732b3f354a23e3947d89abec43e4ee2502719",
-      "bytes": 6068
+      "sha256": "3c36b9242762a1a0ebc562762f47a540931e6627ba94442b0b7cbddb75a52b35",
+      "bytes": 7200
     },
     "legacy-contract-render.log": {
-      "sha256": "7a49a6fe165ee9daaacf64b4f5abd06191dfc94125ffc9a183a8b75357b04599",
-      "bytes": 9693
+      "sha256": "da5e073674af3675b97e44f36666e8227c02aa6585a72de94b48920058795a1c",
+      "bytes": 9692
     },
     "actual-browser.log": {
-      "sha256": "f7e1e194543c47b4a0a0bed8b7f1dc0091c80b1abe9d15c40685e00197743ff7",
+      "sha256": "0eb341df21a29e157d7e8b62c9216faa46d1852f948cfaf760a39c03dbb576e2",
       "bytes": 884
-    },
-    "initial-legacy-missing-playwright.log": {
-      "sha256": "c73765447f84af734b905161273c2d40f1538bf7478279bcd348293a0a1647a0",
-      "bytes": 10538
     },
     "registry-example.json": {
       "sha256": "cabda334465c8bbe4766598d987d2b622ecb274743ad629efa6c924b751a80a6",
       "bytes": 276
     },
     "source-snapshot.json": {
-      "sha256": "dd63212f0fc6d444472041523845f5a5198f736b8dc0b4fc4f8741dcc24b82ff",
+      "sha256": "9dcd438a86054e389f28a6f5f27279c7127cfe07663ff4f619ced85429b4433a",
       "bytes": 10764
     },
     "protected-inputs.json": {
       "sha256": "db00f4392cf4384ec666b4cb59f14fbd06b773e18aa689b37a7223864ec03663",
       "bytes": 1445
     }
-  }
+  },
+  "historical_execution": {
+    "commit": "e202ca4bb60372523d33590f7ba1e31e867f7f55",
+    "directory": "historical-e202ca4",
+    "all_recorded_source_hashes_verified_against_commit": true
+  },
+  "review_finding_resolutions": [
+    {
+      "finding": "Integral JSON float arithmetic/CLI exception and raster dimension inconsistency",
+      "fix": "Accept schema-valid integral numeric values using arithmetic-only integer conversion",
+      "regression": "test_json_schema_integral_float_numbers_remain_admitted_without_tracebacks; test_integral_json_float_raster_sizes_match_schema_acceptance"
+    },
+    {
+      "finding": "Wrong native animation timeline kind admitted",
+      "fix": "Explicit authoritative native animation kind set",
+      "regression": "test_real_owned_reference_links_enforce_native_timeline_type_scene_and_timing"
+    },
+    {
+      "finding": "Native camera-owned reference relationship gaps",
+      "fix": "Exact timing equality, bound scene/target/rig membership checks including path target",
+      "regression": "test_real_owned_reference_links_enforce_native_timeline_type_scene_and_timing"
+    },
+    {
+      "finding": "Valid native bone/socket IDs rejected",
+      "fix": "Preserve native identifier policy for attachments",
+      "regression": "test_real_owned_reference_links_enforce_native_timeline_type_scene_and_timing"
+    }
+  ],
+  "current_execution_note": "Corrected candidate after independent findings; exact source snapshot preserved before and after all validation"
 }

@@ -125,6 +125,8 @@ not evidence of a real Blender or browser camera export/render.
 
 ## Timing and editorial boundaries
 
+Evaluated `time` is **shot-local**, not a global editorial frame. Global presentation time in exact million ticks is `shot.start_frame * 1000000 + time.frame * 1000000 + time.subframe_ticks`. Two 24-frame shots starting at 0 and 22 overlap for global frames 22 and 23: global frame 22 maps simultaneously to local frame 22 of the first shot and local frame 0 of the second. At global 24 the first shot is at its labelled terminal boundary while the second is at local 2. A transition renderer combines those states later; it must not emit two events or reinterpret local time as global time.
+
 Frame rates are reduced positive rational `{numerator, denominator}` records,
 within the shared animation policy 0.001–1000 fps. Subframes use one million
 integer ticks per frame. Display samples are half-open `[0, duration_frames)`;
@@ -164,4 +166,11 @@ Playwright from the subsequent actual Chromium preview execution. Local math and
 fixture tests are engineering validation, not artistic review, actual camera
 animation, renderer parity, production signoff, or full parent #14 completion.
 
-Final frozen-source local validation: **35 schema/math/compatibility tests, 51 legacy contract/render tests, and 4 actual Chromium preview tests passed**, with zero final failures/errors/skips. The schema/math gate includes all 15 new camera tests and discovered 802 legacy tests with optional 3D imports blocked; that discovery is not execution of the full 802-test suite. [Retained verification](../tests/results/camera3d-contracts/verification.json) binds actual logs, byte counts, SHA-256 values, source snapshot, protected v1 inputs and environment limitations.
+Validation results and exact source hashes are recorded in [retained verification](../tests/results/camera3d-contracts/verification.json). The original e202ca4 execution is preserved separately from the corrected candidate, including its original logs and source snapshot. Discovery of the 802 legacy tests with optional 3D imports blocked is not full-suite execution.
+
+The spatial reference layer also delegates vector/quaternion operations to `rig_math`, exposes explicitly fixed-axis/extrinsic XYZ Euler angles (`Rz @ Ry @ Rx`), world/camera point conversion, world or rotated target offsets, forward ray/plane intersection, normalized frustum planes/corners/containment, and exact convex AABB/frustum intersection projection. Bounding-box projection enumerates at most 220 plane triples and handles near-plane crossings and camera-enclosing boxes; it does not establish rendered occlusion visibility. Native bone/socket identifiers retain their original punctuation/case. Schema-valid integral JSON numbers such as `24.0` are accepted for integer fields by normalizing only arithmetic operands, leaving authentic source bytes and hashes unchanged. Camera-owned path/animation/shot timing and bound scene/rig relationships are checked; retiming is never implicit.
+
+The corrected frozen candidate passed **41 schema/math/compatibility tests
+(including 21 camera tests), 51 legacy contract/render tests, and 4 actual
+Chromium preview tests**, with zero final failures/errors/skips. The original
+35-test schema/math execution is preserved at its authentic e202ca4 revision.
