@@ -10,7 +10,7 @@
       "properties": {
         "code": {
           "type": "string",
-          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
         },
         "message": {
           "type": "string",

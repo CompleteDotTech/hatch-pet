@@ -41,6 +41,8 @@ class Diagnostic:
 
 class PhysicsError(ValueError):
     def __init__(self, code: str, message: str, path: str = '', *, category='invalid-input'):
+        message = str(message).encode('utf-8', 'backslashreplace').decode('utf-8')[:1024]
+        path = str(path).encode('utf-8', 'backslashreplace').decode('utf-8')[:2048]
         super().__init__(message)
         self.diagnostic = Diagnostic(code, message, path, category)
         self.report = asdict(self.diagnostic)
@@ -56,15 +58,26 @@ def definitions() -> dict:
     # Bounds protect validation itself as well as future admission. Version 1
     # deliberately has no untyped backend-options dictionary.
     text = dict(type='string', minLength=1, maxLength=1024)
-    identifier = dict(type='string', pattern=r'^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$')
-    version = dict(type='string', pattern=r'^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$')
-    digest = dict(type='string', pattern=r'^[0-9a-f]{64}$')
+    identifier = dict(type='string', pattern=r'^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\s\S])')
+    version = dict(type='string', pattern=r'^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(?![\s\S])')
+    digest = dict(type='string', pattern=r'^[0-9a-f]{64}(?![\s\S])')
+    # Portable lexical spelling mirrors the existing package path policy. NFC
+    # and scalar-Unicode checks remain explicit runtime semantic validation.
+    end = r'(?![\s\S])'
+    devices = (r'[cC][oO][nN](?:[iI][nN]\$|[oO][uU][tT]\$)?|[pP][rR][nN]|'
+               r'[aA][uU][xX]|[nN][uU][lL]|[cC][oO][mM][1-9]|[lL][pP][tT][1-9]')
+    forbidden = r'/\\:\x00-\x1f\x7f<>"|?*'
+    segment = '(?!(?:' + devices + ')(?:\\.|/|' + end + '))[^' + forbidden + ']*[^' + forbidden + ' .]'
+    portable_path = dict(type='string', minLength=1, maxLength=1024,
+                         pattern='^' + segment + '(?:/' + segment + ')*' + end)
     number = dict(type='number', minimum=-1e12, maximum=1e12)
     nonnegative = dict(type='number', minimum=0, maximum=1e12)
     positive = dict(type='number', exclusiveMinimum=0, maximum=1e12)
     unit = dict(type='number', minimum=0, maximum=1)
     integer = dict(type='integer', minimum=0, maximum=2**31-1)
     count = dict(type='integer', minimum=1, maximum=2**31-1)
+    byte_count = dict(type='integer', minimum=0, maximum=2**50)
+    positive_bytes = dict(type='integer', minimum=1, maximum=2**50)
     vector = arr(number, 3, 3)
     positive_vector = arr(positive, 3, 3)
     quaternion = arr(dict(type='number', minimum=-1, maximum=1), 4, 4)
@@ -73,9 +86,9 @@ def definitions() -> dict:
     frame_range = obj(dict(start=integer, end=count))
     # Physics positions are rigid transforms: no ambiguous animated/nonuniform scale.
     transform = obj(dict(translation=vector, rotation=quaternion))
-    asset = obj(dict(id=identifier, version=version, path=text, sha256=digest,
+    asset = obj(dict(id=identifier, version=version, path=portable_path, sha256=digest,
                      kind={'enum': ['geometry', 'rig', 'animation', 'scene', 'material', 'texture', 'physics-world', 'physics-cache']}))
-    file_ref = obj(dict(path=text, sha256=digest, bytes=integer))
+    file_ref = obj(dict(path=portable_path, sha256=digest, bytes=byte_count))
     # Coefficients are canonical requests. A future adapter must either verify
     # the declared combination rule or reject it; no override is implied.
     material = obj(dict(id=identifier, density=positive, static_friction=nonnegative,
@@ -88,8 +101,11 @@ def definitions() -> dict:
     capsule = obj(dict(type={'enum': ['capsule', 'cylinder']}, radius=positive, height=positive,
                        axis={'enum': ['X', 'Y', 'Z']}))
     mesh = obj(dict(type={'enum': ['convex-hull', 'triangle-mesh']}, source=identifier,
-                    vertices=arr(vector, 4, 100000),
-                    triangles=arr(arr(integer, 3, 3), 4, 200000)))
+                    vertices=arr(vector, 3, 100000),
+                    triangles=arr(arr(integer, 3, 3), 1, 200000)))
+    mesh['allOf'] = [{
+        'if': {'properties': {'type': {'const': 'convex-hull'}}},
+        'then': {'properties': {'vertices': {'minItems': 4}, 'triangles': {'minItems': 4}}}}]
     compound = obj(dict(type={'const': 'compound'}, children=arr(obj(dict(
         transform=ref('Transform'), shape=ref('ColliderShape'))), 1, 64)))
     shape = {'oneOf': [sphere, box, capsule, mesh, compound]}
@@ -127,7 +143,13 @@ def definitions() -> dict:
                           geometry=identifier, material=identifier, parent=nullable_id,
                           pins=arr(integer, 0, 100000), vertex_count=count,
                           stiffness=positive, damping=unit, mass=positive,
-                          colliders=arr(identifier, 0, 10000)))
+                          colliders=arr(identifier, 0, 10000), strand_count=count),
+                     ['id', 'category', 'geometry', 'material', 'parent', 'pins',
+                      'vertex_count', 'stiffness', 'damping', 'mass', 'colliders'])
+    deformable['allOf'] = [{
+        'if': {'properties': {'category': {'const': 'hair'}}},
+        'then': {'required': ['strand_count']},
+        'else': {'not': {'required': ['strand_count']}}}]
     particles = obj(dict(id=identifier, category={'const': 'particles'}, geometry=identifier,
                          count=count, lifetime_seconds=positive, seed=integer,
                          mass=positive, radius=positive, initial_velocity=vector,
@@ -137,14 +159,27 @@ def definitions() -> dict:
                       resolution=arr(dict(type='integer', minimum=1, maximum=4096), 3, 3),
                       density=positive, viscosity=nonnegative, temperature=positive,
                       combustion={'type': 'boolean'}, emitters=arr(identifier, 1, 10000),
-                      colliders=arr(identifier, 0, 10000)))
+                      colliders=arr(identifier, 0, 10000), max_secondary_particles=integer),
+                 ['id', 'category', 'transform', 'size', 'resolution', 'density',
+                  'viscosity', 'temperature', 'combustion', 'emitters', 'colliders'])
+    volume['allOf'] = [{
+        'if': {'properties': {'category': {'const': 'liquid'}}},
+        'then': {'required': ['max_secondary_particles']},
+        'else': {'not': {'required': ['max_secondary_particles']}}}]
     component = {'oneOf': [deformable, particles, volume]}
     event = obj(dict(id=identifier, frame=integer, sequence=integer,
                      type={'enum': ['grab', 'release', 'throw', 'impulse', 'break', 'enable', 'disable']},
                      target=identifier, actor=nullable_id, vector=vector))
-    budgets = obj(dict(bodies=count, colliders=count, vertices=count, particles=count,
-                       volume_cells=count, steps=count, duration_seconds=positive,
-                       memory_bytes=count, cache_bytes=count, timeout_seconds=positive))
+    budgets = obj(dict(bodies=integer, dynamic_bodies=integer, colliders=integer, constraints=integer,
+                       triangles=integer, vertices=integer, cloth_vertices=integer, soft_body_vertices=integer,
+                       hair_strands=integer, particles=integer, fluid_secondary_particles=integer,
+                       volume_cells=integer, gas_cells=integer, liquid_cells=integer,
+                       output_frames=count, steps=count, duration_seconds=positive,
+                       memory_bytes=positive_bytes, vram_bytes=byte_count, cache_bytes=positive_bytes,
+                       bake_file_bytes=positive_bytes, temporary_bytes=positive_bytes,
+                       cpu_workers=dict(type='integer',minimum=1,maximum=64),
+                       concurrent_jobs=dict(type='integer',minimum=1,maximum=64),
+                       restart_attempts=dict(type='integer',minimum=0,maximum=99), timeout_seconds=positive))
     solver = obj(dict(backend={'enum': ['blender', 'pybullet']}, adapter_version=version,
                       fixed_step=rate, substeps=dict(type='integer', minimum=1, maximum=1024),
                       iterations=dict(type='integer', minimum=1, maximum=1000),
@@ -163,11 +198,11 @@ def definitions() -> dict:
                        solver_name=text, solver_version=text, application_version=text,
                        platform=text, precision={'enum': ['float32', 'float64', 'mixed']},
                        device={'enum': ['cpu', 'gpu']}, executable_sha256=digest))
-    usage = obj(dict(elapsed_seconds=nonnegative, peak_memory_bytes=integer,
-                     output_bytes=integer, solver_steps=integer))
+    usage = obj(dict(elapsed_seconds=nonnegative, peak_memory_bytes=byte_count,
+                     output_bytes=byte_count, solver_steps=integer))
     job = obj(dict(schema_version={'const': 1}, kind={'const': 'hatch-3d-physics-job'},
                    id=identifier, world=asset, world_sha256=digest, backend=backend,
-                   output_directory=text, input_files=arr(file_ref, 1, 10000),
+                   output_directory=portable_path, input_files=arr(file_ref, 1, 10000),
                    frame_range=frame_range, fps=rate, fixed_step=rate,
                    substeps=dict(type='integer', minimum=1, maximum=1024),
                    budgets=budgets, status={'enum': ['pending', 'running', 'succeeded', 'failed', 'cancelled', 'interrupted']},
@@ -224,7 +259,7 @@ def schemas() -> dict:
 
 @lru_cache(maxsize=32)
 def _validator(kind: str):
-    require(kind in definitions(), 'PHYSICS_SCHEMA_KIND', 'Unknown physics contract: ' + kind)
+    require(kind in definitions(), 'PHYSICS_SCHEMA_KIND', 'Unknown physics contract: ' + str(kind))
     try:
         from jsonschema import Draft202012Validator
     except ImportError as exc:
@@ -254,10 +289,12 @@ def _common(value: Any) -> None:
                 raise PhysicsError('PHYSICS_PATH', str(exc), path + '/' + field) from exc
             require(canonical == item[field] and unicodedata.normalize('NFC', canonical) == canonical, 'PHYSICS_PATH', 'Path must already be canonical POSIX/NFC.', path + '/' + field)
         if set(item) == {'numerator', 'denominator'}:
-            require(math.gcd(item['numerator'], item['denominator']) == 1,
+            require(math.gcd(int(item['numerator']), int(item['denominator'])) == 1,
                     'PHYSICS_RATE', 'Rationals must be reduced.', path)
         if set(item) == {'start', 'end'}:
             require(item['start'] < item['end'], 'PHYSICS_RANGE', 'Ranges are nonempty and half-open.', path)
+        if 'static_friction' in item and 'dynamic_friction' in item:
+            require(item['dynamic_friction'] <= item['static_friction'], 'PHYSICS_MATERIAL', 'Dynamic friction cannot exceed static friction.', path + '/dynamic_friction')
         if 'rotation' in item:
             require(abs(sum(x*x for x in item['rotation']) - 1) <= 1e-5,
                     'PHYSICS_QUATERNION', 'XYZW quaternion must have unit length.', path + '/rotation')
@@ -289,47 +326,58 @@ def _acyclic(items: dict, path: str):
         finished.update(chain)
 
 
-def _shape(shape: dict, assets: dict, path: str, *, dynamic: bool) -> tuple[int, int]:
-    """Validate actual supplied proxy triangles, returning vertex/triangle counts.
+def _scaled_direction(vector: list) -> list | None:
+    scale = max(abs(x) for x in vector)
+    return [x/scale for x in vector] if scale else None
 
-    Convexity/manifold/backend-specific supported shape checks belong to #171;
-    the contract does not promote this input to a verified collision hull.
+
+def _normal(a: list, b: list, c: list) -> list | None:
+    # Normalize each edge before products: tiny or huge uniform world scale
+    # cannot underflow/overflow the area test. The tolerance is angular.
+    ab = _scaled_direction([b[i]-a[i] for i in range(3)])
+    ac = _scaled_direction([c[i]-a[i] for i in range(3)])
+    if ab is None or ac is None:
+        return None
+    cross = [ab[1]*ac[2]-ab[2]*ac[1], ab[2]*ac[0]-ab[0]*ac[2], ab[0]*ac[1]-ab[1]*ac[0]]
+    return _scaled_direction(cross) if max(abs(x) for x in cross) > 1e-12 else None
+
+
+def _shape(shape: dict, assets: dict, path: str, *, dynamic: bool) -> tuple[int, int, int]:
+    """Validate supplied proxy triangles; return vertices, triangles, leaf shapes.
+
+    Convexity/manifold/backend-specific checks belong to #171; this contract does
+    not promote data to a verified collision hull. Rank tolerance is dimensionless.
     """
     kind = shape['type']
     if kind == 'compound':
         counts = [_shape(child['shape'], assets, path + '/children', dynamic=dynamic) for child in shape['children']]
-        return sum(a for a, _ in counts), sum(b for _, b in counts)
+        return tuple(sum(item[i] for item in counts) for i in range(3))
     if kind not in ('convex-hull', 'triangle-mesh'):
-        return 0, 0
+        return 0, 0, 1
     require(shape['source'] in assets and assets[shape['source']]['kind'] == 'geometry',
             'PHYSICS_REFERENCE', 'Collision mesh needs a geometry asset reference.', path)
     require(not dynamic or kind != 'triangle-mesh', 'PHYSICS_GEOMETRY', 'Dynamic concave triangle meshes require decomposition.', path)
     vertices, triangles = shape['vertices'], shape['triangles']
     seen = set()
-    for triangle in triangles:
+    for indices in triangles:
+        triangle = [int(index) for index in indices]
         require(len(set(triangle)) == 3 and max(triangle) < len(vertices),
                 'PHYSICS_GEOMETRY', 'Invalid triangle index.', path)
         key = tuple(sorted(triangle))
         require(key not in seen, 'PHYSICS_GEOMETRY', 'Duplicate triangle.', path)
         seen.add(key)
-        a, b, c = (vertices[index] for index in triangle)
-        ab, ac = [b[i]-a[i] for i in range(3)], [c[i]-a[i] for i in range(3)]
-        cross = [ab[1]*ac[2]-ab[2]*ac[1], ab[2]*ac[0]-ab[0]*ac[2], ab[0]*ac[1]-ab[1]*ac[0]]
-        require(sum(x*x for x in cross) > 1e-24, 'PHYSICS_GEOMETRY', 'Degenerate collision triangle.', path)
+        require(_normal(*(vertices[index] for index in triangle)) is not None,
+                'PHYSICS_GEOMETRY', 'Degenerate or angularly ill-conditioned collision triangle.', path)
     if kind == 'convex-hull':
         origin = vertices[0]
-        edge = next(([v[i]-origin[i] for i in range(3)] for v in vertices[1:] if v != origin), None)
+        second = next((v for v in vertices[1:] if v != origin), None)
         normal = None
-        if edge is not None:
-            for vertex in vertices[1:]:
-                delta = [vertex[i]-origin[i] for i in range(3)]
-                candidate = [edge[1]*delta[2]-edge[2]*delta[1], edge[2]*delta[0]-edge[0]*delta[2], edge[0]*delta[1]-edge[1]*delta[0]]
-                if sum(x*x for x in candidate) > 1e-24:
-                    normal = candidate
-                    break
-        require(normal is not None and any(abs(sum(normal[i]*(v[i]-origin[i]) for i in range(3))) > 1e-18 for v in vertices),
-                'PHYSICS_GEOMETRY', 'Convex collision hull must enclose a nonzero 3D volume.', path)
-    return len(vertices), len(triangles)
+        if second is not None:
+            normal = next((candidate for v in vertices[1:] if (candidate := _normal(origin, second, v)) is not None), None)
+        directions = (_scaled_direction([v[i]-origin[i] for i in range(3)]) for v in vertices)
+        require(normal is not None and any(direction is not None and abs(sum(normal[i]*direction[i] for i in range(3))) > 1e-12 for direction in directions),
+                'PHYSICS_GEOMETRY', 'Collision hull is flat or angularly ill-conditioned.', path)
+    return len(vertices), len(triangles), 1
 
 
 def _world(world: dict) -> None:
@@ -346,13 +394,13 @@ def _world(world: dict) -> None:
     require(len(required) == len(set(required)), 'PHYSICS_CATEGORY', 'Duplicate required category.')
     actual_categories = {item['category'] for item in entities.values()}
     require(actual_categories <= set(required), 'PHYSICS_CATEGORY', 'Every category must be explicitly required from the backend.')
-    colliders = 0; vertices = 0; particles = 0; cells = 0
+    colliders = vertices = particles = cells = triangles = constraints = 0
+    cloth_vertices = soft_body_vertices = hair_strands = gas_cells = liquid_cells = secondary_particles = 0
+    fracture_parents = {}
     for identifier, material in materials.items():
         if material['pbr_material'] is not None:
             require(material['pbr_material'] in assets and assets[material['pbr_material']]['kind'] == 'material',
                     'PHYSICS_REFERENCE', 'Unknown PBR material.', '/materials/' + identifier)
-        require(material['dynamic_friction'] <= material['static_friction'], 'PHYSICS_MATERIAL',
-                'Dynamic friction cannot exceed static friction.', '/materials/' + identifier)
     aliases = [unicodedata.normalize('NFC', item['path']).casefold() for item in world['assets']]
     require(len(aliases) == len(set(aliases)), 'PHYSICS_PATH_ALIAS', 'Asset paths must not alias.', '/assets')
     collider_ids = set()
@@ -367,6 +415,9 @@ def _world(world: dict) -> None:
                     len(set(fracture['fragments'])) == len(fracture['fragments']) and
                     set(fracture['fragments']) <= set(bodies) and identifier not in fracture['fragments'],
                     'PHYSICS_REFERENCE', 'Fracture fragments must be distinct referenced bodies.', path)
+            for fragment in fracture['fragments']:
+                require(fragment not in fracture_parents, 'PHYSICS_OWNERSHIP', 'A fragment has multiple fracture owners.', path)
+                fracture_parents[fragment] = identifier
         require(mode != 'dynamic' or body['parent'] is None, 'PHYSICS_AUTHORITY', 'Dynamic transforms are world-owned and cannot have a transform parent.', path)
         require(body['authority'] == {'static': 'static', 'dynamic': 'physics', 'kinematic': 'animation'}[mode],
                 'PHYSICS_AUTHORITY', 'Mode and transform authority conflict.', path)
@@ -381,7 +432,9 @@ def _world(world: dict) -> None:
                 'Dynamic mass must be positive; static/kinematic mass must be zero.', path)
         inertia = mass['inertia']
         inertia_scale = max(abs(x) for row in inertia for x in row)
-        tolerance = inertia_scale * 1e-10
+        if inertia_scale:
+            inertia = [[x/inertia_scale for x in row] for row in inertia]
+        tolerance = 1e-10
         require(all(abs(inertia[i][j] - inertia[j][i]) <= tolerance for i in range(3) for j in range(3)),
                 'PHYSICS_INERTIA', 'Inertia tensor must be symmetric.', path)
         if mode == 'dynamic':
@@ -393,7 +446,7 @@ def _world(world: dict) -> None:
             h = (a+d+f)/2
             x,y,z = h-a,h-d,h-f
             moment_det = x*y*z - 2*b*c*e - x*e*e - y*c*c - z*b*b
-            require(min(x,y,z) >= -tolerance and x*y-b*b >= -tolerance*inertia_scale and x*z-c*c >= -tolerance*inertia_scale and y*z-e*e >= -tolerance*inertia_scale and moment_det >= -tolerance*inertia_scale**2,
+            require(min(x,y,z) >= -tolerance and x*y-b*b >= -tolerance and x*z-c*c >= -tolerance and y*z-e*e >= -tolerance and moment_det >= -tolerance,
                     'PHYSICS_INERTIA', 'Tensor violates physical principal-moment inequalities.', path)
         else:
             require(all(value == 0 for row in inertia for value in row) and all(x == 0 for x in body['linear_velocity'] + body['angular_velocity']),
@@ -402,8 +455,9 @@ def _world(world: dict) -> None:
             require(collider['id'] not in collider_ids, 'PHYSICS_DUPLICATE_ID', 'Collider IDs must be unique in a world.', path)
             collider_ids.add(collider['id'])
             require(collider['material'] in materials, 'PHYSICS_REFERENCE', 'Unknown physical material.', path)
-            count, _ = _shape(collider['shape'], assets, path + '/colliders', dynamic=mode == 'dynamic')
-            vertices += count; colliders += 1
+            vertex_count, triangle_count, leaf_count = _shape(collider['shape'], assets, path + '/colliders', dynamic=mode == 'dynamic')
+            vertices += vertex_count; triangles += triangle_count; colliders += leaf_count
+    _acyclic({key: {'parent': fracture_parents.get(key)} for key in bodies}, '/bodies/fracture')
     for identifier, component in components.items():
         path = '/components/' + identifier
         if 'geometry' in component:
@@ -415,10 +469,19 @@ def _world(world: dict) -> None:
         if 'pins' in component:
             require(len(set(component['pins'])) == len(component['pins']) and all(x < component['vertex_count'] for x in component['pins']),
                     'PHYSICS_GEOMETRY', 'Invalid or duplicate pinned vertices.', path)
-            vertices += component['vertex_count']
-        if component['category'] == 'particles': particles += component['count']
+            vertices += int(component['vertex_count'])
+            constraints += len(component['pins'])
+            if component['category'] == 'cloth': cloth_vertices += int(component['vertex_count'])
+            if component['category'] == 'soft-body': soft_body_vertices += int(component['vertex_count'])
+            if component['category'] == 'hair': hair_strands += int(component['strand_count'])
+        if component['category'] == 'particles': particles += int(component['count'])
         if component['category'] in ('gas', 'liquid'):
-            cells += math.prod(component['resolution'])
+            component_cells = math.prod(int(x) for x in component['resolution'])
+            cells += component_cells
+            if component['category'] == 'gas': gas_cells += component_cells
+            if component['category'] == 'liquid':
+                liquid_cells += component_cells
+                secondary_particles += int(component['max_secondary_particles'])
             require(set(component['emitters']) <= set(bodies), 'PHYSICS_REFERENCE', 'Unknown volume emitter body.', path)
             require(not component['combustion'] or component['category'] == 'gas', 'PHYSICS_CATEGORY', 'Liquid cannot request combustion.', path)
     for joint in world['joints']:
@@ -441,17 +504,21 @@ def _world(world: dict) -> None:
                 'PHYSICS_CATEGORY', 'Force applicability must include every target category.', '/forces')
         force_span = force['frame_range']
         require(span['start'] <= force_span['start'] < force_span['end'] <= span['end'], 'PHYSICS_TIME', 'Force range escapes world range.', '/forces')
-    duration = Fraction(span['end']-span['start'], 1) / _fraction(world['fps'])
-    steps = math.ceil(duration / _fraction(world['solver']['fixed_step'])) * world['solver']['substeps']
+    duration = Fraction(int(span['end'])-int(span['start']), 1) / _fraction(world['fps'])
+    steps = math.ceil(duration / _fraction(world['solver']['fixed_step'])) * int(world['solver']['substeps'])
     budget = world['budgets']
-    usage = dict(bodies=len(bodies), colliders=colliders, vertices=vertices, particles=particles, volume_cells=cells,
+    usage = dict(bodies=len(bodies), dynamic_bodies=sum(body['mode']=='dynamic' for body in bodies.values()),
+                 colliders=colliders, constraints=len(world['joints'])+constraints, triangles=triangles, vertices=vertices,
+                 cloth_vertices=cloth_vertices, soft_body_vertices=soft_body_vertices, hair_strands=hair_strands,
+                 particles=particles, fluid_secondary_particles=secondary_particles, volume_cells=cells,
+                 gas_cells=gas_cells, liquid_cells=liquid_cells, output_frames=int(span['end'])-int(span['start']),
                  steps=steps, duration_seconds=duration)
     for key, used in usage.items():
         require(used <= budget[key], 'PHYSICS_BUDGET', 'Configured ' + key + ' exceeds admission budget.', '/budgets/' + key)
 
 
 def _fraction(rate: dict) -> Fraction:
-    return Fraction(rate['numerator'], rate['denominator'])
+    return Fraction(int(rate['numerator']), int(rate['denominator']))
 
 
 def validate_contract(value: Any, kind: str = 'PhysicsWorld') -> Any:
@@ -464,6 +531,12 @@ def validate_contract(value: Any, kind: str = 'PhysicsWorld') -> Any:
         finite_json(value)
     except RigError as exc:
         raise PhysicsError('PHYSICS_JSON', str(exc)) from exc
+    for item, path in _walk(value):
+        require(type(item) in (type(None), bool, str, int, float, list, dict), 'PHYSICS_JSON', 'Use native JSON data types.', path)
+        if type(item) is int:
+            require(item.bit_length() <= 64, 'PHYSICS_JSON', 'Integer magnitude exceeds the JSON admission bound.', path)
+        if isinstance(item, str):
+            require(not any(0xD800 <= ord(c) <= 0xDFFF for c in item), 'PHYSICS_JSON', 'Strings must contain Unicode scalar values.', path)
     error = next(_validator(kind).iter_errors(value), None)
     if error:
         raise PhysicsError('PHYSICS_SCHEMA', error.message, '/' + '/'.join(map(str, error.absolute_path)))
@@ -471,10 +544,13 @@ def validate_contract(value: Any, kind: str = 'PhysicsWorld') -> Any:
     if kind == 'PhysicsWorld': _world(value)
     if kind in ('PhysicsJob', 'PhysicsCache'):
         if kind == 'PhysicsJob':
-            duration = Fraction(value['frame_range']['end']-value['frame_range']['start'],1) / _fraction(value['fps'])
-            steps = math.ceil(duration/_fraction(value['fixed_step'])) * value['substeps']
-            require(duration <= value['budgets']['duration_seconds'] and steps <= value['budgets']['steps'],
+            duration = Fraction(int(value['frame_range']['end'])-int(value['frame_range']['start']),1) / _fraction(value['fps'])
+            steps = math.ceil(duration/_fraction(value['fixed_step'])) * int(value['substeps'])
+            require(duration <= value['budgets']['duration_seconds'] and steps <= value['budgets']['steps'] and
+                    int(value['frame_range']['end'])-int(value['frame_range']['start']) <= value['budgets']['output_frames'],
                     'PHYSICS_BUDGET', 'Configured job range exceeds duration or step budget.')
+            require(int(value['attempt']) <= int(value['budgets']['restart_attempts']) + 1,
+                    'PHYSICS_BUDGET', 'Job attempt exceeds configured restart budget.')
             require(value['world']['kind'] == 'physics-world' and value['world']['sha256'] == value['world_sha256'],
                     'PHYSICS_REFERENCE', 'Job world reference must bind exact world bytes.')
             require((value['checkpoint'] is not None) == (value['recovery'] == 'verified-checkpoint'),
@@ -495,7 +571,7 @@ def load_contract(path: str | Path, kind: str = 'PhysicsWorld') -> Any:
     flags = os.O_RDONLY | getattr(os, 'O_BINARY', 0) | getattr(os, 'O_NONBLOCK', 0) | getattr(os, 'O_NOFOLLOW', 0)
     try:
         descriptor = os.open(path, flags)
-    except OSError as exc:
+    except (OSError, ValueError) as exc:
         raise PhysicsError('PHYSICS_IO', 'Cannot open contract input: ' + str(exc)) from exc
     if not stat.S_ISREG(os.fstat(descriptor).st_mode):
         os.close(descriptor)
@@ -504,7 +580,7 @@ def load_contract(path: str | Path, kind: str = 'PhysicsWorld') -> Any:
         payload = stream.read(32*1024*1024 + 1)
     try:
         value = decode_json(payload)
-    except RigError as exc:
+    except (RigError, ValueError) as exc:
         raise PhysicsError('PHYSICS_JSON', str(exc)) from exc
     return validate_contract(value, kind)
 

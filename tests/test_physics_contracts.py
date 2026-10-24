@@ -45,9 +45,12 @@ def fixture():
                 solver=dict(backend='blender', adapter_version='1.0.0', fixed_step=dict(numerator=1, denominator=240),
                             substeps=1, iterations=20, seed=1, quality='preview', required_categories=['rigid-body'],
                             reproducibility='not-guaranteed'),
-                budgets=dict(bodies=100, colliders=100, vertices=100000, particles=100000,
-                             volume_cells=1000000, steps=10000, duration_seconds=120,
-                             memory_bytes=1073741824, cache_bytes=1073741824, timeout_seconds=120),
+                budgets=dict(bodies=100, dynamic_bodies=100, colliders=100, constraints=10000, triangles=100000,
+                             vertices=100000, cloth_vertices=100000, soft_body_vertices=100000, hair_strands=100000,
+                             particles=100000, fluid_secondary_particles=100000, volume_cells=1000000, gas_cells=1000000, liquid_cells=1000000,
+                             output_frames=10000, steps=10000, duration_seconds=120, memory_bytes=1073741824, vram_bytes=0,
+                             cache_bytes=1073741824, bake_file_bytes=1073741824, temporary_bytes=1073741824,
+                             cpu_workers=1, concurrent_jobs=1, restart_attempts=2, timeout_seconds=120),
                 assets=[], materials=[material], bodies=[body], components=[], joints=[], forces=[], events=[])
 
 
@@ -107,7 +110,9 @@ class PhysicsContractTests(unittest.TestCase):
                  lambda w:w['bodies'][0]['colliders'][0].update(mask=2**32),
                  lambda w:w['solver'].update(backend_options={'python':'untrusted'}),
                  lambda w:w['fps'].update(denominator=0),lambda w:w['bodies'][0]['transform'].update(scale=[1,2,1]),
-                 lambda w:w['scene'].update(sha256='bad'),lambda w:w.update(version='01.0.0')]
+                 lambda w:w['scene'].update(sha256='bad'),lambda w:w.update(version='01.0.0'),
+                 lambda w:w.update(id='world\n'),lambda w:w.update(version='1.0.0\n'),
+                 lambda w:w['scene'].update(sha256='a'*64+'\n')]
         for change in changes:
             with self.subTest(change=change):
                 world=fixture(); change(world)
@@ -138,11 +143,19 @@ class PhysicsContractTests(unittest.TestCase):
         validate_contract(world)
 
     def test_safe_asset_paths_hashes_and_pbr_links(self):
+        from jsonschema import Draft202012Validator
+        validator=Draft202012Validator(schemas()['physics-3d-world.schema.json'])
         bad_paths=['../outside.json','/tmp/file','C:/file','assets\\file','assets/CON.json',
-                   'assets/a/../b.json','assets/trailing.','assets/space /file.json']
+                   'assets/a/../b.json','assets/trailing.','assets/space /file.json',
+                   'assets//file.json','assets/./file.json','assets/CoN.x','assets/conin$.txt',
+                   'assets/file.json\n']
         for path in bad_paths:
             world=fixture();world['scene']['path']=path
-            with self.subTest(path=path):self.reject(world)
+            with self.subTest(path=path):
+                self.assertFalse(validator.is_valid(world));self.reject(world)
+        for path in ['assets/.hidden.json','assets/space name.json','assets/αβ.json']:
+            world=fixture();world['scene']['path']=path
+            self.assertTrue(validator.is_valid(world));validate_contract(world)
         world=fixture();world['materials'][0]['pbr_material']='mat';self.reject(world,'PHYSICS_REFERENCE')
         world['assets']=[asset('mat','material')];validate_contract(world)
         world['materials'][0]['dynamic_friction']=1;self.reject(world,'PHYSICS_MATERIAL')
@@ -205,8 +218,8 @@ class PhysicsContractTests(unittest.TestCase):
         world['budgets']['volume_cells']=999;self.reject(world,'PHYSICS_BUDGET');world['budgets']['volume_cells']=1000
         world['budgets']['particles']=99;self.reject(world,'PHYSICS_BUDGET');world['budgets']['particles']=100
         cloth['pins']=[4];self.reject(world,'PHYSICS_GEOMETRY');cloth['pins']=[0]
-        gas['category']='liquid';world['solver']['required_categories'].append('liquid');self.reject(world,'PHYSICS_CATEGORY')
-        gas['combustion']=False;validate_contract(world)
+        gas['category']='liquid';gas['max_secondary_particles']=100;world['solver']['required_categories'].append('liquid');self.reject(world,'PHYSICS_CATEGORY')
+        gas['combustion']=False;gas['max_secondary_particles']=100;validate_contract(world)
 
     def test_material_combinations_presets_and_backend_policy(self):
         material=material_preset('rubber')
@@ -227,7 +240,9 @@ class PhysicsContractTests(unittest.TestCase):
         cache['files'].append(dict(path='CACHE/STATES.BIN',sha256='2'*64,bytes=4));self.reject(cache,'PHYSICS_PATH_ALIAS','PhysicsCache');cache['files'].pop()
         cache['usage']['output_bytes']=3;self.reject(cache,'PHYSICS_CACHE_SIZE','PhysicsCache')
         world=fixture();job=dict(schema_version=1,kind='hatch-3d-physics-job',id='job',world=asset('world','physics-world'),world_sha256='0'*64,backend=backend(),output_directory='cache/job',input_files=[dict(path='world.json',sha256='0'*64,bytes=1)],frame_range=world['frame_range'],fps=world['fps'],fixed_step=world['solver']['fixed_step'],substeps=1,budgets=world['budgets'],status='pending',attempt=1,recovery='clean-restart',checkpoint=None,usage=usage())
-        validate_contract(job,'PhysicsJob');job['recovery']='verified-checkpoint';self.reject(job,'PHYSICS_RECOVERY','PhysicsJob')
+        validate_contract(job,'PhysicsJob')
+        job['attempt']=4;self.reject(job,'PHYSICS_BUDGET','PhysicsJob');job['attempt']=1
+        job['recovery']='verified-checkpoint';self.reject(job,'PHYSICS_RECOVERY','PhysicsJob')
         job['checkpoint']=job['input_files'][0];validate_contract(job,'PhysicsJob')
         job['world']['sha256']='f'*64;self.reject(job,'PHYSICS_REFERENCE','PhysicsJob')
         diagnostic=Diagnostic('PHYSICS_CAPABILITY','No backend was executed.',category='capability-gap')
@@ -255,6 +270,7 @@ class PhysicsContractTests(unittest.TestCase):
         for category in ['cloth','soft-body','hair']:
             component=dict(id='deformable',category=category,geometry='mesh',material='rubber',parent=None,
                 pins=[0],vertex_count=4,stiffness=10,damping=.1,mass=1,colliders=['ball'])
+            if category=='hair': component['strand_count']=1
             world=fixture();world['assets']=[asset()];world['components']=[component]
             world['solver']['required_categories'].append(category);validate_contract(world)
 
@@ -269,6 +285,92 @@ class PhysicsContractTests(unittest.TestCase):
                 fifo=root/'fifo';os.mkfifo(fifo)
                 with self.assertRaises(PhysicsError):load_contract(fifo)
             with self.assertRaises(PhysicsError):load_contract(root)
+            with self.assertRaises(PhysicsError) as caught:load_contract('bad\x00path')
+            validate_contract(caught.exception.report,'PhysicsDiagnostic')
+
+    def test_integral_json_numbers_remain_consistent_and_unmodified(self):
+        def floats(value):
+            if type(value) is int:return float(value)
+            if isinstance(value,list):return [floats(item) for item in value]
+            if isinstance(value,dict):return {key:floats(item) for key,item in value.items()}
+            return value
+        world=floats(fixture());before=copy.deepcopy(world)
+        validate_contract(world);self.assertEqual(world,before)
+        world['assets']=[asset()]
+        world['bodies'][0]['colliders'][0]['shape']=dict(type='convex-hull',source='mesh',
+            vertices=[[0,0,0],[1,0,0],[0,1,0],[0,0,1]],triangles=[[0.,2.,1.],[0.,1.,3.],[0.,3.,2.],[1.,2.,3.]])
+        validate_contract(world)
+        cache=floats(cache_fixture());validate_contract(cache,'PhysicsCache')
+
+    def test_oversized_integer_unsupported_python_numbers_and_error_receipts(self):
+        from decimal import Decimal
+        with tempfile.TemporaryDirectory() as directory:
+            path=Path(directory)/'world.json';path.write_text('{"schema_version":'+'1'*5000+'}')
+            with self.assertRaises(PhysicsError) as caught:load_contract(path)
+            validate_contract(caught.exception.report,'PhysicsDiagnostic')
+        for value in [Decimal('1'),complex(1,2),10**5000]:
+            world=fixture();world['gravity'][0]=value;self.reject(world,'PHYSICS_JSON')
+        for change in [lambda w:w['solver'].update(backend='x'*2000),lambda w:w.update({'x'*4000:1}),
+                       lambda w:w['bodies'][0]['transform'].update(rotation=[0]*2000)]:
+            world=fixture();change(world);error=self.reject(world)
+            self.assertLessEqual(len(error.report['message']),1024)
+            self.assertLessEqual(len(error.report['path']),2048)
+            validate_contract(error.report,'PhysicsDiagnostic')
+
+    def test_standalone_material_semantics_match_world_and_combination(self):
+        material=fixture()['materials'][0];material['dynamic_friction']=material['static_friction']+1
+        self.reject(material,'PHYSICS_MATERIAL','PhysicalMaterial')
+        with self.assertRaises(PhysicsError):combine_materials(material,material)
+        world=fixture();world['materials']=[material]
+        error=self.reject(world,'PHYSICS_MATERIAL')
+        self.assertEqual(error.report['path'],'/materials/0/dynamic_friction')
+
+    def test_uniformly_tiny_inertia_and_meshes_preserve_physical_validity(self):
+        for scale in [1e-200,1e-7,1e7]:
+            world=fixture();world['assets']=[asset()]
+            world['bodies'][0]['mass']['inertia']=[[scale,0,0],[0,scale,0],[0,0,scale]]
+            world['bodies'][0]['colliders'][0]['shape']=dict(type='convex-hull',source='mesh',
+                vertices=[[0,0,0],[scale,0,0],[0,scale,0],[0,0,scale]],
+                triangles=[[0,2,1],[0,1,3],[0,3,2],[1,2,3]])
+            validate_contract(world)
+            world['bodies'][0]['mass']['inertia'][0][0]=10*scale
+            self.reject(world,'PHYSICS_INERTIA')
+        world=fixture();world['assets']=[asset()];body=world['bodies'][0]
+        body.update(mode='static',authority='static');body['mass'].update(kilograms=0,inertia=[[0,0,0]]*3)
+        body['colliders'][0]['shape']=dict(type='triangle-mesh',source='mesh',
+            vertices=[[0,0,0],[1,0,0],[0,0,1]],triangles=[[0,1,2]])
+        world['budgets']['triangles']=1;validate_contract(world)
+        world['budgets']['triangles']=0;self.reject(world,'PHYSICS_BUDGET')
+
+    def test_aggregate_leaf_shape_triangle_frame_and_constraint_budgets(self):
+        world=fixture();shape=world['bodies'][0]['colliders'][0]['shape']
+        world['bodies'][0]['colliders'][0]['shape']=dict(type='compound',children=[
+            dict(transform=transform(),shape=copy.deepcopy(shape)),
+            dict(transform=transform(),shape=dict(type='compound',children=[dict(transform=transform(),shape=shape)]))])
+        world['budgets']['colliders']=1;self.reject(world,'PHYSICS_BUDGET')
+        world['budgets']['colliders']=2;validate_contract(world)
+        world['budgets']['dynamic_bodies']=0;self.reject(world,'PHYSICS_BUDGET');world['budgets']['dynamic_bodies']=1
+        world['budgets']['output_frames']=23;self.reject(world,'PHYSICS_BUDGET');world['budgets']['output_frames']=24
+        world['assets']=[asset()]
+        world['components']=[dict(id='cloth',category='cloth',geometry='mesh',material='rubber',parent=None,
+            pins=[0,1],vertex_count=4,stiffness=10,damping=.1,mass=1,colliders=['ball'])]
+        world['solver']['required_categories'].append('cloth')
+        world['budgets']['constraints']=1;self.reject(world,'PHYSICS_BUDGET')
+        world['budgets']['constraints']=2;validate_contract(world)
+        world['budgets']['cloth_vertices']=3;self.reject(world,'PHYSICS_BUDGET')
+
+    def test_fracture_ownership_cycles_and_shared_fragments_reject(self):
+        world=fixture();world['assets']=[asset()];world['solver']['required_categories'].append('fracture')
+        template=world['bodies'][0];world['bodies']=[]
+        for identifier in ['a','b','c','d']:
+            body=copy.deepcopy(template);body['id']=identifier;body['colliders'][0]['id']=identifier+'-collider'
+            world['bodies'].append(body)
+        a,b,c,d=world['bodies'];a['category']=b['category']='fracture'
+        a['fracture']=dict(source='mesh',fragments=['b','c'],break_force=10,break_torque=10)
+        b['fracture']=dict(source='mesh',fragments=['a','d'],break_force=10,break_torque=10)
+        self.reject(world,'PHYSICS_CYCLE')
+        b['fracture']['fragments']=['c','d'];self.reject(world,'PHYSICS_OWNERSHIP')
+        b['category']='rigid-body';del b['fracture'];validate_contract(world)
 
     def test_contract_import_and_schema_generation_without_optional_3d(self):
         code="""import importlib.abc,sys

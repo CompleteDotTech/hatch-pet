@@ -124,7 +124,7 @@
             },
             "source": {
               "type": "string",
-              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
             },
             "vertices": {
               "type": "array",
@@ -138,7 +138,7 @@
                 "minItems": 3,
                 "maxItems": 3
               },
-              "minItems": 4,
+              "minItems": 3,
               "maxItems": 100000
             },
             "triangles": {
@@ -153,7 +153,7 @@
                 "minItems": 3,
                 "maxItems": 3
               },
-              "minItems": 4,
+              "minItems": 1,
               "maxItems": 200000
             }
           },
@@ -162,6 +162,27 @@
             "source",
             "vertices",
             "triangles"
+          ],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "type": {
+                    "const": "convex-hull"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "vertices": {
+                    "minItems": 4
+                  },
+                  "triangles": {
+                    "minItems": 4
+                  }
+                }
+              }
+            }
           ]
         },
         {
@@ -212,11 +233,11 @@
         },
         "id": {
           "type": "string",
-          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
         },
         "version": {
           "type": "string",
-          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?![\\s\\S])"
         },
         "coordinate_system": {
           "const": {
@@ -247,20 +268,21 @@
           "properties": {
             "id": {
               "type": "string",
-              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
             },
             "version": {
               "type": "string",
-              "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+              "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?![\\s\\S])"
             },
             "path": {
               "type": "string",
               "minLength": 1,
-              "maxLength": 1024
+              "maxLength": 1024,
+              "pattern": "^(?!(?:[cC][oO][nN](?:[iI][nN]\\$|[oO][uU][tT]\\$)?|[pP][rR][nN]|[aA][uU][xX]|[nN][uU][lL]|[cC][oO][mM][1-9]|[lL][pP][tT][1-9])(?:\\.|/|(?![\\s\\S])))[^/\\\\:\\x00-\\x1f\\x7f<>\"|?*]*[^/\\\\:\\x00-\\x1f\\x7f<>\"|?* .](?:/(?!(?:[cC][oO][nN](?:[iI][nN]\\$|[oO][uU][tT]\\$)?|[pP][rR][nN]|[aA][uU][xX]|[nN][uU][lL]|[cC][oO][mM][1-9]|[lL][pP][tT][1-9])(?:\\.|/|(?![\\s\\S])))[^/\\\\:\\x00-\\x1f\\x7f<>\"|?*]*[^/\\\\:\\x00-\\x1f\\x7f<>\"|?* .])*(?![\\s\\S])"
             },
             "sha256": {
               "type": "string",
-              "pattern": "^[0-9a-f]{64}$"
+              "pattern": "^[0-9a-f]{64}(?![\\s\\S])"
             },
             "kind": {
               "enum": [
@@ -345,7 +367,7 @@
             },
             "adapter_version": {
               "type": "string",
-              "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+              "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?![\\s\\S])"
             },
             "fixed_step": {
               "type": "object",
@@ -435,25 +457,75 @@
           "properties": {
             "bodies": {
               "type": "integer",
-              "minimum": 1,
+              "minimum": 0,
+              "maximum": 2147483647
+            },
+            "dynamic_bodies": {
+              "type": "integer",
+              "minimum": 0,
               "maximum": 2147483647
             },
             "colliders": {
               "type": "integer",
-              "minimum": 1,
+              "minimum": 0,
+              "maximum": 2147483647
+            },
+            "constraints": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 2147483647
+            },
+            "triangles": {
+              "type": "integer",
+              "minimum": 0,
               "maximum": 2147483647
             },
             "vertices": {
               "type": "integer",
-              "minimum": 1,
+              "minimum": 0,
+              "maximum": 2147483647
+            },
+            "cloth_vertices": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 2147483647
+            },
+            "soft_body_vertices": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 2147483647
+            },
+            "hair_strands": {
+              "type": "integer",
+              "minimum": 0,
               "maximum": 2147483647
             },
             "particles": {
               "type": "integer",
-              "minimum": 1,
+              "minimum": 0,
+              "maximum": 2147483647
+            },
+            "fluid_secondary_particles": {
+              "type": "integer",
+              "minimum": 0,
               "maximum": 2147483647
             },
             "volume_cells": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 2147483647
+            },
+            "gas_cells": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 2147483647
+            },
+            "liquid_cells": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 2147483647
+            },
+            "output_frames": {
               "type": "integer",
               "minimum": 1,
               "maximum": 2147483647
@@ -471,12 +543,42 @@
             "memory_bytes": {
               "type": "integer",
               "minimum": 1,
-              "maximum": 2147483647
+              "maximum": 1125899906842624
+            },
+            "vram_bytes": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1125899906842624
             },
             "cache_bytes": {
               "type": "integer",
               "minimum": 1,
-              "maximum": 2147483647
+              "maximum": 1125899906842624
+            },
+            "bake_file_bytes": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1125899906842624
+            },
+            "temporary_bytes": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1125899906842624
+            },
+            "cpu_workers": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 64
+            },
+            "concurrent_jobs": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 64
+            },
+            "restart_attempts": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 99
             },
             "timeout_seconds": {
               "type": "number",
@@ -486,14 +588,30 @@
           },
           "required": [
             "bodies",
+            "dynamic_bodies",
             "colliders",
+            "constraints",
+            "triangles",
             "vertices",
+            "cloth_vertices",
+            "soft_body_vertices",
+            "hair_strands",
             "particles",
+            "fluid_secondary_particles",
             "volume_cells",
+            "gas_cells",
+            "liquid_cells",
+            "output_frames",
             "steps",
             "duration_seconds",
             "memory_bytes",
+            "vram_bytes",
             "cache_bytes",
+            "bake_file_bytes",
+            "temporary_bytes",
+            "cpu_workers",
+            "concurrent_jobs",
+            "restart_attempts",
             "timeout_seconds"
           ]
         },
@@ -505,20 +623,21 @@
             "properties": {
               "id": {
                 "type": "string",
-                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
               },
               "version": {
                 "type": "string",
-                "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+                "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?![\\s\\S])"
               },
               "path": {
                 "type": "string",
                 "minLength": 1,
-                "maxLength": 1024
+                "maxLength": 1024,
+                "pattern": "^(?!(?:[cC][oO][nN](?:[iI][nN]\\$|[oO][uU][tT]\\$)?|[pP][rR][nN]|[aA][uU][xX]|[nN][uU][lL]|[cC][oO][mM][1-9]|[lL][pP][tT][1-9])(?:\\.|/|(?![\\s\\S])))[^/\\\\:\\x00-\\x1f\\x7f<>\"|?*]*[^/\\\\:\\x00-\\x1f\\x7f<>\"|?* .](?:/(?!(?:[cC][oO][nN](?:[iI][nN]\\$|[oO][uU][tT]\\$)?|[pP][rR][nN]|[aA][uU][xX]|[nN][uU][lL]|[cC][oO][mM][1-9]|[lL][pP][tT][1-9])(?:\\.|/|(?![\\s\\S])))[^/\\\\:\\x00-\\x1f\\x7f<>\"|?*]*[^/\\\\:\\x00-\\x1f\\x7f<>\"|?* .])*(?![\\s\\S])"
               },
               "sha256": {
                 "type": "string",
-                "pattern": "^[0-9a-f]{64}$"
+                "pattern": "^[0-9a-f]{64}(?![\\s\\S])"
               },
               "kind": {
                 "enum": [
@@ -552,7 +671,7 @@
             "properties": {
               "id": {
                 "type": "string",
-                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
               },
               "density": {
                 "type": "number",
@@ -593,7 +712,7 @@
                 "anyOf": [
                   {
                     "type": "string",
-                    "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+                    "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
                   },
                   {
                     "type": "null"
@@ -628,7 +747,7 @@
             "properties": {
               "id": {
                 "type": "string",
-                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
               },
               "category": {
                 "enum": [
@@ -655,7 +774,7 @@
                 "anyOf": [
                   {
                     "type": "string",
-                    "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+                    "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
                   },
                   {
                     "type": "null"
@@ -666,7 +785,7 @@
                 "anyOf": [
                   {
                     "type": "string",
-                    "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+                    "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
                   },
                   {
                     "type": "null"
@@ -772,7 +891,7 @@
                   "properties": {
                     "id": {
                       "type": "string",
-                      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+                      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
                     },
                     "transform": {
                       "type": "object",
@@ -894,7 +1013,7 @@
                             },
                             "source": {
                               "type": "string",
-                              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+                              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
                             },
                             "vertices": {
                               "type": "array",
@@ -908,7 +1027,7 @@
                                 "minItems": 3,
                                 "maxItems": 3
                               },
-                              "minItems": 4,
+                              "minItems": 3,
                               "maxItems": 100000
                             },
                             "triangles": {
@@ -923,7 +1042,7 @@
                                 "minItems": 3,
                                 "maxItems": 3
                               },
-                              "minItems": 4,
+                              "minItems": 1,
                               "maxItems": 200000
                             }
                           },
@@ -932,6 +1051,27 @@
                             "source",
                             "vertices",
                             "triangles"
+                          ],
+                          "allOf": [
+                            {
+                              "if": {
+                                "properties": {
+                                  "type": {
+                                    "const": "convex-hull"
+                                  }
+                                }
+                              },
+                              "then": {
+                                "properties": {
+                                  "vertices": {
+                                    "minItems": 4
+                                  },
+                                  "triangles": {
+                                    "minItems": 4
+                                  }
+                                }
+                              }
+                            }
                           ]
                         },
                         {
@@ -972,7 +1112,7 @@
                     },
                     "material": {
                       "type": "string",
-                      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+                      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
                     },
                     "group": {
                       "type": "integer",
@@ -1005,7 +1145,7 @@
                 "anyOf": [
                   {
                     "type": "string",
-                    "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+                    "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
                   },
                   {
                     "type": "null"
@@ -1044,13 +1184,13 @@
                 "properties": {
                   "source": {
                     "type": "string",
-                    "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+                    "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
                   },
                   "fragments": {
                     "type": "array",
                     "items": {
                       "type": "string",
-                      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+                      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
                     },
                     "minItems": 2,
                     "maxItems": 10000
@@ -1102,7 +1242,7 @@
                 "properties": {
                   "id": {
                     "type": "string",
-                    "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+                    "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
                   },
                   "category": {
                     "enum": [
@@ -1113,17 +1253,17 @@
                   },
                   "geometry": {
                     "type": "string",
-                    "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+                    "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
                   },
                   "material": {
                     "type": "string",
-                    "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+                    "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
                   },
                   "parent": {
                     "anyOf": [
                       {
                         "type": "string",
-                        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+                        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
                       },
                       {
                         "type": "null"
@@ -1164,10 +1304,15 @@
                     "type": "array",
                     "items": {
                       "type": "string",
-                      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+                      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
                     },
                     "minItems": 0,
                     "maxItems": 10000
+                  },
+                  "strand_count": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 2147483647
                   }
                 },
                 "required": [
@@ -1182,6 +1327,29 @@
                   "damping",
                   "mass",
                   "colliders"
+                ],
+                "allOf": [
+                  {
+                    "if": {
+                      "properties": {
+                        "category": {
+                          "const": "hair"
+                        }
+                      }
+                    },
+                    "then": {
+                      "required": [
+                        "strand_count"
+                      ]
+                    },
+                    "else": {
+                      "not": {
+                        "required": [
+                          "strand_count"
+                        ]
+                      }
+                    }
+                  }
                 ]
               },
               {
@@ -1190,14 +1358,14 @@
                 "properties": {
                   "id": {
                     "type": "string",
-                    "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+                    "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
                   },
                   "category": {
                     "const": "particles"
                   },
                   "geometry": {
                     "type": "string",
-                    "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+                    "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
                   },
                   "count": {
                     "type": "integer",
@@ -1238,7 +1406,7 @@
                     "type": "array",
                     "items": {
                       "type": "string",
-                      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+                      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
                     },
                     "minItems": 0,
                     "maxItems": 10000
@@ -1263,7 +1431,7 @@
                 "properties": {
                   "id": {
                     "type": "string",
-                    "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+                    "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
                   },
                   "category": {
                     "enum": [
@@ -1343,7 +1511,7 @@
                     "type": "array",
                     "items": {
                       "type": "string",
-                      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+                      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
                     },
                     "minItems": 1,
                     "maxItems": 10000
@@ -1352,10 +1520,15 @@
                     "type": "array",
                     "items": {
                       "type": "string",
-                      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+                      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
                     },
                     "minItems": 0,
                     "maxItems": 10000
+                  },
+                  "max_secondary_particles": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 2147483647
                   }
                 },
                 "required": [
@@ -1370,6 +1543,29 @@
                   "combustion",
                   "emitters",
                   "colliders"
+                ],
+                "allOf": [
+                  {
+                    "if": {
+                      "properties": {
+                        "category": {
+                          "const": "liquid"
+                        }
+                      }
+                    },
+                    "then": {
+                      "required": [
+                        "max_secondary_particles"
+                      ]
+                    },
+                    "else": {
+                      "not": {
+                        "required": [
+                          "max_secondary_particles"
+                        ]
+                      }
+                    }
+                  }
                 ]
               }
             ]
@@ -1385,7 +1581,7 @@
             "properties": {
               "id": {
                 "type": "string",
-                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
               },
               "type": {
                 "enum": [
@@ -1399,11 +1595,11 @@
               },
               "body_a": {
                 "type": "string",
-                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
               },
               "body_b": {
                 "type": "string",
-                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
               },
               "anchor_a": {
                 "type": "object",
@@ -1541,7 +1737,7 @@
             "properties": {
               "id": {
                 "type": "string",
-                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
               },
               "type": {
                 "enum": [
@@ -1558,7 +1754,7 @@
                 "type": "array",
                 "items": {
                   "type": "string",
-                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
                 },
                 "minItems": 1,
                 "maxItems": 10000
@@ -1655,7 +1851,7 @@
             "properties": {
               "id": {
                 "type": "string",
-                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
               },
               "frame": {
                 "type": "integer",
@@ -1680,13 +1876,13 @@
               },
               "target": {
                 "type": "string",
-                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
               },
               "actor": {
                 "anyOf": [
                   {
                     "type": "string",
-                    "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+                    "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\\s\\S])"
                   },
                   {
                     "type": "null"

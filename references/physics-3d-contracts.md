@@ -14,10 +14,13 @@ available merely because a configuration passes validation.
 
 - `validate_contract(value, kind='PhysicsWorld')`: validate without mutation or
   filesystem effects, returning the original object; failures are `PhysicsError`
-  with a frozen typed `Diagnostic` and serializable `report`.
+  with a frozen typed `Diagnostic` and serializable `report`. Generated diagnostic
+  messages/paths are bounded and contain scalar Unicode; oversized malformed
+  values cannot produce an invalid diagnostic receipt.
 - `load_contract(path, kind='PhysicsWorld')`: bounded strict JSON input. Duplicate
   keys, nonfinite numbers, excessive depth/bytes, nonregular inputs and symlinks
-  fail. POSIX opens use `O_NOFOLLOW` and `O_NONBLOCK`; Windows uses the available
+  fail. Unsupported Python numeric types and integers beyond a 64-bit admission
+  magnitude also fail through typed diagnostics. POSIX opens use `O_NOFOLLOW` and `O_NONBLOCK`; Windows uses the available
   flags and a preliminary symlink check. No publication or ownership guarantee is
   inferred from this read-only loader.
 - `document_hash(value, kind='PhysicsWorld')`: SHA-256 of validated canonical
@@ -74,7 +77,9 @@ collider offsets are in the body's local rigid frame.
 `fps` and solver `fixed_step` are independent reduced positive rational objects
 `{numerator, denominator}`. FPS has units frames/second; fixed step has units
 seconds. `substeps` subdivides each configured step. Output ranges are nonempty
-integer `{start, end}` **half-open** intervals. Events must be inside the range,
+integer `{start, end}` **half-open** intervals. Numerically integral JSON numbers
+such as `24.0` have the same integer meaning as `24`, as required by JSON Schema;
+calculations coerce bounded values locally without mutating their recorded input. Events must be inside the range,
 ordered strictly by `(frame, sequence)`, and have unique IDs. Simultaneous events
 therefore have explicit sequence numbers. Terminal boundary `end` is not an
 output frame or event timestamp. Admission calculates exact duration with
@@ -104,7 +109,8 @@ the asset/scene owner and future physical compiler.
 Body modes have one transform authority: static/static, dynamic/physics, or
 kinematic/animation. Character bodies require bounded controller speed, step
 height and slope settings; fracture bodies require a geometry source, at least
-two distinct fragment body IDs and positive force/torque thresholds. These fields
+two distinct fragment body IDs and positive force/torque thresholds. Fragment ownership is exclusive and its
+directed graph must be acyclic, including indirect cycles. These fields
 do not create a controller or fracture solver. Joints reference two distinct
 existing bodies with at least one dynamic endpoint, normalized axis and ordered
 limits. Hinge/spring angular limits use radians, slider limits meters; motor
@@ -113,9 +119,14 @@ A future adapter must reject a combination it cannot represent exactly.
 
 Collision shapes include positive-dimension boxes, spheres, capsules/cylinders
 (with explicit local axis), supplied convex-hull or triangle-mesh proxy data, and
-bounded compounds. Each collider has a physical material ID, local transform,
+bounded compounds. Compound leaf shapes count individually against shape admission. Each collider has a physical material ID, local transform,
 32-bit group/mask and explicit sensor flag. Triangle indices, repeated triangles,
-degenerate triangles and nonvolumetric hulls fail. Dynamic concave triangle meshes
+degenerate triangles and nonvolumetric hulls fail. Edge directions and inertia
+matrices are normalized before rank/positive-definiteness checks, so uniformly
+tiny valid geometry or inertia does not underflow. Geometry conditioning uses a
+dimensionless angular tolerance of 1e-12, rather than a threshold in meters.
+Static triangle meshes may be a single triangle; only hulls require at least four
+vertices/faces and a volumetric rank. Dynamic concave triangle meshes
 require explicit decomposition. **These checks do not prove convexity,
 manifoldness, outward winding, backend compatibility or that the proxy matches the
 visual asset.** Actual geometry inspection and collision behavior remain #171.
@@ -124,7 +135,9 @@ children. This preserves original source identity rather than pretending a
 collision proxy is the original visual geometry.
 
 Cloth/soft-body/hair components bind versioned geometry, mass, stiffness, damping,
-pinned vertex indices and collider body IDs. Particle configuration supplies
+pinned vertex indices and collider body IDs. Hair additionally declares a bounded
+strand count. Liquid declares its maximum secondary-particle count; gas cannot
+request liquid secondary particles. Particle configuration supplies
 count, seed, lifetime, mass, radius and initial velocity. Gas/liquid domains carry
 rigid transform, physical extent, grid resolution, density, viscosity,
 temperature, combustion policy, emitter body IDs and collider body IDs. Liquid
@@ -134,10 +147,12 @@ application point, seed, strength and a bounded frame range. Unsupported paramet
 combinations must still be rejected by actual backend capability admission; this
 foundation never silently drops parameters.
 
-Configured object/collider/vertex/particle/grid-cell counts, output duration and
-solver/substep counts must fit declared budgets. Grid cells use the product of all
-three dimensions, not an individual-axis check. Memory, disk and timeout budgets
-are bounded typed requests for later measured admission; a schema cannot predict
+Configured total/dynamic bodies, compound leaf shapes, physical joints/pins,
+collision-mesh triangles, aggregate/deformable vertex counts, hair strands,
+particles/secondary particles, separate gas/liquid and aggregate grid cells, output
+frames, duration and solver/substep counts must fit declared budgets. Grid cells use the product of all
+three dimensions, not an individual-axis check. RAM/VRAM, total cache/bake-file/temporary storage, CPU workers, concurrent jobs,
+restart attempts and timeout budgets are bounded typed requests for later measured admission; a schema cannot predict
 Blender's peak memory or enforce a subprocess timeout.
 
 ## Physical materials and actual coefficient rules
