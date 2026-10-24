@@ -16,6 +16,9 @@ schemas and native manifests are unchanged. Runtime validation uses the same
 JSON Schema definitions, followed by semantic evidence/inventory/reference checks.
 Timestamps are checked with a built-in RFC3339 spelling/calendar validator,
 including standalone identity/provenance contracts, without optional format packages.
+Canonical library encoding rejects unencodable escaped-surrogate text and other
+unserializable dictionaries with a structured `LIBRARY_JSON` diagnostic, including
+registration APIs; these failures leave stored versions and source bytes unchanged.
 Unknown fields/versions, duplicate JSON keys, nonfinite numbers, excessive
 nesting/manifest sizes, unsafe paths and invalid hashes fail with a `RigError`
 containing a machine-readable `LIBRARY_*` diagnostic and affected field/path.
@@ -147,8 +150,11 @@ Observed manifest digest:
 | Review regressions: strict trailing-newline rejection, nonadjacent ancestor aliases, path schema parity, native configuration/source evidence and immutable creation time | `test_review_regression_trailing_newline_identifiers_and_digests_reject_registration`, `test_review_regression_nonadjacent_file_directory_alias_rejects_registration`, `test_review_regression_portable_paths_have_schema_runtime_parity`, `test_review_source_fields_and_preview_configs_retain_bound_native_data`, `test_original_creation_time_is_stable_across_versions` |
 | Existing native owners and original bytes | `test_native_documents_use_original_owners_and_preserve_ids`, `test_legacy_profile_roundtrip_preserves_exact_bytes_and_2d_contract`; four existing rig compatibility cases |
 
-The local focused result is 21 passes, zero failures/skips; the separate existing
-compatibility suite passes four cases. A separate 60-case profiles, production
+The retained pre-integration focused result is 21 passes, zero failures/skips; the separate existing
+compatibility suite passes four cases. After integrating the shared decoder
+prerequisite (#205), the library consumer adds an escaped-surrogate/dictionary
+encoding regression; all 22 focused cases pass on Python 3.12.15. The earlier
+retained receipts remain attributed to their original source versions. A separate 60-case profiles, production
 contracts and schema/legacy example suite passes with zero failures/skips. Exact
 logs, runtime versions, source hashes and the demonstration report are retained in
 [the validation receipt](../tests/results/asset-library-foundation-20261023/validation.json).

@@ -307,6 +307,30 @@ class AssetLibraryTests(unittest.TestCase):
                 self.assertEqual(legacy_roundtrip(kind, original), original)
                 self.assertEqual((ROOT / relative).read_bytes(), original)
 
+    def test_review_escaped_surrogate_and_dictionary_encoding_fail_structured_without_mutation(self):
+        reference = self.register()
+        database_before = self.library.database.read_bytes()
+        sources_before = {name: path.read_bytes() for name, path in self.sources.items()}
+        for payload in (b'{"text":"\\ud800"}', '{"text":"\\ud800"}'):
+            with self.subTest(kind=type(payload).__name__), self.assertRaises(RigError) as error:
+                load_manifest(payload)
+            self.assertEqual(error.exception.report['code'], 'LIBRARY_JSON')
+        malformed = deepcopy(self.manifest)
+        malformed['metadata']['description'] = '\ud800'
+        for operation in (lambda: self.library.register(malformed, self.sources),
+                          lambda: validate(malformed), lambda: canonical_bytes(malformed)):
+            with self.assertRaises(RigError) as error:
+                operation()
+            self.assertEqual(error.exception.report['code'], 'LIBRARY_JSON')
+        oversized_integer = {'integer': 10**5000}
+        with self.assertRaises(RigError):
+            canonical_bytes(oversized_integer)
+        with self.assertRaises(RigError):
+            seal(oversized_integer)
+        self.assertEqual(self.library.database.read_bytes(), database_before)
+        self.assertEqual({name: path.read_bytes() for name, path in self.sources.items()}, sources_before)
+        self.assertEqual(self.library.resolve(reference), self.manifest)
+
     def test_review_regression_trailing_newline_identifiers_and_digests_reject_registration(self):
         for field in ('id', 'version'):
             changed = deepcopy(self.manifest)
