@@ -260,6 +260,12 @@ marker or a PNG with invalid compressed scanlines is rejected with
 `RIG_TEXTURE_DECODE`. The imported `TextureImage` retains the exact original
 encoded bytes; validation neither repairs nor re-encodes damaged sources.
 
+PNG admission additionally checks every chunk CRC (including IEND), a complete
+zlib stream/footer, and the exact filtered raster size for ordinary and Adam7
+interlaced data. This prevents Pillow's silent black-row padding from admitting
+an incomplete PNG. Compressed bytes are processed in bounded chunks without
+retaining a complete inflated raster.
+
 Only static PNG/JPEG images remain supported. The existing per-image 16,777,216
 pixel cap and aggregate decoded-memory estimate apply before pixel allocation
 in both native source adapters, as does the encoded byte budget. Pillow bomb
@@ -270,3 +276,11 @@ enabled `ImageFile.LOAD_TRUNCATED_IMAGES`, texture import fails closed with
 This is structural/source integrity validation, not visual or production-art
 approval. Other import, fitting and source-interoperability requirements in
 #52/#44/#139 remain separate.
+
+Successful JPEG decoding is not a proof of complete JPEG entropy integrity.
+The pinned [Pillow JPEG decoder](https://github.com/python-pillow/Pillow/blob/12.3.0/src/libImaging/JpegDecode.c)
+suppresses libjpeg warnings; a partially truncated entropy stream terminated
+with a new EOI can still decode using recovery. This patch rejects the tested
+missing-EOI JPEG and proves actual decoding, but does not establish a strict
+warning-aware JPEG validator. That known limitation remains part of the open
+native-import requirements; these issues must not be closed on this patch.

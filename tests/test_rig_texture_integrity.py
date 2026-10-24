@@ -9,6 +9,7 @@ import struct
 import subprocess
 import sys
 import tempfile
+import tracemalloc
 import unittest
 from unittest.mock import patch
 import zlib
@@ -19,7 +20,7 @@ from PIL import Image, ImageFile, PngImagePlugin
 from rig_contracts import DEFAULT_LIMITS
 from rig_errors import RigError
 from rig_gltf import export_geometry
-from rig_import import _decode_texture, load_character_model
+from rig_import import _decode_texture, _verify_png_raster, load_character_model
 from rig_jobs import create_run
 from rig_models import TextureImage
 from test_rig_skinning import test_geometry
@@ -45,6 +46,13 @@ def png_with_bad_pixels():
     # Valid container/chunk CRCs, but no valid zlib scanlines. verify() accepts it.
     return (b'\x89PNG\r\n\x1a\n' + png_chunk(b'IHDR', struct.pack('>IIBBBBB', 2, 2, 8, 2, 0, 0, 0))
             + png_chunk(b'IDAT', b'not a zlib stream') + png_chunk(b'IEND', b''))
+
+
+def png_raster(width, height, compressed, *, depth=8, color=2, interlace=0, palette=b'', fragments=0):
+    header = b'\x89PNG\r\n\x1a\n' + png_chunk(b'IHDR', struct.pack('>IIBBBBB', width, height, depth, color, 0, 0, interlace))
+    if palette: header += png_chunk(b'PLTE', palette)
+    parts = [compressed] if not fragments else [compressed[i:i + fragments] for i in range(0, len(compressed), fragments)]
+    return header + b''.join(png_chunk(b'IDAT', p) for p in parts) + png_chunk(b'IEND', b'')
 
 
 class TextureIntegrityTests(unittest.TestCase):
@@ -117,6 +125,65 @@ class TextureIntegrityTests(unittest.TestCase):
         for data in (damaged, bytes(crc_bad)):
             for suffix in ('.glb', '.gltf'):
                 self.assert_rejected(self.model(data, suffix), 'RIG_TEXTURE_DECODE')
+
+    def test_png_missing_rows_zlib_footer_or_end_crc_cannot_publish(self):
+        raw = b'\0' + b'\xff\0\0' * 2 + b'\0' + b'\0\xff\0' * 2
+        compressed = zlib.compress(raw)
+        complete = png_raster(2, 2, compressed)
+        cases = [png_raster(2, 2, zlib.compress(raw[:7])),
+                 png_raster(2, 2, zlib.compress(b'')),
+                 png_raster(2, 2, zlib.compress(raw + b'\0' * 7)),
+                 png_raster(2, 2, compressed[:-4]),
+                 png_raster(2, 2, compressed[:-1] + bytes([compressed[-1] ^ 1])),
+                 png_raster(2, 2, compressed + zlib.compress(raw)),
+                 complete[:-12], complete[:-4], complete[:-1] + bytes([complete[-1] ^ 1])]
+        for index, data in enumerate(cases):
+            with self.subTest(index=index):
+                for path in [self.model(data), self.model(data, '.gltf'),
+                             self.model(data, '.gltf', external=True), self.model(data, '.gltf', data_uri=True), self.obj(data)]:
+                    self.assert_rejected(path, 'RIG_TEXTURE_DECODE')
+        # The same missing-row source must also fail at the actual CLI boundary.
+        path = self.model(cases[0]);destination = self.root / 'missing-row-run'
+        result = subprocess.run([sys.executable, str(ROOT / 'scripts/rig.py'), 'import', '--model', str(path),
+                                 '--run-dir', str(destination)], capture_output=True, text=True, timeout=30)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertEqual(json.loads(result.stdout)['error']['code'], 'RIG_TEXTURE_DECODE')
+        self.assertFalse(destination.exists())
+
+    def test_complete_adam7_packed_and_sixteen_bit_pngs_remain_supported(self):
+        values = np.random.default_rng(81).integers(0, 256, (11, 9, 3), dtype=np.uint8)
+        raw = bytearray()
+        for x, y, dx, dy in [(0, 0, 8, 8), (4, 0, 8, 8), (0, 4, 4, 8), (2, 0, 4, 4),
+                              (0, 2, 2, 4), (1, 0, 2, 2), (0, 1, 1, 2)]:
+            for row in range(y, len(values), dy):
+                selected = values[row, x::dx]
+                if len(selected): raw.extend(b'\0' + selected.tobytes())
+        adam = png_raster(9, 11, zlib.compress(raw), interlace=1, fragments=1)
+        with Image.open(io.BytesIO(adam)) as image:
+            image.load();np.testing.assert_array_equal(np.asarray(image), values)
+        examples = [adam,
+                    png_raster(5, 2, zlib.compress(b'\0\xa8\0\x50'), depth=1, color=0),
+                    png_raster(3, 2, zlib.compress(b'\0\x18\0\xe4'), depth=2, color=3,
+                               palette=bytes([255, 0, 0, 0, 255, 0, 0, 0, 255, 255, 255, 0])),
+                    png_raster(2, 2, zlib.compress(b'\0\0\0\xff\xff\0\x12\x34\xab\xcd'), depth=16, color=0)]
+        for data in examples:
+            with self.subTest(header=data[16:29].hex()):
+                self.assertEqual(_decode_texture(data, DEFAULT_LIMITS)[0], 'image/png')
+                for suffix in ('.glb', '.gltf'):
+                    result = load_character_model(self.model(data, suffix))
+                    self.assertEqual(result.geometry.images[0].data, data)
+
+    def test_png_raster_validation_never_materializes_full_inflation(self):
+        width = height = 4096
+        compressor = zlib.compressobj()
+        blocks = [compressor.compress(b'\0' * (width + 1)) for _ in range(height)]
+        data = png_raster(width, height, b''.join(blocks) + compressor.flush(), color=0)
+        tracemalloc.start()
+        try:
+            _verify_png_raster(data, (width, height))
+            _, peak = tracemalloc.get_traced_memory()
+        finally: tracemalloc.stop()
+        self.assertLess(peak, 1024 * 1024, f'Expected bounded inflation, observed {peak} bytes')
 
     def test_obj_uses_same_pixel_integrity_and_aggregate_budget(self):
         for fmt, extension in [('PNG', '.png'), ('JPEG', '.jpg')]:

@@ -5,7 +5,9 @@ from copy import deepcopy
 from dataclasses import dataclass, field
 import io
 from pathlib import Path
+import struct
 import warnings
+import zlib
 import numpy as np
 
 from rig_contracts import DEFAULT_LIMITS
@@ -25,6 +27,88 @@ class ImportedModel:
     weights: dict[str, SkinWeights] = field(default_factory=dict)
     clips: dict[str, dict] = field(default_factory=dict)
     report: dict = field(default_factory=dict)
+
+
+def _verify_png_raster(data: bytes, size: tuple[int, int]) -> None:
+    """Reject complete-looking PNGs that Pillow repairs with missing black rows.
+
+    Check every chunk CRC (including IEND), the zlib footer and the exact
+    filtered raster size for ordinary/Adam7 data. Inflate in bounded chunks;
+    neither a joined IDAT stream nor an entire uncompressed raster is stored.
+    Pixel reconstruction/filter validation still belongs to Pillow's decoder.
+    """
+    require(data.startswith(b'\x89PNG\r\n\x1a\n'), 'RIG_TEXTURE_DECODE', 'Invalid PNG signature.')
+    view = memoryview(data)
+
+    def chunks():
+        offset = 8
+        while offset < len(view):
+            require(len(view) - offset >= 12, 'RIG_TEXTURE_DECODE', 'Truncated PNG chunk.')
+            length = struct.unpack_from('>I', view, offset)[0]
+            require(length <= len(view) - offset - 12, 'RIG_TEXTURE_DECODE', 'Truncated PNG chunk data or CRC.')
+            kind = bytes(view[offset + 4:offset + 8]);end = offset + 8 + length
+            yield offset, kind, view[offset + 8:end], end
+            offset = end + 4
+
+    seen_data = ended_data = seen_end = seen_palette = False
+    expected = None
+    for offset, kind, payload, end in chunks():
+        require(all(65 <= b <= 90 or 97 <= b <= 122 for b in kind) and not kind[2] & 32,
+                'RIG_TEXTURE_DECODE', 'Invalid PNG chunk type.')
+        require(zlib.crc32(view[offset + 4:end]) == struct.unpack_from('>I', view, end)[0],
+                'RIG_TEXTURE_DECODE', 'PNG chunk CRC does not match.')
+        require(kind[0] & 32 or kind in (b'IHDR', b'PLTE', b'IDAT', b'IEND'),
+                'RIG_TEXTURE_DECODE', 'Unsupported critical PNG chunk.')
+        if offset == 8:
+            require(kind == b'IHDR' and len(payload) == 13, 'RIG_TEXTURE_DECODE', 'PNG must begin with one IHDR.')
+            width, height, depth, color, compression, filtering, interlace = struct.unpack('>IIBBBBB', payload)
+            depths = {0: (1, 2, 4, 8, 16), 2: (8, 16), 3: (1, 2, 4, 8), 4: (8, 16), 6: (8, 16)}
+            require((width, height) == size and color in depths and depth in depths[color]
+                    and compression == filtering == 0 and interlace in (0, 1),
+                    'RIG_TEXTURE_DECODE', 'Invalid PNG raster parameters.')
+            channels = {0: 1, 2: 3, 3: 1, 4: 2, 6: 4}[color]
+            passes = ((0, 0, 1, 1),) if not interlace else (
+                (0, 0, 8, 8), (4, 0, 8, 8), (0, 4, 4, 8), (2, 0, 4, 4),
+                (0, 2, 2, 4), (1, 0, 2, 2), (0, 1, 1, 2))
+            expected = 0
+            for x, y, dx, dy in passes:
+                columns = max(0, (width - x + dx - 1) // dx)
+                rows = max(0, (height - y + dy - 1) // dy)
+                if columns and rows: expected += rows * (1 + (columns * channels * depth + 7) // 8)
+        else:
+            require(kind != b'IHDR', 'RIG_TEXTURE_DECODE', 'Duplicate PNG IHDR.')
+        if kind == b'PLTE':
+            require(not seen_data and not seen_palette and 0 < len(payload) <= 768 and len(payload) % 3 == 0
+                    and color not in (0, 4), 'RIG_TEXTURE_DECODE', 'Invalid PNG palette.')
+            seen_palette = True
+        if kind == b'IDAT':
+            require(not ended_data, 'RIG_TEXTURE_DECODE', 'PNG IDAT chunks must be consecutive.')
+            seen_data = True
+        elif seen_data:
+            ended_data = True
+        if kind == b'IEND':
+            require(len(payload) == 0 and seen_data and end + 4 == len(view),
+                    'RIG_TEXTURE_DECODE', 'Invalid PNG end-of-stream.')
+            seen_end = True
+    require(seen_end and (color != 3 or seen_palette), 'RIG_TEXTURE_DECODE', 'PNG end or palette is missing.')
+    inflater = zlib.decompressobj();decoded = 0
+    for _, kind, payload, _ in chunks():
+        if kind != b'IDAT': continue
+        for start in range(0, len(payload), 65536):
+            pending = payload[start:start + 65536]
+            require(not inflater.eof, 'RIG_TEXTURE_DECODE', 'PNG has data after its zlib stream.')
+            while True:
+                maximum = min(65536, expected - decoded + 1)
+                output = inflater.decompress(pending, maximum)
+                decoded += len(output)
+                require(decoded <= expected and not inflater.unused_data,
+                        'RIG_TEXTURE_DECODE', 'PNG raster has extra decoded or compressed data.')
+                pending = inflater.unconsumed_tail
+                if pending: continue
+                if len(output) == maximum and not inflater.eof:
+                    pending = b'';continue
+                break
+    require(inflater.eof and decoded == expected, 'RIG_TEXTURE_DECODE', 'PNG raster or zlib footer is incomplete.')
 
 
 def _decode_texture(data: bytes, limits: dict, total_pixels: int = 0) -> tuple[str, int]:
@@ -48,6 +132,7 @@ def _decode_texture(data: bytes, limits: dict, total_pixels: int = 0) -> tuple[s
                 require(0 < pixels <= 16_777_216 and (total_pixels + pixels) * 16 <= limits['memory_bytes'] // 2,
                         'RIG_LIMIT_TEXTURE', 'Decoded textures exceed the pixel/memory budget.')
                 mime = 'image/png' if image.format == 'PNG' else 'image/jpeg'
+                if image.format == 'PNG': _verify_png_raster(data, image.size)
                 image.verify()
             # Reopen the same immutable bytes: verify invalidates the first
             # parser and does not establish that its actual pixels can decode.
@@ -58,7 +143,7 @@ def _decode_texture(data: bytes, limits: dict, total_pixels: int = 0) -> tuple[s
         raise
     except (Image.DecompressionBombError, Image.DecompressionBombWarning) as exc:
         raise RigError('RIG_LIMIT_TEXTURE', 'Texture exceeds Pillow decoding safeguards.') from exc
-    except (OSError, ValueError, SyntaxError) as exc:
+    except (OSError, ValueError, SyntaxError, zlib.error) as exc:
         raise RigError('RIG_TEXTURE_DECODE', 'Texture pixels or container cannot be decoded: ' + str(exc)) from exc
 
 
