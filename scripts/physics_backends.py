@@ -1165,9 +1165,26 @@ class PyBulletBackend(BlenderBackend):
         require(identity==owner['identity'] and self._module_record==owner['module_record'],
                 'PHYSICS_BACKEND_CHANGED','The isolated interpreter/module changed after preparation.')
         self._attempted.add(prepared.token)
-        measured=_run_process(self._command(root),root,timeout=_remaining(deadline),
-            memory_bytes=world['budgets']['memory_bytes'],output_bytes=min(world['budgets']['temporary_bytes'],MAX_CACHE_BYTES),
-            cancel_token=cancel_token,progress=progress)
+        try:
+            measured=_run_process(self._command(root),root,timeout=_remaining(deadline),
+                memory_bytes=world['budgets']['memory_bytes'],output_bytes=min(world['budgets']['temporary_bytes'],MAX_CACHE_BYTES),
+                cancel_token=cancel_token,progress=progress)
+        except BackendError:
+            if (root/'worker-failure.json').exists():
+                with _Reader(root) as reader:failure=parse(reader.read('worker-failure.json',65536))
+                fields={'code','world_sha256','solver_step','solver_time','setting','limit','observed'}
+                require(type(failure) is dict and set(failure)==fields and failure['code']=='PHYSICS_NUMERICAL_INSTABILITY' and
+                        failure['world_sha256']==prepared.world_sha256 and type(failure['solver_step']) is int and
+                        1<=failure['solver_step']<=timing_clock(world)['solver_steps'] and failure['setting'] in world['solver'].get('stability',{}) and
+                        failure['limit']==world['solver']['stability'][failure['setting']] and type(failure['observed']) in (int,float) and failure['observed']>failure['limit'],
+                        'PHYSICS_BACKEND_CRASH','Malformed numerical failure observations.',category='backend-crash')
+                time_value=failure['solver_step']*_ratio(world['solver']['fixed_step'])/world['solver']['substeps']
+                require(failure['solver_time']==rational(time_value),'PHYSICS_BACKEND_CRASH','Failure solver clock differs.',category='backend-crash')
+                error=BackendError('PHYSICS_NUMERICAL_INSTABILITY','Observed '+failure['setting']+' exceeded limit at solver step '+str(failure['solver_step'])+' time '+str(time_value),
+                    category='numerical-instability',last_valid_frame=max(0,math.floor((time_value-_ratio(world['solver']['fixed_step'])/world['solver']['substeps'])*_ratio(world['fps']))))
+                error.report.update(solver_step=failure['solver_step'],solver_time=failure['solver_time'],setting=failure['setting'],limit=failure['limit'],observed=failure['observed'])
+                raise error
+            raise
         require(all((root/name).is_file() for name in ('states.json','solver-states.json','contacts.json','worker-report.json')),
                 'PHYSICS_OUTPUT_MISSING','DIRECT execution omitted required actual state/contact outputs.',category='backend-crash')
         report=parse((root/'worker-report.json').read_bytes())
@@ -1447,6 +1464,8 @@ def _read_cache_impl(root, *, expected_world_sha256=None):
         required.update({'scene.blend','preview.png'} if manifest['backend']['id']=='blender' else {'contacts.json'})
         require(required <= set(payloads),
                 'PHYSICS_CACHE_CORRUPT', 'Required native physics artifacts are missing.', category='cache-corruption')
+        require(manifest['backend']['id']=='pybullet' or 'solver-states.json' not in payloads,
+                'PHYSICS_CACHE_CORRUPT','Blender solver-substep cache extraction is unsupported.',category='cache-corruption')
         world = _world(parse(payloads['world.json']))
         _admit_world(world,manifest['backend']['id'])
         require(total+len(manifest_payload)<=min(world['budgets']['cache_bytes'],world['budgets']['temporary_bytes'],MAX_CACHE_BYTES) and
@@ -1541,7 +1560,7 @@ def _read_cache_impl(root, *, expected_world_sha256=None):
             require(receipt.get('sample_cache_verification') == dict(status='structure-and-finite-values-verified',
                     sample_count=len(states['samples']),contact_frames=len(states['samples'])),
                     'PHYSICS_CACHE_CORRUPT','DIRECT sampled-cache verification receipt differs.',category='cache-corruption')
-        if 'solver-states.json' in payloads:
+        if manifest['backend']['id']=='pybullet' and 'solver-states.json' in payloads:
             receipt['_solver_states']=parse(payloads['solver-states.json'])
         return manifest, world, states, receipt
 

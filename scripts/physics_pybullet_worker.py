@@ -121,6 +121,11 @@ def main():
                 linear,angular=p.getBaseVelocity(index,physicsClientId=client)
                 for key,velocity in [('max_linear_velocity',linear),('max_angular_velocity',angular)]:
                     if key in stability and math.sqrt(sum(v*v for v in velocity))>stability[key]:
+                        failure=dict(code='PHYSICS_NUMERICAL_INSTABILITY',world_sha256=job['world_sha256'],
+                            solver_step=index,solver_time=dict(numerator=(index*step).numerator,denominator=(index*step).denominator),
+                            setting=key,limit=stability[key],observed=math.sqrt(sum(v*v for v in velocity)))
+                        temporary=root/'worker-failure.json.tmp'
+                        temporary.write_bytes(canonical(failure));temporary.replace(root/'worker-failure.json')
                         raise ValueError('Numerical stability velocity limit exceeded: '+key)
                 if not all(math.isfinite(v) for v in [*translation,*rotation]):
                     raise ValueError('Nonfinite PyBullet state.')
@@ -138,8 +143,8 @@ def main():
             while index<upper:
                 left=right
                 p.stepSimulation(physicsClientId=client)
-                right=state()
                 index+=1
+                right=state()
                 solved.append(dict(step=index,bodies=right))
             alpha=target-(upper-1) if target.denominator!=1 else Fraction(1)
             bodies=right if target.denominator==1 else [interpolate(a,b,alpha) for a,b in zip(left,right)]
