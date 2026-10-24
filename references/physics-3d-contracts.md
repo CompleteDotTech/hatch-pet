@@ -227,7 +227,7 @@ both shared structural parity and the additional semantic boundary.
 The [machine-readable validation record](../tests/results/physics-contracts-20261024/validation.json)
 binds exact source commit/tree, an unchanged before/after checkout fingerprint,
 actual interpreter/dependency versions, commands, timings and raw log SHA-256.
-The corrected source has **22 passing contract tests and four passing legacy
+The pre-integration corrected source `e39f9b4` has **22 passing contract tests and four passing legacy
 compatibility checks** on Python 3.12.15; all 817 2D cases are discoverable with
 optional 3D/solver imports blocked. Legacy/generated physics schema parity,
 rig-template parity and actual original production-source delivery verification
@@ -240,3 +240,29 @@ native-Krita skip, 839.990 seconds. That baseline predates the independent-revie
 corrections and **is not a full-suite result for the corrected source**. Final
 exact-head cross-platform CI remains a separate merge gate. No solver, cache
 replay, production visual approval or human signoff is established by these logs.
+
+
+## Shared decoder prerequisite integration
+
+The physics branch normally merges the independently reviewed shared decoder
+`cf15e97027ab48d028de6dfd8dc8f2440f2cf2d8` from
+[PR #205](https://github.com/CompleteTech-Skills/hatch-pet/pull/205). That prerequisite
+owns oversized-integer and UTF-8 byte-budget translation. The domain loader now
+translates only structured `RigError`; unrelated programming `ValueError` remains
+visible. No duplicate shared decoder implementation is introduced.
+
+The [integration validation record](../tests/results/physics-contracts-20261024/decoder-integration/verification.json)
+binds exact integrated source `387a41367c44e46aecc64abc4255f0886bdfacef`, shared helper
+commit, identical before/after checkout fingerprints and actual logs. All 22
+physics tests and four compatibility checks pass on Python 3.12.15; all 824 2D cases
+are discoverable with optional imports blocked. Physics/legacy schema and template
+parity, original-source verification and 14 actual API/file probes pass. Those
+probes cover signed 5000-digit integers, mixed-width UTF-8 at exact/over byte caps,
+malformed encodings/duplicate keys/nonfinite input, unchanged source bytes and
+propagation of unrelated programming errors. They do not change the interpreter's
+integer digit limit.
+
+The earlier 811-case run remains bound only to 68b9b87. No new full-suite or solver
+execution is inferred from this integration. Fresh whole-tree independent review
+and exact-head GitHub CI remain required before merge; PR #205 is an explicit
+predecessor.
