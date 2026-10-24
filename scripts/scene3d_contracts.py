@@ -34,8 +34,8 @@ ID = {'type': 'string', 'pattern': r'^[a-z][a-z0-9_-]{0,63}' + END}
 VERSION = {'type': 'string', 'pattern': r'^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)' + END}
 TEXT = {'type': 'string', 'minLength': 1, 'maxLength': 4096}
 SHA = {'type': 'string', 'pattern': r'^[0-9a-f]{64}' + END}
-_RESERVED = r'(?:[cC][oO][nN]|[pP][rR][nN]|[aA][uU][xX]|[nN][uU][lL]|[cC][oO][mM][1-9]|[lL][pP][tT][1-9])'
-_COMPONENT = (r'(?!' + _RESERVED + r'(?:[.]|/|' + END + r'))' +
+_RESERVED = r'(?:[cC][oO][nN](?:[iI][nN][$]|[oO][uU][tT][$])?|[pP][rR][nN]|[aA][uU][xX]|[nN][uU][lL]|[cC][oO][mM][0-9¹²³]|[lL][pP][tT][0-9¹²³])'
+_COMPONENT = (r'(?! )(?!' + _RESERVED + r'(?:[.]|/|' + END + r'))' +
               r'[^/\\:\x00-\x1f<>"|?*]*[^/\\:\x00-\x1f<>"|?* .]')
 PATH = dict(type='string', minLength=1, maxLength=1024,
             pattern=r'^(?:' + _COMPONENT + r'/)*' + _COMPONENT + END)
@@ -245,8 +245,8 @@ def portable_path(value):
     require(not re.search(r'[\\:\x00-\x1f<>"|?*]', value), 'Path contains a nonportable character.')
     parts = value.split('/')
     for part in parts:
-        require(part not in ('', '.', '..') and not part.endswith((' ', '.')), 'Noncanonical path component.')
-        require(not re.match(r'^(CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])(?:\.|$)', part, re.I),
+        require(part not in ('', '.', '..') and not part.startswith(' ') and not part.endswith((' ', '.')), 'Noncanonical path component.')
+        require(not re.match(r'^(CON|CONIN[$]|CONOUT[$]|PRN|AUX|NUL|COM[0-9¹²³]|LPT[0-9¹²³])(?:\.|$)', part, re.I),
                 'Windows device path is unsupported.')
     return value
 

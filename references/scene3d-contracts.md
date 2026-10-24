@@ -81,7 +81,10 @@ call its owner's validator before execution. The linked 2D project's existing
 loading its cast/media closure still belongs to that owner's loader. Paths are relative to the project
 root, even inside nested manifests. They are NFC POSIX paths without absolute
 paths, traversal, backslashes, drive/URI prefixes, device names, control characters
-or trailing-dot/space aliases. Filesystem symlinks and nonregular inputs fail.
+or leading-space/trailing-dot/space aliases. Device rejection includes
+COM/LPT superscript digits and CONIN$/CONOUT$, following [Microsoft naming
+rules](https://learn.microsoft.com/windows/desktop/FileIO/naming-a-file) and
+[the DOS device API](https://learn.microsoft.com/en-us/windows/win32/devnotes/rtlisdosdevicename_u). Filesystem symlinks and nonregular inputs fail.
 
 The loader is a **read-only admission operation on stable input files**, not a
 transaction or sandbox against a malicious concurrent filesystem writer. It

@@ -301,7 +301,7 @@ class SceneContractTests(unittest.TestCase):
             self.assertTrue(list(Draft202012Validator(schemas()['scene3d-scene.schema.json']).iter_errors(doc)))
             with self.assertRaises(RigError):
                 validate_document(doc)
-        for bad in ('../x', 'a//b', 'CON.txt', 'lPt9.obj', 'a/../b', '/x', 'a\\b', 'a.', 'a '):
+        for bad in ('../x', 'a//b', 'CON.txt', 'lPt9.obj', 'COM¹.obj', 'LPT²', 'CONIN$', 'CONOUT$.txt', ' leading', 'a/../b', '/x', 'a\\b', 'a.', 'a '):
             pointer = fixture('project')['assets'][0]
             pointer['path'] = bad
             self.assertTrue(list(Draft202012Validator({'$defs': definitions(), '$ref': '#/$defs/reference'}).iter_errors(pointer)), bad)
@@ -333,7 +333,7 @@ class SceneContractTests(unittest.TestCase):
 
     def test_nonportable_paths_rejected(self):
         for path in ('../x', '/x', 'a//b', 'a/./b', 'a/../b', 'C:/x', 'a\\b',
-                     'file:uri', 'a\x00b', 'a/NUL.txt', 'a/COM1', 'a/x.', 'a/x ', 'e\u0301.json'):
+                     'file:uri', 'a\x00b', 'a/NUL.txt', 'a/COM1', 'a/COM¹.obj', 'LPT³.txt', 'CONIN$', 'CONOUT$.txt', 'a/ leading', 'a/x.', 'a/x ', 'e\u0301.json'):
             with self.subTest(path=repr(path)), self.assertRaises(RigError):
                 portable_path(path)
         self.assertEqual(portable_path('assets/épreuve.obj'), 'assets/épreuve.obj')
