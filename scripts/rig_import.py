@@ -5,10 +5,11 @@ from copy import deepcopy
 from dataclasses import dataclass, field
 import io
 from pathlib import Path
+import warnings
 import numpy as np
 
 from rig_contracts import DEFAULT_LIMITS
-from rig_errors import require, sha256, slug, timestamp
+from rig_errors import RigError, require, sha256, slug, timestamp
 from rig_geometry import analyze_geometry, vertex_normals
 from rig_gltf import GltfDocument, _index, node_matrix, read_gltf, scene_graph
 from rig_math import decompose, transform_normals, transform_points
@@ -26,8 +27,42 @@ class ImportedModel:
     report: dict = field(default_factory=dict)
 
 
+def _decode_texture(data: bytes, limits: dict, total_pixels: int = 0) -> tuple[str, int]:
+    """Verify containers and decode pixels before accepting immutable source bytes.
+
+    ``verify`` alone does not decode JPEG entropy data. Keep the existing
+    aggregate working-memory bound ahead of either pixel allocation and never
+    repair/re-encode a damaged source or change Pillow's process-wide policy.
+    """
+    from PIL import Image, ImageFile
+    require(len(data) <= limits['source_bytes'], 'RIG_LIMIT_TEXTURE', 'Encoded texture exceeds its byte budget.')
+    require(not ImageFile.LOAD_TRUNCATED_IMAGES, 'RIG_TEXTURE_POLICY',
+            'Strict texture import requires Pillow LOAD_TRUNCATED_IMAGES to remain disabled.')
+    try:
+        with warnings.catch_warnings():
+            warnings.simplefilter('error', Image.DecompressionBombWarning)
+            with Image.open(io.BytesIO(data)) as image:
+                require(image.format in ('PNG', 'JPEG') and getattr(image, 'n_frames', 1) == 1,
+                        'RIG_TEXTURE_FORMAT', 'Portable textures must be static PNG/JPEG images.')
+                pixels = image.width * image.height
+                require(0 < pixels <= 16_777_216 and (total_pixels + pixels) * 16 <= limits['memory_bytes'] // 2,
+                        'RIG_LIMIT_TEXTURE', 'Decoded textures exceed the pixel/memory budget.')
+                mime = 'image/png' if image.format == 'PNG' else 'image/jpeg'
+                image.verify()
+            # Reopen the same immutable bytes: verify invalidates the first
+            # parser and does not establish that its actual pixels can decode.
+            with Image.open(io.BytesIO(data)) as image:
+                image.load()
+        return mime, pixels
+    except RigError:
+        raise
+    except (Image.DecompressionBombError, Image.DecompressionBombWarning) as exc:
+        raise RigError('RIG_LIMIT_TEXTURE', 'Texture exceeds Pillow decoding safeguards.') from exc
+    except (OSError, ValueError, SyntaxError) as exc:
+        raise RigError('RIG_TEXTURE_DECODE', 'Texture pixels or container cannot be decoded: ' + str(exc)) from exc
+
+
 def _images(document: GltfDocument) -> list[TextureImage]:
-    from PIL import Image
     images = []
     total_pixels = 0
     for i, item in enumerate(document.json.get('images', [])):
@@ -36,15 +71,8 @@ def _images(document: GltfDocument) -> list[TextureImage]:
         else:
             buffer, offset, length, _ = document.view(item['bufferView'])
             data = buffer[offset:offset+length]
-        require(len(data) <= document.limits['source_bytes'], 'RIG_LIMIT_TEXTURE', 'Encoded texture exceeds its byte budget.')
-        with Image.open(io.BytesIO(data)) as image:
-            require(image.format in ('PNG', 'JPEG') and getattr(image, 'n_frames', 1) == 1,
-                    'RIG_TEXTURE_FORMAT', 'Portable textures must be static PNG/JPEG images.')
-            total_pixels += image.width*image.height
-            require(image.width*image.height <= 16_777_216 and total_pixels*16 <= document.limits['memory_bytes']//2,
-                    'RIG_LIMIT_TEXTURE', 'Decoded textures exceed the pixel/memory budget.')
-            mime = 'image/png' if image.format == 'PNG' else 'image/jpeg'
-            image.verify()
+        mime, pixels = _decode_texture(data, document.limits, total_pixels)
+        total_pixels += pixels
         require(item.get('mimeType', mime) == mime, 'RIG_TEXTURE_FORMAT', 'Texture MIME does not match its actual bytes.')
         images.append(TextureImage(item.get('name', f'image-{i}'), mime, data))
     return images
