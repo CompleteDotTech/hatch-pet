@@ -55,3 +55,11 @@ RIG_JSON_DEPTH error and unchanged caller data. `depth-guard-focused.log` and
 parity to that exact source, with no failures/errors/skips. The older 28-case and
 76-case outputs retain their original source bindings; none is relabelled as a
 later broad execution.
+
+The final shared decoder candidate cf15e97 adds bounded UTF-8 byte accounting.
+It was normal-merged under coordinator authorization. Committed source 96552d1
+passed all 29 continuity tests in 4.231s without failures/errors/skips, schema
+parity, a real configured UTF-8 byte-limit negative and the actual huge-integer
+CLI error case. `final-decoder-focused.log` and `final-decoder-verification.json`
+bind this source and log. Older outputs remain historical; no larger-suite rerun
+or fresh independent PASS is inferred from these targeted integration checks.
