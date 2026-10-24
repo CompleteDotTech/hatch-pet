@@ -74,3 +74,4 @@ jobs:
           if-no-files-found: error
           retention-days: 30
           path: physics-evidence/
+          include-hidden-files: true
