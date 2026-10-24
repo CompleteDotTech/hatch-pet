@@ -80,7 +80,11 @@ hostile concurrent ancestor renames; this API is not an OS sandbox.
 `IdentityRegistry(database_path, asset_root=...)` is a data-only SQLite continuity
 sidecar, with explicit format/application identity, foreign keys, bounded growth,
 full synchronous rollback-journal transactions and five-second lock timeout.
-Its parent must already exist. Existing unrelated databases, leaf symlinks,
+Its parent must already exist. The constructor owns the native SQLite connection
+until every initialization step succeeds. Application/format rejection, PRAGMA
+failure and schema-transaction failure close that connection explicitly; rollback
+or a SQLite context manager alone does not close it. A successful constructor
+transfers ownership to the registry until `close` or its own context exit. Existing unrelated databases, leaf symlinks,
 nonregular files and symlink SQLite sidecars are rejected. Existing parent aliases
 are resolved without following the requested database leaf. Native files and
 legacy project manifests remain external and unchanged.

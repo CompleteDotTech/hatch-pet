@@ -1,5 +1,6 @@
 """Executable contract/lifecycle gates, explicitly synthetic and nonvisual."""
 from copy import deepcopy
+from contextlib import contextmanager
 import hashlib
 import json
 import os
@@ -533,6 +534,94 @@ with tempfile.TemporaryDirectory() as temp:
         with self.assertRaisesRegex(ValueError,'ADAPTER_REQUIRED'):
             self.registry.migrate_selected('project',['a'],'robot-r2',expected_sha256=initial)
         self.assertEqual(list(self.registry.db.iterdump()),before)
+
+    @contextmanager
+    def capture_initialization_connections(self, authorizer=None):
+        """Keep genuine native connections alive to expose deterministic leaks.
+
+        Assertions run before this test-owned cleanup. The original Windows
+        teardown test remains unchanged and never suppresses cleanup failures.
+        """
+        import sqlite3
+        connect=sqlite3.connect;captured=[]
+        def record(*args,**kwargs):
+            connection=connect(*args,**kwargs)
+            captured.append(connection)
+            if authorizer is not None:connection.set_authorizer(authorizer)
+            return connection
+        try:
+            with patch('continuity_registry.sqlite3.connect',record):
+                yield captured
+        finally:
+            for connection in captured:connection.close()
+
+    def assert_native_connection_closed(self, connection):
+        import sqlite3
+        with self.assertRaisesRegex(sqlite3.ProgrammingError,'closed database'):
+            connection.execute('SELECT 1')
+
+    def test_rejected_unknown_version_closes_owned_connection_without_gc(self):
+        self.registry.db.execute("UPDATE meta SET version='999.0.0'")
+        before={str(path.relative_to(self.root)):path.read_bytes() for path in self.root.rglob('*') if path.is_file()}
+        with self.capture_initialization_connections() as captured:
+            with self.assertRaisesRegex(ValueError,'incompatible') as rejection:
+                IdentityRegistry(self.root/'identity.sqlite',asset_root=self.assets)
+            # Keep both exception and failed native connection reachable. Linux
+            # unlink success or garbage collection cannot hide the leaked owner.
+            self.assertIsNotNone(rejection.exception)
+            self.assertEqual(len(captured),1)
+            self.assert_native_connection_closed(captured[0])
+            after={str(path.relative_to(self.root)):path.read_bytes() for path in self.root.rglob('*') if path.is_file()}
+            self.assertEqual(after,before)
+        # A rejected opener must not close or modify the legitimate existing one.
+        self.assertEqual(self.registry.db.execute('SELECT version FROM meta').fetchone()[0],'999.0.0')
+
+    def test_sqlite_pragma_rejection_closes_constructor_connection(self):
+        import sqlite3
+        before=(self.root/'identity.sqlite').read_bytes()
+        def deny_setting(action,name,*unused):
+            return sqlite3.SQLITE_DENY if action==sqlite3.SQLITE_PRAGMA and name=='trusted_schema' else sqlite3.SQLITE_OK
+        with self.capture_initialization_connections(deny_setting) as captured:
+            with self.assertRaisesRegex(sqlite3.DatabaseError,'authorized'):
+                IdentityRegistry(self.root/'identity.sqlite',asset_root=self.assets)
+            self.assertEqual(len(captured),1)
+            self.assert_native_connection_closed(captured[0])
+            self.assertEqual((self.root/'identity.sqlite').read_bytes(),before)
+
+    def test_schema_initialization_rejection_closes_and_rolls_back_native_state(self):
+        import sqlite3
+        path=self.root/'partial.sqlite'
+        connection=sqlite3.connect(path,isolation_level=None)
+        try:
+            connection.execute('PRAGMA application_id=1212372017')
+            connection.execute('CREATE TABLE meta(version TEXT NOT NULL)')
+            connection.execute("INSERT INTO meta VALUES ('1.0.0')")
+            connection.execute('CREATE TABLE precious(value TEXT)')
+            connection.execute("INSERT INTO precious VALUES ('original owner data')")
+        finally:connection.close()
+        before=path.read_bytes()
+        def deny_new_table(action,name,*unused):
+            return sqlite3.SQLITE_DENY if action==sqlite3.SQLITE_CREATE_TABLE and name=='identities' else sqlite3.SQLITE_OK
+        with self.capture_initialization_connections(deny_new_table) as captured:
+            with self.assertRaisesRegex(sqlite3.DatabaseError,'authorized'):
+                IdentityRegistry(path,asset_root=self.assets)
+            self.assertEqual(len(captured),1)
+            self.assert_native_connection_closed(captured[0])
+            self.assertEqual(path.read_bytes(),before)
+        connection=sqlite3.connect(path)
+        try:
+            self.assertEqual(connection.execute('SELECT value FROM precious').fetchall(),[('original owner data',)])
+            self.assertEqual(connection.execute("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name").fetchall(),[('meta',),('precious',)])
+        finally:connection.close()
+
+    def test_successful_constructor_transfers_connection_until_explicit_close(self):
+        path=self.root/'successful.sqlite'
+        with self.capture_initialization_connections() as captured:
+            with IdentityRegistry(path,asset_root=self.assets) as registry:
+                self.assertEqual(len(captured),1)
+                self.assertIs(registry.db,captured[0])
+                self.assertEqual(registry.db.execute('SELECT version FROM meta').fetchone()[0],'1.0.0')
+            self.assert_native_connection_closed(captured[0])
 
     def test_existing_unrelated_database_and_unknown_versions_preserved(self):
         import sqlite3

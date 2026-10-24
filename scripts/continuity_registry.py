@@ -71,35 +71,37 @@ class IdentityRegistry:
             descriptor = os.open(self.path, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
             os.close(descriptor)
         self.db = sqlite3.connect(self.path, timeout=5, isolation_level=None)
+        # The constructor owns this handle until all initialization succeeds.
+        # Transaction rollback alone does not close a sqlite3.Connection.
         try:
             application_id = self.db.execute('PRAGMA application_id').fetchone()[0]
             if not created and application_id != 0x48435431:
                 raise ValueError('CONTINUITY_VERSION: existing file is not a continuity registry')
+            if created:
+                self.db.execute('PRAGMA application_id=1212372017')
+            self.db.execute('PRAGMA trusted_schema=OFF')
+            self.db.execute('PRAGMA foreign_keys=ON')
+            self.db.execute('PRAGMA journal_mode=DELETE')
+            self.db.execute('PRAGMA synchronous=FULL')
+            # A bounded local metadata store; oversized growth fails atomically.
+            page_size = self.db.execute('PRAGMA page_size').fetchone()[0]
+            self.db.execute('PRAGMA max_page_count=' + str(MAX_DB_BYTES // page_size))
+            with self._transaction():
+                self.db.execute('CREATE TABLE IF NOT EXISTS meta (version TEXT NOT NULL)')
+                rows = self.db.execute('SELECT version FROM meta').fetchall()
+                if not rows:
+                    self.db.execute('INSERT INTO meta VALUES (?)', ('1.0.0',))
+                elif rows != [('1.0.0',)]:
+                    raise ValueError('CONTINUITY_VERSION: incompatible registry format')
+                self.db.execute('CREATE TABLE IF NOT EXISTS identities (id TEXT PRIMARY KEY, document BLOB NOT NULL, hash TEXT NOT NULL, selected TEXT)')
+                self.db.execute('CREATE TABLE IF NOT EXISTS drafts (id TEXT PRIMARY KEY, identity_id TEXT NOT NULL REFERENCES identities(id), document BLOB NOT NULL, hash TEXT NOT NULL)')
+                self.db.execute('CREATE TABLE IF NOT EXISTS contents (hash TEXT PRIMARY KEY, document BLOB NOT NULL)')
+                self.db.execute('CREATE TABLE IF NOT EXISTS revisions (id TEXT PRIMARY KEY, identity_id TEXT NOT NULL REFERENCES identities(id), version TEXT NOT NULL, hash TEXT NOT NULL REFERENCES contents(hash), review BLOB NOT NULL, deprecated INTEGER NOT NULL DEFAULT 0, UNIQUE(identity_id, version))')
+                self.db.execute('CREATE TABLE IF NOT EXISTS projects (id TEXT PRIMARY KEY, document BLOB NOT NULL, hash TEXT NOT NULL)')
+                self.db.execute('CREATE TABLE IF NOT EXISTS history (sequence INTEGER PRIMARY KEY, action TEXT NOT NULL, subject TEXT NOT NULL, details BLOB NOT NULL)')
         except BaseException:
             self.db.close()
             raise
-        if created:
-            self.db.execute('PRAGMA application_id=1212372017')
-        self.db.execute('PRAGMA trusted_schema=OFF')
-        self.db.execute('PRAGMA foreign_keys=ON')
-        self.db.execute('PRAGMA journal_mode=DELETE')
-        self.db.execute('PRAGMA synchronous=FULL')
-        # A bounded local metadata store; oversized growth fails atomically.
-        page_size = self.db.execute('PRAGMA page_size').fetchone()[0]
-        self.db.execute('PRAGMA max_page_count=' + str(MAX_DB_BYTES // page_size))
-        with self._transaction():
-            self.db.execute('CREATE TABLE IF NOT EXISTS meta (version TEXT NOT NULL)')
-            rows = self.db.execute('SELECT version FROM meta').fetchall()
-            if not rows:
-                self.db.execute('INSERT INTO meta VALUES (?)', ('1.0.0',))
-            elif rows != [('1.0.0',)]:
-                raise ValueError('CONTINUITY_VERSION: incompatible registry format')
-            self.db.execute('CREATE TABLE IF NOT EXISTS identities (id TEXT PRIMARY KEY, document BLOB NOT NULL, hash TEXT NOT NULL, selected TEXT)')
-            self.db.execute('CREATE TABLE IF NOT EXISTS drafts (id TEXT PRIMARY KEY, identity_id TEXT NOT NULL REFERENCES identities(id), document BLOB NOT NULL, hash TEXT NOT NULL)')
-            self.db.execute('CREATE TABLE IF NOT EXISTS contents (hash TEXT PRIMARY KEY, document BLOB NOT NULL)')
-            self.db.execute('CREATE TABLE IF NOT EXISTS revisions (id TEXT PRIMARY KEY, identity_id TEXT NOT NULL REFERENCES identities(id), version TEXT NOT NULL, hash TEXT NOT NULL REFERENCES contents(hash), review BLOB NOT NULL, deprecated INTEGER NOT NULL DEFAULT 0, UNIQUE(identity_id, version))')
-            self.db.execute('CREATE TABLE IF NOT EXISTS projects (id TEXT PRIMARY KEY, document BLOB NOT NULL, hash TEXT NOT NULL)')
-            self.db.execute('CREATE TABLE IF NOT EXISTS history (sequence INTEGER PRIMARY KEY, action TEXT NOT NULL, subject TEXT NOT NULL, details BLOB NOT NULL)')
 
     def close(self):
         self.db.close()
