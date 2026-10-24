@@ -1022,6 +1022,85 @@ class Model3DContracts(unittest.TestCase):
         self.assertNotIn('Traceback', result.stderr)
         self.assertEqual(before, {p.name: p.read_bytes() for p in self.root.iterdir()})
 
+    def test_transitive_per_file_budget_checks_cached_payloads_before_copy(self):
+        import model3d_validation
+        leaf = asset_fixture(self.root, 'file-leaf')
+        middle = asset_fixture(self.root, 'file-middle')
+        leaf_path = self.root / 'large-evidence.bin'
+        leaf_path.write_bytes(b'x' * 200000)
+        def graph():
+            leaf['provenance']['evidence'] = [payload(self.root, leaf_path.name, 'application/octet-stream')]
+            leaf_record = write_document(self.root, 'file-leaf.json', leaf)
+            direct = dict(id=leaf['id'], version=leaf['version'], manifest=leaf_record)
+            middle['dependencies'] = [direct]
+            middle['limits']['file_bytes'] = 100000
+            middle_record = write_document(self.root, 'file-middle.json', middle)
+            return direct, dict(id=middle['id'], version=middle['version'], manifest=middle_record)
+        direct, indirect = graph()
+        original_open = model3d_validation._open_payload
+        for references, expected_large_reads in (([indirect], 0), ([direct, indirect], 1), ([indirect, direct], 0)):
+            doc = deepcopy(self.asset)
+            doc['dependencies'] = references
+            opened = []
+            def observe_open(root, name):
+                opened.append(name)
+                return original_open(root, name)
+            before = {p.name: p.read_bytes() for p in self.root.iterdir()}
+            with mock.patch('model3d_validation._open_payload', side_effect=observe_open):
+                self.assertInvalid(doc, 'MODEL3D_BUDGET', payloads=True)
+            self.assertEqual(opened.count(leaf_path.name), expected_large_reads)
+            self.assertEqual(before, {p.name: p.read_bytes() for p in self.root.iterdir()})
+        # The exact limit is valid. Both cache orders preserve the100000 bytes.
+        leaf_path.write_bytes(b'x' * 100000)
+        direct, indirect = graph()
+        for references in ([direct, indirect], [indirect, direct]):
+            doc = deepcopy(self.asset)
+            doc['dependencies'] = references
+            report = validate_document(doc, self.root)
+            self.assertTrue(report['geometry_inspected'])
+            observation = next(item for item in report['geometry'] if item['asset_id'] == leaf['id'])
+            self.assertEqual(observation['inspection_file_budget_bytes'], 100000)
+            self.assertEqual(hashlib.sha256(leaf_path.read_bytes()).hexdigest(), leaf['provenance']['evidence'][0]['sha256'])
+
+    def test_integral_float_byte_counts_stream_exact_bytes_and_reject_other_values(self):
+        path = self.root / 'float-count.bin'
+        for size in (3, 2 * 1024**2 + 3):
+            raw = (b'abc' * ((size + 2) // 3))[:size]
+            path.write_bytes(raw)
+            source = deepcopy(self.asset['sources'][0])
+            source.update(role='annotation', file=payload(self.root, path.name, 'application/octet-stream'),
+                          original_filename=path.name)
+            source['file']['bytes'] = float(size)
+            validate_contract(source)
+            source_path = self.root / 'float-source.json'
+            write_document(self.root, source_path.name, source)
+            before = {p.name: p.read_bytes() for p in self.root.iterdir()}
+            result = subprocess.run([sys.executable, '-B', str(ROOT / 'scripts/model3d.py'),
+                'validate', '--file', str(source_path)], capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            report = json.loads(result.stdout)
+            self.assertEqual(report['verified_bytes'], size)
+            self.assertEqual(report['files'][0]['sha256'], hashlib.sha256(raw).hexdigest())
+            self.assertEqual(before, {p.name: p.read_bytes() for p in self.root.iterdir()})
+            for invalid in (True, False, size + .5, 0, -1, '3'):
+                broken = deepcopy(source)
+                broken['file']['bytes'] = invalid
+                self.assertInvalid(broken, 'MODEL3D_SCHEMA', payloads=True)
+
+    def test_integral_float_limits_and_geometry_counts_preserve_manifest_and_payload(self):
+        doc = deepcopy(self.asset)
+        doc['limits'] = {name: float(value) for name, value in doc['limits'].items()}
+        doc['geometry']['bytes'] = float(doc['geometry']['bytes'])
+        doc['measurements']['vertices'] = float(doc['measurements']['vertices'])
+        doc['measurements']['triangles'] = float(doc['measurements']['triangles'])
+        encoded = json.dumps(doc, sort_keys=True)
+        before = {p.name: p.read_bytes() for p in self.root.iterdir()}
+        report = validate_document(doc, self.root)
+        self.assertTrue(report['geometry_inspected'])
+        self.assertEqual(report['verified_bytes'], int(doc['geometry']['bytes']))
+        self.assertEqual(json.dumps(doc, sort_keys=True), encoded)
+        self.assertEqual(before, {p.name: p.read_bytes() for p in self.root.iterdir()})
+
     def test_schema_discovery_does_not_import_numpy(self):
         command = [sys.executable, '-B', '-c',
                    'import sys;sys.path.insert(0,' + repr(str(ROOT / 'scripts')) + ');'

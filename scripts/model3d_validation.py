@@ -8,6 +8,7 @@ from __future__ import annotations
 from contextlib import contextmanager
 import hashlib
 import importlib.metadata
+import math
 import platform
 import re
 import os
@@ -19,6 +20,19 @@ import unicodedata
 
 from model3d_contracts import KINDS, LIMITS, VERSION, file_references, validate_contract
 from rig_errors import RigError, MAX_JSON_BYTES, object_hash, read_json, require, safe_path, sha256
+
+
+def _integer_count(value):
+    """Normalize JSON-Schema integers without truncating fractions or booleans."""
+    require(not isinstance(value, bool) and
+            (isinstance(value, int) or isinstance(value, float) and math.isfinite(value) and value.is_integer()),
+            'MODEL3D_SCHEMA', 'An operational count must be a whole JSON number, not a boolean or fraction.')
+    require(value >= 1, 'MODEL3D_SCHEMA', 'An operational resource count must be positive.')
+    return int(value)
+
+
+def _runtime_limits(value):
+    return {name: _integer_count(count) for name, count in value.get('limits', LIMITS).items()}
 
 
 def _file_fingerprint(info):
@@ -68,13 +82,17 @@ file identity; hostile concurrent directory replacement still needs OS isolation
 
 class _Snapshot:
     def __init__(self, root, destination, limits):
-        self.root, self.destination, self.limits = root, Path(destination).resolve(), limits
+        self.root, self.destination = root, Path(destination).resolve()
+        self.limits = {name: _integer_count(count) for name, count in limits.items()}
         self.files, self.aliases = {}, {}
         self.total = 0
         self.image_dimensions = {}
 
-    def capture(self, record, *, memory_bytes=None):
+    def capture(self, record, *, memory_bytes=None, file_bytes=None):
         image_budget = min(self.limits['memory_bytes'], memory_bytes if memory_bytes is not None else self.limits['memory_bytes'])
+        file_budget = min(self.limits['file_bytes'], file_bytes if file_bytes is not None else self.limits['file_bytes'])
+        declared_bytes = _integer_count(record['bytes'])
+        require(declared_bytes <= file_budget, 'MODEL3D_BUDGET', 'Payload exceeds its inherited per-file budget.', asset=record['path'])
         name = record['path']
         alias = unicodedata.normalize('NFC', name).casefold()
         require(alias not in self.aliases or self.aliases[alias] == name,
@@ -86,20 +104,20 @@ class _Snapshot:
             require(dimensions is None or dimensions[0] * dimensions[1] <= min(16_777_216, image_budget // 16),
                     'MODEL3D_BUDGET', 'Cached image exceeds this document memory budget.', asset=name)
             return self.destination / name
-        require(len(self.files) < self.limits['files'] and record['bytes'] <= self.limits['file_bytes'] and
-                self.total + record['bytes'] <= self.limits['total_bytes'],
+        require(len(self.files) < self.limits['files'] and declared_bytes <= file_budget and
+                self.total + declared_bytes <= self.limits['total_bytes'],
                 'MODEL3D_BUDGET', 'Expanded payload closure exceeds its resource budget.', asset=name)
         target = self.destination / name
         target.parent.mkdir(parents=True, exist_ok=True)
         digest, total = hashlib.sha256(), 0
         with _open_payload(self.root, name) as (source, info), target.open('xb') as output:
-            require(info.st_size == record['bytes'], 'MODEL3D_SIZE', 'Payload size does not match its declaration.', asset=name)
-            for chunk in iter(lambda: source.read(min(1024**2, record['bytes'] + 1)), b''):
+            require(info.st_size == declared_bytes, 'MODEL3D_SIZE', 'Payload size does not match its declaration.', asset=name)
+            for chunk in iter(lambda: source.read(min(1024**2, declared_bytes + 1)), b''):
                 total += len(chunk)
-                require(total <= record['bytes'], 'MODEL3D_SIZE', 'Payload grew beyond its declared size.', asset=name)
+                require(total <= declared_bytes, 'MODEL3D_SIZE', 'Payload grew beyond its declared size.', asset=name)
                 digest.update(chunk)
                 output.write(chunk)
-        require(total == record['bytes'] and digest.hexdigest() == record['sha256'],
+        require(total == declared_bytes and digest.hexdigest() == record['sha256'],
                 'MODEL3D_HASH', 'Payload content does not match its declared SHA-256.', asset=name)
         if record['media_type'].startswith('image/'):
             try:
@@ -124,7 +142,7 @@ class _Snapshot:
         return target
 
 
-def _inspect_asset(document, snapshot, memory_bytes=None):
+def _inspect_asset(document, snapshot, memory_bytes=None, file_bytes=None):
     """Decode genuine geometry through the repository's existing import authority."""
     try:
         from rig_contracts import DEFAULT_LIMITS
@@ -136,8 +154,8 @@ def _inspect_asset(document, snapshot, memory_bytes=None):
     expected = {'model/gltf-binary': '.glb', 'model/gltf+json': '.gltf', 'model/obj': '.obj'}
     require(Path(record['path']).suffix.lower() == expected[record['media_type']],
             'MODEL3D_FORMAT', 'Declared model media type and supported extension disagree.')
-    limits = document['limits']
-    backend_limits = dict(DEFAULT_LIMITS, source_bytes=limits['file_bytes'],
+    limits = _runtime_limits(document)
+    backend_limits = dict(DEFAULT_LIMITS, source_bytes=min(limits['file_bytes'], file_bytes if file_bytes is not None else limits['file_bytes']),
                           dependency_bytes=limits['total_bytes'], vertices=limits['vertices'],
                           triangles=limits['triangles'], memory_bytes=min(limits['memory_bytes'], memory_bytes if memory_bytes is not None else limits['memory_bytes']),
                           influences=8)  # Inspect/preserve supported skins; this is not a viewer profile.
@@ -241,6 +259,7 @@ def _inspect_asset(document, snapshot, memory_bytes=None):
     from rig_jobs import code_signature
     return dict(asset_id=document['id'], version=document['version'],
                 inspection_memory_budget_bytes=backend_limits['memory_bytes'],
+                inspection_file_budget_bytes=backend_limits['source_bytes'],
                 rig_implementation_sha256=code_signature(),
                 software={name: importlib.metadata.version(name) for name in ('numpy', 'Pillow')},
                 geometry_sha256=record['sha256'], importer='rig_import.load_character_model',
@@ -277,9 +296,12 @@ Raises RigError for expected invalid input; does not modify the selected root.
     with tempfile.TemporaryDirectory(prefix='hatch-model3d-verify-') as temporary:
         snapshot = _Snapshot(root, Path(temporary), document.get('limits', LIMITS))
 
-        def visit(value, depth, inherited_memory=None):
+        def visit(value, depth, inherited_memory=None, inherited_file_bytes=None):
             validate_contract(value)
-            effective_memory = min(snapshot.limits['memory_bytes'], value.get('limits', LIMITS)['memory_bytes'],
+            current_limits = _runtime_limits(value)
+            effective_file_bytes = min(snapshot.limits['file_bytes'], current_limits['file_bytes'],
+                                       inherited_file_bytes if inherited_file_bytes is not None else snapshot.limits['file_bytes'])
+            effective_memory = min(snapshot.limits['memory_bytes'], current_limits['memory_bytes'],
                                    inherited_memory if inherited_memory is not None else snapshot.limits['memory_bytes'])
             require(depth <= snapshot.limits['dependency_depth'], 'MODEL3D_DEPTH', 'Asset dependency depth exceeds the selected budget.')
             key = (value.get('id'), value.get('version')) if value['kind'] == KINDS['asset'] else None
@@ -288,7 +310,7 @@ Raises RigError for expected invalid input; does not modify the selected root.
                 active.add(key)
             names, height = set(), 0
             for record in file_references(value):
-                snapshot.capture(record, memory_bytes=effective_memory)
+                snapshot.capture(record, memory_bytes=effective_memory, file_bytes=effective_file_bytes)
                 names.add(record['path'])
             for material in ([value] if value['kind'] == KINDS['material'] else value.get('materials', []) + value.get('material_requirements', [])):
                 for role, dimensions in material['texture_dimensions'].items():
@@ -320,7 +342,7 @@ Raises RigError for expected invalid input; does not modify the selected root.
                             request['provider'].get('id') == value['provider'] and
                             (request['provider'].get('model') is None or request['provider']['model'] == value['model']),
                             'MODEL3D_REFERENCE', 'Provider receipts must reference the matching provider request.')
-                request_names, request_height = visit(request, depth + 1, effective_memory)
+                request_names, request_height = visit(request, depth + 1, effective_memory, effective_file_bytes)
                 names.update(request_names)
                 height = request_height + 1
             dependencies = list(value.get('dependencies', []))
@@ -344,10 +366,12 @@ Raises RigError for expected invalid input; does not modify the selected root.
                 require(child_key not in identities or identities[child_key] == record['sha256'],
                         'MODEL3D_VERSION_CONFLICT', 'An immutable asset version has conflicting manifest hashes.')
                 identities[child_key] = record['sha256']
-                child_memory = min(effective_memory, child['limits']['memory_bytes'])
-                context_key = child_key, child_memory
+                child_limits = _runtime_limits(child)
+                child_memory = min(effective_memory, child_limits['memory_bytes'])
+                child_file_bytes = min(effective_file_bytes, child_limits['file_bytes'])
+                context_key = child_key, child_memory, child_file_bytes
                 if context_key not in results:
-                    results[context_key] = visit(child, depth + 1, child_memory)
+                    results[context_key] = visit(child, depth + 1, child_memory, child_file_bytes)
                 child_names, child_height = results[context_key]
                 height = max(height, child_height + 1)
                 require(depth + height <= snapshot.limits['dependency_depth'],
@@ -355,22 +379,26 @@ Raises RigError for expected invalid input; does not modify the selected root.
                 names.update(child_names)
                 if value['kind'] == KINDS['asset'] and child['provenance']['fixture']:
                     require(value['provenance']['fixture'], 'MODEL3D_PROVENANCE', 'Fixture dependencies cannot become production assets.')
-            limits = value.get('limits', LIMITS)
+            limits = current_limits
             require(all(name not in snapshot.image_dimensions or
                         snapshot.image_dimensions[name][0] * snapshot.image_dimensions[name][1] <=
                         min(16_777_216, limits['memory_bytes'] // 16) for name in names),
                     'MODEL3D_BUDGET', 'Image payload closure exceeds this document memory budget.')
             require(height <= limits['dependency_depth'], 'MODEL3D_DEPTH', 'Transitive dependencies exceed a document depth budget.')
-            require(len(names) <= limits['files'] and sum(snapshot.files[n]['bytes'] for n in names) <= limits['total_bytes'],
+            require(len(names) <= limits['files'] and
+                    all(snapshot.files[n]['bytes'] <= limits['file_bytes'] for n in names) and
+                    sum(snapshot.files[n]['bytes'] for n in names) <= limits['total_bytes'],
                     'MODEL3D_BUDGET', 'Transitive payload closure exceeds an asset budget.')
             if value['kind'] == KINDS['asset']:
-                observation = _inspect_asset(value, snapshot, effective_memory)
+                observation = _inspect_asset(value, snapshot, effective_memory, effective_file_bytes)
                 if key not in geometry_positions:
                     geometry_positions[key] = len(report['geometry'])
                     report['geometry'].append(observation)
                 else:
                     position = geometry_positions[key]
-                    if observation['inspection_memory_budget_bytes'] < report['geometry'][position]['inspection_memory_budget_bytes']:
+                    if (observation['inspection_memory_budget_bytes'], observation['inspection_file_budget_bytes']) < (
+                            report['geometry'][position]['inspection_memory_budget_bytes'],
+                            report['geometry'][position]['inspection_file_budget_bytes']):
                         report['geometry'][position] = observation
                 active.remove(key)
             return names, height

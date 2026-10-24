@@ -142,7 +142,7 @@ per-document transitive file/byte/depth and image-decode memory ceilings are enf
 shared dependencies reached through a deeper path. Image memory admission occurs
 before decoding and is enforced again for cached files under tighter child budgets.
 Every decoded LOD propagates embedded fixture provenance. Cached geometry validation
-is keyed by its effective inherited memory budget; a result from a looser context
+is keyed by its effective inherited memory and per-file budgets; a result from a looser context
 cannot waive a stricter ancestor budget. Reports retain one geometry observation per
 asset revision at the tightest budget under which inspection actually succeeded.
 Dependency ordering therefore cannot admit an otherwise over-budget model.
@@ -207,3 +207,14 @@ state/style IDs, existing provenance and historical reviews are unchanged. The
 legacy test collectors explicitly classify the **new** `test_model3d_` namespace
 as optional 3D; no existing 2D test is removed, skipped or reclassified. The new
 cross-platform workflow runs those new tests separately with 3D dependencies.
+
+
+Integral JSON numbers such as `3.0` satisfy JSON Schema's `integer` type. Validated
+file byte counts and operational resource limits are normalized to Python integers
+before I/O; booleans and nonintegral values remain invalid. This normalization does
+not rewrite source manifests, bytes or hashes. Per-file limits apply through the
+complete dependency closure, including results first cached under a looser parent.
+The stricter inherited limit is checked before opening/copying a fresh payload and
+before cached reuse; complete per-document closure checks provide a second gate.
+Inspection observations expose the effective source-file ceiling as well as the
+memory budget; equal-memory observations retain the stricter successful file limit.

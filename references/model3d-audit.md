@@ -138,3 +138,29 @@ seconds**, no failures/errors/skips; generated schema/template parity also passe
 `final-summary.json`, helper summaries and the 922-test full receipt remain scoped
 to their explicitly recorded earlier implementations, not this later correction.
 Fresh exact-head independent review and native CI are still separate merge gates.
+
+
+## Two additional published-head findings
+
+The published `14be87a` subsequently passed all 27 native checks, but a new review
+correctly found two cases not covered by that green suite: an intermediate asset's
+per-file ceiling could be bypassed by a larger transitive payload, and a valid JSON
+integer written as `3.0` reached Python `read()` as a float. Independent Astra
+reproductions confirmed both; the earlier PASS/CI result is not a final zero-finding
+gate for that source.
+
+The local correction propagates inherited file ceilings into snapshot admission,
+native inspection and dependency-cache context, and also checks every member of
+complete transitive closures. Regression cases cover both cache orders, admission
+before opening an oversized descendant, and an exact 100,000-byte boundary.
+Validated operational counts are normalized without modifying source manifests or
+bytes; real CLI positives cover three-byte and multi-chunk integral-float sizes,
+while booleans, fractional, zero, negative and textual counts remain rejected.
+
+All **54 Model3D tests** passed in **13.391 seconds**, and **30 schema/math tests**
+passed in **6.564 seconds**, no failures/errors/skips. Generated schema/template
+parity, real robotic inspection and original source-delivery verification also
+passed. Actual before/after reproductions and exact source/artifact hashes are in
+`tests/results/model3d-new-review-threads-20261024/`. These corrections require a
+new exact-head independent review, publication lease and fresh native CI. No review
+threads have been resolved by the implementation author.
