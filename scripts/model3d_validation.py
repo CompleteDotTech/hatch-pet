@@ -73,7 +73,8 @@ class _Snapshot:
         self.total = 0
         self.image_dimensions = {}
 
-    def capture(self, record):
+    def capture(self, record, *, memory_bytes=None):
+        image_budget = min(self.limits['memory_bytes'], memory_bytes if memory_bytes is not None else self.limits['memory_bytes'])
         name = record['path']
         alias = unicodedata.normalize('NFC', name).casefold()
         require(alias not in self.aliases or self.aliases[alias] == name,
@@ -81,6 +82,9 @@ class _Snapshot:
         require(name not in self.files or self.files[name] == record,
                 'MODEL3D_HASH_CONFLICT', 'Dependency closure contains conflicting payload declarations.', asset=name)
         if name in self.files:
+            dimensions = self.image_dimensions.get(name)
+            require(dimensions is None or dimensions[0] * dimensions[1] <= min(16_777_216, image_budget // 16),
+                    'MODEL3D_BUDGET', 'Cached image exceeds this document memory budget.', asset=name)
             return self.destination / name
         require(len(self.files) < self.limits['files'] and record['bytes'] <= self.limits['file_bytes'] and
                 self.total + record['bytes'] <= self.limits['total_bytes'],
@@ -104,7 +108,7 @@ class _Snapshot:
                     expected = {'image/png': 'PNG', 'image/jpeg': 'JPEG', 'image/webp': 'WEBP'}
                     require(image.format == expected[record['media_type']], 'MODEL3D_FORMAT',
                             'Image encoding does not match its media declaration.', asset=name)
-                    require(image.width * image.height <= min(16_777_216, self.limits['memory_bytes'] // 16),
+                    require(image.width * image.height <= min(16_777_216, image_budget // 16),
                             'MODEL3D_BUDGET', 'Decoded texture exceeds its pixel/memory budget.', asset=name)
                     require(getattr(image, 'n_frames', 1) == 1, 'MODEL3D_TEXTURE',
                             'This contract accepts static source textures only.', asset=name)
@@ -120,7 +124,7 @@ class _Snapshot:
         return target
 
 
-def _inspect_asset(document, snapshot):
+def _inspect_asset(document, snapshot, memory_bytes=None):
     """Decode genuine geometry through the repository's existing import authority."""
     try:
         from rig_contracts import DEFAULT_LIMITS
@@ -135,7 +139,7 @@ def _inspect_asset(document, snapshot):
     limits = document['limits']
     backend_limits = dict(DEFAULT_LIMITS, source_bytes=limits['file_bytes'],
                           dependency_bytes=limits['total_bytes'], vertices=limits['vertices'],
-                          triangles=limits['triangles'], memory_bytes=limits['memory_bytes'],
+                          triangles=limits['triangles'], memory_bytes=min(limits['memory_bytes'], memory_bytes if memory_bytes is not None else limits['memory_bytes']),
                           influences=8)  # Inspect/preserve supported skins; this is not a viewer profile.
     try:
         model = load_character_model(snapshot.destination / record['path'], limits=backend_limits)
@@ -185,6 +189,8 @@ def _inspect_asset(document, snapshot):
                 raise RigError('MODEL3D_MODEL', 'Malformed LOD rejected at the importer boundary.', asset=name) from exc
             dependencies = {p.relative_to(snapshot.destination).as_posix() for p in imported.source_files}
             require(dependencies <= inventory, 'MODEL3D_INVENTORY', 'LOD resources are absent from the file inventory.')
+        require(not imported.report.get('fixture') or document['provenance']['fixture'],
+                'MODEL3D_PROVENANCE', 'Embedded fixture provenance in any LOD cannot be relabeled as production.')
         require(all(isinstance(mesh.id, str) and re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9._:-]{0,127}', mesh.id)
                     for mesh in imported.geometry.meshes), 'MODEL3D_MESH_ID', 'LOD mesh identities must be portable identifiers.')
         declared = {item['mesh_id'] for item in details}
@@ -270,8 +276,10 @@ Raises RigError for expected invalid input; does not modify the selected root.
     with tempfile.TemporaryDirectory(prefix='hatch-model3d-verify-') as temporary:
         snapshot = _Snapshot(root, Path(temporary), document.get('limits', LIMITS))
 
-        def visit(value, depth):
+        def visit(value, depth, inherited_memory=None):
             validate_contract(value)
+            effective_memory = min(snapshot.limits['memory_bytes'], value.get('limits', LIMITS)['memory_bytes'],
+                                   inherited_memory if inherited_memory is not None else snapshot.limits['memory_bytes'])
             require(depth <= snapshot.limits['dependency_depth'], 'MODEL3D_DEPTH', 'Asset dependency depth exceeds the selected budget.')
             key = (value.get('id'), value.get('version')) if value['kind'] == KINDS['asset'] else None
             require(key is None or key not in active, 'MODEL3D_CYCLE', 'Asset dependency cycle detected.')
@@ -279,7 +287,7 @@ Raises RigError for expected invalid input; does not modify the selected root.
                 active.add(key)
             names, height = set(), 0
             for record in file_references(value):
-                snapshot.capture(record)
+                snapshot.capture(record, memory_bytes=effective_memory)
                 names.add(record['path'])
             for material in ([value] if value['kind'] == KINDS['material'] else value.get('materials', []) + value.get('material_requirements', [])):
                 for role, dimensions in material['texture_dimensions'].items():
@@ -296,15 +304,22 @@ Raises RigError for expected invalid input; does not modify the selected root.
                     require(source['camera'].get('image_size', dimensions) == dimensions, 'MODEL3D_CAMERA',
                             'Calibration image size differs from the decoded observation.',
                             asset=source['file']['path'])
-            if value['kind'] == KINDS['job']:
+            if value['kind'] in (KINDS['job'], KINDS['provider-receipt']):
                 record = value['request']
                 require(record['media_type'] == 'application/json' and record['bytes'] <= MAX_JSON_BYTES,
                         'MODEL3D_MANIFEST', 'Job requests require bounded JSON documents.')
                 request = read_json(snapshot.destination / record['path'])
+                target_id = value['asset_id'] if value['kind'] == KINDS['job'] else value['subject']['id']
                 require(isinstance(request, dict) and request.get('kind') == KINDS['request'] and
-                        request.get('asset_id') == value['asset_id'],
+                        request.get('asset_id') == target_id,
                         'MODEL3D_REFERENCE', 'Job request must identify the same target asset.')
-                request_names, request_height = visit(request, depth + 1)
+                validate_contract(request)
+                if value['kind'] == KINDS['provider-receipt']:
+                    require(request.get('method') == 'provider' and request.get('provider') is not None and
+                            request['provider'].get('id') == value['provider'] and
+                            (request['provider'].get('model') is None or request['provider']['model'] == value['model']),
+                            'MODEL3D_REFERENCE', 'Provider receipts must reference the matching provider request.')
+                request_names, request_height = visit(request, depth + 1, effective_memory)
                 names.update(request_names)
                 height = request_height + 1
             dependencies = list(value.get('dependencies', []))
@@ -328,7 +343,7 @@ Raises RigError for expected invalid input; does not modify the selected root.
                         'MODEL3D_VERSION_CONFLICT', 'An immutable asset version has conflicting manifest hashes.')
                 identities[child_key] = record['sha256']
                 if child_key not in results:
-                    results[child_key] = visit(child, depth + 1)
+                    results[child_key] = visit(child, depth + 1, effective_memory)
                 child_names, child_height = results[child_key]
                 height = max(height, child_height + 1)
                 require(depth + height <= snapshot.limits['dependency_depth'],
@@ -337,11 +352,15 @@ Raises RigError for expected invalid input; does not modify the selected root.
                 if value['kind'] == KINDS['asset'] and child['provenance']['fixture']:
                     require(value['provenance']['fixture'], 'MODEL3D_PROVENANCE', 'Fixture dependencies cannot become production assets.')
             limits = value.get('limits', LIMITS)
+            require(all(name not in snapshot.image_dimensions or
+                        snapshot.image_dimensions[name][0] * snapshot.image_dimensions[name][1] <=
+                        min(16_777_216, limits['memory_bytes'] // 16) for name in names),
+                    'MODEL3D_BUDGET', 'Image payload closure exceeds this document memory budget.')
             require(height <= limits['dependency_depth'], 'MODEL3D_DEPTH', 'Transitive dependencies exceed a document depth budget.')
             require(len(names) <= limits['files'] and sum(snapshot.files[n]['bytes'] for n in names) <= limits['total_bytes'],
                     'MODEL3D_BUDGET', 'Transitive payload closure exceeds an asset budget.')
             if value['kind'] == KINDS['asset']:
-                report['geometry'].append(_inspect_asset(value, snapshot))
+                report['geometry'].append(_inspect_asset(value, snapshot, effective_memory))
                 active.remove(key)
             return names, height
 

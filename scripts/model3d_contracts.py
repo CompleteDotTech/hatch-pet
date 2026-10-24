@@ -9,12 +9,14 @@ from copy import deepcopy
 from datetime import datetime
 from functools import lru_cache
 import math
+import re
 import unicodedata
 
 from rig_contracts import COORDINATES, obj, arr, ref
 from rig_errors import RigError, finite_json, portable_name, require
 
 VERSION = '1.0.0'
+IDENTIFIER_PATTERN = r'^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}(?![\s\S])'
 LIMITS = dict(file_bytes=256 * 1024**2, total_bytes=1024**3, files=4096,
               vertices=1_000_000, triangles=2_000_000, parts=4096,
               dependency_depth=16, memory_bytes=2 * 1024**3)
@@ -26,7 +28,7 @@ KINDS = {name: 'model3d-' + name for name in
 
 def _document(kind, fields, optional=()):
     fields = dict(schema_version={'const': 1}, kind={'const': KINDS[kind]}, **fields)
-    fields.setdefault('extensions', arr(obj(dict(namespace=dict(type='string', minLength=1, maxLength=128),
+    fields.setdefault('extensions', arr(obj(dict(namespace=dict(type='string', pattern=IDENTIFIER_PATTERN),
                                               payload=ref('file'))), 0, 32))
     return obj(fields, [key for key in fields if key not in optional and key != 'extensions'])
 
@@ -35,9 +37,9 @@ def _document(kind, fields, optional=()):
 def _definitions():
     text = dict(type='string', minLength=1, maxLength=4096)
     short = dict(type='string', minLength=1, maxLength=128)
-    identifier = dict(type='string', pattern=r'^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$')
-    version = dict(type='string', maxLength=64, pattern=r'^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$')
-    digest = dict(type='string', pattern=r'^[0-9a-f]{64}$')
+    identifier = dict(type='string', pattern=IDENTIFIER_PATTERN)
+    version = dict(type='string', maxLength=64, pattern=r'^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(?![\s\S])')
+    digest = dict(type='string', pattern=r'^[0-9a-f]{64}(?![\s\S])')
     number = dict(type='number', minimum=-1e9, maximum=1e9)
     positive = dict(type='number', exclusiveMinimum=0, maximum=1e9)
     fraction = dict(type='number', minimum=0, maximum=1)
@@ -51,7 +53,15 @@ def _definitions():
     timestamp = {'anyOf': [dict(type='string', format='date-time', maxLength=64), {'type': 'null'}]}
     history = arr(obj(dict(operation=identifier, evidence=ref('file'))), 0, 128)
     vec = arr(number, 3, 3)
-    file = obj(dict(path=dict(type='string', minLength=1, maxLength=1024),
+    from decomposition_package import _RESERVED
+    end = r'(?![\s\S])'
+    reserved = '|'.join(''.join('[' + c.lower() + c.upper() + ']' if c.isalpha() else re.escape(c)
+                                for c in word) for word in sorted(_RESERVED))
+    component = (r'(?!(?:' + reserved + r')(?:[./]|' + end + r'))'
+                 r'[^/\\:<>"|?*\x00-\x1f\x7f\ud800-\udfff]*'
+                 r'[^/\\:<>"|?*\x00-\x1f\x7f\ud800-\udfff .]')
+    path_pattern = '^' + component + '(?:/' + component + ')*' + end
+    file = obj(dict(path=dict(type='string', minLength=1, maxLength=1024, pattern=path_pattern),
                     sha256=digest, bytes=dict(type='integer', minimum=1, maximum=LIMITS['file_bytes']),
                     media_type={'enum': ['model/gltf-binary', 'model/gltf+json', 'model/obj',
                                          'application/octet-stream', 'application/json',
@@ -190,6 +200,7 @@ def _definitions():
     subject = obj(dict(id=identifier, version=version))
     duration = dict(type='number', minimum=0, maximum=1e12)
     nullable_number = {'anyOf': [duration, {'type': 'null'}]}
+    nullable_bytes = {'anyOf': [dict(type='integer', minimum=0, maximum=10**12), {'type': 'null'}]}
     extensions = arr(obj(dict(namespace=identifier, payload=ref('file'))), 0, 32)
 
     def evidence_document(kind, fields):
@@ -198,7 +209,7 @@ def _definitions():
             native_evidence=arr(ref('file'), 1, 128), extensions=extensions, **fields))
 
     provider_receipt = evidence_document('provider-receipt', dict(
-        provider=identifier, model=short, provider_version=nullable_text,
+        provider=identifier, model=nullable_text, provider_version=nullable_text,
         request=ref('file'), status={'enum': ['unavailable', 'failed', 'completed']},
         executed=boolean, outputs=arr(ref('file'), 0, LIMITS['files']),
         seed={'anyOf': [dict(type='integer', minimum=0, maximum=2**32-1), {'type': 'null'}]},
@@ -210,7 +221,7 @@ def _definitions():
     resource_usage = evidence_document('resource-usage', dict(
         status={'enum': ['measured', 'unavailable', 'partial']},
         wall_seconds=nullable_number, cpu_seconds=nullable_number,
-        peak_memory_bytes=nullable_number, input_bytes=nullable_number, output_bytes=nullable_number,
+        peak_memory_bytes=nullable_bytes, input_bytes=nullable_bytes, output_bytes=nullable_bytes,
         compute_device=nullable_text, measurement_method=nullable_text))
     validation_result = evidence_document('validation-result', dict(
         validator=tool, status={'enum': ['passed', 'failed', 'unverified']},
@@ -398,15 +409,15 @@ def _semantic(value):
         require(len({m['slot'] for m in value['materials']}) == len(value['materials']),
                 'MODEL3D_DUPLICATE', 'Material slots must be unique.')
         parent = {part['id']: part['parent'] for part in value['parts']}
-        assigned, whole_meshes, regional_owners = set(), set(), {}
+        assigned, whole_meshes, regional_owners = set(), {}, {}
         for part in value['parts']:
             _semantic(part)
             require(part['parent'] is None or part['parent'] in parts, 'MODEL3D_REFERENCE', 'Missing part parent.')
             for field, allowed in [('material_ids', materials), ('source_ids', sources), ('uncertainty_ids', uncertainties)]:
                 require(set(part[field]) <= allowed, 'MODEL3D_REFERENCE', 'Missing ' + field + ' reference.')
-            require(not whole_meshes.intersection(part['mesh_ids']), 'MODEL3D_PART', 'Whole-mesh bindings cannot have multiple semantic owners.')
+            require(not set(whole_meshes).intersection(part['mesh_ids']), 'MODEL3D_PART', 'Whole-mesh bindings cannot have multiple semantic owners.')
             assigned.update(part['mesh_ids'])
-            whole_meshes.update(part['mesh_ids'])
+            whole_meshes.update({name: part['id'] for name in part['mesh_ids']})
             for region in part['mesh_regions']:
                 assigned.add(region['mesh_id'])
                 indices = set(region['face_indices'])
@@ -421,6 +432,9 @@ def _semantic(value):
                 require(len(seen) < 64, 'MODEL3D_DEPTH', 'Part hierarchy exceeds 64 levels.')
                 seen.add(current)
                 current = parent.get(current)
+        for name, owners in regional_owners.items():
+            require(name not in whole_meshes or all(owner == whole_meshes[name] for owner in owners.values()),
+                    'MODEL3D_REGION', 'A regional part cannot take faces owned by another whole-mesh part.')
         details = value['mesh_details']
         require(all(sum(item[key] for item in details) <= value['limits'][key] for key in ('vertices', 'triangles')),
                 'MODEL3D_BUDGET', 'Aggregate LOD geometry exceeds the document geometry budget.')
@@ -468,7 +482,7 @@ def _semantic(value):
             require(value['error'] is not None, 'MODEL3D_JOB', 'Failed jobs require an actionable error.')
     elif kind == KINDS['provider-receipt']:
         complete = value['status'] == 'completed'
-        require(not complete or (value['executed'] and bool(value['outputs']) and value['error'] is None),
+        require(not complete or (value['executed'] and value['model'] is not None and bool(value['outputs']) and value['error'] is None),
                 'MODEL3D_RECEIPT', 'Completed provider claims need execution, outputs and no error.')
         require(value['status'] != 'unavailable' or not value['executed'],
                 'MODEL3D_RECEIPT', 'Unavailable providers cannot claim execution.')
@@ -498,9 +512,16 @@ def _semantic(value):
                 'MODEL3D_REVIEW', 'A recorded decision requires its actual timestamp.')
         require(len(set(value['dimensions'])) == len(value['dimensions']), 'MODEL3D_DUPLICATE', 'Duplicate review dimensions.')
     elif kind == KINDS['repair-operation']:
+        require(value['subject'] == {key: value['before'][key] for key in ('id', 'version')},
+                'MODEL3D_REFERENCE', 'Repair subjects identify the immutable input revision.')
+        if value['after'] is not None:
+            require(value['after']['id'] == value['before']['id'] and value['after']['version'] != value['before']['version'],
+                    'MODEL3D_REPAIR', 'Repairs preserve asset identity and create a different immutable version.')
         require(value['status'] != 'completed' or value['after'] is not None and value['after'] != value['before'],
                 'MODEL3D_REPAIR', 'Completed repairs require a different immutable output revision.')
     elif kind == KINDS['archive']:
+        require(value['subject'] == {key: value['asset'][key] for key in ('id', 'version')},
+                'MODEL3D_REFERENCE', 'Archive subjects must match the exact source asset revision.')
         require(value['archive']['media_type'] == 'application/zip', 'MODEL3D_ARCHIVE', 'ZIP archives require the correct media type.')
         require(value['status'] != 'restored' or value['restoration_evidence'] is not None,
                 'MODEL3D_ARCHIVE', 'Restoration claims require native verification evidence.')

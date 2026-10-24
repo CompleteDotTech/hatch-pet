@@ -59,13 +59,13 @@ create a second lifecycle engine or authenticate an evidence author's claims.
 
 | Kind | Metadata and semantic gates |
 |---|---|
-| `model3d-provider-receipt` | Named provider/model/version, exact request, execution/state/output claims, seed, usage and diagnostics. Completed claims require execution and outputs; unavailable providers cannot claim execution. |
+| `model3d-provider-receipt` | Named provider/model/version, exact request, execution/state/output claims, seed, usage and diagnostics. Completed claims require execution and outputs; unavailable providers cannot claim execution. Request JSON must identify the same subject asset and provider. |
 | `model3d-processing-stage` | Operation, state, exact inputs/outputs, tools, usage and error. Completed stages require outputs; failed stages require diagnostics. |
 | `model3d-resource-usage` | Explicit measured/partial/unavailable state, wall/CPU duration, peak memory, bytes, device and measurement method. Missing measurements remain null; unavailable is never zero usage. |
 | `model3d-validation-result` | Named validator, state, contract/payload/geometry observations and typed diagnostics. Geometry inspection requires payload verification; a passing claim cannot contain an error. |
 | `model3d-review-decision` | Reviewer identity/type, actual timestamp for decisions, scoped dimensions, inspected hashes and notes. Validation never turns this claim into human or production approval. |
-| `model3d-repair-operation` | Exact before/after asset references, operation/state, changed semantic parts, tools and reason. Completed repairs need a different immutable output revision. |
-| `model3d-archive` | ZIP reference, exact source asset, complete declared inventory, state, preserved reviews and restoration evidence. A restored claim needs native restoration evidence. This verifier checks hashes and source geometry, not archive extraction or native restoration behavior. |
+| `model3d-repair-operation` | Exact before/after asset references, operation/state, changed semantic parts, tools and reason. Completed repairs preserve asset ID and need a different immutable output version; the subject binds the input revision. |
+| `model3d-archive` | ZIP reference, exact source asset, complete declared inventory, state, preserved reviews and restoration evidence. A restored claim needs native restoration evidence; its subject must match the source asset. This verifier checks hashes and source geometry, not archive extraction or native restoration behavior. |
 
 All source records explicitly retain original filename, pixel dimensions (null for
 nonimages), acquisition method/time (unknown/null when unavailable), observed,
@@ -138,8 +138,10 @@ includes portable path, exact SHA-256, positive byte count and media type.
 Each asset dependency pins an ID, semantic version and hash-bound JSON manifest.
 Conflicting hashes for the same immutable ID/version fail. Cycles, unknown target
 versions, path aliases, case collisions and non-NFC spellings fail. Global and
-per-document transitive file/byte/depth ceilings are enforced, including cached
-shared dependencies reached through a deeper path.
+per-document transitive file/byte/depth and image-decode memory ceilings are enforced, including cached
+shared dependencies reached through a deeper path. Image memory admission occurs
+before decoding and is enforced again for cached files under tighter child budgets.
+Every decoded LOD propagates embedded fixture provenance.
 
 The verifier copies all declared files into a unique temporary directory while
 checking actual sizes, SHA-256 and file identity. It decodes models **only from

@@ -749,7 +749,9 @@ class Model3DContracts(unittest.TestCase):
         evidence = self.root / 'native-evidence.txt'
         evidence.write_text('Synthetic schema fixture, not production execution or approval.', encoding='utf-8')
         native = payload(self.root, evidence.name, 'text/plain')
-        request = write_document(self.root, 'request.json', request_fixture(self.asset['sources']))
+        provider_request = request_fixture(self.asset['sources'])
+        provider_request.update(method='provider', provider=dict(id='unconfigured', model=None, network_authorized=False))
+        request = write_document(self.root, 'request.json', provider_request)
         asset = write_document(self.root, 'asset.json', self.asset)
         asset_ref = dict(id=self.asset['id'], version=self.asset['version'], manifest=asset)
         with zipfile.ZipFile(self.root / 'portable.zip', 'w') as archive:
@@ -759,7 +761,7 @@ class Model3DContracts(unittest.TestCase):
                       subject=dict(id='fixture', version='1.0.0'), owner='model3d',
                       native_evidence=[native], extensions=[])
         fields = {
-            'provider-receipt': dict(provider='unconfigured', model='unavailable', provider_version=None,
+            'provider-receipt': dict(provider='unconfigured', model=None, provider_version=None,
                 request=request, status='unavailable', executed=False, outputs=[], seed=None, usage=None, error=None),
             'processing-stage': dict(operation='inspect', status='queued', inputs=[self.asset['geometry']],
                 outputs=[], tools=[dict(name='test-fixture', version='1.0.0')], usage=None, error=None),
@@ -827,6 +829,116 @@ class Model3DContracts(unittest.TestCase):
             broken = deepcopy(doc)
             mutate(broken)
             self.assertInvalid(broken, code, payloads=True)
+
+    def test_document_image_budget_cannot_be_bypassed_through_cached_dependencies(self):
+        from PIL import Image
+        child = asset_fixture(self.root, 'child-budget')
+        Image.new('RGB', (512,512)).save(self.root / 'child-texture.png')
+        source = deepcopy(child['sources'][0])
+        source.update(id='texture', role='texture', file=payload(self.root, 'child-texture.png', 'image/png'),
+                      original_filename='child-texture.png', dimensions_px=[512,512])
+        child['sources'].append(source)
+        child['limits']['memory_bytes'] = 65536
+        with mock.patch.object(Image.Image, 'load', side_effect=AssertionError('Pixels decoded before resource admission')) as decode:
+            self.assertInvalid(child, 'MODEL3D_BUDGET', payloads=True)
+            decode.assert_not_called()
+        parent = deepcopy(self.asset)
+        # Root captures the same pixels first. Cache reuse cannot waive child's limit.
+        parent['sources'].append(deepcopy(source))
+        record = write_document(self.root, 'child-budget.json', child)
+        parent['dependencies'] = [dict(id=child['id'], version=child['version'], manifest=record)]
+        self.assertInvalid(parent, 'MODEL3D_BUDGET', payloads=True)
+
+    def test_whole_mesh_and_other_regional_owner_conflict(self):
+        doc = deepcopy(self.asset)
+        second = deepcopy(doc['parts'][0])
+        second.update(id='region-owner', mesh_ids=[], mesh_regions=[dict(mesh_id='strip', face_indices=[0])])
+        doc['parts'].append(second)
+        self.assertInvalid(doc, 'MODEL3D_REGION', payloads=True)
+        # A whole owner may annotate its own surface subset.
+        doc['parts'].pop()
+        doc['parts'][0]['mesh_regions'] = second['mesh_regions']
+        self.assertTrue(validate_document(doc, self.root)['geometry_inspected'])
+
+    def test_fixture_provenance_cannot_be_hidden_in_secondary_lod(self):
+        from rig_gltf import export_geometry
+        from rig_import import load_character_model
+        from test_rig_skinning import test_geometry
+        lod = asset_fixture(self.root, 'fixture-lod')
+        path = self.root / 'ordinary.glb'
+        export_geometry(test_geometry(), path, provenance={'fixture': False})
+        model = load_character_model(path)
+        record = payload(self.root, path.name, 'model/gltf-binary')
+        doc = deepcopy(self.asset)
+        doc.update(geometry=record, files=[record] + lod['files'],
+                   mesh_details=mesh_details(model, record) + [dict(item, lod=1) for item in lod['mesh_details']])
+        doc['sources'][0]['file'] = record
+        for item in (doc['provenance'], doc['sources'][0]['provenance']):
+            item.update(origin='imported', fixture=False)
+        self.assertInvalid(doc, 'MODEL3D_PROVENANCE', payloads=True)
+        doc['provenance']['fixture'] = True
+        self.assertTrue(validate_document(doc, self.root)['geometry_inspected'])
+
+    def test_evidence_references_preserve_subject_and_immutable_revision(self):
+        native = self.asset['geometry']
+        reference = write_document(self.root, 'before.json', self.asset)
+        before = dict(id='fixture', version='1.0.0', manifest=reference)
+        common = dict(schema_version=1, id='fixture-evidence', version='1.0.0',
+                      subject=dict(id='fixture', version='1.0.0'), owner='model3d', native_evidence=[native])
+        repair = dict(common, kind=KINDS['repair-operation'], operation='repair', before=before,
+                      after=None, status='proposed', changed_parts=['body'], reason='Contract fixture.',
+                      tools=[dict(name='fixture', version='1.0.0')])
+        for after in (dict(before, manifest=write_document(self.root, 'alias-before.json', self.asset)),
+                      dict(before, id='unrelated', version='2.0.0')):
+            broken = deepcopy(repair)
+            broken.update(status='completed', after=after)
+            self.assertInvalid(broken, 'MODEL3D_REPAIR')
+        broken = deepcopy(repair)
+        broken['subject']['version'] = '2.0.0'
+        self.assertInvalid(broken, 'MODEL3D_REFERENCE')
+        request = request_fixture(self.asset['sources'])
+        request.update(method='provider', provider=dict(id='unconfigured', model=None, network_authorized=False))
+        receipt = dict(common, kind=KINDS['provider-receipt'], provider='unconfigured', model=None,
+                       provider_version=None, request=write_document(self.root, 'provider.json', request),
+                       status='unavailable', executed=False, outputs=[], seed=None, usage=None, error=None)
+        self.assertTrue(validate_document(receipt, self.root)['payloads_verified'])
+        for malformed in ({'unrelated': 'not a model request'}, dict(request, asset_id='unrelated'),
+                          dict(request, provider=[]), dict(request, provider=dict(request['provider'], id='other'))):
+            broken = deepcopy(receipt)
+            broken['request'] = write_document(self.root, 'malformed-request.json', malformed)
+            self.assertInvalid(broken, payloads=True)
+        import zipfile
+        with zipfile.ZipFile(self.root / 'contract.zip', 'w') as archive:
+            archive.write(self.root / 'fixture.glb', 'fixture.glb')
+        document = dict(common, kind=KINDS['archive'], archive=payload(self.root, 'contract.zip', 'application/zip'),
+                        format='zip', asset=before, inventory=[native], status='unverified',
+                        restoration_evidence=None, preserved_reviews=[])
+        document['subject'] = dict(id='unrelated', version='1.0.0')
+        self.assertInvalid(document, 'MODEL3D_REFERENCE')
+
+    def test_direct_schema_and_runtime_reject_newline_tokens_and_unsafe_path_spellings(self):
+        from jsonschema import Draft202012Validator
+        validator = Draft202012Validator(schemas()['model3d.schema.json'])
+        for field in ('id', 'version'):
+            broken = deepcopy(self.asset)
+            broken[field] += '\n'
+            self.assertFalse(validator.is_valid(broken), field)
+            self.assertInvalid(broken, 'MODEL3D_SCHEMA')
+        broken = deepcopy(self.asset)
+        broken['geometry']['sha256'] += '\n'
+        self.assertFalse(validator.is_valid(broken))
+        self.assertInvalid(broken, 'MODEL3D_SCHEMA')
+        for path in ('../escape', '/absolute', 'C:/drive', 'a\\b', 'a/../b', 'a//b', 'aux.txt',
+                     'a. ', 'nested/NUL.obj', 'nested/CONIN$.png', 'nested/trailing.', 'file\n.glb'):
+            broken = deepcopy(self.asset)
+            broken['geometry']['path'] = path
+            self.assertFalse(validator.is_valid(broken), path)
+            self.assertInvalid(broken, 'MODEL3D_SCHEMA')
+        # Portable Unicode and leading-dot components remain supported.
+        for path in ('models/é.glb', '.source/character.glb', 'models/console.glb'):
+            broken = deepcopy(self.asset)
+            broken['geometry']['path'] = path
+            self.assertTrue(validator.is_valid(broken), path)
 
     def test_schema_discovery_does_not_import_numpy(self):
         command = [sys.executable, '-B', '-c',
