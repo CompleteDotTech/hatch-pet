@@ -580,7 +580,7 @@ def load_contract(path: str | Path, kind: str = 'PhysicsWorld') -> Any:
         payload = stream.read(32*1024*1024 + 1)
     try:
         value = decode_json(payload)
-    except (RigError, ValueError) as exc:
+    except RigError as exc:
         raise PhysicsError('PHYSICS_JSON', str(exc)) from exc
     return validate_contract(value, kind)
 

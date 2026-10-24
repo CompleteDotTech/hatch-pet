@@ -308,6 +308,30 @@ class PhysicsContractTests(unittest.TestCase):
             path=Path(directory)/'world.json';path.write_text('{"schema_version":'+'1'*5000+'}')
             with self.assertRaises(PhysicsError) as caught:load_contract(path)
             validate_contract(caught.exception.report,'PhysicsDiagnostic')
+            from unittest.mock import patch
+            from rig_errors import RigError
+            from physics_contracts import decode_json
+            # Shared decoder counts actual UTF-8 bytes, whether reached through
+            # its text API or through the domain's real-file bytes loader.
+            text='"éééé"'
+            with patch('rig_errors.MAX_JSON_BYTES',8):
+                for payload in (text,text.encode('utf-8')):
+                    with self.assertRaises(RigError) as caught:decode_json(payload)
+                    self.assertEqual(caught.exception.report['code'],'RIG_LIMIT_JSON')
+            world=fixture();world['scene']['path']='assets/éé.json'
+            payload=json.dumps(world,ensure_ascii=False).encode('utf-8');path.write_bytes(payload)
+            with patch('rig_errors.MAX_JSON_BYTES',len(payload)):
+                self.assertEqual(load_contract(path),world)
+            with patch('rig_errors.MAX_JSON_BYTES',len(payload)-1):
+                with self.assertRaises(PhysicsError) as caught:load_contract(path)
+                self.assertEqual(caught.exception.report['code'],'PHYSICS_JSON')
+                validate_contract(caught.exception.report,'PhysicsDiagnostic')
+            self.assertEqual(path.read_bytes(),payload)
+            # The shared decoder now owns parse-error translation. Its caller
+            # must not accidentally conceal an unrelated programming ValueError.
+            with patch('physics_contracts.decode_json',side_effect=ValueError('programming sentinel')):
+                with self.assertRaises(ValueError) as caught:load_contract(path)
+                self.assertIs(type(caught.exception),ValueError)
         for value in [Decimal('1'),complex(1,2),10**5000]:
             world=fixture();world['gravity'][0]=value;self.reject(world,'PHYSICS_JSON')
         for change in [lambda w:w['solver'].update(backend='x'*2000),lambda w:w.update({'x'*4000:1}),
