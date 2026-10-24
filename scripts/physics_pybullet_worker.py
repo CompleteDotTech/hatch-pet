@@ -116,9 +116,9 @@ def main():
                 native_margin=observed[11],margin_semantics='inherent sphere radius' if body['colliders'][0]['shape']['type']=='sphere' else 'explicit box collision margin'))
         def state():
             values=[]
-            for identifier,index in identifiers.items():
-                translation,rotation=p.getBasePositionAndOrientation(index,physicsClientId=client)
-                linear,angular=p.getBaseVelocity(index,physicsClientId=client)
+            for identifier,body_index in identifiers.items():
+                translation,rotation=p.getBasePositionAndOrientation(body_index,physicsClientId=client)
+                linear,angular=p.getBaseVelocity(body_index,physicsClientId=client)
                 for key,velocity in [('max_linear_velocity',linear),('max_angular_velocity',angular)]:
                     if key in stability and math.sqrt(sum(v*v for v in velocity))>stability[key]:
                         failure=dict(code='PHYSICS_NUMERICAL_INSTABILITY',world_sha256=job['world_sha256'],
