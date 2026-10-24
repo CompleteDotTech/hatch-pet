@@ -162,6 +162,35 @@ class PhysicsBackendAdmissionTests(unittest.TestCase):
                 timeout=5,memory_bytes=1024**3,output_bytes=16*1024**2,label='locked'))
         self.assertFalse((self.root/'locked-stdout.log').exists())
 
+    def test_owned_descendant_is_killed_even_when_leader_exits_on_term(self):
+        def living(pid):
+            try:
+                value=Path('/proc',str(pid),'status').read_text()
+                return not any(line.startswith('State:') and '\tZ' in line for line in value.splitlines())
+            except FileNotFoundError:return False
+        for mode in ('timeout','cancel'):
+            folder=self.root/mode;folder.mkdir()
+            child='import os,signal,time;signal.signal(signal.SIGTERM,signal.SIG_IGN);open("child.pid","w").write(str(os.getpid()));time.sleep(30)'
+            parent='import subprocess,sys,time;subprocess.Popen([sys.executable,"-I","-c",'+repr(child)+']);time.sleep(30)'
+            cancel=threading.Event() if mode=='cancel' else None
+            timer=threading.Timer(1.,cancel.set) if cancel is not None else None
+            if timer:timer.start()
+            try:
+                error_code(self,'PHYSICS_CANCELLED' if cancel is not None else 'PHYSICS_TIMEOUT',lambda:physics._run_process(
+                    [sys.executable,'-I','-c',parent],folder,timeout=5 if cancel is not None else 1.,memory_bytes=1024**3,
+                    output_bytes=16*1024**2,cancel_token=cancel))
+                pid=int((folder/'child.pid').read_text())
+                try:
+                    deadline=time.monotonic()+1
+                    while living(pid) and time.monotonic()<deadline:time.sleep(.025)
+                    self.assertFalse(living(pid),'Owned descendant survived after its leader exited on TERM.')
+                finally:
+                    # If regression control fails, terminate only this test's
+                    # recorded child, never an unrelated PID or desktop service.
+                    if living(pid):os.kill(pid,signal.SIGKILL)
+            finally:
+                if timer:timer.cancel()
+
     def test_descriptor_reader_rejects_links_fifo_and_parent_traversal(self):
         (self.root/'regular').write_bytes(b'authentic')
         (self.root/'link').symlink_to(self.root/'regular')
@@ -235,6 +264,43 @@ class BlenderPhysicsLifecycleTests(unittest.TestCase):
 
     def copy_cache(self):
         destination=self.path/'cache';shutil.copytree(self.cache,destination);return destination
+
+    def write_cache_file(self,cache,name,value):
+        manifest=physics.parse((cache/'cache.json').read_bytes())
+        data=physics.canonical(value);(cache/name).write_bytes(data)
+        for file in manifest['files']:
+            if file['path']==name:file.update(bytes=len(data),sha256=hashlib.sha256(data).hexdigest())
+        manifest['usage']['output_bytes']=sum(file['bytes'] for file in manifest['files'])
+        (cache/'cache.json').write_bytes(physics.canonical(manifest))
+
+    def test_valid_integral_float_manifest_lengths_are_normalized_before_io(self):
+        cache=self.copy_cache()
+        manifest=physics.parse((cache/'cache.json').read_bytes())
+        for file in manifest['files']:file['bytes']=float(file['bytes'])
+        manifest['sample_count']=49.0;manifest['usage']['solver_steps']=480.0
+        (cache/'cache.json').write_bytes(physics.canonical(manifest))
+        self.assertEqual(self.backend.verify(cache)['sample_count'],49)
+
+    def test_malformed_receipt_request_and_report_objects_are_structured_failures(self):
+        for number,name in enumerate(['verification.json','worker-job.json','simulation-report.json','worker-report.json']):
+            for suffix,value in [('array',[]),('null',None),('text','invalid'),('unknown',{'unexpected':True})]:
+                with self.subTest(file=name,value=suffix):
+                    cache=self.path/(str(number)+'-'+suffix);shutil.copytree(self.cache,cache)
+                    self.write_cache_file(cache,name,value)
+                    error_code(self,'PHYSICS_CACHE_CORRUPT',lambda:self.backend.verify(cache))
+
+    def test_cache_backend_versions_cannot_contradict_execution_observations(self):
+        cache=self.copy_cache()
+        manifest=physics.parse((cache/'cache.json').read_bytes())
+        manifest['backend'].update(solver_version='False solver99',application_version='False application99')
+        (cache/'cache.json').write_bytes(physics.canonical(manifest))
+        error_code(self,'PHYSICS_CACHE_CORRUPT',lambda:self.backend.verify(cache))
+        # Even changing the duplicate receipt header cannot override the actual
+        # typed native/module observations retained by the execution report.
+        receipt=physics.parse((cache/'verification.json').read_bytes())
+        receipt['backend_identity']=deepcopy(manifest['backend'])
+        self.write_cache_file(cache,'verification.json',receipt)
+        error_code(self,'PHYSICS_CACHE_CORRUPT',lambda:self.backend.verify(cache))
 
     def test_actual_solver_fall_contact_and_independent_numerical_oracle(self):
         initial=self.backend.inspect(self.cache,0)

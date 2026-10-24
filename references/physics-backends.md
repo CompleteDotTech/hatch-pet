@@ -125,6 +125,8 @@ The supported profile is intentionally narrower than the world schema.
   requires at least512MiB host memory plus input/mesh/sample allowances. The
   actual process RSS, elapsed time, output bytes and solver-step count are recorded.
   Log/file count/byte caps, deadlines and cancellation are enforced while running.
+  POSIX termination escalates the entire owned process group even if its leader
+  exits first; a child ignoring SIGTERM cannot survive that normal leader exit.
   RSS/disk enforcement is monitored polling, not an adversarial OS memory or
   network sandbox. GPU discovery/render devices do not establish GPU physics;
   both physics adapters use CPU.
@@ -188,7 +190,12 @@ its native internal solver state. Recovery is clean restart only.
 
 `verify` statically checks the complete bounded file inventory, exact hashes,
 world/source/version/settings agreement, fixture propagation, finite complete
-samples, and retained execution receipts. Receipts are unsigned local evidence,
+samples, and retained execution receipts. It re-admits retained native source and
+geometry through their actual owners and checks that the retained worker request
+contains that exact geometry. Internal receipt/request/report object shapes and
+their backend/module observations must agree. Schema-valid integral JSON lengths
+are canonicalized before file I/O; malformed records return structured failures.
+Receipts are unsigned local evidence,
 not cryptographic reviewer identity or a fresh solver execution. A consumer must
 not reinterpret a supplied cache's receipt as human/production-art approval.
 Inspection is labeled hash-verified sample-cache replay. No interpolation or

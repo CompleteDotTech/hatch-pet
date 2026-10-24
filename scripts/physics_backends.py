@@ -31,6 +31,9 @@ import unicodedata
 import uuid
 
 from rig_errors import RigError, atomic_json, decode_json, finite_json, job_lock, object_hash, portable_name
+from physics_backend_evidence import (EvidenceError, records as evidence_records,
+    native_report as evidence_native_report, direct_report as evidence_direct_report,
+    module_identity as evidence_module_identity)
 
 
 ADAPTER_VERSION = '1.0.0'
@@ -289,6 +292,8 @@ class _Reader:
 
     def read(self, name, limit=MAX_CACHE_BYTES):
         path_name(name)
+        require(type(limit) is int and 0<=limit<=MAX_CACHE_BYTES,'PHYSICS_CACHE_CORRUPT',
+                'Cache read requires a bounded canonical integer byte count.',category='cache-corruption')
         fd = os.dup(self.fd)
         try:
             parts = name.split('/')
@@ -404,21 +409,32 @@ def _tree_size(root):
 
 
 def _stop(process):
-    if process.poll() is not None:
+    if getattr(process,'_physics_group_stopped',False):
+        return
+    if os.name=='posix':
+        # The leader can exit on TERM while one of its own children ignores it.
+        # Always escalate the *owned session's group*, not only a live leader.
+        try:
+            try:os.killpg(process.pid,signal.SIGTERM)
+            except ProcessLookupError:pass
+            try:process.wait(timeout=2)
+            except subprocess.TimeoutExpired:pass
+            try:os.killpg(process.pid,signal.SIGKILL)
+            except ProcessLookupError:pass
+            if process.poll() is None:process.wait(timeout=5)
+        finally:
+            process._physics_group_stopped=True
         return
     try:
-        if os.name == 'posix':
-            os.killpg(process.pid, signal.SIGTERM)
-        else:
-            process.terminate()
-        process.wait(timeout=2)
-    except (ProcessLookupError, subprocess.TimeoutExpired):
         if process.poll() is None:
-            if os.name == 'posix':
-                os.killpg(process.pid, signal.SIGKILL)
-            else:
-                process.kill()
+            process.terminate()
+            process.wait(timeout=2)
+    except subprocess.TimeoutExpired:
+        if process.poll() is None:
+            process.kill()
             process.wait(timeout=5)
+    finally:
+        process._physics_group_stopped=True
 
 
 @contextmanager
@@ -778,7 +794,7 @@ class BlenderBackend:
             self._owned[token] = dict(root=root, inode=(info.st_dev, info.st_ino),
                                       world=world, worker_hash=worker_hash, identity=deepcopy(identity), prepared=prepared,
                                       inventory=deepcopy(bundle['inventory']), prepared_snapshot=deepcopy(prepared),
-                                      worker_job_sha256=digest(canonical(job)))
+                                      worker_job_sha256=digest(canonical(job)),project_manifest=project_manifest)
             return prepared
         except BaseException:
             shutil.rmtree(root)
@@ -881,6 +897,7 @@ class BlenderBackend:
                         output_bytes=0, solver_steps=prepared.estimate.solver_steps)
         _write(root/'verification.json', canonical(dict(schema_version=1, world_sha256=prepared.world_sha256,
             source_admission='native Scene3D contract/hash closure and actual rig OBJ decode',
+            project_manifest=owner['project_manifest'],backend_identity=identity,worker_job_sha256=owner['worker_job_sha256'],
             worker_sha256=owner['worker_hash'], executable_sha256=identity['executable_sha256'],
             native_reopen=replay, solver_report=report,
             native_consumption_control=control,
@@ -896,6 +913,10 @@ class BlenderBackend:
 
     @staticmethod
     def _check_report(report, world, operation):
+        try:
+            evidence_native_report(report,world,operation)
+        except EvidenceError as exc:
+            raise BackendError('PHYSICS_BAKE_FAILED','Malformed native solver observations: '+str(exc),category='backend-crash') from exc
         require(isinstance(report, dict) and report.get('ok') is True and report.get('operation') == operation and
                 report.get('native_bake_completed') is True and report.get('native_cache_is_baked') is True and
                 isinstance(report.get('backend'),dict) and report['backend'].get('application_version', '').startswith('4.5.3') and
@@ -1073,6 +1094,9 @@ class PyBulletBackend(BlenderBackend):
                 record.get('message','Optional PyBullet is unavailable in this isolated interpreter.') if isinstance(record,dict) else 'Invalid optional module probe.')
         require(record.get('solver_version')=='3.2.7','PHYSICS_BACKEND_VERSION_UNSUPPORTED',
                 'Only the explicitly selected PyBullet3.2.7 adapter version is admitted; run real smoke before readiness.')
+        try:evidence_module_identity(record)
+        except EvidenceError as exc:
+            raise BackendError('PHYSICS_BACKEND_VERSION_UNSUPPORTED','Unsupported isolated optional module identity: '+str(exc)) from exc
         self._module_record=record
         binary_hash=hashlib.sha256()
         with Path(self.executable).open('rb') as stream:
@@ -1129,6 +1153,7 @@ class PyBulletBackend(BlenderBackend):
         _write(root/'simulation-report.json',canonical(report))
         _write(root/'verification.json',canonical(dict(schema_version=1,world_sha256=prepared.world_sha256,
             source_admission='native Scene3D contract/hash closure and actual rig OBJ decode',
+            project_manifest=owner['project_manifest'],backend_identity=identity,worker_job_sha256=owner['worker_job_sha256'],
             worker_sha256=owner['worker_hash'],executable_sha256=identity['executable_sha256'],
             backend_module=owner['module_record'],solver_report=report,
             sample_cache_verification=dict(status='structure-and-finite-values-verified',sample_count=len(states['samples']),
@@ -1197,6 +1222,9 @@ class PyBulletBackend(BlenderBackend):
 
 
 def _check_pybullet_report(report,world,module):
+    try:evidence_direct_report(report,world)
+    except EvidenceError as exc:
+        raise BackendError('PHYSICS_BAKE_FAILED','Malformed DIRECT solver observations: '+str(exc),category='backend-crash') from exc
     steps=int(1/(_ratio(world['fps'])*_ratio(world['solver']['fixed_step'])/world['solver']['substeps']))
     require(isinstance(report,dict) and isinstance(module,dict) and report.get('ok') is True and report.get('operation')=='simulate' and
             report.get('connection_mode')=='DIRECT' and report.get('contacts_queried') is True and
@@ -1254,14 +1282,16 @@ def _validate_contacts(value,world,world_hash):
                 'PHYSICS_CACHE_CORRUPT','DIRECT contact frame/count differs.',category='cache-corruption')
         for contact in frame['contacts']:
             require(isinstance(contact,dict) and set(contact)=={'body_a','body_b','position_a','position_b','normal_b','distance','normal_force'} and
+                    type(contact['body_a']) is str and type(contact['body_b']) is str and
                     contact['body_a'] in ids and contact['body_b'] in ids and contact['body_a']!=contact['body_b'],
                     'PHYSICS_CACHE_CORRUPT','DIRECT contact endpoints are invalid.',category='cache-corruption')
             for name in ('position_a','position_b','normal_b'):
                 require(type(contact[name]) is list and len(contact[name])==3 and
-                        all(type(x) in (int,float) and math.isfinite(x) for x in contact[name]),
+                        all(type(x) in (int,float) and abs(x)<=1e12 and math.isfinite(x) for x in contact[name]),
                         'PHYSICS_CACHE_CORRUPT','DIRECT contact vector is invalid.',category='cache-corruption')
-            require(type(contact['distance']) in (int,float) and math.isfinite(contact['distance']) and
-                    type(contact['normal_force']) in (int,float) and math.isfinite(contact['normal_force']) and contact['normal_force']>=0,
+            require(type(contact['distance']) in (int,float) and abs(contact['distance'])<=1e6 and math.isfinite(contact['distance']) and
+                    type(contact['normal_force']) in (int,float) and 0<=contact['normal_force']<=1e12 and math.isfinite(contact['normal_force']) and
+                    abs(sum(x*x for x in contact['normal_b'])-1)<=1e-4,
                     'PHYSICS_CACHE_CORRUPT','DIRECT contact scalar is invalid.',category='cache-corruption')
 
 
@@ -1294,20 +1324,38 @@ def _validate_samples(value, world, world_hash, fixture):
             require(isinstance(body, dict) and set(body) == {'id', 'translation', 'rotation'} and body['id'] == identifier,
                     'PHYSICS_CACHE_CORRUPT', 'Sample body identity is invalid.', category='cache-corruption')
             for field, size in [('translation', 3), ('rotation', 4)]:
-                require(type(body[field]) is list and len(body[field]) == size and all(type(x) in (int, float) and math.isfinite(x) for x in body[field]),
+                require(type(body[field]) is list and len(body[field]) == size and all(type(x) in (int, float) and abs(x)<=1e12 and math.isfinite(x) for x in body[field]),
                         'PHYSICS_CACHE_CORRUPT', 'Sample transform is malformed or nonfinite.', category='cache-corruption')
             require(abs(sum(x*x for x in body['rotation'])-1) < 1e-4 and max(map(abs, body['translation'])) <= 1e6,
                     'PHYSICS_NUMERICAL_INSTABILITY', 'Sample quaternion/position exceeds numerical limits.', category='numerical-instability')
 
 
 def _read_cache(root, *, expected_world_sha256=None):
+    try:
+        return _read_cache_impl(root,expected_world_sha256=expected_world_sha256)
+    except BackendError:
+        raise
+    except (RigError,OSError,ValueError,TypeError,KeyError,AttributeError,OverflowError,RecursionError) as exc:
+        raise BackendError('PHYSICS_CACHE_CORRUPT','Malformed or inconsistent cache input: '+str(exc),category='cache-corruption') from exc
+
+
+def _read_cache_impl(root, *, expected_world_sha256=None):
     validator, error_type = _contracts()
     with _Reader(root) as reader:
-        manifest = parse(reader.read('cache.json', MAX_DOCUMENT_BYTES))
+        manifest_payload=reader.read('cache.json', MAX_DOCUMENT_BYTES)
+        manifest = parse(manifest_payload)
         try:
             validator(manifest, 'PhysicsCache')
         except (error_type, KeyError, TypeError, ValueError) as exc:
             raise BackendError('PHYSICS_CACHE_CORRUPT', 'Invalid cache contract: ' + str(exc), category='cache-corruption') from exc
+        # Standard JSON Schema integer admits integral-valued JSON floats.
+        # Preserve that contract while using canonical ints at I/O boundaries.
+        for file in manifest['files']:file['bytes']=int(file['bytes'])
+        for key in ('sample_count','substeps','seed'):manifest[key]=int(manifest[key])
+        for key in ('fps','fixed_step','frame_range'):
+            manifest[key]={name:int(value) for name,value in manifest[key].items()}
+        for key in ('peak_memory_bytes','output_bytes','solver_steps'):
+            manifest['usage'][key]=int(manifest['usage'][key])
         require(manifest['review_status'] == 'unreviewed' and manifest['reproducibility'] == 'verified-cache-replay',
                 'PHYSICS_CACHE_CORRUPT', 'Native adapter cache cannot manufacture review or recomputation guarantees.', category='cache-corruption')
         _paths(file['path'] for file in manifest['files'])
@@ -1323,12 +1371,18 @@ def _read_cache(root, *, expected_world_sha256=None):
                     'PHYSICS_CACHE_CORRUPT', 'Cache payload hash/size mismatch: ' + file['path'], category='cache-corruption')
             payloads[file['path']] = payload
             total += len(payload)
-        required={'world.json', 'states.json', 'simulation-report.json', 'verification.json', 'worker.py', 'worker-job.json'}
+        required={'world.json', 'states.json', 'simulation-report.json', 'verification.json', 'worker.py', 'worker-job.json','worker-report.json'}
         required.update({'scene.blend','preview.png'} if manifest['backend']['id']=='blender' else {'contacts.json'})
         require(required <= set(payloads),
                 'PHYSICS_CACHE_CORRUPT', 'Required native physics artifacts are missing.', category='cache-corruption')
         world = _world(parse(payloads['world.json']))
         _admit_world(world,manifest['backend']['id'])
+        require(total+len(manifest_payload)<=min(world['budgets']['cache_bytes'],world['budgets']['temporary_bytes'],MAX_CACHE_BYTES) and
+                all(file['bytes']<=world['budgets']['bake_file_bytes'] for file in manifest['files']),
+                'PHYSICS_CACHE_CORRUPT','Actual retained cache files/manifest exceed bound world budgets.',category='cache-corruption')
+        expected_steps=(world['frame_range']['end']-1)*int(1/(_ratio(world['fps'])*_ratio(world['solver']['fixed_step'])/world['solver']['substeps']))
+        require(manifest['usage']['solver_steps']==expected_steps and manifest['numerical_tolerance']==1e-5,
+                'PHYSICS_CACHE_CORRUPT','Cache step/tolerance observations differ from the admitted profile.',category='cache-corruption')
         world_hash = digest(payloads['world.json'])
         require(world_hash == manifest['world_sha256'] == manifest['physics_input_sha256'] and
                 (expected_world_sha256 is None or world_hash == expected_world_sha256),
@@ -1344,8 +1398,9 @@ def _read_cache(root, *, expected_world_sha256=None):
         require(world['scene']['path'] in inputs and digest(inputs[world['scene']['path']]) == world['scene']['sha256'],
                 'PHYSICS_CACHE_STALE','Exact native scene source is missing or changed.',category='cache-corruption')
         scene=parse(inputs[world['scene']['path']])
-        require((scene.get('kind'),scene.get('id'),scene.get('version')) == ('scene3d-scene',world['scene']['id'],world['scene']['version']) and
-                scene.get('provenance',{}).get('fixture') is manifest['fixture'],
+        require(type(scene) is dict and type(scene.get('provenance')) is dict and
+                (scene.get('kind'),scene.get('id'),scene.get('version')) == ('scene3d-scene',world['scene']['id'],world['scene']['version']) and
+                scene['provenance'].get('fixture') is manifest['fixture'],
                 'PHYSICS_PROVENANCE','Cache/native scene identity or fixture status differs.',category='cache-corruption')
         for asset in world['assets']:
             require(asset['path'] in inputs and digest(inputs[asset['path']]) == asset['sha256'],
@@ -1355,10 +1410,29 @@ def _read_cache(root, *, expected_world_sha256=None):
         states = parse(payloads['states.json'])
         _validate_samples(states, world, world_hash, manifest['fixture'])
         receipt = parse(payloads['verification.json'])
-        require(receipt.get('world_sha256') == world_hash and receipt.get('artistic_review') == 'not-performed' and
+        require(type(receipt) is dict and type(receipt.get('project_manifest')) is str and
+                receipt.get('world_sha256') == world_hash and receipt.get('artistic_review') == 'not-performed' and
                 receipt.get('worker_sha256') == digest(payloads['worker.py']) and
                 receipt.get('executable_sha256') == manifest['backend']['executable_sha256'],
                 'PHYSICS_CACHE_CORRUPT', 'Backend/worker evidence binding differs.', category='cache-corruption')
+        project_manifest=path_name(receipt['project_manifest'])
+        require(1<=len(inputs)<=MAX_FILES-32 and sum(map(len,inputs.values()))<=MAX_INPUT_BYTES,
+                'PHYSICS_CACHE_CORRUPT','Retained native source inventory exceeds admission.',category='cache-corruption')
+        try:
+            with tempfile.TemporaryDirectory(prefix='hatch-physics-cache-source-') as temporary:
+                private=Path(temporary)
+                for name,payload in inputs.items():_write(private/name,payload)
+                bundle,meshes,_,_=_source_admission(private,world,project_manifest)
+                require(set(bundle['inventory'])==set(inputs),'PHYSICS_CACHE_CORRUPT',
+                        'Retained native source closure differs from its declared inventory.',category='cache-corruption')
+            evidence_records(manifest,world,receipt,parse(payloads['worker-job.json']),
+                parse(payloads['simulation-report.json']),parse(payloads['worker-report.json']),meshes,
+                digest(payloads['worker.py']),digest(payloads['worker-job.json']))
+        except EvidenceError as exc:
+            raise BackendError('PHYSICS_CACHE_CORRUPT','Malformed or contradictory execution evidence: '+str(exc),category='cache-corruption') from exc
+        except BackendError as exc:
+            if exc.report['code']=='PHYSICS_SOURCE_OWNER_UNAVAILABLE':raise
+            raise BackendError('PHYSICS_CACHE_CORRUPT','Retained source/receipt admission failed: '+str(exc),category='cache-corruption') from exc
         if manifest['backend']['id']=='blender':
             BlenderBackend._check_report(receipt.get('solver_report'), world, 'simulate')
             image=receipt['solver_report']['diagnostic_render']

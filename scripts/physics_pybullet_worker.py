@@ -23,7 +23,7 @@ def discovery():
         location=Path(p.__file__).resolve()
         value=dict(available=True,solver_version=version,api_version=p.getAPIVersion(),
                    module_path=str(location),module_sha256=hashlib.sha256(location.read_bytes()).hexdigest(),
-                   python_version=sys.version.split()[0])
+                   python_version=sys.version.split()[0],platform=sys.platform)
         return p,value
     except (ImportError,importlib.metadata.PackageNotFoundError,OSError) as exc:
         return None,dict(available=False,message='Optional PyBullet is not installed in the isolated interpreter: '+str(exc))
