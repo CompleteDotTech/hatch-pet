@@ -39,7 +39,9 @@ The offline review renderer vendors Three.js 0.180.0, with its MIT license and f
 | Pose `rig_version` | The skeleton version, so weight-only revisions do not invalidate poses |
 | Blender conversion | `(x, y, z)` becomes `(x, -z, y)`; a proper +90° X rotation |
 
-Shared JSON ingestion bounds document size and nesting, rejects duplicate keys and nonfinite numbers, and reports decoder failures as structured `RIG_JSON` errors. This includes the interpreter's decimal-integer conversion limit; it does not disable or raise that resource limit. Existing specific duplicate-key, nonfinite, nesting and size diagnostic codes remain distinct. Invalid input is rejected before a CLI configuration/correction operation persists state.
+Immutable example fixtures and retained validation evidence preserve their authoritative Git bytes across checkouts, including with `core.autocrlf=true`. Source-bound test programs and the existing frozen playback/catalog compatibility files use LF on every platform, as existing script sources already do. This Git attribute policy prevents line-ending conversion from invalidating retained hashes; it does not rewrite original blobs or change historical test/review claims.
+
+Shared JSON ingestion bounds document size in encoded bytes and nesting, rejects duplicate keys and nonfinite numbers, and reports decoder failures as structured `RIG_JSON` errors. This includes the interpreter's decimal-integer conversion limit; it does not disable or raise that resource limit. String payloads count UTF-8 bytes in bounded chunks before parsing, matching byte-payload admission without allocating a full encoded copy. Invalid raw Unicode encoding produces `RIG_JSON`; JSON escape spelling retains its prior parsing semantics. Existing specific duplicate-key, nonfinite, nesting and size diagnostic codes remain distinct. Invalid input is rejected before a CLI configuration/correction operation persists state.
 
 Transforms must be finite and nonsingular. Rest transforms that contain shear or a reflection are rejected for the skeletal core; apply those transforms in an editor first. Static reflected geometry is baked with corrected winding. Original files are copied byte for byte and hash checked. `identity.json` locks the source identity, origin, fixture classification and import scale. An imported procedural fixture stays a fixture when exported and reimported.
 
@@ -98,6 +100,8 @@ python -m http.server 8765 --bind 127.0.0.1 --directory output/review
 python scripts/rig.py review-apply --run-dir output/character --receipt rig-correction.json
 python scripts/rig.py weights --run-dir output/character --method auto
 ```
+
+Before a correction writes history or a revision, it validates every declared IK chain against the corrected skeleton using the same declaration checks as validation/export. Missing or repeated bones, disconnected hierarchy, non-unit orientation and evaluated rest segments at or below `1e-8` meters are rejected. Rejection preserves the active manifest, immutable assets, correction history and caller's rig. The operation dispatcher retains a failed-job diagnostic separately; it does not promote a correction. Valid skeleton edits can still invalidate skins and animation, and need not pass animation-readiness validation before saving.
 
 The viewer downloads a correction bound to the current revision. A later edit makes that correction stale. `bone-edit --bone ID --file fields.json --author NAME --reason TEXT` creates the same bound operation from CLI fields. Use `weights-inspect --mesh ID --vertex N`; JSON weight edits can assign normalized weights, smooth, copy, explicitly mirror reviewed vertex pairs, lock or unlock vertices. Mirroring never silently invents symmetry.
 
@@ -219,6 +223,8 @@ Defaults: 256 MiB encoded source, 1 GiB dependencies/archive expansion, one mill
 `configure --file limits.json` uses strict bounded overrides. `status` shows active/pending/failed/stale work. `resume` retries failed/interrupted operations within the attempt budget. An OS file lock gives one writer ownership; claims survive in the journal and lock ownership releases after a process crash. Cache identity covers the core rig, parameters, implementation files and retained artifact hashes. Changing a covered input makes prior results stale. Failed exports never count as independent acceptance.
 
 Archive inventory covers every included file, hash and size. Restoration rejects path escapes, aliases/collisions, links, encrypted/special files, excessive expansion and unexpected/missing members, verifies all bytes in a fresh temporary directory, loads the actual rig, then promotes the directory. A restored fixture is evaluated again by the demonstration gate.
+
+Restoration requires a new destination and rejects destination symlinks, including those with missing targets. If another writer creates that destination before publication, even as an empty directory or symlink, restoration fails, preserves the competing destination, and removes only its own temporary extraction directory.
 
 ## Troubleshooting
 
