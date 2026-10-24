@@ -1,0 +1,60 @@
+{
+  "base_sha": "a08569cbdb593651807c887f4c9edd5e7b243973",
+  "scope": "Partial #52 parent11 section7 attribute preservation only; no issue closure",
+  "runtime": "Linux Python3.14.7 NumPy2.5.4 jsonschema4.26 Pillow13.0.0; distinct from pinned CI",
+  "commands": {
+    "regression": "PYTHONPATH=scripts:tests /tmp/hatch-restore-venv/bin/python -B -m unittest test_rig_import_transforms test_rig_interop test_rig_contracts test_rig_math test_rig_skinning test_rig_compatibility -v",
+    "cli": [
+      "python -B scripts/rig.py import --model FIXTURE/fixture.gltf --run-dir FIXTURE/run --id tangent-fixture",
+      "python -B scripts/rig.py inspect --run-dir FIXTURE/run"
+    ],
+    "checks": [
+      "python -B scripts/generate_schemas.py --check",
+      "python -B scripts/generate_rig_templates.py --check",
+      "git diff --check"
+    ]
+  },
+  "results": {
+    "regression": "45 tests run in6.118seconds;40 passed,5 explicit optional integration skips;zero failures/errors",
+    "baseline_control": "Exact original rig_import.py loaded in memory;17 expected failing subcases,zero errors;diagnostic trailing whitespace stripped only",
+    "cli": "Genuine reflected nonuniform glTF fixture imported,inspected,normal/tangent checked numerically,and original copied source hash verified",
+    "compatibility": "795 existing2D tests discovered without3D dependencies;not full execution",
+    "checks": "all passed"
+  },
+  "limitations": [
+    "No visual shading equivalence,independent rendering,Blender/browser/Khronos execution,or production approval claimed",
+    "Valid authored basis assumed;no inferred UV tangents or artistic repair",
+    "Main issue52 remains open for broader templates/landmark/correction/diff requirements"
+  ],
+  "files": {
+    "baseline-control.log": {
+      "sha256": "f03e1e018f9898f3438e3e0b345195ac869113b9010983c025ca5078f77f1753",
+      "bytes": 37568
+    },
+    "cli-import.json": {
+      "sha256": "5ef1e4ac784c914105fee673327814cbf8dcd1dbad198937c087495ce86d8b71",
+      "bytes": 293
+    },
+    "cli-inspect.json": {
+      "sha256": "ee5a68d16e5be108045d389b8a3dfb0140000c5eb4efae09caa845e5bff0f5d5",
+      "bytes": 327
+    },
+    "cli-verification.json": {
+      "sha256": "6466d88a4eb16da07389fa845be8c612a7c986437ac816f6e70fead02ea7ec61",
+      "bytes": 574
+    },
+    "regression.log": {
+      "sha256": "fba729f4d692467dcc783b29004efeb82360374ab7730af21fe0cae3fcb795a5",
+      "bytes": 7516
+    },
+    "scripts/rig_import.py": {
+      "sha256": "ce59d7afd2dcaa0c02ba15bcce906e58ceed59f00b9cd7bf9da148d0cdc8140c"
+    },
+    "scripts/test_rig_gate.py": {
+      "sha256": "d36a07cf3d2dca93faeec17f5906864f5efb0271918bef1270e16f3ec503d1db"
+    },
+    "tests/test_rig_import_transforms.py": {
+      "sha256": "a3c1712da90093416cf9f48863e93582b1c67ea023013827ed4b7ccfdd804389"
+    }
+  }
+}

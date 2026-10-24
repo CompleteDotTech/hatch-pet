@@ -1,0 +1,14 @@
+{
+  "id": "tangent-fixture",
+  "version": "1.0.0",
+  "rig_sha256": "2f3f4deb0c770c29d0bf1fead2595e0c20a8de1312563c03557633f76ed3e294",
+  "status": "imported",
+  "review": "pending",
+  "fixture": false,
+  "meshes": 1,
+  "vertices": 3,
+  "bones": 0,
+  "skins": 0,
+  "clips": [],
+  "steps": {}
+}
