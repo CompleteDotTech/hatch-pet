@@ -47,7 +47,11 @@ class TimingTests(unittest.TestCase):
 @unittest.skipUnless(os.environ.get('HATCH_PHYSICS_BACKEND_TEST')=='1','Explicit real solver gate')
 class NativeTimingTests(unittest.TestCase):
     def test_real_blender_integer_and_ntsc_effective_steps(self):
-        with tempfile.TemporaryDirectory(prefix='hatch-blender-timing-') as directory:
+        target=os.environ.get('HATCH_TIMING_EVIDENCE')
+        retained=Path(target).parent/'blender-artifacts' if target else None
+        if retained:retained.mkdir(parents=True,exist_ok=False)
+        records=[]
+        with (nullcontext(str(retained)) if retained else tempfile.TemporaryDirectory(prefix='hatch-blender-timing-')) as directory:
             for p,q,denominator in [(24,1,240),(30000,1001,240000)]:
                 backend=physics.BlenderBackend(os.environ['HATCH_BLENDER'])
                 world,payloads=build_inputs()
@@ -59,12 +63,18 @@ class NativeTimingTests(unittest.TestCase):
                     destination=Path(directory)/str(p)
                     backend.bake(result,destination)
                     self.assertEqual(physics.verify_cache(destination)['sample_count'],49)
+                    errors=[]
                     for frame in range(1,7):
                         sample=physics.inspect_cache(destination,frame)
                         expected=3-9.81*(frame*q/p)**2/2
-                        self.assertLess(abs(sample['bodies'][0]['translation'][1]-expected),.03)
+                        errors.append(abs(sample['bodies'][0]['translation'][1]-expected))
+                        self.assertLess(errors[-1],.03)
                         self.assertEqual(sample['sampling']['source'],'direct solved state')
+                    records.append(dict(rate=[p,q],backend=result.backend,usage=result.usage,
+                        continuous_errors=errors,tolerance=.03,solver=world['solver'],gravity=world['gravity'],materials=world['materials'],
+                        timing=clock(world),cache=physics.verify_cache(destination),states_sha256=physics.digest((destination/'states.json').read_bytes())))
                 finally:backend.cleanup(prepared)
+        if target:Path(target).with_name('blender-numerical.json').write_bytes(physics.canonical(dict(scope='real Blender native integral-step integer and NTSC free fall',records=records)))
 
     def test_real_fractional_rates_analytic_and_pinned_repeat(self):
         records=[]
