@@ -56,7 +56,7 @@
             },
             "created_at": {
               "type": "string",
-              "pattern": "^\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\dZ$"
+              "pattern": "^\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\dZ$(?![\\s\\S])"
             },
             "source_hashes": {
               "type": "array",
@@ -567,91 +567,1036 @@
         },
         "texture_slots": {
           "type": "object",
-          "propertyNames": {
-            "enum": [
-              "base_color",
-              "metallic",
-              "roughness",
-              "normal",
-              "height",
-              "displacement",
-              "occlusion",
-              "emission",
-              "opacity",
-              "transmission",
-              "thickness",
-              "clearcoat",
-              "clearcoat_roughness",
-              "sheen_color",
-              "sheen_roughness",
-              "anisotropy",
-              "iridescence"
-            ]
-          },
-          "additionalProperties": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "texture": {
-                "$ref": "#/$defs/ResourceRef"
-              },
-              "texcoord": {
-                "type": "integer",
-                "minimum": 0,
-                "maximum": 7
-              },
-              "channels": {
-                "enum": [
-                  "r",
-                  "g",
-                  "b",
-                  "a",
-                  "rgb",
-                  "rgba"
-                ]
-              },
-              "scale": {
-                "type": "array",
-                "items": {
+          "additionalProperties": false,
+          "properties": {
+            "metallic": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "texture": {
+                  "$ref": "#/$defs/ResourceRef"
+                },
+                "texcoord": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 7
+                },
+                "channels": {
+                  "enum": [
+                    "r",
+                    "g",
+                    "b",
+                    "a"
+                  ]
+                },
+                "scale": {
+                  "type": "array",
+                  "items": {
+                    "type": "number",
+                    "minimum": -1000000000.0,
+                    "maximum": 1000000000.0
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                },
+                "offset": {
+                  "type": "array",
+                  "items": {
+                    "type": "number",
+                    "minimum": -1000000000.0,
+                    "maximum": 1000000000.0
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                },
+                "rotation_radians": {
                   "type": "number",
                   "minimum": -1000000000.0,
                   "maximum": 1000000000.0
                 },
-                "minItems": 3,
-                "maxItems": 3
-              },
-              "offset": {
-                "type": "array",
-                "items": {
+                "strength": {
                   "type": "number",
-                  "minimum": -1000000000.0,
+                  "minimum": 0,
                   "maximum": 1000000000.0
-                },
-                "minItems": 3,
-                "maxItems": 3
+                }
               },
-              "rotation_radians": {
-                "type": "number",
-                "minimum": -1000000000.0,
-                "maximum": 1000000000.0
-              },
-              "strength": {
-                "type": "number",
-                "minimum": 0,
-                "maximum": 1000000000.0
-              }
+              "required": [
+                "texture",
+                "texcoord",
+                "channels",
+                "scale",
+                "offset",
+                "rotation_radians",
+                "strength"
+              ]
             },
-            "required": [
-              "texture",
-              "texcoord",
-              "channels",
-              "scale",
-              "offset",
-              "rotation_radians",
-              "strength"
-            ]
+            "roughness": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "texture": {
+                  "$ref": "#/$defs/ResourceRef"
+                },
+                "texcoord": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 7
+                },
+                "channels": {
+                  "enum": [
+                    "r",
+                    "g",
+                    "b",
+                    "a"
+                  ]
+                },
+                "scale": {
+                  "type": "array",
+                  "items": {
+                    "type": "number",
+                    "minimum": -1000000000.0,
+                    "maximum": 1000000000.0
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                },
+                "offset": {
+                  "type": "array",
+                  "items": {
+                    "type": "number",
+                    "minimum": -1000000000.0,
+                    "maximum": 1000000000.0
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                },
+                "rotation_radians": {
+                  "type": "number",
+                  "minimum": -1000000000.0,
+                  "maximum": 1000000000.0
+                },
+                "strength": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1000000000.0
+                }
+              },
+              "required": [
+                "texture",
+                "texcoord",
+                "channels",
+                "scale",
+                "offset",
+                "rotation_radians",
+                "strength"
+              ]
+            },
+            "height": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "texture": {
+                  "$ref": "#/$defs/ResourceRef"
+                },
+                "texcoord": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 7
+                },
+                "channels": {
+                  "enum": [
+                    "r",
+                    "g",
+                    "b",
+                    "a"
+                  ]
+                },
+                "scale": {
+                  "type": "array",
+                  "items": {
+                    "type": "number",
+                    "minimum": -1000000000.0,
+                    "maximum": 1000000000.0
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                },
+                "offset": {
+                  "type": "array",
+                  "items": {
+                    "type": "number",
+                    "minimum": -1000000000.0,
+                    "maximum": 1000000000.0
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                },
+                "rotation_radians": {
+                  "type": "number",
+                  "minimum": -1000000000.0,
+                  "maximum": 1000000000.0
+                },
+                "strength": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1000000000.0
+                }
+              },
+              "required": [
+                "texture",
+                "texcoord",
+                "channels",
+                "scale",
+                "offset",
+                "rotation_radians",
+                "strength"
+              ]
+            },
+            "displacement": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "texture": {
+                  "$ref": "#/$defs/ResourceRef"
+                },
+                "texcoord": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 7
+                },
+                "channels": {
+                  "enum": [
+                    "r",
+                    "g",
+                    "b",
+                    "a"
+                  ]
+                },
+                "scale": {
+                  "type": "array",
+                  "items": {
+                    "type": "number",
+                    "minimum": -1000000000.0,
+                    "maximum": 1000000000.0
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                },
+                "offset": {
+                  "type": "array",
+                  "items": {
+                    "type": "number",
+                    "minimum": -1000000000.0,
+                    "maximum": 1000000000.0
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                },
+                "rotation_radians": {
+                  "type": "number",
+                  "minimum": -1000000000.0,
+                  "maximum": 1000000000.0
+                },
+                "strength": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1000000000.0
+                }
+              },
+              "required": [
+                "texture",
+                "texcoord",
+                "channels",
+                "scale",
+                "offset",
+                "rotation_radians",
+                "strength"
+              ]
+            },
+            "occlusion": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "texture": {
+                  "$ref": "#/$defs/ResourceRef"
+                },
+                "texcoord": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 7
+                },
+                "channels": {
+                  "enum": [
+                    "r",
+                    "g",
+                    "b",
+                    "a"
+                  ]
+                },
+                "scale": {
+                  "type": "array",
+                  "items": {
+                    "type": "number",
+                    "minimum": -1000000000.0,
+                    "maximum": 1000000000.0
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                },
+                "offset": {
+                  "type": "array",
+                  "items": {
+                    "type": "number",
+                    "minimum": -1000000000.0,
+                    "maximum": 1000000000.0
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                },
+                "rotation_radians": {
+                  "type": "number",
+                  "minimum": -1000000000.0,
+                  "maximum": 1000000000.0
+                },
+                "strength": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1000000000.0
+                }
+              },
+              "required": [
+                "texture",
+                "texcoord",
+                "channels",
+                "scale",
+                "offset",
+                "rotation_radians",
+                "strength"
+              ]
+            },
+            "opacity": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "texture": {
+                  "$ref": "#/$defs/ResourceRef"
+                },
+                "texcoord": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 7
+                },
+                "channels": {
+                  "enum": [
+                    "r",
+                    "g",
+                    "b",
+                    "a"
+                  ]
+                },
+                "scale": {
+                  "type": "array",
+                  "items": {
+                    "type": "number",
+                    "minimum": -1000000000.0,
+                    "maximum": 1000000000.0
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                },
+                "offset": {
+                  "type": "array",
+                  "items": {
+                    "type": "number",
+                    "minimum": -1000000000.0,
+                    "maximum": 1000000000.0
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                },
+                "rotation_radians": {
+                  "type": "number",
+                  "minimum": -1000000000.0,
+                  "maximum": 1000000000.0
+                },
+                "strength": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1000000000.0
+                }
+              },
+              "required": [
+                "texture",
+                "texcoord",
+                "channels",
+                "scale",
+                "offset",
+                "rotation_radians",
+                "strength"
+              ]
+            },
+            "transmission": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "texture": {
+                  "$ref": "#/$defs/ResourceRef"
+                },
+                "texcoord": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 7
+                },
+                "channels": {
+                  "enum": [
+                    "r",
+                    "g",
+                    "b",
+                    "a"
+                  ]
+                },
+                "scale": {
+                  "type": "array",
+                  "items": {
+                    "type": "number",
+                    "minimum": -1000000000.0,
+                    "maximum": 1000000000.0
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                },
+                "offset": {
+                  "type": "array",
+                  "items": {
+                    "type": "number",
+                    "minimum": -1000000000.0,
+                    "maximum": 1000000000.0
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                },
+                "rotation_radians": {
+                  "type": "number",
+                  "minimum": -1000000000.0,
+                  "maximum": 1000000000.0
+                },
+                "strength": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1000000000.0
+                }
+              },
+              "required": [
+                "texture",
+                "texcoord",
+                "channels",
+                "scale",
+                "offset",
+                "rotation_radians",
+                "strength"
+              ]
+            },
+            "thickness": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "texture": {
+                  "$ref": "#/$defs/ResourceRef"
+                },
+                "texcoord": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 7
+                },
+                "channels": {
+                  "enum": [
+                    "r",
+                    "g",
+                    "b",
+                    "a"
+                  ]
+                },
+                "scale": {
+                  "type": "array",
+                  "items": {
+                    "type": "number",
+                    "minimum": -1000000000.0,
+                    "maximum": 1000000000.0
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                },
+                "offset": {
+                  "type": "array",
+                  "items": {
+                    "type": "number",
+                    "minimum": -1000000000.0,
+                    "maximum": 1000000000.0
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                },
+                "rotation_radians": {
+                  "type": "number",
+                  "minimum": -1000000000.0,
+                  "maximum": 1000000000.0
+                },
+                "strength": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1000000000.0
+                }
+              },
+              "required": [
+                "texture",
+                "texcoord",
+                "channels",
+                "scale",
+                "offset",
+                "rotation_radians",
+                "strength"
+              ]
+            },
+            "clearcoat": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "texture": {
+                  "$ref": "#/$defs/ResourceRef"
+                },
+                "texcoord": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 7
+                },
+                "channels": {
+                  "enum": [
+                    "r",
+                    "g",
+                    "b",
+                    "a"
+                  ]
+                },
+                "scale": {
+                  "type": "array",
+                  "items": {
+                    "type": "number",
+                    "minimum": -1000000000.0,
+                    "maximum": 1000000000.0
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                },
+                "offset": {
+                  "type": "array",
+                  "items": {
+                    "type": "number",
+                    "minimum": -1000000000.0,
+                    "maximum": 1000000000.0
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                },
+                "rotation_radians": {
+                  "type": "number",
+                  "minimum": -1000000000.0,
+                  "maximum": 1000000000.0
+                },
+                "strength": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1000000000.0
+                }
+              },
+              "required": [
+                "texture",
+                "texcoord",
+                "channels",
+                "scale",
+                "offset",
+                "rotation_radians",
+                "strength"
+              ]
+            },
+            "clearcoat_roughness": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "texture": {
+                  "$ref": "#/$defs/ResourceRef"
+                },
+                "texcoord": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 7
+                },
+                "channels": {
+                  "enum": [
+                    "r",
+                    "g",
+                    "b",
+                    "a"
+                  ]
+                },
+                "scale": {
+                  "type": "array",
+                  "items": {
+                    "type": "number",
+                    "minimum": -1000000000.0,
+                    "maximum": 1000000000.0
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                },
+                "offset": {
+                  "type": "array",
+                  "items": {
+                    "type": "number",
+                    "minimum": -1000000000.0,
+                    "maximum": 1000000000.0
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                },
+                "rotation_radians": {
+                  "type": "number",
+                  "minimum": -1000000000.0,
+                  "maximum": 1000000000.0
+                },
+                "strength": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1000000000.0
+                }
+              },
+              "required": [
+                "texture",
+                "texcoord",
+                "channels",
+                "scale",
+                "offset",
+                "rotation_radians",
+                "strength"
+              ]
+            },
+            "sheen_roughness": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "texture": {
+                  "$ref": "#/$defs/ResourceRef"
+                },
+                "texcoord": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 7
+                },
+                "channels": {
+                  "enum": [
+                    "r",
+                    "g",
+                    "b",
+                    "a"
+                  ]
+                },
+                "scale": {
+                  "type": "array",
+                  "items": {
+                    "type": "number",
+                    "minimum": -1000000000.0,
+                    "maximum": 1000000000.0
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                },
+                "offset": {
+                  "type": "array",
+                  "items": {
+                    "type": "number",
+                    "minimum": -1000000000.0,
+                    "maximum": 1000000000.0
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                },
+                "rotation_radians": {
+                  "type": "number",
+                  "minimum": -1000000000.0,
+                  "maximum": 1000000000.0
+                },
+                "strength": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1000000000.0
+                }
+              },
+              "required": [
+                "texture",
+                "texcoord",
+                "channels",
+                "scale",
+                "offset",
+                "rotation_radians",
+                "strength"
+              ]
+            },
+            "anisotropy": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "texture": {
+                  "$ref": "#/$defs/ResourceRef"
+                },
+                "texcoord": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 7
+                },
+                "channels": {
+                  "enum": [
+                    "r",
+                    "g",
+                    "b",
+                    "a"
+                  ]
+                },
+                "scale": {
+                  "type": "array",
+                  "items": {
+                    "type": "number",
+                    "minimum": -1000000000.0,
+                    "maximum": 1000000000.0
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                },
+                "offset": {
+                  "type": "array",
+                  "items": {
+                    "type": "number",
+                    "minimum": -1000000000.0,
+                    "maximum": 1000000000.0
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                },
+                "rotation_radians": {
+                  "type": "number",
+                  "minimum": -1000000000.0,
+                  "maximum": 1000000000.0
+                },
+                "strength": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1000000000.0
+                }
+              },
+              "required": [
+                "texture",
+                "texcoord",
+                "channels",
+                "scale",
+                "offset",
+                "rotation_radians",
+                "strength"
+              ]
+            },
+            "iridescence": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "texture": {
+                  "$ref": "#/$defs/ResourceRef"
+                },
+                "texcoord": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 7
+                },
+                "channels": {
+                  "enum": [
+                    "r",
+                    "g",
+                    "b",
+                    "a"
+                  ]
+                },
+                "scale": {
+                  "type": "array",
+                  "items": {
+                    "type": "number",
+                    "minimum": -1000000000.0,
+                    "maximum": 1000000000.0
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                },
+                "offset": {
+                  "type": "array",
+                  "items": {
+                    "type": "number",
+                    "minimum": -1000000000.0,
+                    "maximum": 1000000000.0
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                },
+                "rotation_radians": {
+                  "type": "number",
+                  "minimum": -1000000000.0,
+                  "maximum": 1000000000.0
+                },
+                "strength": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1000000000.0
+                }
+              },
+              "required": [
+                "texture",
+                "texcoord",
+                "channels",
+                "scale",
+                "offset",
+                "rotation_radians",
+                "strength"
+              ]
+            },
+            "base_color": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "texture": {
+                  "$ref": "#/$defs/ResourceRef"
+                },
+                "texcoord": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 7
+                },
+                "channels": {
+                  "enum": [
+                    "rgb",
+                    "rgba"
+                  ]
+                },
+                "scale": {
+                  "type": "array",
+                  "items": {
+                    "type": "number",
+                    "minimum": -1000000000.0,
+                    "maximum": 1000000000.0
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                },
+                "offset": {
+                  "type": "array",
+                  "items": {
+                    "type": "number",
+                    "minimum": -1000000000.0,
+                    "maximum": 1000000000.0
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                },
+                "rotation_radians": {
+                  "type": "number",
+                  "minimum": -1000000000.0,
+                  "maximum": 1000000000.0
+                },
+                "strength": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1000000000.0
+                }
+              },
+              "required": [
+                "texture",
+                "texcoord",
+                "channels",
+                "scale",
+                "offset",
+                "rotation_radians",
+                "strength"
+              ]
+            },
+            "normal": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "texture": {
+                  "$ref": "#/$defs/ResourceRef"
+                },
+                "texcoord": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 7
+                },
+                "channels": {
+                  "enum": [
+                    "rgb"
+                  ]
+                },
+                "scale": {
+                  "type": "array",
+                  "items": {
+                    "type": "number",
+                    "minimum": -1000000000.0,
+                    "maximum": 1000000000.0
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                },
+                "offset": {
+                  "type": "array",
+                  "items": {
+                    "type": "number",
+                    "minimum": -1000000000.0,
+                    "maximum": 1000000000.0
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                },
+                "rotation_radians": {
+                  "type": "number",
+                  "minimum": -1000000000.0,
+                  "maximum": 1000000000.0
+                },
+                "strength": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1000000000.0
+                }
+              },
+              "required": [
+                "texture",
+                "texcoord",
+                "channels",
+                "scale",
+                "offset",
+                "rotation_radians",
+                "strength"
+              ]
+            },
+            "emission": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "texture": {
+                  "$ref": "#/$defs/ResourceRef"
+                },
+                "texcoord": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 7
+                },
+                "channels": {
+                  "enum": [
+                    "rgb"
+                  ]
+                },
+                "scale": {
+                  "type": "array",
+                  "items": {
+                    "type": "number",
+                    "minimum": -1000000000.0,
+                    "maximum": 1000000000.0
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                },
+                "offset": {
+                  "type": "array",
+                  "items": {
+                    "type": "number",
+                    "minimum": -1000000000.0,
+                    "maximum": 1000000000.0
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                },
+                "rotation_radians": {
+                  "type": "number",
+                  "minimum": -1000000000.0,
+                  "maximum": 1000000000.0
+                },
+                "strength": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1000000000.0
+                }
+              },
+              "required": [
+                "texture",
+                "texcoord",
+                "channels",
+                "scale",
+                "offset",
+                "rotation_radians",
+                "strength"
+              ]
+            },
+            "sheen_color": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "texture": {
+                  "$ref": "#/$defs/ResourceRef"
+                },
+                "texcoord": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 7
+                },
+                "channels": {
+                  "enum": [
+                    "rgb"
+                  ]
+                },
+                "scale": {
+                  "type": "array",
+                  "items": {
+                    "type": "number",
+                    "minimum": -1000000000.0,
+                    "maximum": 1000000000.0
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                },
+                "offset": {
+                  "type": "array",
+                  "items": {
+                    "type": "number",
+                    "minimum": -1000000000.0,
+                    "maximum": 1000000000.0
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                },
+                "rotation_radians": {
+                  "type": "number",
+                  "minimum": -1000000000.0,
+                  "maximum": 1000000000.0
+                },
+                "strength": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1000000000.0
+                }
+              },
+              "required": [
+                "texture",
+                "texcoord",
+                "channels",
+                "scale",
+                "offset",
+                "rotation_radians",
+                "strength"
+              ]
+            }
           },
-          "maxProperties": 32
+          "required": []
         },
         "graph": {
           "$ref": "#/$defs/ResourceRef"
@@ -733,7 +1678,8 @@
         "path": {
           "type": "string",
           "minLength": 1,
-          "maxLength": 4096
+          "maxLength": 4096,
+          "pattern": "^(?!.*(?:^|/)(?:[Cc][Oo][Nn]|[Pp][Rr][Nn]|[Aa][Uu][Xx]|[Nn][Uu][Ll]|[Cc][Oo][Nn][Ii][Nn]\\$|[Cc][Oo][Nn][Oo][Uu][Tt]\\$|[Cc][Oo][Mm][1-9\u00b9\u00b2\u00b3]|[Ll][Pp][Tt][1-9\u00b9\u00b2\u00b3])(?:\\.|/|$))(?!.*(?:^|/)\\.{1,2}(?:/|$))(?!.*[ .](?:/|$))[^/\\\\<>:\"|?*\\u0000-\\u001f\\u007f\\ud800-\\udfff]+(?:/[^/\\\\<>:\"|?*\\u0000-\\u001f\\u007f\\ud800-\\udfff]+)*$(?![\\s\\S])"
         },
         "sha256": {
           "type": "string",

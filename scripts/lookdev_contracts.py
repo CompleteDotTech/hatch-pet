@@ -12,6 +12,7 @@ from copy import deepcopy
 from functools import lru_cache
 import hashlib
 import json
+import math
 import os
 import stat
 from pathlib import Path
@@ -62,7 +63,7 @@ def portable_path(value):
     for part in value.split('/'):
         require(part not in ('', '.', '..') and not part.endswith((' ', '.'))
                 and not any(ord(c) < 32 or ord(c) == 127 or 0xD800 <= ord(c) <= 0xDFFF or c in '<>:"|?*' for c in part)
-                and not re.fullmatch(r'(?i:CON|PRN|AUX|NUL|CONIN\$|CONOUT\$|COM[1-9]|LPT[1-9])(?:\..*)?', part),
+                and not re.fullmatch(r'(?i:CON|PRN|AUX|NUL|CONIN\$|CONOUT\$|COM[1-9¹²³]|LPT[1-9¹²³])(?:\..*)?', part),
                 'LOOKDEV_PATH', 'Unsafe or platform-dependent path: ' + value)
     return value
 
@@ -70,6 +71,16 @@ def portable_path(value):
 @lru_cache(maxsize=1)
 def definitions():
     text = dict(type='string', minLength=1, maxLength=4096)
+    # Portable lexical path rules are shared by every resource/file reference.
+    # NFC normalization and cross-document aliases additionally need runtime checks.
+    reserved = (r'(?:[Cc][Oo][Nn]|[Pp][Rr][Nn]|[Aa][Uu][Xx]|[Nn][Uu][Ll]|'
+                r'[Cc][Oo][Nn][Ii][Nn]\$|[Cc][Oo][Nn][Oo][Uu][Tt]\$|'
+                r'[Cc][Oo][Mm][1-9¹²³]|[Ll][Pp][Tt][1-9¹²³])')
+    component = r'[^/\\<>:"|?*\u0000-\u001f\u007f\ud800-\udfff]+'
+    path_pattern = (r'^(?!.*(?:^|/)' + reserved + r'(?:\.|/|$))'
+                    r'(?!.*(?:^|/)\.{1,2}(?:/|$))(?!.*[ .](?:/|$))' +
+                    component + r'(?:/' + component + r')*$(?![\s\S])')
+    portable = dict(type='string', minLength=1, maxLength=4096, pattern=path_pattern)
     identifier = dict(type='string', pattern=r'^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$(?![\s\S])')
     version = dict(type='string', pattern=r'^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$(?![\s\S])')
     digest = dict(type='string', pattern=r'^[0-9a-f]{64}$(?![\s\S])')
@@ -81,7 +92,7 @@ def definitions():
     rgb = array(unit, 3, 3)
     vec = array(number, 3, 3)
     color = obj(dict(value=rgb, encoding={'enum': ['linear-srgb', 'srgb']}))
-    reference = obj(dict(id=identifier, version=version, path=text, sha256=digest, kind={'enum': list(KINDS)}))
+    reference = obj(dict(id=identifier, version=version, path=portable, sha256=digest, kind={'enum': list(KINDS)}))
     def ref():
         return {'$ref': '#/$defs/ResourceRef'}
     policy = obj(dict(strict=boolean, allow_approximations=boolean,
@@ -89,7 +100,7 @@ def definitions():
                       fallback={'enum': ['reject', 'explicit-approximation', 'bake']}))
     policy['properties']['required_features']['uniqueItems'] = True
     provenance = obj(dict(origin={'enum': ['import', 'authored', 'derived', 'procedural-fixture']},
-                          tool=text, created_at=dict(type='string', pattern=r'^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\dZ$'),
+                          tool=text, created_at=dict(type='string', pattern=r'^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\dZ$(?![\s\S])'),
                           source_hashes=array(digest, 1024), attribution=text,
                           license=obj(dict(identifier=text, source=text))))
     common = dict(schema_version={'const': 1}, id=identifier, version=version, name=text,
@@ -133,15 +144,22 @@ def definitions():
     material = resource('material3d', dict(workflow={'const': 'metallic-roughness'}, surface=surface,
                          texture_slots=mapping(texture_slot, 32), graph=ref(),
                          variants=mapping(ref(), 64), render_policy=policy), ['graph'])
-    material['properties']['texture_slots']['propertyNames'] = {'enum': [
-        'base_color', 'metallic', 'roughness', 'normal', 'height', 'displacement',
-        'occlusion', 'emission', 'opacity', 'transmission', 'thickness', 'clearcoat',
-        'clearcoat_roughness', 'sheen_color', 'sheen_roughness', 'anisotropy', 'iridescence']}
+    scalar_slots = ('metallic', 'roughness', 'height', 'displacement', 'occlusion', 'opacity',
+                    'transmission', 'thickness', 'clearcoat', 'clearcoat_roughness',
+                    'sheen_roughness', 'anisotropy', 'iridescence')
+    color_slots = ('base_color', 'normal', 'emission', 'sheen_color')
+    typed_slots = {}
+    for key in scalar_slots + color_slots:
+        slot = deepcopy(texture_slot)
+        slot['properties']['channels'] = {'enum': ['r', 'g', 'b', 'a'] if key in scalar_slots else
+                                         (['rgb', 'rgba'] if key == 'base_color' else ['rgb'])}
+        typed_slots[key] = slot
+    material['properties']['texture_slots'] = obj(typed_slots, [])
     instance = resource('material-instance3d', dict(base_material=ref(), overrides=overrides,
                          render_policy=policy))
     variant = resource('material-variant3d', dict(base_material=ref(), overrides=overrides,
                         graph=ref(), render_policy=policy), ['graph'])
-    texture = resource('texture3d', dict(file=obj(dict(path=text, sha256=digest,
+    texture = resource('texture3d', dict(file=obj(dict(path=portable, sha256=digest,
                          bytes=dict(type='integer', minimum=1, maximum=1024**3))),
                          role={'enum': ['base-color', 'emission', 'normal', 'metallic', 'roughness',
                                         'occlusion', 'height', 'displacement', 'opacity', 'environment',
@@ -158,8 +176,9 @@ def definitions():
     edge = obj(dict(node=identifier, socket=identifier))
     node = obj(dict(id=identifier,
                    type={'enum': ['constant-float', 'constant-color', 'texture', 'multiply-float',
-                                  'mix-color', 'principled-output']},
-                   inputs=mapping(edge, 16), value={'oneOf': [number, color]}, texture=ref()),
+                                  'mix-color', 'clamp-float', 'principled-output']},
+                   inputs=mapping(edge, 16), value={'oneOf': [number, color]}, texture=ref(),
+                   channels={'enum': ['r', 'g', 'b', 'a', 'rgb', 'rgba']}),
                ['id', 'type', 'inputs'])
     graph = resource('material-graph3d', dict(nodes=array(node, 256, 1),
                         output=edge, render_policy=policy))
@@ -288,10 +307,18 @@ NODE_TYPES = {
     'constant-float': ({}, {'value': 'float'}),
     'constant-color': ({}, {'color': 'color'}),
     'texture': ({}, {'color': 'color', 'value': 'float'}),
+    'clamp-float': ({'value': 'float'}, {'value': 'float'}),
     'multiply-float': ({'a': 'float', 'b': 'float'}, {'value': 'float'}),
     'mix-color': ({'a': 'color', 'b': 'color', 'factor': 'float'}, {'color': 'color'}),
     'principled-output': ({'base_color': 'color', 'roughness': 'float', 'metallic': 'float'}, {'surface': 'surface'}),
 }
+
+
+def _node_types(node):
+    inputs, outputs = NODE_TYPES[node['type']]
+    if node['type'] == 'texture':
+        outputs = {'color': 'color'} if node.get('channels') in ('rgb', 'rgba') else {'value': 'float'}
+    return inputs, outputs
 
 
 def _acyclic(edges, code):
@@ -318,10 +345,12 @@ def _graph_checks(value):
     require(len(nodes) == len(value['nodes']), 'LOOKDEV_DUPLICATE', 'Duplicate graph node ID.')
     edges = {}
     for key, node in nodes.items():
-        expected_inputs, _ = NODE_TYPES[node['type']]
+        expected_inputs, _ = _node_types(node)
         require(set(node['inputs']) == set(expected_inputs), 'LOOKDEV_SOCKET', 'Missing or unknown node input sockets.')
         require(('value' in node) == node['type'].startswith('constant-'), 'LOOKDEV_NODE', 'Only constant nodes carry values.')
         require(('texture' in node) == (node['type'] == 'texture'), 'LOOKDEV_NODE', 'Only texture nodes carry texture references.')
+        require(('channels' in node) == (node['type'] == 'texture'),
+                'LOOKDEV_NODE', 'Texture nodes require explicit channels; other nodes cannot carry channels.')
         if node['type'] == 'constant-float':
             require(type(node['value']) in (int, float), 'LOOKDEV_TYPE', 'Expected a scalar constant.')
         if node['type'] == 'constant-color':
@@ -329,14 +358,47 @@ def _graph_checks(value):
         edges[key] = []
         for socket, link in node['inputs'].items():
             require(link['node'] in nodes, 'LOOKDEV_REFERENCE', 'Dangling graph node.')
-            source_type = nodes[link['node']]['type']
-            outputs = NODE_TYPES[source_type][1]
+            outputs = _node_types(nodes[link['node']])[1]
             require(outputs.get(link['socket']) == expected_inputs[socket],
                     'LOOKDEV_TYPE', 'Graph socket types do not match.')
             edges[key].append(link['node'])
     _acyclic(edges, 'LOOKDEV_CYCLE')
+    ranges = {}
+    def interval(key):
+        if key in ranges:
+            return ranges[key]
+        node = nodes[key]
+        if node['type'] == 'constant-float':
+            result = (node['value'], node['value'])
+        elif node['type'] == 'texture':
+            # Texture scalar sampling is normalized/clamped to [0,1]. HDR color
+            # sampling remains a color output, never an implicit scalar coercion.
+            result = (0, 1)
+        elif node['type'] == 'clamp-float':
+            low, high = interval(node['inputs']['value']['node'])
+            result = (max(0, min(1, low)), max(0, min(1, high)))
+        elif node['type'] == 'multiply-float':
+            left = interval(node['inputs']['a']['node'])
+            right = interval(node['inputs']['b']['node'])
+            products = [a*b for a in left for b in right]
+            result = (min(products), max(products))
+        else:
+            raise RigError('LOOKDEV_TYPE', 'Requested a scalar interval from a non-scalar node.')
+        require(all(math.isfinite(x) and abs(x) <= 1e9 for x in result),
+                'LOOKDEV_GRAPH_RANGE', 'Graph arithmetic exceeds the finite +/-1e9 bound.')
+        ranges[key] = result
+        return result
+    for node in nodes.values():
+        if 'value' in _node_types(node)[1] and _node_types(node)[1]['value'] == 'float':
+            interval(node['id'])
+        bounded = ('roughness', 'metallic') if node['type'] == 'principled-output' else \
+                  (('factor',) if node['type'] == 'mix-color' else ())
+        for socket in bounded:
+            low, high = interval(node['inputs'][socket]['node'])
+            require(0 <= low <= high <= 1, 'LOOKDEV_GRAPH_RANGE',
+                    'Physical graph input is outside [0,1]; add an explicit clamp-float node.')
     out = value['output']
-    require(out['node'] in nodes and NODE_TYPES[nodes[out['node']]['type']][1].get(out['socket']) == 'surface',
+    require(out['node'] in nodes and _node_types(nodes[out['node']])[1].get(out['socket']) == 'surface',
             'LOOKDEV_OUTPUT', 'Graph output must reference a surface socket.')
 
 
@@ -371,6 +433,9 @@ def validate_resource(value):
                 require(canonical_bytes(reference) in declared, 'LOOKDEV_DEPENDENCY', 'Resource reference is not declared in dependencies.')
     if value['kind'] == 'material3d':
         _surface_checks(value['surface'])
+        require(not set(value['texture_slots']).intersection(
+                    key for key in ('normal', 'height', 'displacement', 'occlusion') if key in value['surface']),
+                'LOOKDEV_TEXTURE_CONFLICT', 'Use either an embedded map or its texture slot, not both.')
     elif value['kind'] in ('material-instance3d', 'material-variant3d'):
         _surface_checks(value['overrides'])
         require(value['base_material']['kind'] in ('material3d', 'material-instance3d', 'material-variant3d'),
@@ -380,6 +445,8 @@ def validate_resource(value):
         require((value['encoding'] == 'data') == data_role, 'LOOKDEV_COLOR', 'Color maps and data maps require distinct encodings.')
         require((value['normal_orientation'] == 'opengl-positive-y') == (value['role'] == 'normal'),
                 'LOOKDEV_NORMAL', 'Normal convention applies only to normal maps.')
+        require(value['role'] != 'normal' or value['channels'] >= 3,
+                'LOOKDEV_CHANNEL', 'A tangent normal map requires at least RGB channels.')
         require(value['width'] * value['height'] * value['channels'] * (value['bit_depth']//8) <= 1024**3,
                 'LOOKDEV_LIMIT', 'Decoded texture exceeds the 1 GiB bound.')
     elif value['kind'] == 'material-graph3d':
@@ -509,6 +576,16 @@ class Registry:
                             'occlusion': 'occlusion', 'emission': 'emission', 'opacity': 'opacity'}
             for key, slot in value.get('texture_slots', {}).items():
                 role(slot['texture'], direct_roles.get(key, key.replace('_', '-')))
+                _check_channels(slot['channels'], self.get(slot['texture'])['channels'])
+        elif value['kind'] == 'material-graph3d':
+            for node in value['nodes']:
+                if node['type'] == 'texture':
+                    texture = self.get(node['texture'])
+                    channels = node['channels']
+                    _check_channels(channels, texture['channels'])
+                    if channels in ('rgb', 'rgba'):
+                        require(texture['role'] in ('base-color', 'emission', 'environment', 'sheen-color'),
+                                'LOOKDEV_COLOR', 'Data textures cannot implicitly produce graph color; use a declared color texture.')
         elif value['kind'] == 'light3d' and value['type'] == 'environment':
             role(value['environment'], 'environment')
 
@@ -537,10 +614,13 @@ class Registry:
         for instance in reversed(chain):
             # Surface fields are typed complete properties, not arbitrary JSON patches.
             value['surface'].update(deepcopy(instance['overrides']))
-            value['render_policy'] = deepcopy(instance['render_policy'])
+            value['render_policy'] = _inherit_policy(value['render_policy'], instance['render_policy'])
             if 'graph' in instance:
                 value['graph'] = deepcopy(instance['graph'])
         _surface_checks(value['surface'])
+        require(not set(value['texture_slots']).intersection(
+                    key for key in ('normal', 'height', 'displacement', 'occlusion') if key in value['surface']),
+                'LOOKDEV_TEXTURE_CONFLICT', 'An inherited embedded map conflicts with the base texture slot.')
         return dict(surface=value['surface'], texture_slots=value['texture_slots'],
                     graph=value.get('graph'), render_policy=value['render_policy'],
                     sha256=content_hash(dict(surface=value['surface'], texture_slots=value['texture_slots'],
@@ -562,7 +642,12 @@ class Registry:
         if 'graph' in definition:
             references.append(definition['graph'])
         definition['dependencies'] = list({canonical_bytes(r): r for r in references}.values())
-        return check_compatibility(definition, supported_features)
+        result = _check_compatibility(definition, supported_features, resolved_material=True)
+        if effective['graph']:
+            graph_result = check_compatibility(self.get(effective['graph']), supported_features)
+            missing = set(result['missing']) | set(graph_result['missing'])
+            result = _check_features(definition['render_policy'], supported_features, missing)
+        return result
 
 
 def _surface_features(surface):
@@ -582,12 +667,43 @@ def _surface_features(surface):
         features.add('emission')
     if surface.get('alpha_mode', 'OPAQUE') != 'OPAQUE':
         features.add('alpha-' + surface['alpha_mode'].lower())
+    if surface.get('specular', {'strength': 1, 'color': [1, 1, 1]}) != {'strength': 1, 'color': [1, 1, 1]}:
+        features.add('specular')
+    if surface.get('ior', 1.5) != 1.5:
+        features.add('ior')
+    if surface.get('volume', {}).get('thickness_meters', 0) > 0:
+        features.add('volume')
     if surface.get('double_sided'):
         features.add('double-sided')
     return features
 
 
+def _inherit_policy(base, derived):
+    strict = base['strict'] or derived['strict']
+    allowed = base['allow_approximations'] and derived['allow_approximations'] and not strict
+    fallbacks = {base['fallback'], derived['fallback']}
+    fallback = next(iter(fallbacks)) if len(fallbacks) == 1 and allowed else 'reject'
+    return dict(strict=strict, allow_approximations=allowed,
+                fallback=fallback, required_features=sorted(set(base['required_features']) | set(derived['required_features'])))
+
+
+def _check_channels(selection, count):
+    required = {'r': 1, 'g': 2, 'b': 3, 'a': 4, 'rgb': 3, 'rgba': 4}[selection]
+    require(count >= required, 'LOOKDEV_CHANNEL', 'Selected texture channels are unavailable.')
+
+
+def _check_features(policy, supported_features, needed):
+    missing = sorted(set(needed) - supported_features)
+    require(not missing or (not policy['strict'] and policy['fallback'] != 'reject' and policy['allow_approximations']),
+            'LOOKDEV_UNSUPPORTED', 'Adapter does not support required features: ' + ', '.join(missing))
+    return dict(status='requires-explicit-fallback' if missing else 'compatible', missing=missing, executed=False)
+
+
 def check_compatibility(resource, supported_features):
+    return _check_compatibility(resource, supported_features)
+
+
+def _check_compatibility(resource, supported_features, *, resolved_material=False):
     """Validate against capabilities supplied by an actually probed adapter.
 
     This contract module declares no Blender/browser support. Approximation is
@@ -598,8 +714,10 @@ def check_compatibility(resource, supported_features):
             'LOOKDEV_CAPABILITY', 'Adapter must supply a set of feature identifiers.')
     policy = value.get('render_policy')
     require(policy is not None, 'LOOKDEV_POLICY', 'Resource has no renderer policy.')
-    require(value['kind'] not in ('material-instance3d', 'material-variant3d'),
-            'LOOKDEV_CAPABILITY', 'Check inherited materials through Registry.check_material_compatibility().')
+    require(value['kind'] not in ('material-instance3d', 'material-variant3d', 'lighting-rig3d'),
+            'LOOKDEV_CAPABILITY', 'A single-document checker cannot verify inherited materials or lighting rigs; resolve their dependency scope first.')
+    require(not (value['kind'] == 'material3d' and value.get('graph') and not resolved_material),
+            'LOOKDEV_CAPABILITY', 'Referenced graph policies require Registry.check_material_compatibility().')
     needed = set(policy['required_features'])
     if value['kind'] == 'material3d':
         needed.update(_surface_features(value['surface']))
@@ -611,13 +729,15 @@ def check_compatibility(resource, supported_features):
         needed.add('light-' + value['type'])
         if value['casts_shadow']:
             needed.add('shadows')
+    elif value['kind'] == 'render-quality3d':
+        needed.add('render-quality')
+        if value['denoise']:
+            needed.add('denoise')
+        if value['max_bounces'] > 0:
+            needed.add('indirect-lighting')
     elif value['kind'] == 'material-graph3d':
         needed.update('graph-' + node['type'] for node in value['nodes'])
-    missing = sorted(needed - supported_features)
-    require(not missing or (not policy['strict'] and policy['fallback'] != 'reject' and policy['allow_approximations']),
-            'LOOKDEV_UNSUPPORTED', 'Adapter does not support required features: ' + ', '.join(missing))
-    return dict(status='requires-explicit-fallback' if missing else 'compatible', missing=missing,
-                executed=False)
+    return _check_features(policy, supported_features, needed)
 
 
 def read_document(path):

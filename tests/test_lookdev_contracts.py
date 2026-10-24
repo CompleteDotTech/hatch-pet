@@ -242,6 +242,8 @@ class LookdevContractTests(unittest.TestCase):
         value.update(role='normal', normal_orientation='opengl-positive-y'); validate_resource(value)
         value['encoding'] = 'srgb'
         with self.assertRaises(RigError): validate_resource(value)
+        value.update(encoding='data', channels=1)
+        with self.assertRaises(RigError): validate_resource(value)
         value = texture(); value.update(width=16384, height=16384, channels=4, bit_depth=32)
         with self.assertRaises(RigError): validate_resource(value)
 
@@ -316,6 +318,100 @@ class LookdevContractTests(unittest.TestCase):
         with self.assertRaises(RigError): registry.check_material_compatibility(reference(instance), {'metallic-roughness'})
         self.assertEqual(registry.check_material_compatibility(reference(instance), {'metallic-roughness', 'transmission'})['status'], 'compatible')
         with self.assertRaises(RigError): check_compatibility(instance, {'metallic-roughness'})
+
+    def test_review_graph_policy_and_node_capabilities_are_transitive(self):
+        base, shader = material(), graph()
+        shader['render_policy']['required_features'] = ['special-graph-backend']
+        base['graph'] = reference(shader); base['dependencies'] = [base['graph']]
+        registry = Registry([('ceramic.json', canonical_bytes(base)), ('graph.json', canonical_bytes(shader))])
+        supported = {'metallic-roughness', 'material-graph'}
+        with self.assertRaises(RigError): registry.check_material_compatibility(reference(base), supported)
+        supported |= {'special-graph-backend', 'graph-constant-color', 'graph-constant-float', 'graph-principled-output'}
+        self.assertEqual(registry.check_material_compatibility(reference(base), supported)['status'], 'compatible')
+        with self.assertRaises(RigError): check_compatibility(base, supported)
+        # A derived policy cannot drop a pinned base's explicit requirement.
+        instance = fixtures()[1]; instance['base_material'] = reference(base); instance['dependencies'] = [reference(base)]
+        base['render_policy']['required_features'].append('base-special-feature')
+        instance['base_material'] = reference(base); instance['dependencies'] = [reference(base)]
+        registry = Registry([('ceramic.json', canonical_bytes(base)), ('graph.json', canonical_bytes(shader)),
+                             ('blue-coat.json', canonical_bytes(instance))])
+        with self.assertRaises(RigError): registry.check_material_compatibility(reference(instance), supported)
+
+    def test_review_graph_fallback_cannot_weaken_strict_material(self):
+        base, shader = material(), graph()
+        shader['render_policy'].update(strict=False, allow_approximations=True, fallback='bake')
+        base['graph'] = reference(shader); base['dependencies'] = [base['graph']]
+        registry = Registry([('ceramic.json', canonical_bytes(base)), ('graph.json', canonical_bytes(shader))])
+        with self.assertRaises(RigError):
+            registry.check_material_compatibility(reference(base), {'metallic-roughness', 'material-graph'})
+        base['render_policy'].update(strict=False, allow_approximations=True, fallback='bake')
+        registry = Registry([('ceramic.json', canonical_bytes(base)), ('graph.json', canonical_bytes(shader))])
+        result = registry.check_material_compatibility(reference(base), {'metallic-roughness', 'material-graph'})
+        self.assertEqual(result['status'], 'requires-explicit-fallback')
+        self.assertIn('graph-principled-output', result['missing'])
+        self.assertFalse(result['executed'])
+
+    def test_review_nondefault_specular_ior_volume_and_quality_require_capabilities(self):
+        changes = [('specular', dict(strength=0.3, color=[1, 1, 1]), 'specular'),
+                   ('ior', 1.8, 'ior'), ('volume', dict(thickness_meters=0.2,
+                    attenuation_distance_meters=1, attenuation_color=[1, 1, 1]), 'volume')]
+        for key, setting, feature in changes:
+            base = material(); base['surface'][key] = setting
+            with self.subTest(feature=feature), self.assertRaises(RigError):
+                check_compatibility(base, {'metallic-roughness'})
+            self.assertEqual(check_compatibility(base, {'metallic-roughness', feature})['status'], 'compatible')
+        quality = fixtures()[-1]; quality['denoise'] = True
+        with self.assertRaises(RigError): check_compatibility(quality, {'metallic-roughness'})
+        self.assertEqual(check_compatibility(quality, {'metallic-roughness', 'render-quality', 'denoise', 'indirect-lighting'})['status'], 'compatible')
+        with self.assertRaises(RigError): check_compatibility(fixtures()[6], {'metallic-roughness'})
+
+    def test_review_graph_domains_require_explicit_clamp_and_texture_channels(self):
+        shader = graph(); shader['nodes'][1]['value'] = -0.5
+        with self.assertRaises(RigError): validate_resource(shader)
+        shader['nodes'].append(dict(id='clamped', type='clamp-float', inputs=dict(value=dict(node='roughness', socket='value'))))
+        shader['nodes'][3]['inputs']['roughness'] = dict(node='clamped', socket='value')
+        validate_resource(shader)
+        shader = graph(); shader['nodes'][1]['value'] = 2
+        with self.assertRaises(RigError): validate_resource(shader)
+        # Defined scalar selection has [0,1] normalized/clamped sampling semantics.
+        tex = texture(); shader = graph()
+        shader['nodes'][1] = dict(id='roughness', type='texture', inputs={}, texture=reference(tex), channels='r')
+        shader['dependencies'] = [reference(tex)]
+        Registry([('graph.json', canonical_bytes(shader)), ('albedo.json', canonical_bytes(tex))],
+                 payloads={'textures/albedo.png': image_bytes()})
+        shader['nodes'][1].pop('channels')
+        with self.assertRaises(RigError): validate_resource(shader)
+
+    def test_review_data_texture_color_coercion_and_scalar_rgba_slot_fail(self):
+        tex = texture(); tex.update(role='normal', encoding='data', normal_orientation='opengl-positive-y')
+        shader = graph(); shader['nodes'][0] = dict(id='color', type='texture', inputs={}, texture=reference(tex), channels='rgb')
+        shader['dependencies'] = [reference(tex)]
+        with self.assertRaises(RigError):
+            Registry([('graph.json', canonical_bytes(shader)), ('albedo.json', canonical_bytes(tex))],
+                     payloads={'textures/albedo.png': image_bytes()})
+        tex = texture(); tex.update(role='roughness', encoding='data')
+        base = material(); base['texture_slots']['roughness'] = dict(texture=reference(tex), texcoord=0,
+                      channels='rgba', scale=[1, 1, 1], offset=[0, 0, 0], rotation_radians=0, strength=1)
+        base['dependencies'] = [reference(tex)]
+        with self.assertRaises(RigError): validate_resource(base)
+        base['texture_slots']['roughness']['channels'] = 'r'
+        Registry([('ceramic.json', canonical_bytes(base)), ('albedo.json', canonical_bytes(tex))],
+                 payloads={'textures/albedo.png': image_bytes()})
+
+    def test_review_schema_rejects_lexically_unsafe_paths_and_timestamps(self):
+        schema = schemas()['lookdev-texture3d.schema.json']
+        validator = Draft202012Validator(schema)
+        paths = ['../x', '/x', 'a//b', 'a/../b', 'a/./b', 'a\\b', 'a/b.', 'a/b ', 'a/b\n',
+                 'NUL.png', 'conIN$.json', 'CONOUT$', 'CoM¹.png', 'cOm².json', 'com³.txt',
+                 'lPt¹.png', 'Lpt².json', 'lPT³.txt']
+        for path in paths:
+            value = texture(); value['file']['path'] = path
+            with self.subTest(path=path):
+                self.assertFalse(validator.is_valid(value))
+                with self.assertRaises(RigError): validate_resource(value)
+        value = texture(); value['provenance']['created_at'] += '\n'
+        self.assertFalse(validator.is_valid(value))
+        with self.assertRaises(RigError): validate_resource(value)
 
     def test_bounded_sources_and_resource_inventory(self):
         with self.assertRaises(RigError): Registry([('x.json', b'x'*(2*1024**2+1))])

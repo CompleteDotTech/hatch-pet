@@ -56,7 +56,7 @@
             },
             "created_at": {
               "type": "string",
-              "pattern": "^\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\dZ$"
+              "pattern": "^\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\dZ$(?![\\s\\S])"
             },
             "source_hashes": {
               "type": "array",
@@ -137,7 +137,8 @@
             "path": {
               "type": "string",
               "minLength": 1,
-              "maxLength": 4096
+              "maxLength": 4096,
+              "pattern": "^(?!.*(?:^|/)(?:[Cc][Oo][Nn]|[Pp][Rr][Nn]|[Aa][Uu][Xx]|[Nn][Uu][Ll]|[Cc][Oo][Nn][Ii][Nn]\\$|[Cc][Oo][Nn][Oo][Uu][Tt]\\$|[Cc][Oo][Mm][1-9\u00b9\u00b2\u00b3]|[Ll][Pp][Tt][1-9\u00b9\u00b2\u00b3])(?:\\.|/|$))(?!.*(?:^|/)\\.{1,2}(?:/|$))(?!.*[ .](?:/|$))[^/\\\\<>:\"|?*\\u0000-\\u001f\\u007f\\ud800-\\udfff]+(?:/[^/\\\\<>:\"|?*\\u0000-\\u001f\\u007f\\ud800-\\udfff]+)*$(?![\\s\\S])"
             },
             "sha256": {
               "type": "string",
@@ -263,7 +264,8 @@
         "path": {
           "type": "string",
           "minLength": 1,
-          "maxLength": 4096
+          "maxLength": 4096,
+          "pattern": "^(?!.*(?:^|/)(?:[Cc][Oo][Nn]|[Pp][Rr][Nn]|[Aa][Uu][Xx]|[Nn][Uu][Ll]|[Cc][Oo][Nn][Ii][Nn]\\$|[Cc][Oo][Nn][Oo][Uu][Tt]\\$|[Cc][Oo][Mm][1-9\u00b9\u00b2\u00b3]|[Ll][Pp][Tt][1-9\u00b9\u00b2\u00b3])(?:\\.|/|$))(?!.*(?:^|/)\\.{1,2}(?:/|$))(?!.*[ .](?:/|$))[^/\\\\<>:\"|?*\\u0000-\\u001f\\u007f\\ud800-\\udfff]+(?:/[^/\\\\<>:\"|?*\\u0000-\\u001f\\u007f\\ud800-\\udfff]+)*$(?![\\s\\S])"
         },
         "sha256": {
           "type": "string",
