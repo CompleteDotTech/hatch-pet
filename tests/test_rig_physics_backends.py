@@ -379,6 +379,22 @@ class BlenderPhysicsLifecycleTests(unittest.TestCase):
         error_code(self,'PHYSICS_CACHE_CORRUPT',lambda:self.backend.verify(cache))
         self.assertEqual(outside.read_bytes(),b'untouched')
 
+    def test_native_cache_artifact_format_is_checked_after_rehash(self):
+        cache=self.copy_cache()
+        if self.backend.backend_id=='blender':
+            data=b'not a valid Blend container'
+            name='scene.blend'
+        else:
+            data=physics.canonical([])
+            name='contacts.json'
+        manifest=physics.parse((cache/'cache.json').read_bytes())
+        (cache/name).write_bytes(data)
+        for file in manifest['files']:
+            if file['path']==name:file.update(bytes=len(data),sha256=hashlib.sha256(data).hexdigest())
+        manifest['usage']['output_bytes']=sum(file['bytes'] for file in manifest['files'])
+        (cache/'cache.json').write_bytes(physics.canonical(manifest))
+        error_code(self,'PHYSICS_CACHE_CORRUPT',lambda:self.backend.verify(cache))
+
     def test_fixture_origin_cannot_be_relabelled_by_editing_cache_flags(self):
         cache=self.copy_cache()
         manifest=physics.parse((cache/'cache.json').read_bytes())

@@ -33,7 +33,7 @@ import uuid
 from rig_errors import RigError, atomic_json, decode_json, finite_json, job_lock, object_hash, portable_name
 from physics_backend_evidence import (EvidenceError, records as evidence_records,
     native_report as evidence_native_report, direct_report as evidence_direct_report,
-    module_identity as evidence_module_identity)
+    module_identity as evidence_module_identity,blend_container)
 
 
 ADAPTER_VERSION = '1.0.0'
@@ -1432,6 +1432,9 @@ def _read_cache_impl(root, *, expected_world_sha256=None):
             if exc.report['code']=='PHYSICS_SOURCE_OWNER_UNAVAILABLE':raise
             raise BackendError('PHYSICS_CACHE_CORRUPT','Retained source/receipt admission failed: '+str(exc),category='cache-corruption') from exc
         if manifest['backend']['id']=='blender':
+            try:blend_container(payloads['scene.blend'])
+            except EvidenceError as exc:
+                raise BackendError('PHYSICS_CACHE_CORRUPT','Malformed retained native artifact: '+str(exc),category='cache-corruption') from exc
             BlenderBackend._check_report(receipt.get('solver_report'), world, 'simulate')
             image=receipt['solver_report']['diagnostic_render']
             require(image.get('path')=='preview.png' and image.get('sha256')==digest(payloads['preview.png']) and

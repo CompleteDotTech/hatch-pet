@@ -6,10 +6,38 @@ No file is opened and no backend is imported/executed by this module.
 """
 import math
 import re
+import struct
 
 
 class EvidenceError(ValueError):
     pass
+
+
+def blend_container(payload):
+    """Validate the bounded uncompressed64-bit container produced by this worker.
+
+    This does not execute the file, inspect arbitrary embedded scripts, or
+    authenticate a supplied file's historical solver provenance.
+    """
+    need(type(payload) is bytes and len(payload)>=36 and payload[:12]==b'BLENDER-v405',
+         'Native artifact is not the admitted uncompressed Blender4.5 container.')
+    position=12;dna=False;scene=False;objects=False
+    while position<len(payload):
+        need(position+24<=len(payload),'Native Blend block header is truncated.')
+        code=payload[position:position+4]
+        size=struct.unpack_from('<I',payload,position+4)[0]
+        start=position+24;end=start+size
+        need(end<=len(payload),'Native Blend block payload is truncated.')
+        if code==b'ENDB':
+            need(size==0 and end==len(payload) and dna and scene and objects,'Native Blend lacks its complete scene/object/DNA/end inventory.')
+            return
+        if code==b'DNA1':
+            need(not dna and payload[start:start+8]==b'SDNANAME','Native Blend DNA descriptor is missing/duplicated.')
+            dna=True
+        if code[:2]==b'SC':scene=True
+        if code[:2]==b'OB':objects=True
+        position=end
+    raise EvidenceError('Native Blend end marker is missing.')
 
 
 def need(condition,message):
