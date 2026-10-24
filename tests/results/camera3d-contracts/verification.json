@@ -7,11 +7,11 @@
   "command_results": [
     {
       "command": "/tmp/hatch-restore-venv/bin/python scripts/test_rig_gate.py schema-math",
-      "tests": 48,
+      "tests": 53,
       "failures": 0,
       "errors": 0,
       "skips": 0,
-      "seconds": 11.297,
+      "seconds": 12.974,
       "exit": 0
     },
     {
@@ -20,7 +20,7 @@
       "failures": 0,
       "errors": 0,
       "skips": 0,
-      "seconds": 8.245,
+      "seconds": 8.68,
       "exit": 0
     },
     {
@@ -29,7 +29,7 @@
       "failures": 0,
       "errors": 0,
       "skips": 0,
-      "seconds": 10.354,
+      "seconds": 10.46,
       "browser": "Chromium 152.0.7977.82",
       "exit": 0
     },
@@ -55,7 +55,7 @@
     }
   ],
   "optional_dependency_boundary": {
-    "legacy_tests_discovered": 802,
+    "legacy_tests_discovered": 809,
     "discovery_not_full_execution": true,
     "camera_tests_excluded_by_existing_rig_family_boundary": true
   },
@@ -78,15 +78,15 @@
   ],
   "artifacts": {
     "schema-math.log": {
-      "sha256": "22b70f43560ab2f64449804dcbbed38f0af5f60c3014023b31d82f484df1e831",
-      "bytes": 8337
+      "sha256": "147fbc65c61059dc20d3566e1df1440885961c225a45257c10cfac4b9d2a1a79",
+      "bytes": 9227
     },
     "legacy-contract-render.log": {
-      "sha256": "3d947697388262e41c329dbca8792aa6bb6703d3e5212b562f1c2e326b154998",
+      "sha256": "9a60d955c610ac13f3a7ee9edc49cc52d847330a3ed550b9dc3f32581c8e812f",
       "bytes": 9692
     },
     "actual-browser.log": {
-      "sha256": "aa9079bd445fce60a9e448ae309edbdc512769304421b7d1c24702b291aa95c8",
+      "sha256": "bf25cc2e90ba4e18f88eaf7045552def4d1dc5fe4291fdc93020e7fc42a1ac0a",
       "bytes": 884
     },
     "registry-example.json": {
@@ -98,8 +98,8 @@
       "bytes": 784
     },
     "source-snapshot.json": {
-      "sha256": "3e6fbe184900c4faa688a57481ae61dd9af43d3ed8f0a07dc8f960c8e1761060",
-      "bytes": 10865
+      "sha256": "b5c29e1f8c5c6220b5bbafe3087448ceacf2f84fbe8eb6e7077857228923ba18",
+      "bytes": 11157
     },
     "protected-inputs.json": {
       "sha256": "db00f4392cf4384ec666b4cb59f14fbd06b773e18aa689b37a7223864ec03663",
@@ -143,14 +143,17 @@
       "regression": "test_regular_file_admission_rejects_actual_fifo_without_blocking"
     }
   ],
-  "current_execution_note": "Frozen normal merge of camera candidate plus reviewed shared decoder helper; exact source snapshot verified before and after all validation",
-  "previous_candidate_commit": "1ab81a93c0571c502d5379a2ae37bf56cccabec4",
+  "current_execution_note": "Frozen integration of verified main b16a226, preserving camera implementation; previous camera source/receipts authenticated against28d049e",
+  "previous_candidate_commit": "28d049ec7a2722b27c7b122d3525dbd654ad996b",
   "previous_candidate_source_hashes_verified_against_commit": true,
   "shared_dependency": {
-    "commit": "ffe872dc0330133c1f6e52e34913f30cd041a4a8",
-    "integration": "normal merge",
-    "must_merge_before_camera": true,
-    "scope": "Preserve structured shared JSON diagnostics for CPython giant-integer parse rejection",
-    "independent_review": "Root-confirmed Astra PASS in /tmp/hatch-fleet/review-json-safety.md"
-  }
+    "commit": "cf15e97027ab48d028de6dfd8dc8f2440f2cf2d8",
+    "merged_on_main": "b16a2268e8cb5a3a29042058a95a7b2495903716",
+    "integration": "normal merge of verified main",
+    "must_merge_before_camera": false,
+    "scope": "Final shared JSON diagnostics, bounded UTF-8 byte admission, and verified repository provenance attributes"
+  },
+  "integrated_main_commit": "b16a2268e8cb5a3a29042058a95a7b2495903716",
+  "source_snapshot_entries": 110,
+  "protected_input_entries": 14
 }

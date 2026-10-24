@@ -18,8 +18,13 @@ test_actual_5000_digit_integer_reports_structured_decode_error (test_rig_contrac
 test_actual_cli_rejects_huge_integer_without_persisting_state (test_rig_contracts.SharedJsonDecoderTests.test_actual_cli_rejects_huge_integer_without_persisting_state) ... ok
 test_integer_conversion_limit_boundary_stays_supported (test_rig_contracts.SharedJsonDecoderTests.test_integer_conversion_limit_boundary_stays_supported) ... ok
 test_json_byte_bound_and_unicode (test_rig_contracts.SharedJsonDecoderTests.test_json_byte_bound_and_unicode) ... ok
+test_multibyte_byte_budget_accumulates_across_encoding_chunks (test_rig_contracts.SharedJsonDecoderTests.test_multibyte_byte_budget_accumulates_across_encoding_chunks) ... ok
+test_multibyte_oversize_and_invalid_raw_unicode_reject_before_parser (test_rig_contracts.SharedJsonDecoderTests.test_multibyte_oversize_and_invalid_raw_unicode_reject_before_parser) ... ok
+test_multibyte_string_and_byte_payloads_share_the_utf8_byte_cap (test_rig_contracts.SharedJsonDecoderTests.test_multibyte_string_and_byte_payloads_share_the_utf8_byte_cap) ... ok
+test_raw_invalid_unicode_encoding_has_structured_diagnostic (test_rig_contracts.SharedJsonDecoderTests.test_raw_invalid_unicode_encoding_has_structured_diagnostic) ... ok
 test_specific_duplicate_nonfinite_and_depth_codes_survive (test_rig_contracts.SharedJsonDecoderTests.test_specific_duplicate_nonfinite_and_depth_codes_survive) ... ok
 test_unrelated_runtime_errors_are_not_reclassified (test_rig_contracts.SharedJsonDecoderTests.test_unrelated_runtime_errors_are_not_reclassified) ... ok
+test_archive_imports_preserve_optional_dependency_boundaries (test_rig_compatibility.RigCompatibilityTests.test_archive_imports_preserve_optional_dependency_boundaries) ... ok
 test_cli_failure_is_nonzero_and_structured (test_rig_compatibility.RigCompatibilityTests.test_cli_failure_is_nonzero_and_structured) ... ok
 test_existing_capabilities_work_with_3d_imports_blocked (test_rig_compatibility.RigCompatibilityTests.test_existing_capabilities_work_with_3d_imports_blocked) ... ok
 test_existing_contract_bytes_are_unchanged (test_rig_compatibility.RigCompatibilityTests.test_existing_contract_bytes_are_unchanged) ... ok
@@ -48,7 +53,7 @@ test_roundtrip_unprojection_and_actual_center_rays (test_rig_camera3d_contracts.
 test_sensor_fit_gate_shift_overscan_and_singular_projection_rejection (test_rig_camera3d_contracts.CameraMathTests.test_sensor_fit_gate_shift_overscan_and_singular_projection_rejection) ... ok
 
 ----------------------------------------------------------------------
-Ran 48 tests in 11.297s
+Ran 53 tests in 12.974s
 
 OK
-Discovered 802 2D tests without optional 3D dependencies
+Discovered 809 2D tests without optional 3D dependencies

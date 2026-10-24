@@ -166,15 +166,15 @@ Playwright from the subsequent actual Chromium preview execution. Local math and
 fixture tests are engineering validation, not artistic review, actual camera
 animation, renderer parity, production signoff, or full parent #14 completion.
 
-Validation results and exact source hashes are recorded in [retained verification](../tests/results/camera3d-contracts/verification.json). The original e202ca4 execution is preserved separately from the corrected candidate, including its original logs and source snapshot. Discovery of the 802 legacy tests with optional 3D imports blocked is not full-suite execution.
+Validation results and exact source hashes are recorded in [retained verification](../tests/results/camera3d-contracts/verification.json). The original e202ca4 execution is preserved separately from the corrected candidate, including its original logs and source snapshot. Discovery of the 809 legacy tests with optional 3D imports blocked is not full-suite execution.
 
 The spatial reference layer also delegates vector/quaternion operations to `rig_math`, exposes explicitly fixed-axis/extrinsic XYZ Euler angles (`Rz @ Ry @ Rx`), world/camera point conversion, world or rotated target offsets, forward ray/plane intersection, normalized frustum planes/corners/containment, and exact convex AABB/frustum intersection projection. Bounding-box projection enumerates at most 220 plane triples and handles near-plane crossings and camera-enclosing boxes; it does not establish rendered occlusion visibility. Native bone/socket identifiers retain their original punctuation/case. Schema-valid integral JSON numbers such as `24.0` are accepted for integer fields by normalizing only arithmetic operands, leaving authentic source bytes and hashes unchanged. Camera-owned path/animation/shot timing and bound scene/rig relationships are checked; retiming is never implicit.
 
-The corrected frozen candidate passed **48 schema/math/compatibility tests
-(including 22 camera tests and 6 integrated shared-decoder regressions), 51 legacy contract/render tests, and 4 actual
+The corrected frozen candidate passed **53 schema/math/compatibility tests
+(including 22 camera tests and current shared-decoder/compatibility regressions), 51 legacy contract/render tests, and 4 actual
 Chromium preview tests**, with zero final failures/errors/skips. The original
 35-test schema/math execution is preserved at its authentic e202ca4 revision.
 
 A bound rig must mount the selected camera exactly once, preventing ambiguous camera world transforms. File reads admit regular binary descriptors only, read at most 8 MiB, and use nonblocking/no-follow flags where available. The actual FIFO CLI regression terminates with a structured rejection on platforms with FIFOs; Windows has no `os.mkfifo`, so that subcase is inapplicable there.
 
-The camera branch consumes the root-authorized shared JSON diagnostic repair `ffe872dc0330133c1f6e52e34913f30cd041a4a8` by normal merge. That prerequisite must land first. Fresh integrated validation reran the complete local camera/schema, legacy rendering and actual Chromium gates with all source hashes frozen; two genuine positive/negative 5000-digit camera CLI inputs also reject with structured status 2 and empty stderr. The helper does not change interpreter integer limits.
+The camera branch is based on verified main `b16a2268e8cb5a3a29042058a95a7b2495903716`, including the final shared JSON diagnostic/UTF-8 byte-cap repair `cf15e97027ab48d028de6dfd8dc8f2440f2cf2d8` and repository provenance attributes. A normal merge reuses those authoritative changes. Fresh integrated validation reran camera/schema, legacy rendering and actual Chromium gates with every recorded source hash frozen; positive/negative 5000-digit camera CLI inputs reject with structured status 2 and empty stderr. No interpreter integer limit changes or texture dependency are introduced. Earlier exact execution records remain authenticated in Git history.
