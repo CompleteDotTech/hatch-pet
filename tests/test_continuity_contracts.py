@@ -189,6 +189,44 @@ class ContractTests(unittest.TestCase):
             self.assertFalse(json.loads(result.stdout)['valid'])
             self.assertNotIn('Traceback',result.stdout+result.stderr)
 
+    def test_manifest_leaf_replacement_at_open_is_rejected(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp);target=root/'manifest.json';value=sample('identity')
+            target.write_bytes(canonical_bytes(value));original_open=os.open
+            replacement=root/'new.json';replacement.write_bytes(canonical_bytes(value))
+            def replace_before_open(path,*args,**kwargs):
+                if Path(path)==target:
+                    os.replace(replacement,target)
+                return original_open(path,*args,**kwargs)
+            with patch('continuity_contracts.os.open',replace_before_open):
+                with self.assertRaisesRegex(ValueError,'CHANGED'):load_document(target)
+            self.assertEqual(json.loads(target.read_bytes()),value)
+
+    if hasattr(os,'mkfifo'):
+        def test_manifest_fifo_swap_at_open_never_blocks(self):
+            source="""import tempfile,os
+from pathlib import Path
+from unittest.mock import patch
+import continuity_contracts as cc
+from continuity_test_helpers import sample
+with tempfile.TemporaryDirectory() as temp:
+ target=Path(temp)/'manifest.json';target.write_bytes(cc.canonical_bytes(sample('identity')))
+ original=os.open
+ def replace_before_open(path,*args,**kwargs):
+  if Path(path)==target:
+   assert args[0]&os.O_NONBLOCK
+   target.unlink();os.mkfifo(target)
+  return original(path,*args,**kwargs)
+ with patch('continuity_contracts.os.open',replace_before_open):
+  try:cc.load_document(target)
+  except ValueError as error:assert 'nonregular' in str(error)
+  else:raise AssertionError('FIFO was accepted')
+ assert target.is_fifo()
+"""
+            result=subprocess.run([PYTHON,'-c',source],capture_output=True,text=True,timeout=5,
+                env={**os.environ,'PYTHONPATH':str(ROOT/'scripts')+os.pathsep+str(ROOT/'tests')})
+            self.assertEqual(result.returncode,0,result.stdout+result.stderr)
+
     def test_programmatic_depth_limit_precedes_recursive_copy(self):
         from rig_errors import RigError
         root={};cursor=root

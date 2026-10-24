@@ -398,14 +398,8 @@ def validate_document(value, kind=None):
 
 
 def load_document(path, kind=None):
-    path = Path(path)
-    if path.is_symlink() or not path.is_file():
-        raise ValueError('CONTINUITY_PATH: expected regular manifest file')
-    with path.open('rb') as stream:
-        data = stream.read(MAX_BYTES + 1)
-    if len(data) > MAX_BYTES:
-        raise ValueError('CONTINUITY_LIMIT: manifest exceeds 8 MiB')
-    return validate_document(decode_json(data), kind)
+    # Do not reopen a path after a file-type check: a FIFO/link can race it.
+    return validate_document(decode_json(_read_regular_bytes(Path(path), limit=MAX_BYTES)), kind)
 
 
 def references(value):
@@ -470,6 +464,33 @@ def verify_references(root, value, *, maximum_bytes=MAX_DEPENDENCY_BYTES):
     return dict(files=result, total_bytes=total, geometry_inspected=False, visual_approval=False)
 
 
+def _read_regular_bytes(path, *, limit, expected_sha256=None):
+    """Read one regular file through one bounded nonblocking/nofollow handle."""
+    path = Path(path)
+    leaf = path.lstat()
+    if not stat.S_ISREG(leaf.st_mode):
+        raise ValueError('CONTINUITY_PATH: nonregular or symlink document/receipt rejected')
+    if leaf.st_size > limit:
+        raise ValueError('CONTINUITY_LIMIT: oversized document or receipt')
+    flags = (os.O_RDONLY | getattr(os, 'O_BINARY', 0) | getattr(os, 'O_NOFOLLOW', 0)
+             | getattr(os, 'O_NONBLOCK', 0))
+    with os.fdopen(os.open(path, flags), 'rb') as stream:
+        before = os.fstat(stream.fileno())
+        if not stat.S_ISREG(before.st_mode) or before.st_size > limit:
+            raise ValueError('CONTINUITY_LIMIT: nonregular or oversized document or receipt')
+        payload = stream.read(limit + 1)
+        after = os.fstat(stream.fileno())
+        current = path.stat(follow_symlinks=False)
+    fingerprint = lambda status: (status.st_dev, status.st_ino, status.st_size, status.st_mtime_ns)
+    if fingerprint(leaf) != fingerprint(before) or fingerprint(before) != fingerprint(after) or fingerprint(after) != fingerprint(current):
+        raise ValueError('CONTINUITY_CHANGED: document or receipt changed while reading')
+    if len(payload) > limit:
+        raise ValueError('CONTINUITY_LIMIT: document or receipt exceeds byte bound')
+    if expected_sha256 is not None and hashlib.sha256(payload).hexdigest() != expected_sha256:
+        raise ValueError('CONTINUITY_HASH: receipt bytes disagree with pinned decision')
+    return payload
+
+
 def read_reference_bytes(root, item, *, limit=MAX_BYTES):
     """One bounded nofollow/nonblocking descriptor binds inspected receipt bytes."""
     if type(limit) is not int or not 1 <= limit <= MAX_BYTES:
@@ -480,23 +501,7 @@ def read_reference_bytes(root, item, *, limit=MAX_BYTES):
         path /= part
         if path.is_symlink():
             raise ValueError('CONTINUITY_PATH: receipt symlink is forbidden')
-    flags = (os.O_RDONLY | getattr(os, 'O_BINARY', 0) | getattr(os, 'O_NOFOLLOW', 0)
-             | getattr(os, 'O_NONBLOCK', 0))
-    with os.fdopen(os.open(path, flags), 'rb') as stream:
-        before = os.fstat(stream.fileno())
-        if not stat.S_ISREG(before.st_mode) or before.st_size > limit:
-            raise ValueError('CONTINUITY_LIMIT: nonregular or oversized receipt')
-        payload = stream.read(limit + 1)
-        after = os.fstat(stream.fileno())
-        current = path.stat(follow_symlinks=False)
-    fingerprint = lambda status: (status.st_dev, status.st_ino, status.st_size, status.st_mtime_ns)
-    if fingerprint(before) != fingerprint(after) or fingerprint(after) != fingerprint(current):
-        raise ValueError('CONTINUITY_CHANGED: receipt changed while reading')
-    if len(payload) > limit:
-        raise ValueError('CONTINUITY_LIMIT: receipt exceeds byte bound')
-    if hashlib.sha256(payload).hexdigest() != item['sha256']:
-        raise ValueError('CONTINUITY_HASH: receipt bytes disagree with pinned decision')
-    return payload
+    return _read_regular_bytes(path, limit=limit, expected_sha256=item['sha256'])
 
 
 def generate(destination, check=False):
