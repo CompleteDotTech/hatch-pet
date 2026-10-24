@@ -59,7 +59,10 @@ python scripts/continuity_contracts.py --validate examples/continuity/revision.j
 PYTHONPATH=scripts python -c "from continuity_contracts import load_document,verify_references; print(verify_references('examples/continuity',load_document('examples/continuity/revision.json')))"
 ```
 
-`verify_references` checks actual regular-file bytes, case/path alias conflicts,
+`load_document` and retained receipt reads share one bounded nofollow/nonblocking
+descriptor reader with type/size and replacement checks; they never use a
+file-check followed by a separate blocking path open. `verify_references` checks
+actual regular-file bytes, case/path alias conflicts,
 portable relative paths, no symlinks, bounded total reads and observed
 open-handle/path replacement. The default total bound is 128 MiB. It deliberately
 reports `geometry_inspected: false` and `visual_approval: false`. Matching bytes,

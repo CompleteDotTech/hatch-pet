@@ -63,3 +63,12 @@ parity, a real configured UTF-8 byte-limit negative and the actual huge-integer
 CLI error case. `final-decoder-focused.log` and `final-decoder-verification.json`
 bind this source and log. Older outputs remain historical; no larger-suite rerun
 or fresh independent PASS is inferred from these targeted integration checks.
+
+Security review of 744bc40 found one remaining manifest-read race: a regular
+manifest could become a FIFO between is_file and path.open. The loader now uses
+the same bounded nofollow/nonblocking descriptor reader as retained receipts,
+including pre-open type/size checks and opened-handle/final-path identity checks.
+Two real syscall-boundary regressions cover FIFO and regular-file substitution.
+`manifest-reader-focused.log` and its verification receipt bind 31 passing
+focused cases in 4.862s to the exact committed fix; no failures/errors/skips and
+schema parity passes. Earlier outputs keep their original code bindings.
