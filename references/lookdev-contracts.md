@@ -13,6 +13,7 @@ The implementation baseline is `a5dc729ebb2c31c4be0357afc3dd08e6fe15677e`.
 | `production_contracts.py` | Closed version-1 2D cast/scene/shot/clip schemas; `lighting.direction` and `lighting.color_treatment` are planning metadata. The new independent schemas do not add keys to them. |
 | `production_render.py` | Pillow layered raster compositor, encoded-sRGB source-over and exact production timing. It does not physically relight geometry. No change to its backend, color math, hashes or outputs is made here. |
 | `production_workflow.py` | Scoped, hash-bound review dependency invalidation. No lookdev numerical result creates a visual receipt, rewrites historical approval or promotes fixtures to production artwork. |
+| `model3d_contracts.py`, `model3d_validation.py` | Current Model3D asset/source/material and verified geometry inspection remain their own authority. Lookdev defines executable contract admission, not a replacement asset inspector or evidence that advanced shaders execute through Model3D. |
 | `rig_contracts.py`, `rig_gltf.py`, `rig_blender_worker.py` | Existing imported material information, glTF and Blender rig evidence. This module neither replaces those formats nor asserts that its advanced PBR properties execute there. |
 | Parallel scene/physics/asset foundations | Shared exact reference spelling `{id, version, path, sha256, kind}`. Scene owns transforms and hierarchy; physics owns friction/restitution rather than PBR. Render adapters must probe real backend features and consume lookdev definitions explicitly. |
 
@@ -20,7 +21,7 @@ Current delivery status reports recovered original Milo/Luma transport bytes and
 
 ## API and contracts
 
-`lookdev_contracts.py` supplies nine Draft 2020-12 schemas from `definitions()`:
+`lookdev_contracts.py` supplies nine Draft 2020-12 schemas from `definitions()`. The central `scripts/generate_schemas.py` preserves the existing Model3D and other schema families and includes all nine lookdev schemas:
 
 | Kind | Scope |
 | --- | --- |
@@ -60,6 +61,7 @@ Supported scalar graph nodes have a memoized static range analysis: constants, m
 
 ```bash
 python -m pip install -r requirements-rig.txt
+python scripts/generate_schemas.py --check
 python scripts/lookdev_contracts.py --check
 python scripts/lookdev_contracts.py --validate examples/lookdev-contracts/ceramic.json
 PYTHONPATH=scripts python -m unittest discover -s tests -p test_lookdev_contracts.py -v

@@ -482,6 +482,16 @@ assert len(lookdev_contracts.schemas()) == 9
             link.symlink_to(real)
             with self.assertRaises(RigError): read_document(link)
 
+    def test_central_schema_generator_keeps_model_and_lookdev_hooks(self):
+        from generate_schemas import build
+        from model3d_contracts import schemas as model_schemas
+        generated = build()
+        for name, expected in {**model_schemas(), **schemas()}.items():
+            with self.subTest(schema=name):
+                self.assertIn(ROOT/'profiles'/name, generated)
+                self.assertEqual(generated[ROOT/'profiles'/name], expected)
+                self.assertEqual(json.loads((ROOT/'profiles'/name).read_text(encoding='utf-8')), expected)
+
     def test_generated_schema_check_and_cli_validation(self):
         result = subprocess.run([sys.executable, str(ROOT/'scripts/lookdev_contracts.py'), '--check'], capture_output=True, text=True)
         self.assertEqual(result.returncode, 0, result.stderr)
