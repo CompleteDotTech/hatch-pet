@@ -2,6 +2,7 @@ from fractions import Fraction
 import math
 from contextlib import nullcontext
 import os
+import shutil
 from pathlib import Path
 import sys
 import tempfile
@@ -26,6 +27,28 @@ class TimingTests(unittest.TestCase):
         for backend in ['blender','pybullet']:
             report=physics.verify_cache(root/(backend+'-demo/cache'))
             self.assertEqual(report['status'],'hash-and-contract-verified')
+
+    def test_rebound_solver_cache_cannot_disagree_with_output_and_unknown_worker_cannot_downgrade(self):
+        source=Path(__file__).resolve().parents[1]/'tests/results/physics-timing-20261024/executed/artifacts/30000-1001-0'
+        with tempfile.TemporaryDirectory() as directory:
+            cache=Path(directory)/'cache';shutil.copytree(source,cache)
+            value=physics.parse((cache/'solver-states.json').read_bytes())
+            value['samples'][16]['bodies'][0]['translation'][1]+=10
+            (cache/'solver-states.json').write_bytes(physics.canonical(value))
+            manifest=physics.parse((cache/'cache.json').read_bytes())
+            for item in manifest['files']:
+                data=(cache/item['path']).read_bytes();item.update(bytes=len(data),sha256=physics.digest(data))
+            manifest['usage']['output_bytes']=sum(item['bytes'] for item in manifest['files'])
+            (cache/'cache.json').write_bytes(physics.canonical(manifest))
+            with self.assertRaises(physics.BackendError) as raised:
+                physics._validate_solver_samples(value,physics.parse((cache/'world.json').read_bytes()),manifest['world_sha256'],manifest['fixture'],physics.parse((cache/'states.json').read_bytes()))
+            self.assertIn('disagrees',str(raised.exception))
+            for name in ['timing.json','solver-states.json']:(cache/name).unlink()
+            manifest['files']=[item for item in manifest['files'] if item['path'] not in ['timing.json','solver-states.json']]
+            manifest['usage']['output_bytes']=sum(item['bytes'] for item in manifest['files'])
+            (cache/'cache.json').write_bytes(physics.canonical(manifest))
+            with self.assertRaises(physics.BackendError) as raised:physics.verify_cache(cache)
+            self.assertIn('timing receipt',str(raised.exception))
 
     def test_quaternion_shortest_arc_and_endpoints(self):
         a=dict(id='x',translation=[0,0,0],rotation=[0,0,0,1])
@@ -76,6 +99,41 @@ class NativeTimingTests(unittest.TestCase):
                 finally:backend.cleanup(prepared)
         if target:Path(target).with_name('blender-numerical.json').write_bytes(physics.canonical(dict(scope='real Blender native integral-step integer and NTSC free fall',records=records)))
 
+    def test_real_contact_slop_and_velocity_limit_failure(self):
+        heights=[];records=[]
+        target=os.environ.get('HATCH_TIMING_EVIDENCE')
+        for slop in [0,.05]:
+            backend=physics.PyBulletBackend(os.environ['HATCH_PYBULLET_PYTHON'])
+            world,payloads=build_inputs(backend='pybullet')
+            world['solver']['stability']=dict(contact_penetration_tolerance=slop)
+            prepared=backend.prepare(world,payloads)
+            try:
+                result=backend.simulate(prepared)
+                states=physics.parse((prepared.root/'states.json').read_bytes())
+                heights.append(states['samples'][-1]['bodies'][0]['translation'][1])
+                contacts=physics.parse((prepared.root/'contacts.json').read_bytes())
+                self.assertTrue(contacts['samples'][-1]['contacts'])
+                if target:
+                    destination=Path(target).parent/('contact-'+str(slop))
+                    backend.bake(result,destination)
+                records.append(dict(slop=slop,height=heights[-1],world_sha256=result.world_sha256,backend=result.backend,usage=result.usage))
+            finally:backend.cleanup(prepared)
+        self.assertGreater(heights[0]-heights[1],.03)
+        self.assertLess(heights[0]-heights[1],.07)
+        backend=physics.PyBulletBackend(os.environ['HATCH_PYBULLET_PYTHON'])
+        world,payloads=build_inputs(backend='pybullet')
+        world['solver']['stability']=dict(max_linear_velocity=.001)
+        prepared=backend.prepare(world,payloads)
+        try:
+            with self.assertRaises(physics.BackendError):backend.simulate(prepared)
+            stderr=(prepared.root/'simulation-stderr.log').read_bytes()
+            self.assertIn(b'Numerical stability velocity limit exceeded',stderr)
+            self.assertFalse((prepared.root/'states.json').exists())
+            if target:Path(target).with_name('stability.json').write_bytes(physics.canonical(dict(contact_comparison=records,
+                contact_height_difference=heights[0]-heights[1],velocity_failure='observed real solver failure; no clamping',
+                stderr=stderr.decode(),world_sha256=prepared.world_sha256,limit=.001)))
+        finally:backend.cleanup(prepared)
+
     def test_real_fractional_rates_analytic_and_pinned_repeat(self):
         records=[]
         target=os.environ.get('HATCH_TIMING_EVIDENCE')
@@ -111,6 +169,8 @@ class NativeTimingTests(unittest.TestCase):
                         sought=physics.inspect_time(destination,Fraction(q,2*p))
                         self.assertEqual(sought['bracket_frames'],[0,1])
                         self.assertEqual(sought['sample_clock'],'solver')
+                        self.assertIn('alpha',sought)
+                        self.assertEqual(len(sought['bracket_times']),2)
                         native=physics.parse((destination/'solver-states.json').read_bytes())
                         self.assertEqual(len(native['samples']),clock(world)['solver_steps']+1)
                         self.assertEqual(physics.inspect_time(destination,Fraction(48*q,p))['time'],dict(numerator=Fraction(48*q,p).numerator,denominator=Fraction(48*q,p).denominator))

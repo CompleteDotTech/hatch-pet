@@ -128,11 +128,13 @@ def main():
             return values
         samples=[]; contacts=[]
         index=0
+        observed_steps=[]
         left=right=state()
         solved=[dict(step=0,bodies=right)]
         for frame in range(frames):
             target=Fraction(frame,1)/fps/step
             upper=math.ceil(target)
+            previous=index
             while index<upper:
                 left=right
                 p.stepSimulation(physicsClientId=client)
@@ -147,7 +149,8 @@ def main():
                 values.append(dict(body_a=reverse[contact[1]],body_b=reverse[contact[2]],
                     position_a=list(contact[5]),position_b=list(contact[6]),normal_b=list(contact[7]),
                     distance=contact[8],normal_force=contact[9]))
-            contacts.append(dict(frame=frame,contacts=values))
+            observed_steps.append(index-previous)
+            contacts.append(dict(frame=frame,solver_step=index,solver_time=dict(numerator=(index*step).numerator,denominator=(index*step).denominator),contacts=values))
             samples.append(dict(frame=frame,bodies=bodies))
         (root/'solver-states.json').write_bytes(canonical(dict(schema_version=1,
             kind='hatch-physics-solver-states',world_sha256=job['world_sha256'],
@@ -158,7 +161,7 @@ def main():
             world_sha256=job['world_sha256'],samples=contacts)))
         (root/'worker-report.json').write_bytes(canonical(dict(ok=True,operation='simulate',
             backend=identity,connection_mode='DIRECT',sample_count=frames,object_count=len(identifiers),
-            actual_steps_per_frame=per_frame,actual_solver_steps=index,
+            maximum_steps_per_output_interval=max(observed_steps),steps_per_output_interval=observed_steps,actual_solver_steps=index,
             actual_bodies=effective,effective_engine=effective_engine,
             cache_storage='immutable native transform/contact samples',restart='clean-restart-only',
             contacts_queried=True)))

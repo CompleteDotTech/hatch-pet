@@ -46,6 +46,10 @@ MAX_LOG_BYTES = 8 * 1024 * 1024
 MAX_FILES = 256
 MAX_BODIES = 32
 MAX_FRAMES = 1024
+LEGACY_WORKERS = {
+    'blender':'bb5acec20ceb5210c48e29c1dc7f0247c82264d133c84b158ac867f68e58d7d5',
+    'pybullet':'93536f325e1eac20343f8a99eca629a57b9dee8b00bc2dcbf7b8fa688f89fca0',
+}
 SUPPORTED_BLENDER = (4, 5, 3)
 SUPPORTED_BLENDER_BUILD = '67807e1800cc'
 SUPPORTED_CATEGORIES = ('rigid-body',)
@@ -1164,7 +1168,7 @@ class PyBulletBackend(BlenderBackend):
         measured=_run_process(self._command(root),root,timeout=_remaining(deadline),
             memory_bytes=world['budgets']['memory_bytes'],output_bytes=min(world['budgets']['temporary_bytes'],MAX_CACHE_BYTES),
             cancel_token=cancel_token,progress=progress)
-        require(all((root/name).is_file() for name in ('states.json','contacts.json','worker-report.json')),
+        require(all((root/name).is_file() for name in ('states.json','solver-states.json','contacts.json','worker-report.json')),
                 'PHYSICS_OUTPUT_MISSING','DIRECT execution omitted required actual state/contact outputs.',category='backend-crash')
         report=parse((root/'worker-report.json').read_bytes())
         _check_pybullet_report(report,world,owner['module_record'])
@@ -1172,7 +1176,7 @@ class PyBulletBackend(BlenderBackend):
         _validate_samples(states,world,prepared.world_sha256,prepared.fixture)
         contacts=parse((root/'contacts.json').read_bytes())
         _validate_contacts(contacts,world,prepared.world_sha256)
-        _validate_solver_samples(parse((root/'solver-states.json').read_bytes()),world,prepared.world_sha256,prepared.fixture)
+        _validate_solver_samples(parse((root/'solver-states.json').read_bytes()),world,prepared.world_sha256,prepared.fixture,states)
         _write(root/'timing.json',canonical(_timing_receipt(world, identity)))
         _write(root/'simulation-report.json',canonical(report))
         _write(root/'verification.json',canonical(dict(schema_version=1,world_sha256=prepared.world_sha256,
@@ -1258,9 +1262,14 @@ def _check_pybullet_report(report,world,module,*,legacy=False):
     require(isinstance(report,dict) and isinstance(module,dict) and report.get('ok') is True and report.get('operation')=='simulate' and
             report.get('connection_mode')=='DIRECT' and report.get('contacts_queried') is True and
             report.get('sample_count')==world['frame_range']['end'] and report.get('object_count')==len(world['bodies']) and
-            report.get('actual_steps_per_frame')==steps and report.get('actual_solver_steps')==timing_clock(world)['solver_steps'] and
+            (report.get('actual_steps_per_frame')==steps if legacy else report.get('maximum_steps_per_output_interval')==steps) and report.get('actual_solver_steps')==timing_clock(world)['solver_steps'] and
             report.get('backend')==module and module.get('solver_version')=='3.2.7',
             'PHYSICS_BAKE_FAILED','Actual DIRECT lifecycle/module/step observations differ from admission.',category='backend-crash')
+    if not legacy:
+        mappings=timing_clock(world)['sample_brackets']
+        expected_counts=[entry['upper']-(mappings[index-1]['upper'] if index else 0) for index,entry in enumerate(mappings)]
+        require(report.get('steps_per_output_interval')==expected_counts,'PHYSICS_BAKE_FAILED',
+                'Observed solver step counts per output interval differ.',category='backend-crash')
     require(type(report.get('actual_bodies')) is list and len(report['actual_bodies'])==len(world['bodies']),
             'PHYSICS_BAKE_FAILED','DIRECT effective physical observations are missing.',category='backend-crash')
     materials={value['id']:value for value in world['materials']}
@@ -1299,16 +1308,21 @@ def _additional_shape_smoke(backend):
         backend.cleanup(prepared)
 
 
-def _validate_contacts(value,world,world_hash):
+def _validate_contacts(value,world,world_hash,*,legacy=False):
     ids={body['id'] for body in world['bodies']}
     require(isinstance(value,dict) and set(value)=={'schema_version','kind','world_sha256','samples'} and
             value['schema_version']==1 and value['kind']=='hatch-pybullet-contacts' and value['world_sha256']==world_hash and
             type(value['samples']) is list and len(value['samples'])==world['frame_range']['end'],
             'PHYSICS_CACHE_CORRUPT','DIRECT contact header/count differs.',category='cache-corruption')
     for index,frame in enumerate(value['samples']):
-        require(isinstance(frame,dict) and set(frame)=={'frame','contacts'} and type(frame['frame']) is int and frame['frame']==index and
+        require(isinstance(frame,dict) and set(frame)==({'frame','contacts'} if legacy else {'frame','contacts','solver_step','solver_time'}) and type(frame['frame']) is int and frame['frame']==index and
                 type(frame['contacts']) is list and len(frame['contacts'])<=4096,
                 'PHYSICS_CACHE_CORRUPT','DIRECT contact frame/count differs.',category='cache-corruption')
+        if not legacy:
+            step=_ratio(world['solver']['fixed_step'])/world['solver']['substeps']
+            native_index=math.ceil(Fraction(index,1)/_ratio(world['fps'])/step)
+            require(type(frame['solver_step']) is int and frame['solver_step']==native_index and frame['solver_time']==rational(native_index*step),
+                    'PHYSICS_CACHE_CORRUPT','Contact observation clock differs from actual solver bracket.',category='cache-corruption')
         for contact in frame['contacts']:
             require(isinstance(contact,dict) and set(contact)=={'body_a','body_b','position_a','position_b','normal_b','distance','normal_force'} and
                     type(contact['body_a']) is str and type(contact['body_b']) is str and
@@ -1336,12 +1350,13 @@ def _inventory(root):
     return files
 
 
-def _validate_solver_samples(value, world, world_hash, fixture):
+def _validate_solver_samples(value, world, world_hash, fixture, output):
     require(type(value) is dict and set(value)=={'schema_version','kind','world_sha256','effective_step','samples'} and
             value['schema_version']==1 and value['kind']=='hatch-physics-solver-states' and value['world_sha256']==world_hash and
             value['effective_step']==timing_clock(world)['effective_solver_step'],
             'PHYSICS_CACHE_CORRUPT','Solver-step cache identity/clock differs.',category='cache-corruption')
-    count=timing_clock(world)['solver_steps']+1
+    schedule=timing_clock(world)
+    count=schedule['solver_steps']+1
     require(type(value['samples']) is list and len(value['samples'])==count,
             'PHYSICS_CACHE_CORRUPT','Solver-step cache count differs.',category='cache-corruption')
     projected=[]
@@ -1351,6 +1366,17 @@ def _validate_solver_samples(value, world, world_hash, fixture):
     synthetic=deepcopy(world);synthetic['frame_range']=dict(start=0,end=count)
     _validate_samples(dict(schema_version=1,kind='hatch-physics-samples',world_sha256=world_hash,
         frame_range=synthetic['frame_range'],fps=world['fps'],fixture=fixture,samples=projected),synthetic,world_hash,fixture)
+    for sample, mapping in zip(output['samples'],schedule['sample_brackets']):
+        lower=value['samples'][mapping['lower']]['bodies']
+        upper=value['samples'][mapping['upper']]['bodies']
+        alpha=_ratio(mapping['alpha'])
+        expected=[interpolate_state(a,b,alpha) for a,b in zip(lower,upper)]
+        for actual,target in zip(sample['bodies'],expected):
+            translation=max(abs(a-b) for a,b in zip(actual['translation'],target['translation']))
+            rotation=min(max(abs(a-sign*b) for a,b in zip(actual['rotation'],target['rotation'])) for sign in (-1,1))
+            require(translation<=1e-5 and rotation<=1e-5,'PHYSICS_CACHE_CORRUPT',
+                    'Output pose disagrees with completed solver-state interpolation.',category='cache-corruption')
+
 
 
 def _validate_samples(value, world, world_hash, fixture):
@@ -1426,11 +1452,15 @@ def _read_cache_impl(root, *, expected_world_sha256=None):
         require(total+len(manifest_payload)<=min(world['budgets']['cache_bytes'],world['budgets']['temporary_bytes'],MAX_CACHE_BYTES) and
                 all(file['bytes']<=world['budgets']['bake_file_bytes'] for file in manifest['files']),
                 'PHYSICS_CACHE_CORRUPT','Actual retained cache files/manifest exceed bound world budgets.',category='cache-corruption')
+        if digest(payloads['worker.py'])==LEGACY_WORKERS[world['solver']['backend']]:
+            legacy_ratio=1/(_ratio(world['fps'])*_ratio(world['solver']['fixed_step'])/world['solver']['substeps'])
+            require(legacy_ratio.denominator==1 and not world['solver'].get('stability'),
+                    'PHYSICS_CACHE_CORRUPT','Known predecessor worker cannot honor this timing/stability profile.',category='cache-corruption')
         if 'timing.json' in payloads:
             require(parse(payloads['timing.json']) == _timing_receipt(world,manifest['backend']),
                     'PHYSICS_CACHE_CORRUPT','Exact timing/settings/reproducibility receipt changed.',category='cache-corruption')
         else:
-            require(digest(payloads['worker.py']) != digest(_worker_bytes(world['solver']['backend'])),
+            require(digest(payloads['worker.py']) == LEGACY_WORKERS[world['solver']['backend']],
                     'PHYSICS_CACHE_CORRUPT','Current adapter output omitted exact timing receipt.',category='cache-corruption')
         expected_steps=timing_clock(world)['solver_steps']
         require(manifest['usage']['solver_steps']==expected_steps and manifest['numerical_tolerance']==1e-5,
@@ -1501,12 +1531,12 @@ def _read_cache_impl(root, *, expected_world_sha256=None):
                     receipt['native_reopen'].get('maximum_replay_error', math.inf) <= 1e-5,
                     'PHYSICS_CACHE_CORRUPT', 'Cache lacks independent full native replay evidence.', category='cache-corruption')
         else:
-            _check_pybullet_report(receipt.get('solver_report'),world,receipt.get('backend_module',{}),legacy=digest(payloads['worker.py'])!=digest(_worker_bytes('pybullet')))
-            _validate_contacts(parse(payloads['contacts.json']),world,world_hash)
+            _check_pybullet_report(receipt.get('solver_report'),world,receipt.get('backend_module',{}),legacy=digest(payloads['worker.py'])==LEGACY_WORKERS['pybullet'])
+            _validate_contacts(parse(payloads['contacts.json']),world,world_hash,legacy=digest(payloads['worker.py'])==LEGACY_WORKERS['pybullet'])
             if 'solver-states.json' in payloads:
-                _validate_solver_samples(parse(payloads['solver-states.json']),world,world_hash,manifest['fixture'])
+                _validate_solver_samples(parse(payloads['solver-states.json']),world,world_hash,manifest['fixture'],states)
             else:
-                require(digest(payloads['worker.py'])!=digest(_worker_bytes('pybullet')),
+                require(digest(payloads['worker.py'])==LEGACY_WORKERS['pybullet'],
                         'PHYSICS_CACHE_CORRUPT','Current PyBullet output omitted solver cache.',category='cache-corruption')
             require(receipt.get('sample_cache_verification') == dict(status='structure-and-finite-values-verified',
                     sample_count=len(states['samples']),contact_frames=len(states['samples'])),
@@ -1536,17 +1566,19 @@ def inspect_time(root, timestamp):
     require(0<=output_coordinate<=len(states['samples'])-1,'PHYSICS_CACHE_SAMPLE',
             'Timestamp lies outside completed cache samples; extrapolation is unsupported.',category='invalid-input')
     coordinate=output_coordinate
+    interval=1/_ratio(world['fps'])
     if '_solver_states' in receipt:
         solver_states=receipt['_solver_states']
-        coordinate=timestamp/_ratio(solver_states['effective_step'])
+        interval=_ratio(solver_states['effective_step'])
+        coordinate=timestamp/interval
         states=solver_states
     left=math.floor(coordinate); right=math.ceil(coordinate)
     alpha=coordinate-left
     bodies=[interpolate_state(a,b,alpha) for a,b in zip(states['samples'][left]['bodies'],states['samples'][right]['bodies'])]
     return dict(time=rational(timestamp),bodies=bodies,bracket_frames=[math.floor(output_coordinate),math.ceil(output_coordinate)],
-        interpolation_bracket=[left,right],sample_clock='solver' if states.get('kind')=='hatch-physics-solver-states' else 'output',
+        interpolation_bracket=[left,right],alpha=rational(alpha),bracket_times=[rational(left*interval),rational(right*interval)],sample_clock='solver' if states.get('kind')=='hatch-physics-solver-states' else 'output',
         interpolation='linear translation and shortest-arc quaternion slerp',
-        source='hash-verified-completed-output-state-interpolation',world_sha256=manifest['world_sha256'],fixture=manifest['fixture'])
+        source=('hash-verified-direct-solved-state' if alpha==0 else 'hash-verified-completed-solver-state-interpolation') if '_solver_states' in receipt else 'hash-verified-completed-output-state-interpolation',world_sha256=manifest['world_sha256'],fixture=manifest['fixture'])
 
 
 def inspect_cache(root, frame):

@@ -129,16 +129,18 @@ def native_report(value,world,operation):
 
 
 def direct_report(value,world):
-    object_fields(value,('ok','operation','backend','connection_mode','sample_count','object_count','actual_steps_per_frame',
+    object_fields(value,('ok','operation','backend','connection_mode','sample_count','object_count',
                         'actual_solver_steps','actual_bodies','cache_storage','restart','contacts_queried') +
-                        (('effective_engine',) if type(value) is dict and 'effective_engine' in value else ()), 'DIRECT solver report')
+                        (('effective_engine','maximum_steps_per_output_interval','steps_per_output_interval') if type(value) is dict and 'effective_engine' in value else ('actual_steps_per_frame',)), 'DIRECT solver report')
     if 'effective_engine' in value:
+        need(integer(value['maximum_steps_per_output_interval']) and type(value['steps_per_output_interval']) is list and
+             all(integer(x) for x in value['steps_per_output_interval']),'Invalid actual output interval counts.')
         object_fields(value['effective_engine'],('fixed_time_step','internal_substeps','iterations'),'DIRECT engine')
         need(number(value['effective_engine']['fixed_time_step']) and integer(value['effective_engine']['internal_substeps']) and integer(value['effective_engine']['iterations']),
              'Malformed native engine observations.')
     module_identity(value['backend'])
     need(value['ok'] is True and value['operation']=='simulate' and value['connection_mode']=='DIRECT' and value['contacts_queried'] is True and
-         all(integer(value[key]) for key in ('sample_count','object_count','actual_steps_per_frame','actual_solver_steps')) and
+         all(integer(value[key]) for key in ('sample_count','object_count','actual_solver_steps')) and
          value['cache_storage']=='immutable native transform/contact samples' and value['restart']=='clean-restart-only','Invalid DIRECT observations.')
     need(type(value['actual_bodies']) is list and len(value['actual_bodies'])==len(world['bodies']),'Invalid DIRECT body observations.')
     for body in value['actual_bodies']:
