@@ -287,6 +287,13 @@ class TextureIntegrityTests(unittest.TestCase):
                 self.assert_rejected(path, 'RIG_LIMIT_TEXTURE')
                 self.assertEqual(Image.MAX_IMAGE_PIXELS, threshold)
 
+    def test_raster_allocation_failure_is_structured_without_source_change(self):
+        path = self.model(image_bytes())
+        # Fault injection checks the error boundary; successful raster evidence
+        # elsewhere uses actual decoders, not a fabricated decode response.
+        with patch.object(PngImagePlugin.PngImageFile, 'load', side_effect=MemoryError('allocation denied')):
+            self.assert_rejected(path, 'RIG_LIMIT_TEXTURE')
+
     def test_mime_animation_and_lax_decoder_policy_fail_closed(self):
         self.assert_rejected(self.model(image_bytes(), mime='image/jpeg'), 'RIG_TEXTURE_FORMAT')
         stream = io.BytesIO()

@@ -149,6 +149,8 @@ def _decode_texture(data: bytes, limits: dict, total_pixels: int = 0) -> tuple[s
         raise
     except (Image.DecompressionBombError, Image.DecompressionBombWarning) as exc:
         raise RigError('RIG_LIMIT_TEXTURE', 'Texture exceeds Pillow decoding safeguards.') from exc
+    except MemoryError as exc:
+        raise RigError('RIG_LIMIT_TEXTURE', 'Texture working-memory allocation failed.') from exc
     except (OSError, ValueError, SyntaxError, zlib.error) as exc:
         raise RigError('RIG_TEXTURE_DECODE', 'Texture pixels or container cannot be decoded: ' + str(exc)) from exc
 
