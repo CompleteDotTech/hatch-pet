@@ -429,6 +429,46 @@ class SceneClosureTests(unittest.TestCase):
         with self.assertRaisesRegex(RigError, 'non-geometric'):
             load_project(self.root)
 
+    def test_legacy_project_bridge_uses_actual_v1_kind_and_keeps_source_bytes(self):
+        from production_fixture import build_fixture_project
+        from production_contracts import load_project as load_legacy
+        legacy_root = self.root / 'legacy'
+        build_fixture_project(legacy_root)
+        payload = (legacy_root / 'project.json').read_bytes()
+        legacy = json.loads(payload)
+        pointer = dict(id=legacy['id'], version=legacy['version'], kind='project',
+                       path='legacy/project.json', sha256=hashlib.sha256(payload).hexdigest())
+        project = fixture('project')
+        project['linked_2d_project'] = pointer
+        project['dependency_lock'].append(pointer)
+        (self.root / 'project.json').write_bytes(canonical_bytes(project))
+        self.assertEqual(load_project(self.root)['project']['linked_2d_project'], pointer)
+        self.assertEqual((legacy_root / 'project.json').read_bytes(), payload)
+        self.assertEqual(load_legacy(legacy_root)['project']['kind'], 'project')
+        project['linked_2d_project']['id'] = 'incorrect-legacy-id'
+        (self.root / 'project.json').write_bytes(canonical_bytes(project))
+        with self.assertRaisesRegex(RigError, 'identity/version'):
+            load_project(self.root)
+
+    def test_legacy_pointer_cannot_reuse_a_preloaded_scene_manifest(self):
+        project = fixture('project')
+        pointer = deepcopy(project['scenes'][0])
+        pointer['kind'] = 'project'
+        project['linked_2d_project'] = pointer
+        project['dependency_lock'].append(pointer)
+        (self.root / 'project.json').write_bytes(canonical_bytes(project))
+        with self.assertRaises(RigError):
+            load_project(self.root)
+
+    def test_cli_failure_is_structured_nonzero_and_nonmutating(self):
+        (self.root / 'triangle.obj').unlink()
+        result = subprocess.run([sys.executable, str(ROOT / 'scripts/scene3d_contracts.py'), str(self.root)],
+                                capture_output=True, text=True)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertFalse(json.loads(result.stderr)['ok'])
+        self.assertNotIn('Traceback', result.stderr)
+        self.assertFalse((self.root / 'triangle.obj').exists())
+
     def test_optional_3d_imports_remain_unnecessary_for_loading(self):
         code = '''import sys,importlib.abc
 sys.path.insert(0, 'scripts')

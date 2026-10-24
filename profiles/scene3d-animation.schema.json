@@ -54,7 +54,7 @@
             "scene3d-animation",
             "scene3d-render",
             "hatch-3d-rig",
-            "hatch-production-project",
+            "project",
             "mesh",
             "material",
             "texture",
@@ -2175,7 +2175,18 @@
         "linked_2d_project": {
           "anyOf": [
             {
-              "$ref": "#/$defs/reference"
+              "allOf": [
+                {
+                  "$ref": "#/$defs/reference"
+                },
+                {
+                  "properties": {
+                    "kind": {
+                      "const": "project"
+                    }
+                  }
+                }
+              ]
             },
             {
               "type": "null"

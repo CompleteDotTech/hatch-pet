@@ -82,7 +82,7 @@ def definitions():
     ids = arr(ID, maximum=MAX_NODES, unique=True)
     file = obj(dict(path={'type': 'string', 'minLength': 1, 'maxLength': 1024}, sha256=SHA))
     reference = obj(dict(id=ID, version=VERSION, path=file['properties']['path'], sha256=SHA,
-                         kind=enum(*MANIFEST_KINDS, 'hatch-3d-rig', 'hatch-production-project',
+                         kind=enum(*MANIFEST_KINDS, 'hatch-3d-rig', 'project',
                                    'mesh', 'material', 'texture', 'catalog', 'evidence', 'collision')))
     def typed_ref(kind):
         return {'allOf': [ref('reference'), {'properties': {'kind': {'const': kind}}}]}
@@ -189,7 +189,7 @@ def definitions():
         scenes=arr(typed_ref('scene3d-scene'), 1, 256), shots=arr(typed_ref('scene3d-shot'), maximum=4096),
         prefabs=arr(typed_ref('scene3d-prefab')), animations=arr(typed_ref('scene3d-animation')),
         render_defaults=ref('render_settings'), budgets=ref('budget'),
-        created_at=TEXT, modified_at=TEXT, linked_2d_project=nullable(ref('reference')),
+        created_at=TEXT, modified_at=TEXT, linked_2d_project=nullable(typed_ref('project')),
         dependency_lock=arr(ref('reference')), validation=arr(ref('file')),
         provenance=ref('provenance'), metadata=meta))
     return dict(file=file, reference=reference, transform=transform, bounds=bounds,
@@ -219,7 +219,10 @@ def require(condition, message, code='SCENE3D_CONTRACT'):
 
 @lru_cache(maxsize=32)
 def validator(kind):
-    from jsonschema import Draft202012Validator
+    try:
+        from jsonschema import Draft202012Validator
+    except ImportError as exc:
+        raise RigError('SCENE3D_DEPENDENCY', 'Install requirements-delivery.txt for Scene3D contract validation.', stage='scene3d') from exc
     require(kind in definitions(), 'Unknown scene3d kind: ' + str(kind))
     return Draft202012Validator({'$defs': definitions(), '$ref': '#/$defs/' + kind})
 
@@ -517,10 +520,12 @@ def load_project(root, name='project.json'):
             if expected:
                 require(inventory[path]['sha256'] == expected['sha256'], 'Conflicting dependency hash: ' + path)
             if path in documents:
-                if expected and expected.get('kind') in MANIFEST_KINDS:
+                if expected and (expected.get('kind') in MANIFEST_KINDS or expected.get('kind') == 'project'):
                     _reference_identity(documents[path], expected)
                 return
             if not expected or expected.get('kind') not in MANIFEST_KINDS:
+                if expected and expected.get('kind') == 'project':
+                    _legacy_reference(payloads[path], expected)
                 return
             payload = payloads[path]
         else:
@@ -528,6 +533,8 @@ def load_project(root, name='project.json'):
             if expected:
                 require(inventory[path]['sha256'] == expected['sha256'], 'Dependency hash mismatch: ' + path)
             if expected and expected.get('kind') not in MANIFEST_KINDS:
+                if expected.get('kind') == 'project':
+                    _legacy_reference(payload, expected)
                 return
         require(path.endswith('.json'), 'Scene3D manifests must use .json filenames.')
         document = validate_document(decode_json(payload))
@@ -581,6 +588,16 @@ def load_project(root, name='project.json'):
                 bytes=total, status='hash-and-contract-verified')
 
 
+def _legacy_reference(payload, expected):
+    from production_contracts import validate_structure
+    legacy = decode_json(payload)
+    try:
+        validate_structure(legacy, 'project')
+    except ValueError as exc:
+        fail('Linked 2D project violates production v1: ' + str(exc))
+    _reference_identity(legacy, expected)
+
+
 def _reference_identity(document, expected):
     require(all(document[k] == expected[k] for k in ('id', 'version', 'kind')),
             'Reference kind/identity/version does not match actual manifest.')
@@ -598,4 +615,10 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    try:
+        main()
+    except (RigError, OSError) as exc:
+        import sys
+        report = exc.report if isinstance(exc, RigError) else dict(code='SCENE3D_IO', stage='scene3d', message=str(exc))
+        print(json.dumps(dict(ok=False, error=report)), file=sys.stderr)
+        raise SystemExit(1)

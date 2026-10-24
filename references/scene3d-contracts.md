@@ -27,7 +27,7 @@ historical evidence do not supply new human approval.
 
 | Authority | Reuse and boundary |
 | --- | --- |
-| `production_contracts.py`, `production_performance.py` | Preserve v1 formats and pixel/frame semantics; a linked 2D project is an explicit hash-bound external reference, never automatically interpreted as 3D. |
+| `production_contracts.py`, `production_performance.py` | Preserve v1 formats and pixel/frame semantics; a linked 2D project is an explicit hash-bound external reference using its actual `project` kind, never automatically interpreted as 3D. |
 | `rig_errors.py` | Reuse strict duplicate-key/nonfinite/depth-bounded JSON and structured `RigError` diagnostics. |
 | `rig_math.py` | Reuse TRS, quaternion interpolation/decomposition and the existing canonical-to-Blender basis. Scene math adds only pivot/coordinate adapters and static hierarchy evaluation. |
 | `rig_*`, forthcoming asset-library/model contracts | Own actual mesh/skin/animation import and technical validation. This loader verifies content bytes and manifest contracts; it does not count mesh vertices or certify geometry. |
@@ -67,10 +67,12 @@ An immutable manifest reference has this shared shape:
 ```
 
 A raw file reference is `{path, sha256}`. Manifest references load and validate
-Scene3D documents; external owner references (`hatch-3d-rig`, linked production,
+Scene3D documents; external owner references (`hatch-3d-rig`,
 mesh/material/texture/catalog/evidence/collision resources) verify bytes without
 claiming the other subsystem's semantic validation. An external integration must
-call its owner's validator before execution. Paths are relative to the project
+call its owner's validator before execution. The linked 2D project's existing
+`project` kind, ID, version and v1 structure are checked by the production owner;
+loading its cast/media closure still belongs to that owner's loader. Paths are relative to the project
 root, even inside nested manifests. They are NFC POSIX paths without absolute
 paths, traversal, backslashes, drive/URI prefixes, device names, control characters
 or trailing-dot/space aliases. Filesystem symlinks and nonregular inputs fail.
@@ -165,7 +167,7 @@ contract/file-loading tests also run in the existing 2D gate with NumPy blocked.
 The example refuses an existing destination. Its direct file creation is for a
 new, caller-owned fixture directory only; it is not a package publisher.
 
-The implementation's focused execution passed **45 tests**, including real
+The implementation's focused execution passed **48 tests**, including real
 fresh-process reopening and actual geometry-byte/hash tampering. Source delivery
 inventory and generated schema/template checks passed. Exact source revision,
 full legacy regression results, CI and independent Astra review are recorded in
