@@ -1,0 +1,179 @@
+{
+  "schema_version": 1,
+  "evidence_class": "engineering_regression_not_artwork_approval",
+  "issue": 197,
+  "recorded_utc": "2026-10-22T18:53:10.862309+00:00",
+  "baseline_commit": "7b966a639bcaf23bd3a0d037f46f29e2edfcc273",
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.39",
+  "dependencies": {
+    "Pillow": "13.0.0",
+    "jsonschema": "4.26.0",
+    "numpy": "2.3.5",
+    "pygltflib": "1.16.5"
+  },
+  "before_and_after_command": [
+    "/workspace/scratch/10ec880935b7/hatch-audit-venv/bin/python",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests",
+    "-p",
+    "test_production_bundle.py",
+    "-v"
+  ],
+  "before_and_after_cwd": "/workspace/scratch/10ec880935b7/hatch-issue-197",
+  "before_and_after_environment": {
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "affected_execution": {
+    "command": [
+      "/workspace/scratch/10ec880935b7/hatch-audit-venv/bin/python",
+      "-m",
+      "unittest",
+      "test_production_bundle",
+      "test_production_sources",
+      "test_production_workflow",
+      "test_production_delivery",
+      "test_rig_compatibility",
+      "-v"
+    ],
+    "cwd": "/workspace/scratch/10ec880935b7/hatch-issue-197",
+    "explicit_environment": {
+      "PYTHONPATH": "tests:scripts",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "started_utc": "2026-10-22T18:52:20.360513+00:00",
+    "finished_utc": "2026-10-22T18:52:30.831980+00:00",
+    "wall_seconds": 10.471468274001381,
+    "exit_code": 0
+  },
+  "pre_change_reproduction": {
+    "competing_inode": 530178,
+    "verified_stage": true,
+    "published_inode": 529921,
+    "competing_directory_links_after": 0,
+    "created": true,
+    "verified": true,
+    "part_count": 13,
+    "fixture": true,
+    "source_commit": "7b966a639bcaf23bd3a0d037f46f29e2edfcc273"
+  },
+  "evidence": [
+    {
+      "phase": "before",
+      "path": "tests/results/bundle-publication-before.log",
+      "sha256": "8c5ada64dfbac9d4a3f4c3ec0fabb320944904dc94b180784998eb6f7142e70d",
+      "bytes": 4437,
+      "tests": 12,
+      "unittest_seconds": 0.82,
+      "exit_code": 1,
+      "failures": 3,
+      "errors": 0,
+      "skips": 0
+    },
+    {
+      "phase": "after",
+      "path": "tests/results/bundle-publication-after.log",
+      "sha256": "642342c09937753d18e21e87cfa3fe827ca19e9a0e811283f6c3b10ac5f59235",
+      "bytes": 2411,
+      "tests": 12,
+      "unittest_seconds": 0.97,
+      "exit_code": 0,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    {
+      "phase": "affected",
+      "path": "tests/results/bundle-publication-affected.log",
+      "sha256": "ecb63feb5b0f3b850d1b3221ed0154377fa65c20e29573f6cbdaf40f08e7bcb8",
+      "bytes": 14517,
+      "tests": 76,
+      "unittest_seconds": 10.246,
+      "exit_code": 0,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    }
+  ],
+  "modified_inputs": [
+    {
+      "path": "scripts/production_bundle.py",
+      "bytes": 10449,
+      "sha256": "f708431b689298e38bfee8a06922f7e8967e34d5c85317e60b04ea6826c7a50c"
+    },
+    {
+      "path": "tests/test_production_bundle.py",
+      "bytes": 13713,
+      "sha256": "21fa28a5baafef8b102c34d8db126430d19a221a150dd075df71b3b0e2539a79"
+    },
+    {
+      "path": "references/production-operations.md",
+      "bytes": 25772,
+      "sha256": "a763c41d83d141d40540a6fcf3a79ad2970f56120df6914a4e587613b436be12"
+    }
+  ],
+  "unchanged_inputs": [
+    {
+      "path": "scripts/production_sources.py",
+      "bytes": 21707,
+      "sha256": "71670d5823eee6e26392183f8a743eec8eb693414ebf247057a7098a388ce35b"
+    },
+    {
+      "path": "scripts/production_workflow.py",
+      "bytes": 78939,
+      "sha256": "4dc71e4819adf0e8a1ea2839687664f8fcef36dd0cff1311f38d293a455b1c40"
+    },
+    {
+      "path": "scripts/production_render.py",
+      "bytes": 67584,
+      "sha256": "981b6fbafdcd0fcf009dca02b0f695bfb3742b58bd9e9a11068f0e0dd085c9be"
+    },
+    {
+      "path": "scripts/production_performance.py",
+      "bytes": 17089,
+      "sha256": "6d282e15b541d7f13dab076529a6c395e004b10bd596a065b5cdf17a4f03a26c"
+    },
+    {
+      "path": "scripts/production_contracts.py",
+      "bytes": 59286,
+      "sha256": "7b0c7f873a5b8cd129cf6d550cb5d1ba7ac7a367c399b1a300ccebacb98e2a46"
+    },
+    {
+      "path": "scripts/portable_runs.py",
+      "bytes": 8783,
+      "sha256": "d5d2016e49bcafd754a3199939890c668e9b865fae5d14f2d9a45c2f6cace55c"
+    },
+    {
+      "path": "scripts/rig_package.py",
+      "bytes": 6234,
+      "sha256": "0da62bd2381ba16995cc0eb508ab3e2b606d3222605ab4126398a2c8d48c8b35"
+    },
+    {
+      "path": "profiles/codex-v1.json",
+      "bytes": 13287,
+      "sha256": "f4e0279f8634ea53ef544ecb49b9a71ec2565c61ec5b8e63163ecc5ead478a6b"
+    },
+    {
+      "path": "profiles/profile.schema.json",
+      "bytes": 12272,
+      "sha256": "afba01bc16c4f6c297d1b95b62803c7a5b989e0fa9b967c33e5d50471091163c"
+    },
+    {
+      "path": "assets/playback.js",
+      "bytes": 10618,
+      "sha256": "9aa7d5228de0a57cd443b70c14b160cb22238d21a861a0fb06f6b4bcc6ccbc79"
+    }
+  ],
+  "before_runtime_sha256": "059acec5e25523b06ce5d5bcc6fdb65fd2607d4f4f335941c74711e175a33dc1",
+  "ordinary_2d_tests_discovered_without_3d_dependencies": 793,
+  "limitations": [
+    "The three pre-change failures are intentional regressions; the original runtime was used with the new tests.",
+    "The affected 76-test suite passed without skips; it is not the full repository test suite.",
+    "Linux execution only in this local record; supported-platform CI remains a separate merge gate.",
+    "No provider, TTS, production-art review, full-film render, or new external-integration approval was performed.",
+    "The two restore paths in issue 195 are unchanged by this fix."
+  ]
+}

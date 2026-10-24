@@ -303,6 +303,35 @@ class ProductionSourcesTests(unittest.TestCase):
         self.assertFalse(destination.exists())
         self.assertFalse(list(self.home.glob('.hatch-source-parts-*')))
 
+    def test_source_writers_preserve_a_destination_link_racing_normalization(self):
+        original_check = Path.is_symlink
+        for operation in ('create', 'restore'):
+            with self.subTest(operation=operation):
+                destination = self.home / (operation + '-racing-link')
+                missing_target = self.home / (operation + '-unrequested-parent') / 'target'
+                created = []
+                def other_writer(path):
+                    result = original_check(path)
+                    if path == destination and not created:
+                        self.assertFalse(result)
+                        destination.symlink_to(missing_target, target_is_directory=True)
+                        created.append((destination.lstat().st_ino, destination.readlink()))
+                    return result
+                with patch.object(Path, 'is_symlink', other_writer):
+                    with self.assertRaisesRegex(ValueError, 'must not exist'):
+                        if operation == 'create':
+                            sources.create_source_bundle(self.original, self.paths, destination,
+                                fixture=True, origin='Synthetic destination normalization race.')
+                        else:
+                            sources.restore_source_bundle(self.index, destination)
+                self.assertEqual(len(created), 1)
+                self.assertTrue(destination.is_symlink())
+                self.assertEqual(destination.lstat().st_ino, created[0][0])
+                self.assertEqual(destination.readlink(), created[0][1])
+                self.assertFalse(missing_target.parent.exists())
+                self.assertFalse(list(self.home.glob('.hatch-source-parts-*')))
+                self.assertFalse(list(self.home.glob('.hatch-source-restore-*')))
+
     def test_windows_reserved_names_controls_and_case_aliases_fail_on_every_host(self):
         original = self.read()
         for relative in ('CON', 'dir/NUL.txt', 'aux.png', 'com1.wav', 'LPT².txt',
