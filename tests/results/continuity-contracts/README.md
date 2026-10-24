@@ -46,3 +46,12 @@ The current standalone schema parity check passes. This targeted rerun is not
 a claim that all 76 legacy-inclusive cases reran after the helper change. The
 shared-helper's own retained tests and independent Astra report are separate
 evidence. Any further source head needs fresh independent review/current-headCI.
+
+A final narrow programmatic-input defect was confirmed at 7f5d19e: recursive
+copying preceded the existing depth bound. Source e6a8205 checks the canonical
+JSON/depth bound first. The new 1,500-level input regression verifies a typed
+RIG_JSON_DEPTH error and unchanged caller data. `depth-guard-focused.log` and
+`depth-guard-verification.json` bind 29 passing focused tests in 4.422s and schema
+parity to that exact source, with no failures/errors/skips. The older 28-case and
+76-case outputs retain their original source bindings; none is relabelled as a
+later broad execution.
