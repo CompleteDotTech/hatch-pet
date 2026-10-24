@@ -348,6 +348,19 @@ class SceneContractTests(unittest.TestCase):
             with self.assertRaisesRegex(RigError, 'manifest exceeds'):
                 canonical_bytes(doc)
 
+    def test_metadata_and_parameter_names_do_not_impersonate_transform_schemas(self):
+        doc = fixture('project')
+        doc['metadata'] = dict(minimum=0, maximum=1)
+        self.assertEqual(decode_json(canonical_bytes(doc)), doc)
+        prefab = fixture('example-prefab')
+        prefab['parameters'] = dict(translation=0, rotation=1, scale=2)
+        self.assertEqual(decode_json(canonical_bytes(prefab)), prefab)
+
+    def test_portable_path_entry_rejects_surrogates_even_outside_a_document(self):
+        for path in ('\udcff.json', 'x/\ud800.json'):
+            with self.subTest(path=repr(path)), self.assertRaisesRegex(RigError, 'Unicode scalar'):
+                portable_path(path)
+
     def test_canonical_serialization_is_stable_without_mutation(self):
         doc = fixture('example-scene')
         original = deepcopy(doc)
@@ -788,6 +801,26 @@ class SceneClosureTests(unittest.TestCase):
             with patch.object(Path, 'resolve', resolved):
                 with self.assertRaisesRegex(RigError, 'outside'):
                     load_project(self.root)
+
+    def test_annotation_metadata_does_not_create_undeclared_file_dependencies(self):
+        project = fixture('project')
+        project['metadata'] = dict(path='annotation-only.txt', sha256='a descriptive label',
+                                   kind='scene3d-project', id='metadata-id', version='99.0.0')
+        self.write('project.json', project)
+        bundle = load_project(self.root)
+        self.assertEqual(len(bundle['inventory']), 8)
+        self.assertNotIn('annotation-only.txt', bundle['inventory'])
+
+    def test_root_manifest_filename_requires_portable_unicode_scalar_spelling(self):
+        name = '\udcff.json'
+        try:
+            (self.root / name).write_bytes((self.root / 'project.json').read_bytes())
+        except UnicodeError:
+            # Some native filesystems reject the name themselves. Admission
+            # still must reject it before consulting the native filesystem.
+            pass
+        with self.assertRaisesRegex(RigError, 'Unicode scalar'):
+            load_project(self.root, name)
 
     def test_optional_3d_imports_remain_unnecessary_for_loading(self):
         code = '''import sys,importlib.abc

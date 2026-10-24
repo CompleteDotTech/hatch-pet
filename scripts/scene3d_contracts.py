@@ -241,6 +241,7 @@ def validator(kind):
 def portable_path(value):
     """Canonical portable spelling; no aliases, traversal, drive or device paths."""
     require(isinstance(value, str) and 0 < len(value) <= 1024, 'Invalid path.')
+    _unicode_scalars(value)
     require(unicodedata.normalize('NFC', value) == value, 'Paths must use NFC Unicode.')
     require(not re.search(r'[\\:\x00-\x1f<>"|?*]', value), 'Path contains a nonportable character.')
     parts = value.split('/')
@@ -251,15 +252,50 @@ def portable_path(value):
     return value
 
 
-def all_refs(value):
+def _typed_values(value, schema):
+    """Walk declared schema positions, never infer resources from metadata keys."""
+    if value is None:
+        return
+    if '$ref' in schema:
+        name = schema['$ref'].rsplit('/', 1)[-1]
+        yield name, value
+        schema = definitions()[name]
+    for branch in schema.get('allOf', []) + schema.get('anyOf', []):
+        yield from _typed_values(value, branch)
     if isinstance(value, dict):
-        if 'path' in value and 'sha256' in value:
-            yield value
-        for child in value.values():
-            yield from all_refs(child)
-    elif isinstance(value, list):
+        properties = schema.get('properties', {})
+        additional = schema.get('additionalProperties')
+        for key, child in value.items():
+            child_schema = properties.get(key, additional)
+            if isinstance(child_schema, dict):
+                yield from _typed_values(child, child_schema)
+    elif isinstance(value, list) and isinstance(schema.get('items'), dict):
         for child in value:
-            yield from all_refs(child)
+            yield from _typed_values(child, schema['items'])
+
+
+def all_refs(value, kind=None):
+    """Yield only declared file/manifest refs from a document or explicit ref."""
+    if kind is None:
+        if isinstance(value, list):
+            for child in value:
+                yield from all_refs(child)
+            return
+        if not isinstance(value, dict):
+            return
+        if value.get('schema_version') == 1 and value.get('kind') in MANIFEST_KINDS:
+            kind = value['kind'][8:]
+        elif set(value) == {'path', 'sha256'}:
+            kind = 'file'
+        elif set(value) == {'id', 'version', 'path', 'sha256', 'kind'}:
+            kind = 'reference'
+        elif 'type' in value and 'transform' in value and 'parent' in value:
+            kind = 'node'
+        else:
+            return
+    for name, child in _typed_values(value, ref(kind)):
+        if name in ('file', 'reference'):
+            yield child
 
 
 def _unique(items, label, key=lambda x: x):
@@ -283,20 +319,15 @@ def _unicode_scalars(value):
             _unicode_scalars(child)
 
 
-def _transforms(value):
-    if isinstance(value, dict):
-        if set(('translation', 'rotation', 'scale')).issubset(value):
-            q = value['rotation']
+def _transforms(value, kind):
+    for name, transform in _typed_values(value, ref(kind)):
+        if name == 'transform':
+            q = transform['rotation']
             require(abs(sum(x*x for x in q) - 1) <= 1e-6, 'Quaternion must already be normalized.')
-            require(min(value['scale']) / max(value['scale']) >= 1e-8,
+            require(min(transform['scale']) / max(transform['scale']) >= 1e-8,
                     'Transform scale is numerically unstable.')
-        if set(value) == {'minimum', 'maximum'}:
-            require(all(a <= b for a, b in zip(value['minimum'], value['maximum'])), 'Inverted bounds.')
-        for child in value.values():
-            _transforms(child)
-    elif isinstance(value, list):
-        for child in value:
-            _transforms(child)
+        elif name == 'bounds':
+            require(all(a <= b for a, b in zip(transform['minimum'], transform['maximum'])), 'Inverted bounds.')
 
 
 def _node_semantics(node):
@@ -445,14 +476,14 @@ def validate_document(value, kind=None):
     error = next(validator(kind).iter_errors(value), None)
     require(error is None, '' if error is None else '.'.join(map(str, error.absolute_path)) + ': ' + error.message)
     _unicode_scalars(value)
-    for item in all_refs(value):
+    for item in all_refs(value, kind):
         portable_path(item['path'])
     if kind == 'render':
         portable_path(value['output_directory'])
         require(type(value['start_frame']) is int and type(value['end_frame']) is int,
                 'Exact render boundaries require JSON integers.')
         require(value['start_frame'] < value['end_frame'], 'Render interval must be nonempty.')
-    _transforms(value)
+    _transforms(value, kind)
     if 'provenance' in value:
         require(value['provenance']['fixture'] or value['provenance']['origin'] != 'procedural-fixture',
                 'Procedural fixtures cannot lose fixture provenance.')

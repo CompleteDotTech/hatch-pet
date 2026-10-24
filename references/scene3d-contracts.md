@@ -60,6 +60,10 @@ returning `{project, documents, inventory, bytes, status}`. `documents` maps
 project-relative paths to validated manifests. `inventory` maps actual paths to
 `{sha256, bytes}`; status is `hash-and-contract-verified`. Manifest identities must
 match their references; every typed reference must be in the dependency lock.
+Reference and transform traversal follows authoritative schema positions, so
+annotation keys resembling paths/bounds/transforms never become resources or
+geometry. The public project-relative manifest filename uses the same scalar/
+portable spelling checks as document references.
 Conflicting hashes, duplicate version identities, portable aliases, dangling
 shot/camera/node references, dependency cycles and missing/corrupt files fail.
 Asset byte estimates are checked against actual content; vertex/triangle counts
@@ -204,7 +208,7 @@ contract/file-loading tests also run in the existing 2D gate with NumPy blocked.
 The example refuses an existing destination. Its direct file creation is for a
 new, caller-owned fixture directory only; it is not a package publisher.
 
-The implementation's focused execution passed **67 tests**, including real
+The implementation's focused execution passed **71 tests**, including real
 fresh-process reopening and actual geometry-byte/hash tampering. Source delivery
 inventory and generated schema/template checks passed. Exact source revision,
 full legacy regression results, CI and independent Astra review are recorded in
