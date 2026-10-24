@@ -229,7 +229,10 @@ class CapabilityTests(unittest.TestCase):
         record_fixture_review(self.root, self.data)
         archive = self.home / 'archive.zip'
         archive_run(self.root, self.data, archive)
-        destination = self.home / 'restored'
+        # Match the CLI's parent-only normalization (macOS /var aliases /private/var).
+        destination = self.home.resolve() / 'restored'
+        parent_alias = self.home / 'destination-parent-alias'
+        self.directory_symlink(parent_alias, self.home.resolve())
         target_parent = self.home / 'unrequested-parent'
         target = target_parent / 'target'
         probe = self.home / 'symlink-capability'
@@ -248,7 +251,7 @@ class CapabilityTests(unittest.TestCase):
             return result
 
         stdout, stderr = io.StringIO(), io.StringIO()
-        argv = ['hatch.py', 'restore', '--source', str(archive), '--run-dir', str(destination)]
+        argv = ['hatch.py', 'restore', '--source', str(archive), '--run-dir', str(parent_alias / destination.name)]
         with patch.object(sys, 'argv', argv), patch.object(Path, 'is_symlink', race), \
                 patch.object(hatch, 'recover_prepare', side_effect=AssertionError('restore must not recover prepare')), \
                 contextlib.redirect_stdout(stdout), contextlib.redirect_stderr(stderr):
