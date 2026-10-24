@@ -6,12 +6,14 @@ from copy import deepcopy
 from fractions import Fraction
 import hashlib
 import json
+import os
 from pathlib import Path
 import shutil
 import subprocess
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 
 from jsonschema import Draft202012Validator
 
@@ -727,6 +729,38 @@ class SceneClosureTests(unittest.TestCase):
         # linked legacy 2D projects remain the separately validated bridge.
         with self.assertRaises(RigError):
             canonical_bytes(project)
+
+    def test_windows_junction_escape_and_component_containment_policy(self):
+        junction = self.root / 'junction'
+        outside = Path(self.temp.name) / 'outside-directory'
+        outside.mkdir()
+        shutil.copyfile(self.root / 'triangle.obj', outside / 'triangle.obj')
+        if os.name == 'nt':
+            created = subprocess.run(['cmd', '/c', 'mklink', '/J', str(junction), str(outside)],
+                                     capture_output=True, text=True)
+            self.assertEqual(created.returncode, 0, created.stdout + created.stderr)
+        else:
+            # Linux has no native Windows junction: exercise both explicit
+            # junction policy and resolved-containment fallback as unit checks.
+            junction.mkdir()
+            shutil.copyfile(outside / 'triangle.obj', junction / 'triangle.obj')
+        asset = fixture('triangle')
+        for file in (asset['content'], asset['source']):
+            file['path'] = 'junction/triangle.obj'
+        self.write('triangle.json', asset)
+        if os.name == 'nt':
+            with self.assertRaisesRegex(RigError, 'junction|outside'):
+                load_project(self.root)
+        else:
+            with patch.object(Path, 'is_junction', lambda p: p.name == 'junction', create=True):
+                with self.assertRaisesRegex(RigError, 'junction'):
+                    load_project(self.root)
+            resolve = Path.resolve
+            def resolved(path, *args, **kwargs):
+                return outside if path.name == 'junction' else resolve(path, *args, **kwargs)
+            with patch.object(Path, 'resolve', resolved):
+                with self.assertRaisesRegex(RigError, 'outside'):
+                    load_project(self.root)
 
     def test_optional_3d_imports_remain_unnecessary_for_loading(self):
         code = '''import sys,importlib.abc

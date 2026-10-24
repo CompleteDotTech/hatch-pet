@@ -84,7 +84,9 @@ paths, traversal, backslashes, drive/URI prefixes, device names, control charact
 or leading-space/trailing-dot/space aliases. Device rejection includes
 COM/LPT superscript digits and CONIN$/CONOUT$, following [Microsoft naming
 rules](https://learn.microsoft.com/windows/desktop/FileIO/naming-a-file) and
-[the DOS device API](https://learn.microsoft.com/en-us/windows/win32/devnotes/rtlisdosdevicename_u). Filesystem symlinks and nonregular inputs fail.
+[the DOS device API](https://learn.microsoft.com/en-us/windows/win32/devnotes/rtlisdosdevicename_u). Filesystem symlinks, Windows directory junctions, resolved component escapes
+and nonregular inputs fail. Windows CI exercises an actual junction; other
+platforms exercise the explicit junction/containment guard as a unit policy check.
 
 The loader is a **read-only admission operation on stable input files**, not a
 transaction or sandbox against a malicious concurrent filesystem writer. It
@@ -199,7 +201,7 @@ contract/file-loading tests also run in the existing 2D gate with NumPy blocked.
 The example refuses an existing destination. Its direct file creation is for a
 new, caller-owned fixture directory only; it is not a package publisher.
 
-The implementation's focused execution passed **63 tests**, including real
+The implementation's focused execution passed **64 tests**, including real
 fresh-process reopening and actual geometry-byte/hash tampering. Source delivery
 inventory and generated schema/template checks passed. Exact source revision,
 full legacy regression results, CI and independent Astra review are recorded in
