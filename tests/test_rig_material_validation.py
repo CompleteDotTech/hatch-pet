@@ -27,12 +27,14 @@ class RigMaterialValidationTests(unittest.TestCase):
         Image.new('RGBA', (2, 2), (40, 80, 120, 255)).save(stream, format='PNG')
         self.image = stream.getvalue()
 
-    def source(self, *, extension='glb', mutate=None, uv_sets=(0, 1)):
+    def source(self, *, extension='glb', mutate=None, uv_sets=(0, 1), color_values=None, color_kind='VEC4'):
         builder = GltfBuilder()
         position = builder.accessor([[0, 0, 0], [1, 0, 0], [0, 1, 0]], 'VEC3', bounds=True)
         attrs = {'POSITION': position,
                  'NORMAL': builder.accessor([[0, 0, 1]] * 3, 'VEC3'),
                  'TANGENT': builder.accessor([[1, 0, 0, 1]] * 3, 'VEC4')}
+        if color_values is not None:
+            attrs['COLOR_0'] = builder.accessor(color_values, color_kind)
         for uv in uv_sets:
             attrs['TEXCOORD_' + str(uv)] = builder.accessor([[0, 0], [1, 0], [0, 1]], 'VEC2')
         builder.json.update(
@@ -187,6 +189,33 @@ class RigMaterialValidationTests(unittest.TestCase):
         self.assertNotIn('Traceback', result.stderr)
         self.assertFalse(destination.exists())
         self.assertEqual(sha256(path), before)
+
+    def test_vertex_color_rgb_and_alpha_ranges_are_validated(self):
+        for extension in ('glb', 'gltf'):
+            path, _ = self.source(extension=extension)
+            geometry = load_character_model(path).geometry
+            geometry.meshes[0].attributes['COLOR_0'] = np.array([[0, 1, 0, 1], [1, 0, 1, 0], [0.5, 0.5, 0.5, 0.5]])
+            exported = self.root / ('colored.' + extension)
+            export_geometry(geometry, exported)
+            imported = load_character_model(exported)
+            np.testing.assert_allclose(imported.geometry.meshes[0].attributes['COLOR_0'], geometry.meshes[0].attributes['COLOR_0'])
+            for channel in range(4):
+                for bad in (-0.1, 1.1):
+                    candidate = deepcopy(geometry)
+                    candidate.meshes[0].attributes['COLOR_0'][0, channel] = bad
+                    with self.subTest(extension=extension, channel=channel, bad=bad):
+                        with self.assertRaises(RigError) as caught:
+                            validate_geometry(candidate)
+                        self.assertEqual(caught.exception.report['code'], 'RIG_COLOR_RANGE')
+                        malformed, _ = self.source(extension=extension, color_values=candidate.meshes[0].attributes['COLOR_0'])
+                        before = sha256(malformed)
+                        with self.assertRaises(RigError) as imported_error:
+                            load_character_model(malformed)
+                        self.assertEqual(imported_error.exception.report['code'], 'RIG_COLOR_RANGE')
+                        self.assertEqual(sha256(malformed), before)
+            rgb, _ = self.source(extension=extension, color_values=[[0, 1, 0], [1, 0, 1], [0.5, 0.5, 0.5]], color_kind='VEC3')
+            rgb_imported = load_character_model(rgb)
+            np.testing.assert_allclose(rgb_imported.geometry.meshes[0].attributes['COLOR_0'][:, 3], [1, 1, 1])
 
     def test_native_save_and_export_share_guard_without_mutation(self):
         path, _ = self.source()

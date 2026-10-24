@@ -3,11 +3,11 @@
   "repository": "CompleteTech-Skills/hatch-pet",
   "base": "a08569cbdb593651807c887f4c9edd5e7b243973",
   "source_inputs": {
-    "scripts/rig_models.py": "8b8ee7f9f54822d9dcf51c142b6e7404a77c67b5fb26ce92b4a2c752ac76eb11",
+    "scripts/rig_models.py": "1c0fe8ee7b990088097504cfffde63dd30b2ac3156c4aa98c1d9a4ba91ac3af5",
     "scripts/test_rig_gate.py": "46e4cffa9d0372ccb9326c221b019d542439b53add2fbe33ac485ef585b9d8ba",
-    "tests/test_rig_material_validation.py": "a985b9aeb902aa82fbd0ae3979a0eab038160f6932f4b0b94959d239885ab345"
+    "tests/test_rig_material_validation.py": "8b27f47d87e80892f2cf844f5947d68b3add70c377b7468cfdb17aaab5474a05"
   },
-  "source_snapshot_timing": "Captured during the frozen regression run; same hashes verified after completion. No script/test source edits occurred between launch and completion.",
+  "source_snapshot_timing": "Exact selected source hashes captured before the final frozen regression run and verified unchanged after completion.",
   "protected_inputs": {
     "profiles/codex-v1.json": "f4e0279f8634ea53ef544ecb49b9a71ec2565c61ec5b8e63163ecc5ead478a6b",
     "profiles/profile.schema.json": "afba01bc16c4f6c297d1b95b62803c7a5b989e0fa9b967c33e5d50471091163c",
@@ -30,11 +30,11 @@
       "command": "HATCH_RIG_INTEROP_TEST=1 HATCH_RIG_BLENDER_TEST=1 HATCH_RIG_BROWSER_TEST=1 PYTHONPATH=scripts:tests /home/complete/.cache/hatch-fleet/rig-py312/bin/python -B -m unittest test_rig_material_validation test_rig_interop test_rig_contracts test_rig_skinning test_rig_compatibility -v",
       "environment_paths": "Pinned HATCH_BLENDER, HATCH_GLTF_VALIDATOR_ROOT and PLAYWRIGHT_BROWSERS_PATH from /home/complete/.cache/hatch-fleet/environment.sh",
       "exit_code": 0,
-      "tests": 40,
+      "tests": 41,
       "failures": 0,
       "errors": 0,
       "skips": 0,
-      "seconds": 25.271
+      "seconds": 25.04
     },
     {
       "command": "Python real fixture export followed by rig_interop.validate_gltf on GLB and glTF",
@@ -46,8 +46,8 @@
     {
       "command": "In-memory original validate_geometry from git a08569c against actual GLB/glTF invalid binding inputs, followed by corrected validator",
       "exit_code": 0,
-      "baseline_admissions_reproduced": 6,
-      "corrected_rejections": 6,
+      "baseline_admissions_reproduced": 8,
+      "corrected_rejections": 8,
       "source_bytes_unchanged": true
     },
     {
@@ -57,16 +57,16 @@
   ],
   "evidence": {
     "tests/results/native-material-safety-regression.log": {
-      "sha256": "f7d939be68329530254828971afcc8579d234bd8dde82e22536ffc3163116e0a",
-      "bytes": 6554
+      "sha256": "ce198214a8fb1b6aa566e706b6cf4bb557c0b52642fd78036df4a4b4a540fa0c",
+      "bytes": 6725
     },
     "tests/results/native-material-safety-khronos.json": {
       "sha256": "1910363ea0252398a2cf05a3ef7ccb17eed595a88790e4a8610df3c83279ea78",
       "bytes": 3075
     },
     "tests/results/native-material-safety-baseline-control.json": {
-      "sha256": "219a910238a80a28611e87c3d57d7c9408aff6d320892921c737c51e489498e0",
-      "bytes": 1540
+      "sha256": "d4ebe35b7fe9f05cf2b1952c47eca75e0231a9209d673a4eae9557e08733000c",
+      "bytes": 2051
     }
   },
   "limitations": [

@@ -7,6 +7,7 @@ test_native_save_and_export_share_guard_without_mutation (test_rig_material_vali
 test_primitive_material_index_is_typed_before_lookup (test_rig_material_validation.RigMaterialValidationTests.test_primitive_material_index_is_typed_before_lookup) ... ok
 test_real_cli_rejects_bad_binding_before_run_publication (test_rig_material_validation.RigMaterialValidationTests.test_real_cli_rejects_bad_binding_before_run_publication) ... ok
 test_texture_transform_override_and_supported_extension_slots_preserve (test_rig_material_validation.RigMaterialValidationTests.test_texture_transform_override_and_supported_extension_slots_preserve) ... ok
+test_vertex_color_rgb_and_alpha_ranges_are_validated (test_rig_material_validation.RigMaterialValidationTests.test_vertex_color_rgb_and_alpha_ranges_are_validated) ... ok
 test_blender_cpu_preview_renders_distinct_transparent_poses (test_rig_interop.RigExternalIntegrationTests.test_blender_cpu_preview_renders_distinct_transparent_poses) ... ok
 test_blender_creation_receipt_does_not_claim_reopen (test_rig_interop.RigExternalIntegrationTests.test_blender_creation_receipt_does_not_claim_reopen) ... ok
 test_blender_reopen_has_actual_armature_and_deformation (test_rig_interop.RigExternalIntegrationTests.test_blender_reopen_has_actual_armature_and_deformation) ... ok
@@ -40,7 +41,7 @@ test_existing_contract_bytes_are_unchanged (test_rig_compatibility.RigCompatibil
 test_public_delivery_discovers_all_2d_tests_without_3d_dependencies (test_rig_compatibility.RigCompatibilityTests.test_public_delivery_discovers_all_2d_tests_without_3d_dependencies) ... ok
 
 ----------------------------------------------------------------------
-Ran 40 tests in 25.271s
+Ran 41 tests in 25.040s
 
 OK
 Discovered 802 2D tests without optional 3D dependencies

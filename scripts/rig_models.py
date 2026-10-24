@@ -237,7 +237,7 @@ def validate_geometry(geometry: Geometry, limits: dict | None = None) -> None:
                 'RIG_VERTICES', 'Mesh positions must be nonempty finite Nx3 arrays.', asset=mesh.id)
         require(f.ndim == 2 and f.shape[1] == 3 and len(f) > 0 and f.dtype.kind in 'iu'
                 and f.min() >= 0 and f.max() < len(v), 'RIG_TRIANGLES', 'Triangle indices are invalid.', asset=mesh.id)
-        material = _material_index(mesh.material, len(geometry.materials), mesh.id + ':material', code='RIG_MATERIAL')
+        material = _material_index(mesh.material, len(geometry.materials), mesh.id, code='RIG_MATERIAL')
         for coord in bindings[material]:
             require(coord in (0, 1) and 'TEXCOORD_' + str(coord) in mesh.attributes, 'RIG_TEXTURE_UV',
                     'Assigned material requires a missing texture coordinate set.', asset=mesh.id)
@@ -250,6 +250,9 @@ def validate_geometry(geometry: Geometry, limits: dict | None = None) -> None:
                     'RIG_ATTRIBUTE', 'Unsupported native attribute: ' + name)
             require(values.shape == (len(v), width) and np.isfinite(values).all(),
                     'RIG_ATTRIBUTE', 'Invalid vertex attribute array.', asset=mesh.id + ':' + name)
+            if name == 'COLOR_0':
+                require(np.all((values >= 0) & (values <= 1)), 'RIG_COLOR_RANGE',
+                        'Vertex color components must be in [0, 1].', asset=mesh.id)
             allocation += values.nbytes
         for name, targets in mesh.morphs.items():
             require('POSITION' in targets, 'RIG_MORPH', 'Each native morph needs position deltas.', asset=name)
