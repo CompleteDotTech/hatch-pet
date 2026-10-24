@@ -379,6 +379,37 @@ class BlenderPhysicsLifecycleTests(unittest.TestCase):
         error_code(self,'PHYSICS_CACHE_CORRUPT',lambda:self.backend.verify(cache))
         self.assertEqual(outside.read_bytes(),b'untouched')
 
+    def test_native_integral_float_source_preserves_original_bytes(self):
+        from scene3d_contracts import all_refs
+        world,payloads=build_inputs(backend=self.backend.backend_id)
+        def floats(value):
+            if type(value) is int:return float(value)
+            if type(value) is list:return [floats(item) for item in value]
+            if type(value) is dict:return {key:floats(item) for key,item in value.items()}
+            return value
+        documents={name:floats(json.loads(data)) for name,data in payloads.items() if name.endswith('.json')}
+        digests={}
+        def rehash(name):
+            if name in digests:return digests[name]
+            if name in documents:
+                for pointer in all_refs(documents[name]):pointer['sha256']=rehash(pointer['path'])
+                payloads[name]=(json.dumps(documents[name],sort_keys=True,separators=(',',':'))+'\n').encode()
+            digests[name]=hashlib.sha256(payloads[name]).hexdigest()
+            return digests[name]
+        rehash('project.json')
+        world['scene']['sha256']=digests[world['scene']['path']]
+        before=deepcopy(payloads)
+        self.assertIn(b'"schema_version":1.0',payloads['project.json'])
+        prepared=self.backend.prepare(world,payloads)
+        try:
+            for name,data in before.items():self.assertEqual((prepared.root/'inputs'/name).read_bytes(),data)
+            result=self.backend.simulate(prepared)
+            states=physics.parse((prepared.root/'states.json').read_bytes())
+            self.assertEqual(len(states['samples']),49)
+            self.assertAlmostEqual(states['samples'][-1]['bodies'][0]['translation'][1],.5,delta=.03)
+            self.assertEqual(payloads,before)
+        finally:self.backend.cleanup(prepared)
+
     def test_native_cache_artifact_format_is_checked_after_rehash(self):
         cache=self.copy_cache()
         if self.backend.backend_id=='blender':
