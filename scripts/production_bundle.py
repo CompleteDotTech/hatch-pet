@@ -9,7 +9,6 @@ import argparse
 from contextlib import contextmanager
 import hashlib
 import json
-import os
 from pathlib import Path, PurePosixPath
 import re
 import shutil
@@ -128,11 +127,10 @@ def verify_bundle(bundle_index):
 
 
 def create_bundle(archive_path, destination, *, part_size=MAX_PART_BYTES):
+    from production_sources import _new_destination, _publish_stage
     if type(part_size) is not int or not 1 <= part_size <= MAX_PART_BYTES:
         raise ValueError('part_size must be a positive integer no larger than 24 MiB')
-    archive_path, destination = Path(archive_path).resolve(), Path(destination).resolve()
-    if destination.exists():
-        raise ValueError('bundle destination must not exist; preserve existing publication parts')
+    archive_path, destination = Path(archive_path).resolve(), _new_destination(destination)
     if not archive_path.is_file() or not 0 < archive_path.stat().st_size <= MAX_BUNDLE_BYTES:
         raise ValueError('source archive is missing or exceeds the 1 GiB transport bound')
     expected_size = archive_path.stat().st_size
@@ -157,7 +155,7 @@ def create_bundle(archive_path, destination, *, part_size=MAX_PART_BYTES):
                  'archive': {'format': 'zip', 'sha256': source_sha256, 'bytes': expected_size}, 'parts': parts}
         (stage / BUNDLE_INDEX).write_text(json.dumps(index, sort_keys=True, indent=2) + '\n', encoding='utf-8')
         result = verify_bundle(stage)
-        os.replace(stage, destination)
+        _publish_stage(stage, destination)
     finally:
         if stage.exists():
             shutil.rmtree(stage)

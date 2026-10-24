@@ -263,6 +263,8 @@ A delivery can expose editable documents and direct movies/storyboards while sto
 
 The index binds project identity, fixture label, ordered sizes/hashes and the full ZIP hash. Verification reassembles a bounded temporary ZIP, checks every byte count/hash, then uses the existing project verifier. Restore uses the same staged implementation. There is no extraction shortcut.
 
+Creation verifies the staged transport before publishing it exclusively to a new destination. Existing destinations, including dangling symlinks and directories created during staging, are preserved. Destination normalization and the publication lock resolve parent-directory aliases while retaining the destination leaf, so a racing leaf symlink cannot redirect output or create a lock at its target. Failed publication removes only its owned staging directory; a platform without atomic exclusive publication support returns an error.
+
 Missing, reordered, tampered, symlinked or aliased parts fail before promotion. Full-output pilot checks should restore the verified bundle when using bundled delivery; an explicit already-complete project override can remain direct. Missing/tampered output must fail, not silently use synthetic data or skip checks.
 
 ## Small source and artifact transfer
