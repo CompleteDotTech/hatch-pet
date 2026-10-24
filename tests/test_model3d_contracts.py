@@ -940,6 +940,20 @@ class Model3DContracts(unittest.TestCase):
             broken['geometry']['path'] = path
             self.assertTrue(validator.is_valid(broken), path)
 
+    def test_public_cli_rejects_oversized_json_integer_without_mutating_inputs(self):
+        path = self.root / 'oversized-integer.json'
+        raw = b'{"schema_version":1,"kind":"model3d-asset","untrusted":' + b'9' * 5000 + b'}'
+        path.write_bytes(raw)
+        before = {p.name: p.read_bytes() for p in self.root.iterdir()}
+        result = subprocess.run([sys.executable, '-X', 'int_max_str_digits=4300', '-B',
+            str(ROOT / 'scripts/model3d.py'), 'validate', '--file', str(path)], capture_output=True, text=True)
+        self.assertEqual(result.returncode, 2, result.stderr)
+        error = json.loads(result.stderr)
+        self.assertFalse(error['ok'])
+        self.assertEqual(error['error']['code'], 'RIG_JSON')
+        self.assertNotIn('Traceback', result.stderr)
+        self.assertEqual(before, {p.name: p.read_bytes() for p in self.root.iterdir()})
+
     def test_schema_discovery_does_not_import_numpy(self):
         command = [sys.executable, '-B', '-c',
                    'import sys;sys.path.insert(0,' + repr(str(ROOT / 'scripts')) + ');'

@@ -68,3 +68,40 @@ cover subsequent fixture, security/portability or contract-completeness correcti
 capability discovery and actual GLB inspection are retained in
 `tests/results/model3d-contracts-20261023/`. Remote CI and independent review remain
 separate gates; these local results do not claim that either has completed.
+
+
+## Review corrections and current integration evidence
+
+The review corrections add the seven separately versioned §5.7 evidence contracts,
+mandatory source/request/part/material/asset metadata, actual per-mesh/LOD
+measurements, regional ownership and scoped uncertainty validation. They correct
+embedded-image errors, supplementary calibrated observations, eight-influence
+preservation, imported mesh IDs, aliased temporary paths, Windows creation-time
+fingerprints, nested/cached memory admission, every-LOD fixture propagation,
+immutable repair/provider/archive references and true-end token/path schemas.
+Evidence envelopes preserve native owners; schema validity never authenticates
+execution, reviews, licenses or approval.
+
+At exact implementation `2d77a38b76f82e307bea9577ad23860ff5930db7`, the full
+local suite passed **922 tests**, zero failures/errors and **10 explicit optional
+or environmental skips**, in **697.825 seconds**. Source hashes before/after are
+identical. Browser, native Krita and opt-in Blender/Khronos checks remain separate;
+the retained log lists actual skip reasons. All **48 focused tests** passed and
+the 20-test schema/math gate discovered all **802 current 2D tests** without optional
+3D imports (main added twelve cases since the historical 790-test discovery).
+
+The independently reviewed shared JSON decoder fix
+`ffe872dc0330133c1f6e52e34913f30cd041a4a8` was then normally merged, and a real
+public Model3D CLI 5,000-digit-integer regression was added. Actual affected checks
+passed **49 Model3D tests** (7.457 seconds) and **26 schema/math tests** (6.904
+seconds), zero failures/errors/skips, plus generated schema/template parity, actual
+robotic GLB inspection and original source-delivery verification. The prior 922-test
+receipt is explicitly retained against `2d77a38`; it is not presented as a rerun
+after helper integration. Current-head native CI and fresh independent review
+remain mandatory before merging.
+
+Current and historical evidence are separate in
+`tests/results/model3d-review-corrections-20261023/`. The helper-integrated summary
+binds actual tested source hashes and commands. No publication, CI, independent
+approval, native application exercise or production signoff is inferred from these
+local results.
