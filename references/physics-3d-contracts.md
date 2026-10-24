@@ -220,3 +220,23 @@ physical inertia inequalities, event order, aggregate admission and other
 cross-field semantics are executable runtime checks, documented above; a generic
 JSON Schema validator alone is insufficient for execution admission. Tests exercise
 both shared structural parity and the additional semantic boundary.
+
+
+## Retained execution evidence
+
+The [machine-readable validation record](../tests/results/physics-contracts-20261024/validation.json)
+binds exact source commit/tree, an unchanged before/after checkout fingerprint,
+actual interpreter/dependency versions, commands, timings and raw log SHA-256.
+The corrected source has **22 passing contract tests and four passing legacy
+compatibility checks** on Python 3.12.15; all 817 2D cases are discoverable with
+optional 3D/solver imports blocked. Legacy/generated physics schema parity,
+rig-template parity and actual original production-source delivery verification
+also pass.
+
+The separate broad baseline ran 811 tests on frozen original candidate
+`68b9b87b8ad3a0635027be8ce5db3dfbd6e20a9b` using Python 3.14.7, Pillow 13.0.0 and
+actual Chromium 152.0.7977.82: 810 passed, zero failures/errors, one unavailable
+native-Krita skip, 839.990 seconds. That baseline predates the independent-review
+corrections and **is not a full-suite result for the corrected source**. Final
+exact-head cross-platform CI remains a separate merge gate. No solver, cache
+replay, production visual approval or human signoff is established by these logs.
