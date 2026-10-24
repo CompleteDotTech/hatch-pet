@@ -48,7 +48,6 @@
         },
         "kind": {
           "enum": [
-            "scene3d-project",
             "scene3d-scene",
             "scene3d-shot",
             "scene3d-asset",
@@ -2228,7 +2227,20 @@
         "asset_catalog": {
           "anyOf": [
             {
-              "$ref": "#/$defs/reference"
+              "allOf": [
+                {
+                  "$ref": "#/$defs/reference"
+                },
+                {
+                  "properties": {
+                    "kind": {
+                      "enum": [
+                        "catalog"
+                      ]
+                    }
+                  }
+                }
+              ]
             },
             {
               "type": "null"

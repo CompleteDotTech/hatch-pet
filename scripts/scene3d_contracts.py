@@ -88,7 +88,7 @@ def definitions():
     ids = arr(ID, maximum=MAX_NODES, unique=True)
     file = obj(dict(path=PATH, sha256=SHA))
     reference = obj(dict(id={'type': 'string', 'pattern': r'^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}' + END}, version=VERSION, path=file['properties']['path'], sha256=SHA,
-                         kind=enum(*MANIFEST_KINDS, 'hatch-3d-rig', 'hatch-3d-animation', 'project',
+                         kind=enum(*(k for k in MANIFEST_KINDS if k != 'scene3d-project'), 'hatch-3d-rig', 'hatch-3d-animation', 'project',
                                    'mesh', 'material', 'texture', 'catalog', 'evidence', 'collision')))
     def typed_ref(*kinds):
         return {'allOf': [ref('reference'), {'properties': {'kind': {'enum': list(kinds)}}}]}
@@ -195,7 +195,7 @@ def definitions():
         settings=ref('render_settings'), output_directory=file['properties']['path'],
         dependencies=arr(ref('reference')), provenance=ref('provenance')))
     project = base('project', dict(name=TEXT, status=enum('fixture', 'development', 'production'),
-        coordinate_system={'const': COORDINATES}, asset_catalog=nullable(ref('reference')),
+        coordinate_system={'const': COORDINATES}, asset_catalog=nullable(typed_ref('catalog')),
         assets=arr(typed_ref('scene3d-asset')), characters=arr(typed_ref('scene3d-asset')),
         scenes=arr(typed_ref('scene3d-scene'), 1, 256), shots=arr(typed_ref('scene3d-shot'), maximum=4096),
         prefabs=arr(typed_ref('scene3d-prefab')), animations=arr(typed_ref('scene3d-animation')),
@@ -590,6 +590,7 @@ def load_project(root, name='project.json'):
         document = validate_document(decode_json(payload))
         if expected and expected.get('kind') in MANIFEST_KINDS:
             _reference_identity(document, expected)
+        require(depth == 0 or document['kind'] != 'scene3d-project', 'Nested Scene3D project manifests are unsupported.')
         documents[path] = document
         identity = (document['kind'], document['id'], document['version'])
         require(identity not in identities or identities[identity] == path, 'Duplicate versioned manifest identity.')
@@ -610,6 +611,8 @@ def load_project(root, name='project.json'):
     references = [r for d in documents.values() for r in all_refs(d) if 'kind' in r]
     require(all((r['kind'], r['id'], r['version'], r['path'], r['sha256']) in locked for r in references),
             'Dependency lock does not cover every typed reference.')
+    binding_context = dict(seen=set(), checks=0)
+    registered_scenes = {(r['id'], r['version'], r['path'], r['sha256']) for r in project['scenes']}
     registered_assets = {(r['id'], r['version'], r['path'], r['sha256']) for r in project['assets']}
     for reference in project['characters']:
         require((reference['id'], reference['version'], reference['path'], reference['sha256']) in registered_assets,
@@ -621,7 +624,7 @@ def load_project(root, name='project.json'):
             for node in d['nodes']:
                 for binding in node['animation_bindings']:
                     require(binding['end_frame'] <= budgets['max_frames'], 'Node binding exceeds project frame budget.')
-                    _binding_context(binding, d, documents)
+                    _binding_context(binding, d, documents, binding_context)
                 if 'prefab_overrides' in node:
                     _prefab_overrides(node['prefab_overrides'], documents[node['prefab']['path']])
                 if 'asset' in node:
@@ -631,7 +634,15 @@ def load_project(root, name='project.json'):
                             'Skinned character must reference a character asset.')
         elif d['kind'] in ('scene3d-shot', 'scene3d-animation'):
             require(d['duration_frames'] <= budgets['max_frames'], 'Timeline exceeds project frame budget.')
+        if d['kind'] == 'scene3d-scene' and d['world']['environment'] is not None:
+            environment = d['world']['environment']
+            if environment['kind'] == 'scene3d-asset':
+                require(documents[environment['path']]['asset_type'] == 'environment',
+                        'World environment must reference an environment asset.')
         if d['kind'] == 'scene3d-shot':
+            scene_ref = d['scene']
+            require((scene_ref['id'], scene_ref['version'], scene_ref['path'], scene_ref['sha256']) in registered_scenes,
+                    'Shot scene is not registered in project scenes.')
             scene = documents[d['scene']['path']]
             nodes = {n['id']: n for n in scene['nodes']}
             require(d['id'] in scene['shots'], 'Shot is not associated with its scene.')
@@ -642,10 +653,9 @@ def load_project(root, name='project.json'):
             targets += [c['constraint']['target'] for c in d['temporal_constraints']]
             require(all(t in nodes for t in targets), 'Shot references a missing node.')
             for track in d['tracks']:
-                if track['property'] == 'light_intensity':
-                    require(nodes[track['target']]['type'] == 'light', 'Light track must target a light node.')
+                _track_context(track, nodes, allow_world=True)
             for binding in d['bindings']:
-                _binding_context(binding, scene, documents)
+                _binding_context(binding, scene, documents, binding_context)
             for node in scene['nodes']:
                 for binding in node['animation_bindings']:
                     require(binding['end_frame'] <= d['duration_frames'], 'Node binding exceeds consuming shot duration.')
@@ -668,19 +678,42 @@ def load_project(root, name='project.json'):
                 bytes=total, status='hash-and-contract-verified')
 
 
-def _binding_context(binding, scene, documents):
+def _track_context(track, nodes, *, allow_world=False):
+    if track['property'] == 'world_exposure':
+        require(allow_world, 'World tracks must be authored directly on a shot, not a node binding.')
+        return
+    require(track['target'] in nodes, 'Animation clip references a missing node in the consuming graph.')
+    if track['property'] == 'light_intensity':
+        require(nodes[track['target']]['type'] == 'light', 'Light track must target a light node.')
+
+
+def _binding_context(binding, scene, documents, context, depth=0):
+    require(depth < MAX_DEPTH, 'Animation binding depth exceeds 128 levels.')
     nodes = {n['id']: n for n in scene['nodes']}
     require(binding['target'] in nodes, 'Binding target is absent from the consuming graph.')
     if binding['clip']['kind'] != 'scene3d-animation':
         return  # Native rig animation requires its owner's validator/evaluator.
+    key = (scene['kind'], scene['id'], scene['version'], binding['clip']['path'], binding['target'])
+    if key in context['seen']:
+        return
+    context['seen'].add(key)
     clip = documents[binding['clip']['path']]
-    for track in clip['tracks']:
-        require(track['property'] != 'world_exposure', 'World tracks must be authored directly on a shot, not a node binding.')
-        require(track['target'] in nodes, 'Animation clip references a missing node in the consuming graph.')
-        cursor = track['target']
+    def in_subtree(target):
+        cursor = target
         while cursor is not None and cursor != binding['target']:
             cursor = nodes[cursor]['parent']
         require(cursor == binding['target'], 'Animation clip target lies outside its binding subtree.')
+    for track in clip['tracks']:
+        context['checks'] += 1
+        require(context['checks'] <= 250000, 'Animation binding context operation budget exceeded.')
+        _track_context(track, nodes)
+        in_subtree(track['target'])
+    for nested in clip['bindings']:
+        context['checks'] += 1
+        require(context['checks'] <= 250000, 'Animation binding context operation budget exceeded.')
+        require(nested['target'] in nodes, 'Nested binding target is absent from the consuming graph.')
+        in_subtree(nested['target'])
+        _binding_context(nested, scene, documents, context, depth + 1)
 
 
 def _prefab_overrides(overrides, prefab):

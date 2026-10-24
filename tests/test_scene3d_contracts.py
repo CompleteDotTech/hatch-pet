@@ -654,6 +654,80 @@ class SceneClosureTests(unittest.TestCase):
                         with self.assertRaisesRegex(RigError, '128'):
                             load_project(self.root)
 
+    def test_catalog_and_world_environment_reference_roles_are_enforced(self):
+        project = fixture('project')
+        project['asset_catalog'] = deepcopy(project['assets'][0])
+        with self.assertRaises(RigError):
+            validate_document(project)
+        scene = fixture('example-scene')
+        scene['world']['environment'] = fixture('project')['assets'][0]
+        self.write('example-scene.json', scene)
+        with self.assertRaisesRegex(RigError, 'environment asset'):
+            load_project(self.root)
+
+    def test_shots_cannot_reference_unregistered_project_scenes(self):
+        alternate = fixture('example-scene')
+        alternate['id'] = 'alternate-scene'
+        (self.root / 'alternate-scene.json').write_bytes(canonical_bytes(alternate))
+        payload = (self.root / 'alternate-scene.json').read_bytes()
+        pointer = dict(id='alternate-scene', version='1.0.0', kind='scene3d-scene',
+                       path='alternate-scene.json', sha256=hashlib.sha256(payload).hexdigest())
+        shot = fixture('example-shot')
+        shot['scene'] = pointer
+        scene = fixture('example-scene')
+        scene['shots'] = []
+        (self.root / 'example-shot.json').write_bytes(canonical_bytes(shot))
+        (self.root / 'example-scene.json').write_bytes(canonical_bytes(scene))
+        project = fixture('project')
+        project['dependency_lock'].append(pointer)
+        self.write('project.json', project)
+        with self.assertRaisesRegex(RigError, 'not registered'):
+            load_project(self.root)
+
+    def test_nested_consumed_clip_bindings_validate_targets_and_track_roles(self):
+        # A real manifest chain: shot -> parent clip -> child clip. Every
+        # changed manifest is hash-rebound before exercising admission.
+        child = fixture('example-animation')
+        child['id'] = 'child-animation'
+        (self.root / 'child-animation.json').write_bytes(canonical_bytes(child))
+        pointer = dict(id=child['id'], version='1.0.0', kind='scene3d-animation', path='child-animation.json',
+                       sha256=hashlib.sha256((self.root / 'child-animation.json').read_bytes()).hexdigest())
+        parent = fixture('example-animation')
+        parent['bindings'] = [dict(target='mesh', clip=pointer, start_frame=0, end_frame=24, speed=1, loop=False)]
+        shot = fixture('example-shot')
+        shot['bindings'] = [dict(target='root', clip=fixture('project')['animations'][0],
+                                 start_frame=0, end_frame=24, speed=1, loop=False)]
+        project = fixture('project')
+        project['dependency_lock'].append(pointer)
+        (self.root / 'example-animation.json').write_bytes(canonical_bytes(parent))
+        (self.root / 'example-shot.json').write_bytes(canonical_bytes(shot))
+        self.write('project.json', project)
+        self.assertEqual(load_project(self.root)['status'], 'hash-and-contract-verified')
+        parent['bindings'][0]['target'] = 'missing-node'
+        self.write('example-animation.json', parent)
+        with self.assertRaisesRegex(RigError, 'Nested binding target'):
+            load_project(self.root)
+        parent['bindings'][0]['target'] = 'mesh'
+        self.write('example-animation.json', parent)
+        child['tracks'] = [dict(target='mesh', property='light_intensity', interpolation='linear',
+                                keys=[dict(frame=0, value=1)])]
+        self.write('child-animation.json', child)
+        with self.assertRaisesRegex(RigError, 'light node'):
+            load_project(self.root)
+
+    def test_nested_scene3d_project_manifests_are_explicitly_unsupported(self):
+        nested = fixture('project')
+        nested['id'] = 'nested-project'
+        payload = canonical_bytes(nested)
+        (self.root / 'nested-project.json').write_bytes(payload)
+        project = fixture('project')
+        project['dependency_lock'].append(dict(id='nested-project', kind='scene3d-project',
+            version='1.0.0', path='nested-project.json', sha256=hashlib.sha256(payload).hexdigest()))
+        # A second Scene3D project is not a library asset or scoped dependency;
+        # linked legacy 2D projects remain the separately validated bridge.
+        with self.assertRaises(RigError):
+            canonical_bytes(project)
+
     def test_optional_3d_imports_remain_unnecessary_for_loading(self):
         code = '''import sys,importlib.abc
 sys.path.insert(0, 'scripts')

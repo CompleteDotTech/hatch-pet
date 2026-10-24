@@ -68,6 +68,10 @@ An immutable manifest reference has this shared shape:
 {"id":"example-scene","version":"1.0.0","path":"example-scene.json","sha256":"<64 lowercase hex characters>","kind":"scene3d-scene"}
 ```
 
+Nested Scene3D projects are explicitly unsupported as dependencies; one root
+project owns the scene/shot/character inventories and budgets. The optional linked
+legacy 2D project is a separate, explicit bridge.
+
 A raw file reference is `{path, sha256}`. Manifest references load and validate
 Scene3D documents; external owner references (`hatch-3d-rig`,
 mesh/material/texture/catalog/evidence/collision resources) verify bytes without
@@ -86,7 +90,9 @@ afterward. A worker must revalidate the actual bytes it consumes at its own job
 admission boundary and operate on a protected input snapshot. This foundation
 adds no extraction, publication, shared-file mutation or arbitrary execution.
 Budgets cap files (4096), bytes (1 GiB), nodes per graph (10000), nesting (128),
-manifest bytes (16 MiB), frames and track keys. Project budgets may only tighten
+manifest bytes (16 MiB), frames, track keys and consumed animation-context
+checks (250000). Recursive clip bindings are memoized per consuming graph and
+subtree; repeated DAG references cannot multiply traversal without bound. Project budgets may only tighten
 these caps. Over-budget input fails; no truncation or fake success is returned.
 
 Prefab instance nodes may retain `prefab_overrides` with separate `parameters`,
@@ -152,7 +158,9 @@ tracks use the explicit `world` target namespace, which does not require a scene
 node. Other shot tracks target declared scene nodes; light intensity requires a
 light node. Material track values are exact `id@version` keys in hash-bound material
 dependencies. A Scene3D clip bound to a node uses absolute stable target IDs inside
-that node's subtree; no implicit target remapping occurs. Native rig clips retain
+that node's subtree; no implicit target remapping occurs. Nested bindings recursively retain this
+same consuming context and track-role validation; a missing nested target or
+light track bound to a mesh is rejected. Native rig clips retain
 their owner's separate validation/evaluation boundary. Node bindings target their
 own node and use the consuming shot's frame clock; intervals must fit that shot.
 Unbound clips remain reusable declarations until a consuming scope is supplied.
@@ -188,7 +196,7 @@ contract/file-loading tests also run in the existing 2D gate with NumPy blocked.
 The example refuses an existing destination. Its direct file creation is for a
 new, caller-owned fixture directory only; it is not a package publisher.
 
-The implementation's focused execution passed **59 tests**, including real
+The implementation's focused execution passed **63 tests**, including real
 fresh-process reopening and actual geometry-byte/hash tampering. Source delivery
 inventory and generated schema/template checks passed. Exact source revision,
 full legacy regression results, CI and independent Astra review are recorded in
