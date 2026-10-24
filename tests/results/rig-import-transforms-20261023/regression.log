@@ -45,7 +45,7 @@ test_existing_contract_bytes_are_unchanged (test_rig_compatibility.RigCompatibil
 test_public_delivery_discovers_all_2d_tests_without_3d_dependencies (test_rig_compatibility.RigCompatibilityTests.test_public_delivery_discovers_all_2d_tests_without_3d_dependencies) ... ok
 
 ----------------------------------------------------------------------
-Ran 45 tests in 6.118s
+Ran 45 tests in 6.872s
 
 OK (skipped=5)
 Discovered 795 2D tests without optional 3D dependencies

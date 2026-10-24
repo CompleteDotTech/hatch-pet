@@ -1,6 +1,6 @@
 {
-  "source_sha256": "7e42c3aea972f31a9f9b8e03530c6da422f7dddeaea91bdc5bab48c1a77d3373",
-  "saved_manifest_sha256": "f1e7eaaaea93bd27272bc669cc6cf8e31a49165b1549400b9b677c45ae5c8e0b",
+  "source_sha256": "5413defeefc646457398433bd6de6146754244a16fd9a18eef0d929c7ff25877",
+  "saved_manifest_sha256": "57b1bd1f05110f94864380cbd7f2902ade5be969071ab7cc226e0a554bec66ea",
   "geometry_sha256": "91be12d377af8a455b57c327761975b48d6c8907bdc541b2243cc5288deedb11",
   "tangent": [
     -0.894427190999916,
@@ -19,5 +19,5 @@
   ],
   "source_bytes_preserved": true,
   "fixture": true,
-  "path": "/tmp/hatch-52-cli-7rzchgsq/run"
+  "path": "/tmp/hatch-52-cli-zkh73_89/run"
 }

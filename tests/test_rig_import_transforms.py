@@ -18,6 +18,7 @@ class RigImportTransformTests(unittest.TestCase):
 
     def source(self, extension, *, reflected=False, handedness=1., morph=False, normals=True, zero_tangent=False, multiple=False):
         builder = GltfBuilder()
+        builder.json['asset']['extras'] = {'hatchSource': {'fixture': True}}
         positions = [[0, 0, 0], [1, 1, 0], [0, 0, 1]]
         normal = np.array([1, -1, 0.])/np.sqrt(2)
         tangent = np.array([0, 0, 0.]) if zero_tangent else np.array([1, 1, 0.])/np.sqrt(2)

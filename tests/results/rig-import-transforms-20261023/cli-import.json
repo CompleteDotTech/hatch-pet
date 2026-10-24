@@ -1,10 +1,10 @@
 {
   "id": "tangent-fixture",
   "version": "1.0.0",
-  "rig_sha256": "2f3f4deb0c770c29d0bf1fead2595e0c20a8de1312563c03557633f76ed3e294",
+  "rig_sha256": "211ac74a760adb6f2044e6d3082da022dfcbb87e589973a8ea7210db5e64e109",
   "status": "imported",
   "review": "pending",
-  "fixture": false,
+  "fixture": true,
   "meshes": 1,
   "vertices": 3,
   "bones": 0,
