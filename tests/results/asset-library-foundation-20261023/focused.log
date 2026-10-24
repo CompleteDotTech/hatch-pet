@@ -21,6 +21,6 @@ test_symlink_source_database_and_replaced_root_fail_closed (test_asset_library.A
 test_wrong_hash_missing_content_and_header_lie_leave_no_version (test_asset_library.AssetLibraryTests.test_wrong_hash_missing_content_and_header_lie_leave_no_version) ... ok
 
 ----------------------------------------------------------------------
-Ran 21 tests in 1.259s
+Ran 21 tests in 1.191s
 
 OK

@@ -64,10 +64,10 @@
     "profiles/asset-library-ref.schema.json": "18175b2ad888e77d4adc3f560af7a87926e45924ae97c1d30b2fb1a30097de23",
     "profiles/asset-library-version.schema.json": "9936fcc187f6b1de2a657f679a95e8bde30a3374fdcc24b594bb520eb4f0245a",
     "scripts/asset_library.py": "d16735b3d573015862c8f168b9551526ed53c71fcbd4ea87117a87a8bbad4185",
-    "scripts/asset_library_contracts.py": "d38908d0f94464c547aceee96e7a4f852e479c8edd6ece0ebdbac95df354a41b",
+    "scripts/asset_library_contracts.py": "d83e375a1a9ff837971ad3bdc33de483166a5693501c110645b545d63e30e0da",
     "scripts/demonstrate_asset_library.py": "a325558e3b1512b86ceda79c62f6390216401d8708b892392676ba1d9bcfffd4",
     "scripts/generate_asset_library_schemas.py": "24461b4798f5e477015a29aff5257ee6af84210fd23268e1ae546eedc57d61c3",
-    "tests/test_asset_library.py": "ae0f5d4bca8e71171027b38bde20b377c6989decc7b8db1eca555d49486523be"
+    "tests/test_asset_library.py": "fc08957c64e206ec80e738c690eba265f5a9264f93a7d15257175fbfc809dbbf"
   },
   "limitations": [
     "Linux local execution; Windows/macOS pending actual CI",

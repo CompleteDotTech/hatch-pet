@@ -283,8 +283,8 @@ class AssetLibraryTests(unittest.TestCase):
             AssetDependency=dict(target=reference, purpose='geometry', required=True,
                                  origin='authored', relationship='direct', capabilities=[]),
             AssetPreview=dict(type='thumbnail', source_version_sha256=reference['sha256'],
-                              backend='test-fixture', backend_version='1.0.0', settings_sha256='0'*64,
-                              camera_sha256='0'*64, lighting_sha256='0'*64, file=self.files[0],
+                              backend='test-fixture', backend_version='1.0.0', settings_sha256=self.files[1]['sha256'],
+                              camera_sha256=self.files[1]['sha256'], lighting_sha256=self.files[1]['sha256'], file=self.files[0],
                               settings_file=self.files[1], camera_file=self.files[1], lighting_file=self.files[1],
                               width=1, height=1, status='generated'))
         for kind, value in samples.items():
@@ -377,6 +377,8 @@ class AssetLibraryTests(unittest.TestCase):
         changed['previews'][0]['settings_sha256'] = '0'*64
         with self.assertRaises(RigError):
             seal(changed)
+        with self.assertRaises(RigError):
+            validate(changed['previews'][0], 'AssetPreview')
         bad = deepcopy(self.manifest['identity'])
         for date in ('yesterday', '2026-99-99T00:00:00Z', '2026-02-30T00:00:00Z'):
             bad['created_at'] = date

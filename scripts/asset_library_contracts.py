@@ -206,6 +206,12 @@ def portable_path(value):
     return value
 
 
+def _validate_preview(preview):
+    for name in ('settings', 'camera', 'lighting'):
+        if preview[name + '_file']['sha256'] != preview[name + '_sha256']:
+            raise RigError('LIBRARY_PREVIEW', 'Preview configuration hash differs from retained bytes.', asset=name)
+
+
 def validate(value, kind='AssetVersion'):
     finite_json(value)
     if len(canonical_bytes(value)) > MAX_MANIFEST_BYTES:
@@ -224,6 +230,8 @@ def validate(value, kind='AssetVersion'):
         elif isinstance(node, list):
             for child in node: paths(child)
     paths(value)
+    if kind == 'AssetPreview':
+        _validate_preview(value)
     if kind == 'AssetVersion':
         try:
             created = datetime.fromisoformat(value['identity']['created_at'].replace('Z', '+00:00'))
@@ -263,11 +271,10 @@ def validate(value, kind='AssetVersion'):
         for edit in p.get('edit_history', []):
             evidence.extend(edit['evidence'])
         for preview in value['previews']:
+            _validate_preview(preview)
             evidence.append(preview['file'])
             for name in ('settings', 'camera', 'lighting'):
                 record = preview[name + '_file']
-                if record['sha256'] != preview[name + '_sha256']:
-                    raise RigError('LIBRARY_PREVIEW', 'Preview configuration hash differs from retained bytes.', asset=name)
                 evidence.append(record)
         for record in evidence:
             if files.get(record['path']) != record:
