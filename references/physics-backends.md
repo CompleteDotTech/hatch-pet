@@ -114,10 +114,11 @@ The supported profile is intentionally narrower than the world schema.
   Blender's single coefficient is not misrepresented as separate static/dynamic
   friction support. Actual native mass, shape, damping, restitution and margin
   observations are checked against admitted values.
-- Analytic sphere margins are inherent in their radius. Nonzero additional
-  sphere contact skin is explicitly unsupported; the requested extra margin
-  must be0. PyBullet's actual dynamics observation reports its inherent radius
-  separately rather than claiming `changeDynamics` applied an ignored value.
+- Nonzero additional contact skin is unsupported for both shapes; requested
+  extra margin must be0. Analytic sphere margins are inherent in their radius,
+  which PyBullet reports separately. An actual box control stored0.05m in the
+  native property yet retained the original resting height on both backends.
+  Property readback is therefore not misrepresented as extra physical separation.
 - Explicit body mass is authoritative; material density does not override it.
   Seed is retained in the immutable identity, but this adapter has no stochastic
   solver control. Quality labels do not secretly retune explicit solver settings.

@@ -98,6 +98,16 @@ class PhysicsBackendAdmissionTests(unittest.TestCase):
             value=deepcopy(self.world);value[key]=[item]
             error_code(self,'PHYSICS_CAPABILITY_UNAVAILABLE',lambda:self.backend.validate_scene(value))
 
+    def test_box_property_storage_is_not_extra_contact_skin_support(self):
+        value=deepcopy(self.world)
+        material=deepcopy(value['materials'][0]);material.update(id='box-only',collision_margin=.05)
+        value['materials'].append(material)
+        value['bodies'][1]['colliders'][0]['material']='box-only'
+        # Sphere still requests zero: this must reject the box request itself,
+        # not accidentally rely on the analytic sphere's earlier limitation.
+        self.assertEqual(value['materials'][0]['collision_margin'],0)
+        error_code(self,'PHYSICS_MARGIN_UNSUPPORTED',lambda:self.backend.validate_scene(value))
+
     def test_unsafe_source_paths_aliases_and_mutable_payloads_fail_before_discovery(self):
         cases=[('../escape',b'x'),('a/../escape',b'x'),('CON.txt',b'x'),('COM¹.txt',b'x'),('e\u0301.obj',b'x'),('input.py\n',b'x')]
         for name,data in cases:

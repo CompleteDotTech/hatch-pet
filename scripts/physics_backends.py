@@ -563,7 +563,8 @@ def _admit_world(value, backend):
                 'This physics-only native adapter does not import PBR rendering resources.', category='capability-gap')
         require(material['static_friction'] == material['dynamic_friction'] and material['dynamic_friction'] <= 1,
                 'PHYSICS_MATERIAL_UNSUPPORTED', 'Blender/PyBullet expose one friction coefficient; unequal static/dynamic requests are unsupported.', category='capability-gap')
-        require(material['collision_margin'] <= .1, 'PHYSICS_SETTINGS', 'Collision margin exceeds the documented native bound.', category='invalid-input')
+        require(material['collision_margin'] == 0, 'PHYSICS_MARGIN_UNSUPPORTED',
+                'Nonzero additional contact skin has not been verified; native margin property storage is not physical separation support.',category='capability-gap')
     for body in world['bodies']:
         require(len(body['id'].encode()) <= 63 and body['category'] == 'rigid-body' and body['mode'] in ('dynamic', 'static') and body['parent'] is None and body['animation'] is None,
                 'PHYSICS_BODY_UNSUPPORTED', 'Only unparented static/dynamic bodies with native names <=63 bytes are implemented.', category='capability-gap')
@@ -575,10 +576,6 @@ def _admit_world(value, backend):
         collider = body['colliders'][0]
         require(collider['shape']['type'] in ('box', 'sphere') and not collider['sensor'] and collider['group'] == 1 and collider['mask'] == 2**32-1,
                 'PHYSICS_SHAPE_UNSUPPORTED', 'Only nonsensor box/sphere colliders with the unfiltered default group/mask are supported.', category='capability-gap')
-        if collider['shape']['type']=='sphere':
-            material=next(value for value in world['materials'] if value['id']==collider['material'])
-            require(material['collision_margin']==0,'PHYSICS_MARGIN_UNSUPPORTED',
-                    'Analytic spheres have an inherent radius margin; nonzero additional contact skin cannot be applied.',category='capability-gap')
         require(collider['transform'] == dict(translation=[0, 0, 0], rotation=[0, 0, 0, 1]),
                 'PHYSICS_SHAPE_UNSUPPORTED', 'Offset/rotated local colliders require a later adapter.', category='capability-gap')
         dimensions = collider['shape'].get('size', [collider['shape'].get('radius', 0)])
@@ -1005,6 +1002,7 @@ class BlenderBackend:
     def probe(self, *, smoke=False):
         require(type(smoke) is bool, 'PHYSICS_REQUEST', 'smoke must be an explicit boolean.', category='invalid-input')
         limitations = ('Only sphere/box OBJ rigid bodies are admitted; all other declared features fail closed.',
+                      'Nonzero additional contact skin is unsupported; native shape margin property is not evidence of extra separation.',
                       'CPU Bullet only; GPU rendering hardware does not establish physics acceleration.',
                       'Blender does not expose its embedded Bullet version separately.',
                       'Numerical recomputation is not promised deterministic; verified cache replay is supported.',
