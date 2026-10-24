@@ -29,10 +29,16 @@ COORDINATES = dict(handedness='right', right='+X', up='+Y', forward='+Z', unit='
                    angles='radian', quaternion='XYZW', matrices='column-vectors', time='second')
 KINDS = ('project', 'scene', 'shot', 'node', 'asset', 'prefab', 'animation', 'render')
 MANIFEST_KINDS = tuple('scene3d-' + x for x in KINDS if x != 'node')
-ID = {'type': 'string', 'pattern': r'^[a-z][a-z0-9_-]{0,63}$'}
-VERSION = {'type': 'string', 'pattern': r'^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$'}
+END = r'(?![\s\S])'
+ID = {'type': 'string', 'pattern': r'^[a-z][a-z0-9_-]{0,63}' + END}
+VERSION = {'type': 'string', 'pattern': r'^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)' + END}
 TEXT = {'type': 'string', 'minLength': 1, 'maxLength': 4096}
-SHA = {'type': 'string', 'pattern': '^[0-9a-f]{64}$'}
+SHA = {'type': 'string', 'pattern': r'^[0-9a-f]{64}' + END}
+_RESERVED = r'(?:[cC][oO][nN]|[pP][rR][nN]|[aA][uU][xX]|[nN][uU][lL]|[cC][oO][mM][1-9]|[lL][pP][tT][1-9])'
+_COMPONENT = (r'(?!' + _RESERVED + r'(?:[.]|/|' + END + r'))' +
+              r'[^/\\:\x00-\x1f<>"|?*]*[^/\\:\x00-\x1f<>"|?* .]')
+PATH = dict(type='string', minLength=1, maxLength=1024,
+            pattern=r'^(?:' + _COMPONENT + r'/)*' + _COMPONENT + END)
 BOOL = {'type': 'boolean'}
 NUM = {'type': 'number', 'minimum': -1e9, 'maximum': 1e9}
 POS = {'type': 'number', 'exclusiveMinimum': 1e-8, 'maximum': 1e6}
@@ -80,12 +86,14 @@ def definitions():
     vec = arr(NUM, 3, 3)
     quat = arr({'type': 'number', 'minimum': -1, 'maximum': 1}, 4, 4)
     ids = arr(ID, maximum=MAX_NODES, unique=True)
-    file = obj(dict(path={'type': 'string', 'minLength': 1, 'maxLength': 1024}, sha256=SHA))
-    reference = obj(dict(id=ID, version=VERSION, path=file['properties']['path'], sha256=SHA,
-                         kind=enum(*MANIFEST_KINDS, 'hatch-3d-rig', 'project',
+    file = obj(dict(path=PATH, sha256=SHA))
+    reference = obj(dict(id={'type': 'string', 'pattern': r'^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}' + END}, version=VERSION, path=file['properties']['path'], sha256=SHA,
+                         kind=enum(*MANIFEST_KINDS, 'hatch-3d-rig', 'hatch-3d-animation', 'project',
                                    'mesh', 'material', 'texture', 'catalog', 'evidence', 'collision')))
-    def typed_ref(kind):
-        return {'allOf': [ref('reference'), {'properties': {'kind': {'const': kind}}}]}
+    def typed_ref(*kinds):
+        return {'allOf': [ref('reference'), {'properties': {'kind': {'enum': list(kinds)}}}]}
+    material_ref = typed_ref('material')
+    clip_ref = typed_ref('scene3d-animation', 'hatch-3d-animation')
     meta = mapping({'type': ['string', 'number', 'boolean', 'null']}, 64)
     transform = obj(dict(translation=vec, rotation=quat, scale=arr(POS, 3, 3), pivot=vec),
                     ['translation', 'rotation', 'scale'])
@@ -106,19 +114,23 @@ def definitions():
     track = obj(dict(target=ID, property=enum('translation', 'rotation', 'scale', 'visible',
                   'material', 'light_intensity', 'world_exposure'),
                   interpolation=enum('step', 'linear', 'slerp'), keys=arr(key, 1, 10000)))
-    binding = obj(dict(target=ID, clip=ref('reference'), start_frame=integer(0, 1_000_000),
+    binding = obj(dict(target=ID, clip=clip_ref, start_frame=integer(0, 1_000_000),
                        end_frame=integer(1, 1_000_000), speed=POS, loop=BOOL))
     constraint = obj(dict(id=ID, type=enum('look-at', 'copy-transform', 'socket'), target=ID,
                           influence={'type': 'number', 'minimum': 0, 'maximum': 1}))
     attachment = obj(dict(owner=ID, socket=ID, offset=ref('transform')))
-    override = obj(dict(slot=ID, material=ref('reference')))
+    override = obj(dict(slot=ID, material=material_ref))
+    node_override = obj(dict(node=ID, transform=ref('transform'), visible=BOOL), ['node'])
+    instance_overrides = obj(dict(parameters=mapping({'type': ['number', 'string', 'boolean']}),
+                                 materials=mapping(material_ref),
+                                 nodes=arr(node_override, maximum=256)))
     node = obj(dict(id=ID, name=TEXT,
         type=enum('root', 'group', 'mesh_instance', 'skinned_character', 'static_prop',
                   'animated_prop', 'terrain', 'procedural_geometry', 'camera', 'light',
                   'environment_volume', 'socket', 'constraint_target', 'locator',
                   'prefab_instance', 'billboard_2d'), parent=nullable(ID), transform=ref('transform'),
         visible=BOOL, collections=ids, layers=ids, asset=typed_ref('scene3d-asset'),
-        prefab=typed_ref('scene3d-prefab'), material_overrides=arr(override, maximum=128),
+        prefab=typed_ref('scene3d-prefab'), prefab_overrides=instance_overrides, material_overrides=arr(override, maximum=128),
         animation_bindings=arr(ref('binding'), maximum=256), constraints=arr(constraint, maximum=256),
         attachment=attachment, bounds=nullable(ref('bounds')), locked=BOOL, selectable=BOOL,
         render=obj(dict(visible=BOOL, cast_shadow=BOOL, receive_shadow=BOOL)),
@@ -140,7 +152,7 @@ def definitions():
     budget = obj(dict(max_nodes=integer(1, MAX_NODES), max_files=integer(1, MAX_FILES),
                        max_bytes=integer(1, MAX_TOTAL_BYTES), max_frames=integer(1, 1_000_000)))
     world = obj(dict(coordinate_system={'const': COORDINATES},
-                     background=vec, exposure=NUM, environment=nullable(ref('reference')),
+                     background=vec, exposure=NUM, environment=nullable(typed_ref('texture', 'scene3d-asset')),
                      metadata=meta))
     collection = obj(dict(id=ID, name=TEXT, visible=BOOL))
     scene = base('scene', dict(name=TEXT, description=TEXT, revision=integer(),
@@ -152,18 +164,17 @@ def definitions():
     prefab = base('prefab', dict(name=TEXT, roots=ids, nodes=arr(ref('node'), 1, MAX_NODES),
         parameters=mapping({'type': ['number', 'string', 'boolean']}),
         material_slots=ids, sockets=ids,
-        overrides=arr(obj(dict(node=ID, transform=ref('transform'), visible=BOOL),
-                          ['node']), maximum=256), dependencies=arr(ref('reference')),
+        overrides=arr(node_override, maximum=256), dependencies=arr(ref('reference')),
         provenance=ref('provenance')))
     asset = base('asset', dict(name=TEXT,
         asset_type=enum('mesh', 'character', 'prop', 'terrain', 'material', 'texture', 'environment'),
         content=ref('file'), source=ref('file'), provenance=ref('provenance'),
         coordinate_system={'const': COORDINATES}, original_coordinate_system=TEXT,
-        pivot=vec, meshes=arr(ref('file')), materials=arr(ref('reference')),
+        pivot=vec, meshes=arr(ref('file')), materials=arr(material_ref),
         bounds=nullable(ref('bounds')), collision=nullable(ref('file')),
         sockets=arr(obj(dict(id=ID, transform=ref('transform'))), maximum=256),
-        components=mapping(ids), skeleton=nullable(ref('reference')),
-        animations=arr(ref('reference')), lods=arr(ref('reference'), maximum=16),
+        components=mapping(ids), skeleton=nullable(typed_ref('hatch-3d-rig')),
+        animations=arr(clip_ref), lods=arr(typed_ref('scene3d-asset'), maximum=16),
         dependencies=arr(ref('reference')), resources=obj(dict(vertices=integer(0, 1000000),
         triangles=integer(0, 2000000), bytes=integer(1, MAX_TOTAL_BYTES))),
         validation=arr(ref('file')), review=ref('review')))
@@ -174,7 +185,7 @@ def definitions():
         duration_frames=integer(1, 1_000_000), fps=ref('rate'), camera=ID,
         camera_overrides=obj(dict(transform=ref('transform'), camera=node['properties']['camera']), []),
         tracks=arr(ref('track'), maximum=4096), bindings=arr(ref('binding'), maximum=256),
-        material_overrides=arr(obj(dict(target=ID, slot=ID, material=ref('reference'))), maximum=256),
+        material_overrides=arr(obj(dict(target=ID, slot=ID, material=material_ref)), maximum=256),
         temporal_constraints=arr(obj(dict(id=ID, target=ID, start_frame=integer(0, 1_000_000),
             end_frame=integer(1, 1_000_000), constraint=constraint)), maximum=256),
         render=ref('render_settings'), continuity=arr(ref('file'), maximum=256),
@@ -273,6 +284,44 @@ def _transforms(value):
             _transforms(child)
 
 
+def _node_semantics(node):
+    require(node['parent'] != node['id'], 'A node cannot parent itself.')
+    own_type = node['type']
+    require('camera' not in node or own_type == 'camera', 'Camera configuration on a non-camera node.')
+    require('light' not in node or own_type == 'light', 'Light configuration on a non-light node.')
+    require('prefab' not in node or own_type == 'prefab_instance', 'Prefab on a non-prefab node.')
+    require('billboard' not in node or (own_type == 'billboard_2d' and node['billboard'] is True),
+            '2D billboard must be explicitly marked.')
+    if own_type == 'camera':
+        _camera_semantics(node['camera'])
+    if own_type == 'light':
+        require(all(0 <= x <= 1 for x in node['light']['color']), 'Light color must be linear RGB [0,1].')
+
+    require('prefab_overrides' not in node or own_type == 'prefab_instance',
+            'Prefab instance overrides on a non-prefab node.')
+    if 'prefab_overrides' in node:
+        _unique(node['prefab_overrides']['nodes'], 'instance node override', lambda o: o['node'])
+    _unique(node['constraints'], 'constraint ID', lambda item: item['id'])
+    require(all(c['target'] != node['id'] for c in node['constraints']), 'Self-referential constraint.')
+    _unique(node['material_overrides'], 'material slot', lambda item: item['slot'])
+    for binding in node['animation_bindings']:
+        require(binding['target'] == node['id'], 'A node animation binding must target its owning node.')
+        _binding_interval(binding)
+
+
+def _camera_semantics(camera):
+    require(camera['near'] < camera['far'], 'Camera near plane must precede far plane.')
+    require(camera['vertical_fov'] < math.pi, 'Camera field of view must be below pi radians.')
+
+
+def _binding_interval(binding, duration=None):
+    require(type(binding['start_frame']) is int and type(binding['end_frame']) is int,
+            'Exact clip boundaries require JSON integers.')
+    require(binding['start_frame'] < binding['end_frame'], 'Invalid clip interval.')
+    if duration is not None:
+        require(binding['end_frame'] <= duration, 'Invalid clip interval.')
+
+
 def _graph(nodes, roots):
     ids = _unique(nodes, 'node ID', lambda node: node['id'])
     by_id = {node['id']: node for node in nodes}
@@ -289,47 +338,40 @@ def _graph(nodes, roots):
             visited.add(cursor['id'])
             require(len(visited) <= MAX_DEPTH, 'Transform hierarchy exceeds 128 levels.')
             cursor = by_id.get(cursor['parent'])
-        own_type = node['type']
-        require('camera' not in node or own_type == 'camera', 'Camera configuration on a non-camera node.')
-        require('light' not in node or own_type == 'light', 'Light configuration on a non-light node.')
-        require('prefab' not in node or own_type == 'prefab_instance', 'Prefab on a non-prefab node.')
-        require('billboard' not in node or (own_type == 'billboard_2d' and node['billboard'] is True),
-                '2D billboard must be explicitly marked.')
-        if own_type == 'camera':
-            c = node['camera']
-            require(c['near'] < c['far'], 'Camera near plane must precede far plane.')
-            require(c['vertical_fov'] < math.pi, 'Camera field of view must be below pi radians.')
-        if own_type == 'light':
-            require(all(0 <= x <= 1 for x in node['light']['color']), 'Light color must be linear RGB [0,1].')
+        _node_semantics(node)
         for constraint in node['constraints']:
             require(constraint['target'] in ids and constraint['target'] != node['id'],
                     'Constraint target is dangling or self-referential.')
-        _unique(node['constraints'], 'constraint ID', lambda item: item['id'])
-        _unique(node['material_overrides'], 'material slot', lambda item: item['slot'])
         if 'attachment' in node:
             a = node['attachment']
             require(a['owner'] in ids and a['owner'] != node['id'], 'Dangling attachment owner.')
             require(a['socket'] in ids and by_id[a['socket']]['type'] == 'socket', 'Dangling attachment socket.')
             require(by_id[a['socket']]['parent'] == a['owner'], 'Socket must belong to attachment owner.')
     # A constraint/attachment cannot introduce a second evaluation cycle.
-    edges = {node['id']: ([node['parent']] if node['parent'] else []) +
-             [c['target'] for c in node['constraints']] +
-             ([node['attachment']['socket']] if 'attachment' in node else []) for node in nodes}
+    edges = _node_edges(nodes)
     _acyclic(edges, 'node dependency')
     return by_id
 
 
+def _node_edges(nodes):
+    return {node['id']: ([node['parent']] if node['parent'] else []) +
+            [c['target'] for c in node['constraints']] +
+            ([node['attachment']['socket']] if 'attachment' in node else []) for node in nodes}
+
+
 def _acyclic(edges, label):
-    states = {}
-    def visit(key, depth):
-        require(depth <= MAX_DEPTH, label + ' nesting exceeds 128 levels.')
+    states, longest = {}, {}
+    def visit(key, call_depth):
+        require(call_depth <= MAX_DEPTH, label + ' nesting exceeds 128 levels.')
         require(states.get(key) != 1, 'Cyclic ' + label + ' graph.')
         if states.get(key) == 2:
-            return
+            return longest[key]
         states[key] = 1
-        for child in edges.get(key, ()):
-            visit(child, depth + 1)
+        length = 1 + max((visit(child, call_depth + 1) for child in edges.get(key, ())), default=0)
+        require(length <= MAX_DEPTH, label + ' nesting exceeds 128 levels.')
         states[key] = 2
+        longest[key] = length
+        return length
     for key in edges:
         visit(key, 0)
 
@@ -348,6 +390,8 @@ def _timing(value):
                 'Track keys must be unique, sorted and within the terminal boundary.')
         prop = track['property']
         interpolation = track['interpolation']
+        require(prop != 'world_exposure' or track['target'] == 'world',
+                'World exposure tracks must use the explicit world target namespace.')
         require((prop == 'rotation' and interpolation in ('step', 'slerp')) or
                 (prop in ('visible', 'material') and interpolation == 'step') or
                 (prop not in ('rotation', 'visible', 'material') and interpolation in ('step', 'linear')),
@@ -367,14 +411,14 @@ def _timing(value):
                 require(type(v) is bool, 'Visibility requires boolean keys.')
             elif prop == 'material':
                 require(isinstance(v, str), 'Material requires string keys.')
+                declared = {r['id'] + '@' + r['version'] for r in value['dependencies'] if r['kind'] == 'material'}
+                require(v in declared, 'Material track key must resolve to a hash-bound material dependency.')
             else:
                 require(type(v) in (int, float), 'Numeric property requires scalar keys.')
                 require(prop != 'light_intensity' or v >= 0, 'Light intensity cannot be negative.')
     _unique(value['tracks'], 'target/property track', lambda t: (t['target'], t['property']))
     for binding in value['bindings']:
-        require(type(binding['start_frame']) is int and type(binding['end_frame']) is int,
-                'Exact clip boundaries require JSON integers.')
-        require(binding['start_frame'] < binding['end_frame'] <= duration, 'Invalid clip interval.')
+        _binding_interval(binding, duration)
 
 
 def validate_document(value, kind=None):
@@ -396,7 +440,9 @@ def validate_document(value, kind=None):
     if 'provenance' in value:
         require(value['provenance']['fixture'] or value['provenance']['origin'] != 'procedural-fixture',
                 'Procedural fixtures cannot lose fixture provenance.')
-    if kind in ('scene', 'prefab'):
+    if kind == 'node':
+        _node_semantics(value)
+    elif kind in ('scene', 'prefab'):
         nodes = _graph(value['nodes'], value['roots'])
         if kind == 'scene':
             collections = _unique(value['collections'], 'collection ID', lambda x: x['id'])
@@ -415,10 +461,14 @@ def validate_document(value, kind=None):
             require(all(o['node'] in nodes for o in value['overrides']), 'Dangling prefab override.')
     elif kind in ('shot', 'animation'):
         _timing(value)
+        if kind == 'shot' and 'camera' in value['camera_overrides']:
+            _camera_semantics(value['camera_overrides']['camera'])
+        _unique(value.get('temporal_constraints', []), 'temporal constraint ID', lambda c: c['id'])
         for c in value.get('temporal_constraints', []):
             require(type(c['start_frame']) is int and type(c['end_frame']) is int,
                     'Exact temporal boundaries require JSON integers.')
             require(c['start_frame'] < c['end_frame'] <= value['duration_frames'], 'Invalid temporal constraint interval.')
+            require(c['target'] != c['constraint']['target'], 'Self-referential temporal constraint.')
     elif kind == 'asset':
         _unique(value['sockets'], 'asset socket', lambda x: x['id'])
         require(value['review']['status'] == 'unreviewed' or bool(value['review']['receipts']),
@@ -560,10 +610,20 @@ def load_project(root, name='project.json'):
     references = [r for d in documents.values() for r in all_refs(d) if 'kind' in r]
     require(all((r['kind'], r['id'], r['version'], r['path'], r['sha256']) in locked for r in references),
             'Dependency lock does not cover every typed reference.')
+    registered_assets = {(r['id'], r['version'], r['path'], r['sha256']) for r in project['assets']}
+    for reference in project['characters']:
+        require((reference['id'], reference['version'], reference['path'], reference['sha256']) in registered_assets,
+                'Project character must be registered in project assets.')
+        require(documents[reference['path']]['asset_type'] == 'character', 'Project character reference must identify a character asset.')
     for d in documents.values():
         if d['kind'] in ('scene3d-scene', 'scene3d-prefab'):
             require(len(d['nodes']) <= budgets['max_nodes'], 'Scene/prefab exceeds project node budget.')
             for node in d['nodes']:
+                for binding in node['animation_bindings']:
+                    require(binding['end_frame'] <= budgets['max_frames'], 'Node binding exceeds project frame budget.')
+                    _binding_context(binding, d, documents)
+                if 'prefab_overrides' in node:
+                    _prefab_overrides(node['prefab_overrides'], documents[node['prefab']['path']])
                 if 'asset' in node:
                     asset = documents[node['asset']['path']]
                     require(asset['asset_type'] not in ('material', 'texture'), 'Geometry node references a non-geometric asset.')
@@ -576,16 +636,62 @@ def load_project(root, name='project.json'):
             nodes = {n['id']: n for n in scene['nodes']}
             require(d['id'] in scene['shots'], 'Shot is not associated with its scene.')
             require(d['camera'] in scene['cameras'], 'Shot camera does not exist in scene.')
-            targets = [t['target'] for t in d['tracks']] + [b['target'] for b in d['bindings']]
+            targets = [t['target'] for t in d['tracks'] if t['property'] != 'world_exposure'] + [b['target'] for b in d['bindings']]
             targets += [o['target'] for o in d['material_overrides']]
             targets += [c['target'] for c in d['temporal_constraints']]
+            targets += [c['constraint']['target'] for c in d['temporal_constraints']]
             require(all(t in nodes for t in targets), 'Shot references a missing node.')
+            for track in d['tracks']:
+                if track['property'] == 'light_intensity':
+                    require(nodes[track['target']]['type'] == 'light', 'Light track must target a light node.')
+            for binding in d['bindings']:
+                _binding_context(binding, scene, documents)
+            for node in scene['nodes']:
+                for binding in node['animation_bindings']:
+                    require(binding['end_frame'] <= d['duration_frames'], 'Node binding exceeds consuming shot duration.')
+            for boundary in sorted({c['start_frame'] for c in d['temporal_constraints']}):
+                edges = _node_edges(scene['nodes'])
+                for c in d['temporal_constraints']:
+                    if c['start_frame'] <= boundary < c['end_frame']:
+                        edges[c['target']].append(c['constraint']['target'])
+                _acyclic(edges, 'temporal constraint')
         elif d['kind'] == 'scene3d-render':
             require(d['end_frame'] <= documents[d['shot']['path']]['duration_frames'], 'Render range exceeds shot.')
         elif d['kind'] == 'scene3d-asset':
             require(inventory[d['content']['path']]['bytes'] == d['resources']['bytes'], 'Asset resource byte count differs from actual content.')
+    project_shots = [documents[r['path']] for r in project['shots']]
+    for scene_ref in project['scenes']:
+        scene = documents[scene_ref['path']]
+        associated = {shot['id'] for shot in project_shots if shot['scene']['path'] == scene_ref['path']}
+        require(set(scene['shots']) == associated, 'Scene shot inventory has dangling or missing project associations.')
     return dict(project=deepcopy(project), documents=documents, inventory=inventory,
                 bytes=total, status='hash-and-contract-verified')
+
+
+def _binding_context(binding, scene, documents):
+    nodes = {n['id']: n for n in scene['nodes']}
+    require(binding['target'] in nodes, 'Binding target is absent from the consuming graph.')
+    if binding['clip']['kind'] != 'scene3d-animation':
+        return  # Native rig animation requires its owner's validator/evaluator.
+    clip = documents[binding['clip']['path']]
+    for track in clip['tracks']:
+        require(track['property'] != 'world_exposure', 'World tracks must be authored directly on a shot, not a node binding.')
+        require(track['target'] in nodes, 'Animation clip references a missing node in the consuming graph.')
+        cursor = track['target']
+        while cursor is not None and cursor != binding['target']:
+            cursor = nodes[cursor]['parent']
+        require(cursor == binding['target'], 'Animation clip target lies outside its binding subtree.')
+
+
+def _prefab_overrides(overrides, prefab):
+    require(set(overrides['parameters']) <= set(prefab['parameters']), 'Unknown prefab instance parameter.')
+    for key, value in overrides['parameters'].items():
+        default = prefab['parameters'][key]
+        numeric = type(value) in (int, float) and type(default) in (int, float)
+        require(numeric or type(value) is type(default), 'Prefab parameter type mismatch.')
+    require(set(overrides['materials']) <= set(prefab['material_slots']), 'Unknown prefab instance material slot.')
+    ids = {n['id'] for n in prefab['nodes']}
+    require(all(o['node'] in ids for o in overrides['nodes']), 'Unknown prefab instance node override.')
 
 
 def _legacy_reference(payload, expected):

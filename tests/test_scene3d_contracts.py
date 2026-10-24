@@ -256,6 +256,69 @@ class SceneContractTests(unittest.TestCase):
         with self.assertRaisesRegex(RigError, 'receipts'):
             validate_document(doc)
 
+    def test_standalone_node_semantics_and_node_bindings_are_not_bypassed(self):
+        for mode in ('camera', 'binding-interval', 'binding-target'):
+            doc = fixture('example-scene')['nodes'][2 if mode == 'camera' else 1]
+            if mode == 'camera':
+                doc['camera']['far'] = 0.01
+            else:
+                doc['animation_bindings'] = [dict(target='mesh', clip=fixture('project')['animations'][0],
+                                                start_frame=9, end_frame=1, speed=1, loop=False)]
+                if mode == 'binding-target':
+                    doc['animation_bindings'][0].update(target='missing-node', start_frame=0, end_frame=12)
+            with self.subTest(mode=mode), self.assertRaises(RigError):
+                validate_document(doc, 'node')
+
+    def test_reference_ownership_types_are_strict(self):
+        for mode in ('binding', 'skeleton', 'material'):
+            doc = fixture('example-shot' if mode == 'binding' else 'triangle' if mode == 'skeleton' else 'example-scene')
+            wrong = fixture('project')['assets'][0]
+            if mode == 'binding':
+                doc['bindings'] = [dict(target='mesh', clip=wrong, start_frame=0, end_frame=12, speed=1, loop=False)]
+            elif mode == 'skeleton':
+                doc['skeleton'] = fixture('project')['animations'][0]
+            else:
+                doc['nodes'][1]['material_overrides'] = [dict(slot='surface', material=wrong)]
+            with self.subTest(mode=mode), self.assertRaises(RigError):
+                validate_document(doc)
+
+    def test_shot_camera_overrides_and_world_track_namespace(self):
+        for mode in ('near-far', 'fov', 'world-target'):
+            doc = fixture('example-shot')
+            if mode == 'world-target':
+                doc['tracks'] = [dict(target='mesh', property='world_exposure', interpolation='linear',
+                                     keys=[dict(frame=0, value=0)])]
+            else:
+                doc['camera_overrides']['camera'] = fixture('example-scene')['nodes'][2]['camera']
+                doc['camera_overrides']['camera']['far' if mode == 'near-far' else 'vertical_fov'] = 0.01 if mode == 'near-far' else 4
+            with self.subTest(mode=mode), self.assertRaises(RigError):
+                validate_document(doc)
+
+    def test_full_string_schema_tokens_and_lexical_portable_paths(self):
+        for name, bad in [('id', 'thing\n'), ('version', '1.0.0\n')]:
+            doc = fixture('example-scene')
+            doc[name] = bad
+            self.assertTrue(list(Draft202012Validator(schemas()['scene3d-scene.schema.json']).iter_errors(doc)))
+            with self.assertRaises(RigError):
+                validate_document(doc)
+        for bad in ('../x', 'a//b', 'CON.txt', 'lPt9.obj', 'a/../b', '/x', 'a\\b', 'a.', 'a '):
+            pointer = fixture('project')['assets'][0]
+            pointer['path'] = bad
+            self.assertTrue(list(Draft202012Validator({'$defs': definitions(), '$ref': '#/$defs/reference'}).iter_errors(pointer)), bad)
+        pointer = fixture('project')['assets'][0]
+        pointer['sha256'] += '\n'
+        self.assertTrue(list(Draft202012Validator({'$defs': definitions(), '$ref': '#/$defs/reference'}).iter_errors(pointer)))
+        pointer = fixture('project')['assets'][0]
+        pointer.update(id='Robot.Main:1', kind='hatch-3d-rig')
+        self.assertFalse(list(Draft202012Validator({'$defs': definitions(), '$ref': '#/$defs/reference'}).iter_errors(pointer)))
+
+    def test_material_track_values_require_hash_bound_dependencies(self):
+        animation = fixture('example-animation')
+        animation['tracks'] = [dict(target='mesh', property='material', interpolation='step',
+                                    keys=[dict(frame=0, value='unbound@1.0.0')])]
+        with self.assertRaisesRegex(RigError, 'hash-bound material'):
+            validate_document(animation)
+
     def test_canonical_serialization_is_stable_without_mutation(self):
         doc = fixture('example-scene')
         original = deepcopy(doc)
@@ -468,6 +531,128 @@ class SceneClosureTests(unittest.TestCase):
         self.assertFalse(json.loads(result.stderr)['ok'])
         self.assertNotIn('Traceback', result.stderr)
         self.assertFalse((self.root / 'triangle.obj').exists())
+
+    def test_scene_shot_inventory_and_project_character_type_are_resolved(self):
+        scene = fixture('example-scene')
+        scene['shots'].append('dangling-shot')
+        self.write('example-scene.json', scene)
+        with self.assertRaisesRegex(RigError, 'shot inventory'):
+            load_project(self.root)
+        self.write('example-scene.json', fixture('example-scene'))
+        project = json.loads((self.root / 'project.json').read_text())
+        project['characters'] = deepcopy(project['assets'])
+        self.write('project.json', project)
+        with self.assertRaisesRegex(RigError, 'character asset'):
+            load_project(self.root)
+
+    def test_temporal_constraint_inner_target_and_active_dependency_cycles(self):
+        for mode in ('dangling', 'cycle'):
+            shot = fixture('example-shot')
+            shot['temporal_constraints'] = [dict(id='follow', target='root', start_frame=0, end_frame=12,
+                constraint=dict(id='follow-inner', type='copy-transform',
+                                target='missing' if mode == 'dangling' else 'mesh', influence=1))]
+            self.write('example-shot.json', shot)
+            with self.subTest(mode=mode), self.assertRaisesRegex(RigError, 'missing node|Cyclic'):
+                load_project(self.root)
+        # Reversed constraints in disjoint half-open intervals do not form a
+        # simultaneously active cycle; admission must retain this valid case.
+        shot = fixture('example-shot')
+        shot['temporal_constraints'] = [dict(id='first', target='mesh', start_frame=0, end_frame=12,
+            constraint=dict(id='a', type='copy-transform', target='camera', influence=1)),
+            dict(id='second', target='camera', start_frame=12, end_frame=24,
+            constraint=dict(id='b', type='copy-transform', target='mesh', influence=1))]
+        self.write('example-shot.json', shot)
+        self.assertEqual(load_project(self.root)['status'], 'hash-and-contract-verified')
+
+    def test_node_bound_animation_requires_absolute_targets_in_its_subtree(self):
+        scene = fixture('example-scene')
+        scene['nodes'][1]['animation_bindings'] = [dict(target='mesh', clip=fixture('project')['animations'][0],
+                                                       start_frame=0, end_frame=24, speed=1, loop=False)]
+        self.write('example-scene.json', scene)
+        self.assertEqual(load_project(self.root)['status'], 'hash-and-contract-verified')
+        for target in ('missing-node', 'camera'):
+            animation = fixture('example-animation')
+            animation['tracks'][0]['target'] = target
+            self.write('example-animation.json', animation)
+            with self.subTest(target=target), self.assertRaisesRegex(RigError, 'missing node|outside its binding subtree'):
+                load_project(self.root)
+
+    def test_world_tracks_target_explicit_world_without_needing_a_node(self):
+        shot = fixture('example-shot')
+        shot['tracks'] = [dict(target='world', property='world_exposure', interpolation='linear',
+                               keys=[dict(frame=0, value=0), dict(frame=24, value=1)])]
+        self.write('example-shot.json', shot)
+        self.assertEqual(load_project(self.root)['status'], 'hash-and-contract-verified')
+
+    def test_prefab_instance_overrides_persist_without_altering_other_instances(self):
+        scene = fixture('example-scene')
+        prefab = fixture('project')['prefabs'][0]
+        for identifier in ('first-instance', 'second-instance'):
+            instance = node(identifier, 'prefab_instance', 'root')
+            instance['prefab'] = deepcopy(prefab)
+            instance['prefab_overrides'] = dict(parameters={}, materials={}, nodes=[])
+            scene['nodes'].append(instance)
+        scene['nodes'][-2]['prefab_overrides']['nodes'] = [dict(node='prefab-mesh', visible=False)]
+        original_prefab = (self.root / 'example-prefab.json').read_bytes()
+        self.write('example-scene.json', scene)
+        bundle = load_project(self.root)
+        loaded = bundle['documents']['example-scene.json']['nodes']
+        self.assertFalse(loaded[-2]['prefab_overrides']['nodes'][0]['visible'])
+        self.assertEqual(loaded[-1]['prefab_overrides']['nodes'], [])
+        self.assertEqual((self.root / 'example-prefab.json').read_bytes(), original_prefab)
+        for mode in ('node', 'parameter', 'material'):
+            invalid = deepcopy(scene)
+            overrides = invalid['nodes'][-1]['prefab_overrides']
+            if mode == 'node':
+                overrides['nodes'] = [dict(node='unknown', visible=True)]
+            elif mode == 'parameter':
+                overrides['parameters'] = dict(unknown=True)
+            else:
+                overrides['materials'] = dict(unknown={**fixture('project')['assets'][0], 'kind': 'material'})
+            self.write('example-scene.json', invalid)
+            if mode == 'material':
+                project = json.loads((self.root / 'project.json').read_text())
+                project['dependency_lock'].append(overrides['materials']['unknown'])
+                self.write('project.json', project)
+            with self.subTest(mode=mode), self.assertRaisesRegex(RigError, 'Unknown prefab'):
+                load_project(self.root)
+
+    def test_hash_bound_prefab_depth_budget_is_independent_of_registration_order(self):
+        from scene3d_contracts import all_refs
+        project = fixture('project')
+        project['budgets'].update(max_files=512, max_bytes=8*1024*1024)
+        pointers = []
+        for index in range(129):
+            identifier = 'nested-' + str(index)
+            prefab = fixture('example-prefab')
+            prefab.update(id=identifier, nodes=[node('nested-root')], roots=['nested-root'], dependencies=[])
+            if pointers:
+                child = node('child', 'prefab_instance', 'nested-root')
+                child['prefab'] = deepcopy(pointers[-1])
+                prefab['nodes'].append(child)
+            payload = canonical_bytes(prefab)
+            path = identifier + '.json'
+            (self.root / path).write_bytes(payload)
+            pointers.append(dict(id=identifier, version='1.0.0', kind='scene3d-prefab', path=path,
+                                 sha256=hashlib.sha256(payload).hexdigest()))
+        # Root project adds one dependency node: 127 prefabs + project =128
+        # accepted; 128 prefabs + project =129 rejected, in either ordering.
+        original = deepcopy(project)
+        for length, valid in ((127, True), (128, False)):
+            for reverse in (False, True):
+                project = deepcopy(original)
+                selected = deepcopy(pointers[:length])
+                if reverse:
+                    selected.reverse()
+                project['prefabs'] = selected
+                project['dependency_lock'].extend(selected)
+                (self.root / 'project.json').write_bytes(canonical_bytes(project))
+                with self.subTest(length=length, reverse=reverse):
+                    if valid:
+                        self.assertEqual(load_project(self.root)['status'], 'hash-and-contract-verified')
+                    else:
+                        with self.assertRaisesRegex(RigError, '128'):
+                            load_project(self.root)
 
     def test_optional_3d_imports_remain_unnecessary_for_loading(self):
         code = '''import sys,importlib.abc

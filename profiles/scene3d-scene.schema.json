@@ -11,11 +11,12 @@
         "path": {
           "type": "string",
           "minLength": 1,
-          "maxLength": 1024
+          "maxLength": 1024,
+          "pattern": "^(?:(?!(?:[cC][oO][nN]|[pP][rR][nN]|[aA][uU][xX]|[nN][uU][lL]|[cC][oO][mM][1-9]|[lL][pP][tT][1-9])(?:[.]|/|(?![\\s\\S])))[^/\\\\:\\x00-\\x1f<>\"|?*]*[^/\\\\:\\x00-\\x1f<>\"|?* .]/)*(?!(?:[cC][oO][nN]|[pP][rR][nN]|[aA][uU][xX]|[nN][uU][lL]|[cC][oO][mM][1-9]|[lL][pP][tT][1-9])(?:[.]|/|(?![\\s\\S])))[^/\\\\:\\x00-\\x1f<>\"|?*]*[^/\\\\:\\x00-\\x1f<>\"|?* .](?![\\s\\S])"
         },
         "sha256": {
           "type": "string",
-          "pattern": "^[0-9a-f]{64}$"
+          "pattern": "^[0-9a-f]{64}(?![\\s\\S])"
         }
       },
       "required": [
@@ -29,20 +30,21 @@
       "properties": {
         "id": {
           "type": "string",
-          "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}(?![\\s\\S])"
         },
         "version": {
           "type": "string",
-          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?![\\s\\S])"
         },
         "path": {
           "type": "string",
           "minLength": 1,
-          "maxLength": 1024
+          "maxLength": 1024,
+          "pattern": "^(?:(?!(?:[cC][oO][nN]|[pP][rR][nN]|[aA][uU][xX]|[nN][uU][lL]|[cC][oO][mM][1-9]|[lL][pP][tT][1-9])(?:[.]|/|(?![\\s\\S])))[^/\\\\:\\x00-\\x1f<>\"|?*]*[^/\\\\:\\x00-\\x1f<>\"|?* .]/)*(?!(?:[cC][oO][nN]|[pP][rR][nN]|[aA][uU][xX]|[nN][uU][lL]|[cC][oO][mM][1-9]|[lL][pP][tT][1-9])(?:[.]|/|(?![\\s\\S])))[^/\\\\:\\x00-\\x1f<>\"|?*]*[^/\\\\:\\x00-\\x1f<>\"|?* .](?![\\s\\S])"
         },
         "sha256": {
           "type": "string",
-          "pattern": "^[0-9a-f]{64}$"
+          "pattern": "^[0-9a-f]{64}(?![\\s\\S])"
         },
         "kind": {
           "enum": [
@@ -54,6 +56,7 @@
             "scene3d-animation",
             "scene3d-render",
             "hatch-3d-rig",
+            "hatch-3d-animation",
             "project",
             "mesh",
             "material",
@@ -313,7 +316,7 @@
       "properties": {
         "target": {
           "type": "string",
-          "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+          "pattern": "^[a-z][a-z0-9_-]{0,63}(?![\\s\\S])"
         },
         "property": {
           "enum": [
@@ -404,10 +407,24 @@
       "properties": {
         "target": {
           "type": "string",
-          "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+          "pattern": "^[a-z][a-z0-9_-]{0,63}(?![\\s\\S])"
         },
         "clip": {
-          "$ref": "#/$defs/reference"
+          "allOf": [
+            {
+              "$ref": "#/$defs/reference"
+            },
+            {
+              "properties": {
+                "kind": {
+                  "enum": [
+                    "scene3d-animation",
+                    "hatch-3d-animation"
+                  ]
+                }
+              }
+            }
+          ]
         },
         "start_frame": {
           "type": "integer",
@@ -475,7 +492,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+          "pattern": "^[a-z][a-z0-9_-]{0,63}(?![\\s\\S])"
         },
         "name": {
           "type": "string",
@@ -506,7 +523,7 @@
           "anyOf": [
             {
               "type": "string",
-              "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+              "pattern": "^[a-z][a-z0-9_-]{0,63}(?![\\s\\S])"
             },
             {
               "type": "null"
@@ -523,7 +540,7 @@
           "type": "array",
           "items": {
             "type": "string",
-            "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+            "pattern": "^[a-z][a-z0-9_-]{0,63}(?![\\s\\S])"
           },
           "minItems": 0,
           "maxItems": 10000,
@@ -533,7 +550,7 @@
           "type": "array",
           "items": {
             "type": "string",
-            "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+            "pattern": "^[a-z][a-z0-9_-]{0,63}(?![\\s\\S])"
           },
           "minItems": 0,
           "maxItems": 10000,
@@ -547,7 +564,9 @@
             {
               "properties": {
                 "kind": {
-                  "const": "scene3d-asset"
+                  "enum": [
+                    "scene3d-asset"
+                  ]
                 }
               }
             }
@@ -561,10 +580,86 @@
             {
               "properties": {
                 "kind": {
-                  "const": "scene3d-prefab"
+                  "enum": [
+                    "scene3d-prefab"
+                  ]
                 }
               }
             }
+          ]
+        },
+        "prefab_overrides": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "parameters": {
+              "type": "object",
+              "propertyNames": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_-]{0,63}(?![\\s\\S])"
+              },
+              "additionalProperties": {
+                "type": [
+                  "number",
+                  "string",
+                  "boolean"
+                ]
+              },
+              "maxProperties": 256
+            },
+            "materials": {
+              "type": "object",
+              "propertyNames": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_-]{0,63}(?![\\s\\S])"
+              },
+              "additionalProperties": {
+                "allOf": [
+                  {
+                    "$ref": "#/$defs/reference"
+                  },
+                  {
+                    "properties": {
+                      "kind": {
+                        "enum": [
+                          "material"
+                        ]
+                      }
+                    }
+                  }
+                ]
+              },
+              "maxProperties": 256
+            },
+            "nodes": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "node": {
+                    "type": "string",
+                    "pattern": "^[a-z][a-z0-9_-]{0,63}(?![\\s\\S])"
+                  },
+                  "transform": {
+                    "$ref": "#/$defs/transform"
+                  },
+                  "visible": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "node"
+                ]
+              },
+              "minItems": 0,
+              "maxItems": 256
+            }
+          },
+          "required": [
+            "parameters",
+            "materials",
+            "nodes"
           ]
         },
         "material_overrides": {
@@ -575,10 +670,23 @@
             "properties": {
               "slot": {
                 "type": "string",
-                "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+                "pattern": "^[a-z][a-z0-9_-]{0,63}(?![\\s\\S])"
               },
               "material": {
-                "$ref": "#/$defs/reference"
+                "allOf": [
+                  {
+                    "$ref": "#/$defs/reference"
+                  },
+                  {
+                    "properties": {
+                      "kind": {
+                        "enum": [
+                          "material"
+                        ]
+                      }
+                    }
+                  }
+                ]
               }
             },
             "required": [
@@ -605,7 +713,7 @@
             "properties": {
               "id": {
                 "type": "string",
-                "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+                "pattern": "^[a-z][a-z0-9_-]{0,63}(?![\\s\\S])"
               },
               "type": {
                 "enum": [
@@ -616,7 +724,7 @@
               },
               "target": {
                 "type": "string",
-                "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+                "pattern": "^[a-z][a-z0-9_-]{0,63}(?![\\s\\S])"
               },
               "influence": {
                 "type": "number",
@@ -640,11 +748,11 @@
           "properties": {
             "owner": {
               "type": "string",
-              "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+              "pattern": "^[a-z][a-z0-9_-]{0,63}(?![\\s\\S])"
             },
             "socket": {
               "type": "string",
-              "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+              "pattern": "^[a-z][a-z0-9_-]{0,63}(?![\\s\\S])"
             },
             "offset": {
               "$ref": "#/$defs/transform"
@@ -706,7 +814,7 @@
           "type": "object",
           "propertyNames": {
             "type": "string",
-            "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+            "pattern": "^[a-z][a-z0-9_-]{0,63}(?![\\s\\S])"
           },
           "additionalProperties": {
             "type": [
@@ -915,11 +1023,11 @@
         },
         "id": {
           "type": "string",
-          "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+          "pattern": "^[a-z][a-z0-9_-]{0,63}(?![\\s\\S])"
         },
         "version": {
           "type": "string",
-          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?![\\s\\S])"
         },
         "name": {
           "type": "string",
@@ -953,7 +1061,7 @@
           "type": "array",
           "items": {
             "type": "string",
-            "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+            "pattern": "^[a-z][a-z0-9_-]{0,63}(?![\\s\\S])"
           },
           "minItems": 0,
           "maxItems": 10000,
@@ -1002,7 +1110,21 @@
             "environment": {
               "anyOf": [
                 {
-                  "$ref": "#/$defs/reference"
+                  "allOf": [
+                    {
+                      "$ref": "#/$defs/reference"
+                    },
+                    {
+                      "properties": {
+                        "kind": {
+                          "enum": [
+                            "texture",
+                            "scene3d-asset"
+                          ]
+                        }
+                      }
+                    }
+                  ]
                 },
                 {
                   "type": "null"
@@ -1013,7 +1135,7 @@
               "type": "object",
               "propertyNames": {
                 "type": "string",
-                "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+                "pattern": "^[a-z][a-z0-9_-]{0,63}(?![\\s\\S])"
               },
               "additionalProperties": {
                 "type": [
@@ -1042,7 +1164,7 @@
             "properties": {
               "id": {
                 "type": "string",
-                "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+                "pattern": "^[a-z][a-z0-9_-]{0,63}(?![\\s\\S])"
               },
               "name": {
                 "type": "string",
@@ -1070,7 +1192,7 @@
             "properties": {
               "id": {
                 "type": "string",
-                "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+                "pattern": "^[a-z][a-z0-9_-]{0,63}(?![\\s\\S])"
               },
               "name": {
                 "type": "string",
@@ -1094,7 +1216,7 @@
           "type": "array",
           "items": {
             "type": "string",
-            "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+            "pattern": "^[a-z][a-z0-9_-]{0,63}(?![\\s\\S])"
           },
           "minItems": 0,
           "maxItems": 10000,
@@ -1104,7 +1226,7 @@
           "type": "array",
           "items": {
             "type": "string",
-            "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+            "pattern": "^[a-z][a-z0-9_-]{0,63}(?![\\s\\S])"
           },
           "minItems": 0,
           "maxItems": 10000,
@@ -1140,7 +1262,7 @@
           "type": "array",
           "items": {
             "type": "string",
-            "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+            "pattern": "^[a-z][a-z0-9_-]{0,63}(?![\\s\\S])"
           },
           "minItems": 0,
           "maxItems": 10000,
@@ -1158,7 +1280,7 @@
           "type": "object",
           "propertyNames": {
             "type": "string",
-            "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+            "pattern": "^[a-z][a-z0-9_-]{0,63}(?![\\s\\S])"
           },
           "additionalProperties": {
             "type": [
@@ -1212,11 +1334,11 @@
         },
         "id": {
           "type": "string",
-          "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+          "pattern": "^[a-z][a-z0-9_-]{0,63}(?![\\s\\S])"
         },
         "version": {
           "type": "string",
-          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?![\\s\\S])"
         },
         "name": {
           "type": "string",
@@ -1227,7 +1349,7 @@
           "type": "array",
           "items": {
             "type": "string",
-            "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+            "pattern": "^[a-z][a-z0-9_-]{0,63}(?![\\s\\S])"
           },
           "minItems": 0,
           "maxItems": 10000,
@@ -1245,7 +1367,7 @@
           "type": "object",
           "propertyNames": {
             "type": "string",
-            "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+            "pattern": "^[a-z][a-z0-9_-]{0,63}(?![\\s\\S])"
           },
           "additionalProperties": {
             "type": [
@@ -1260,7 +1382,7 @@
           "type": "array",
           "items": {
             "type": "string",
-            "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+            "pattern": "^[a-z][a-z0-9_-]{0,63}(?![\\s\\S])"
           },
           "minItems": 0,
           "maxItems": 10000,
@@ -1270,7 +1392,7 @@
           "type": "array",
           "items": {
             "type": "string",
-            "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+            "pattern": "^[a-z][a-z0-9_-]{0,63}(?![\\s\\S])"
           },
           "minItems": 0,
           "maxItems": 10000,
@@ -1284,7 +1406,7 @@
             "properties": {
               "node": {
                 "type": "string",
-                "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+                "pattern": "^[a-z][a-z0-9_-]{0,63}(?![\\s\\S])"
               },
               "transform": {
                 "$ref": "#/$defs/transform"
@@ -1341,11 +1463,11 @@
         },
         "id": {
           "type": "string",
-          "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+          "pattern": "^[a-z][a-z0-9_-]{0,63}(?![\\s\\S])"
         },
         "version": {
           "type": "string",
-          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?![\\s\\S])"
         },
         "name": {
           "type": "string",
@@ -1411,7 +1533,20 @@
         "materials": {
           "type": "array",
           "items": {
-            "$ref": "#/$defs/reference"
+            "allOf": [
+              {
+                "$ref": "#/$defs/reference"
+              },
+              {
+                "properties": {
+                  "kind": {
+                    "enum": [
+                      "material"
+                    ]
+                  }
+                }
+              }
+            ]
           },
           "minItems": 0,
           "maxItems": 4096
@@ -1444,7 +1579,7 @@
             "properties": {
               "id": {
                 "type": "string",
-                "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+                "pattern": "^[a-z][a-z0-9_-]{0,63}(?![\\s\\S])"
               },
               "transform": {
                 "$ref": "#/$defs/transform"
@@ -1462,13 +1597,13 @@
           "type": "object",
           "propertyNames": {
             "type": "string",
-            "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+            "pattern": "^[a-z][a-z0-9_-]{0,63}(?![\\s\\S])"
           },
           "additionalProperties": {
             "type": "array",
             "items": {
               "type": "string",
-              "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+              "pattern": "^[a-z][a-z0-9_-]{0,63}(?![\\s\\S])"
             },
             "minItems": 0,
             "maxItems": 10000,
@@ -1479,7 +1614,20 @@
         "skeleton": {
           "anyOf": [
             {
-              "$ref": "#/$defs/reference"
+              "allOf": [
+                {
+                  "$ref": "#/$defs/reference"
+                },
+                {
+                  "properties": {
+                    "kind": {
+                      "enum": [
+                        "hatch-3d-rig"
+                      ]
+                    }
+                  }
+                }
+              ]
             },
             {
               "type": "null"
@@ -1489,7 +1637,21 @@
         "animations": {
           "type": "array",
           "items": {
-            "$ref": "#/$defs/reference"
+            "allOf": [
+              {
+                "$ref": "#/$defs/reference"
+              },
+              {
+                "properties": {
+                  "kind": {
+                    "enum": [
+                      "scene3d-animation",
+                      "hatch-3d-animation"
+                    ]
+                  }
+                }
+              }
+            ]
           },
           "minItems": 0,
           "maxItems": 4096
@@ -1497,7 +1659,20 @@
         "lods": {
           "type": "array",
           "items": {
-            "$ref": "#/$defs/reference"
+            "allOf": [
+              {
+                "$ref": "#/$defs/reference"
+              },
+              {
+                "properties": {
+                  "kind": {
+                    "enum": [
+                      "scene3d-asset"
+                    ]
+                  }
+                }
+              }
+            ]
           },
           "minItems": 0,
           "maxItems": 16
@@ -1589,11 +1764,11 @@
         },
         "id": {
           "type": "string",
-          "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+          "pattern": "^[a-z][a-z0-9_-]{0,63}(?![\\s\\S])"
         },
         "version": {
           "type": "string",
-          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?![\\s\\S])"
         },
         "duration_frames": {
           "type": "integer",
@@ -1657,11 +1832,11 @@
         },
         "id": {
           "type": "string",
-          "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+          "pattern": "^[a-z][a-z0-9_-]{0,63}(?![\\s\\S])"
         },
         "version": {
           "type": "string",
-          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?![\\s\\S])"
         },
         "name": {
           "type": "string",
@@ -1676,7 +1851,9 @@
             {
               "properties": {
                 "kind": {
-                  "const": "scene3d-scene"
+                  "enum": [
+                    "scene3d-scene"
+                  ]
                 }
               }
             }
@@ -1692,7 +1869,7 @@
         },
         "camera": {
           "type": "string",
-          "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+          "pattern": "^[a-z][a-z0-9_-]{0,63}(?![\\s\\S])"
         },
         "camera_overrides": {
           "type": "object",
@@ -1767,14 +1944,27 @@
             "properties": {
               "target": {
                 "type": "string",
-                "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+                "pattern": "^[a-z][a-z0-9_-]{0,63}(?![\\s\\S])"
               },
               "slot": {
                 "type": "string",
-                "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+                "pattern": "^[a-z][a-z0-9_-]{0,63}(?![\\s\\S])"
               },
               "material": {
-                "$ref": "#/$defs/reference"
+                "allOf": [
+                  {
+                    "$ref": "#/$defs/reference"
+                  },
+                  {
+                    "properties": {
+                      "kind": {
+                        "enum": [
+                          "material"
+                        ]
+                      }
+                    }
+                  }
+                ]
               }
             },
             "required": [
@@ -1794,11 +1984,11 @@
             "properties": {
               "id": {
                 "type": "string",
-                "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+                "pattern": "^[a-z][a-z0-9_-]{0,63}(?![\\s\\S])"
               },
               "target": {
                 "type": "string",
-                "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+                "pattern": "^[a-z][a-z0-9_-]{0,63}(?![\\s\\S])"
               },
               "start_frame": {
                 "type": "integer",
@@ -1816,7 +2006,7 @@
                 "properties": {
                   "id": {
                     "type": "string",
-                    "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+                    "pattern": "^[a-z][a-z0-9_-]{0,63}(?![\\s\\S])"
                   },
                   "type": {
                     "enum": [
@@ -1827,7 +2017,7 @@
                   },
                   "target": {
                     "type": "string",
-                    "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+                    "pattern": "^[a-z][a-z0-9_-]{0,63}(?![\\s\\S])"
                   },
                   "influence": {
                     "type": "number",
@@ -1877,7 +2067,7 @@
           "type": "object",
           "propertyNames": {
             "type": "string",
-            "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+            "pattern": "^[a-z][a-z0-9_-]{0,63}(?![\\s\\S])"
           },
           "additionalProperties": {
             "type": [
@@ -1924,11 +2114,11 @@
         },
         "id": {
           "type": "string",
-          "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+          "pattern": "^[a-z][a-z0-9_-]{0,63}(?![\\s\\S])"
         },
         "version": {
           "type": "string",
-          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?![\\s\\S])"
         },
         "shot": {
           "allOf": [
@@ -1938,7 +2128,9 @@
             {
               "properties": {
                 "kind": {
-                  "const": "scene3d-shot"
+                  "enum": [
+                    "scene3d-shot"
+                  ]
                 }
               }
             }
@@ -1960,7 +2152,8 @@
         "output_directory": {
           "type": "string",
           "minLength": 1,
-          "maxLength": 1024
+          "maxLength": 1024,
+          "pattern": "^(?:(?!(?:[cC][oO][nN]|[pP][rR][nN]|[aA][uU][xX]|[nN][uU][lL]|[cC][oO][mM][1-9]|[lL][pP][tT][1-9])(?:[.]|/|(?![\\s\\S])))[^/\\\\:\\x00-\\x1f<>\"|?*]*[^/\\\\:\\x00-\\x1f<>\"|?* .]/)*(?!(?:[cC][oO][nN]|[pP][rR][nN]|[aA][uU][xX]|[nN][uU][lL]|[cC][oO][mM][1-9]|[lL][pP][tT][1-9])(?:[.]|/|(?![\\s\\S])))[^/\\\\:\\x00-\\x1f<>\"|?*]*[^/\\\\:\\x00-\\x1f<>\"|?* .](?![\\s\\S])"
         },
         "dependencies": {
           "type": "array",
@@ -2001,11 +2194,11 @@
         },
         "id": {
           "type": "string",
-          "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+          "pattern": "^[a-z][a-z0-9_-]{0,63}(?![\\s\\S])"
         },
         "version": {
           "type": "string",
-          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?![\\s\\S])"
         },
         "name": {
           "type": "string",
@@ -2052,7 +2245,9 @@
               {
                 "properties": {
                   "kind": {
-                    "const": "scene3d-asset"
+                    "enum": [
+                      "scene3d-asset"
+                    ]
                   }
                 }
               }
@@ -2071,7 +2266,9 @@
               {
                 "properties": {
                   "kind": {
-                    "const": "scene3d-asset"
+                    "enum": [
+                      "scene3d-asset"
+                    ]
                   }
                 }
               }
@@ -2090,7 +2287,9 @@
               {
                 "properties": {
                   "kind": {
-                    "const": "scene3d-scene"
+                    "enum": [
+                      "scene3d-scene"
+                    ]
                   }
                 }
               }
@@ -2109,7 +2308,9 @@
               {
                 "properties": {
                   "kind": {
-                    "const": "scene3d-shot"
+                    "enum": [
+                      "scene3d-shot"
+                    ]
                   }
                 }
               }
@@ -2128,7 +2329,9 @@
               {
                 "properties": {
                   "kind": {
-                    "const": "scene3d-prefab"
+                    "enum": [
+                      "scene3d-prefab"
+                    ]
                   }
                 }
               }
@@ -2147,7 +2350,9 @@
               {
                 "properties": {
                   "kind": {
-                    "const": "scene3d-animation"
+                    "enum": [
+                      "scene3d-animation"
+                    ]
                   }
                 }
               }
@@ -2182,7 +2387,9 @@
                 {
                   "properties": {
                     "kind": {
-                      "const": "project"
+                      "enum": [
+                        "project"
+                      ]
                     }
                   }
                 }
@@ -2216,7 +2423,7 @@
           "type": "object",
           "propertyNames": {
             "type": "string",
-            "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+            "pattern": "^[a-z][a-z0-9_-]{0,63}(?![\\s\\S])"
           },
           "additionalProperties": {
             "type": [
