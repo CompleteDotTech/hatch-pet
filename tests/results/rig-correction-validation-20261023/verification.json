@@ -5,7 +5,7 @@
   "results": {
     "focused_and_regression": "50 tests passed in 10.324 seconds; no skips",
     "operations_archive_gate": "24 tests passed in 6.580 seconds; no skips",
-    "baseline_control": "Exact pre-fix runtime loaded in-memory: 10 failing negative subcases, zero errors; no repository source writes",
+    "baseline_control": "Exact pre-fix runtime loaded in-memory: 10 failing negative subcases, zero errors; no repository source writes; retained diagnostic log strips trailing whitespace only",
     "generation_checks": "generate_schemas.py --check and generate_rig_templates.py --check passed",
     "compatibility": "795 existing 2D tests discovered with optional 3D imports blocked; discovery is not execution"
   },
@@ -15,8 +15,8 @@
   ],
   "files": {
     "baseline-control.log": {
-      "sha256": "aaf921485d67678cbe93955bf65112a0699e158ea67f830dfa09c7cc0e24a1af",
-      "bytes": 14982
+      "sha256": "7a8bf3776b068dc5004bdad3a97021c2383ecb4479aab459c2be87fadeb33b12",
+      "bytes": 14981
     },
     "operations-archive.log": {
       "sha256": "1c06f1fa84fadf8e4ea26da00d0b910355c257c92320ff256133494783b3d2bf",
