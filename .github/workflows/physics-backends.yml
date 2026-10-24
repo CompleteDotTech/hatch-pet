@@ -80,4 +80,3 @@ jobs:
           retention-days: 30
           include-hidden-files: true
           path: physics-evidence/
-          include-hidden-files: true
