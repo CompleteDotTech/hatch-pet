@@ -1,7 +1,7 @@
 # Model3D contract and payload foundation
 
 This is the bounded #43 foundation under #10, not a completed model-generation
-system. It adds eight strict, independently versioned document types and a working
+system. It adds fifteen strict, independently versioned document types and a working
 read-only verifier. It reuses actual rig geometry/import inspection rather than
 creating another mesh representation, registry, renderer, job store or review store.
 
@@ -51,6 +51,53 @@ or accepted as a 3D document.
 | `model3d-uncertainty` | Target, observed/inferred/unknown classification, source evidence, explanation, optional measured confidence and its method. Missing confidence remains null; a number without evidence/method is rejected. |
 | `model3d-job` | Request hash, target, explicit state, bounded attempts, outputs, failure details and dependencies. A complete declaration needs outputs and no active error; the request must resolve to a matching request contract. No scheduler or provider execution is implemented here. |
 | `model3d-export` | Exact asset revision, requested format, declared state, actual output references, tool identities, declared losses and optional independent-inspection evidence. A complete claim cannot have an empty inventory. Output hashes and the source asset's geometry are checked; format-specific export roundtrip/Blender/archive verification is not implied. |
+
+The additional seven document kinds are strict evidence envelopes for the existing
+owners. Each has its own schema/semantic version, subject revision, explicit owner,
+hash-bound native evidence and optional namespaced extension payloads. They do not
+create a second lifecycle engine or authenticate an evidence author's claims.
+
+| Kind | Metadata and semantic gates |
+|---|---|
+| `model3d-provider-receipt` | Named provider/model/version, exact request, execution/state/output claims, seed, usage and diagnostics. Completed claims require execution and outputs; unavailable providers cannot claim execution. |
+| `model3d-processing-stage` | Operation, state, exact inputs/outputs, tools, usage and error. Completed stages require outputs; failed stages require diagnostics. |
+| `model3d-resource-usage` | Explicit measured/partial/unavailable state, wall/CPU duration, peak memory, bytes, device and measurement method. Missing measurements remain null; unavailable is never zero usage. |
+| `model3d-validation-result` | Named validator, state, contract/payload/geometry observations and typed diagnostics. Geometry inspection requires payload verification; a passing claim cannot contain an error. |
+| `model3d-review-decision` | Reviewer identity/type, actual timestamp for decisions, scoped dimensions, inspected hashes and notes. Validation never turns this claim into human or production approval. |
+| `model3d-repair-operation` | Exact before/after asset references, operation/state, changed semantic parts, tools and reason. Completed repairs need a different immutable output revision. |
+| `model3d-archive` | ZIP reference, exact source asset, complete declared inventory, state, preserved reviews and restoration evidence. A restored claim needs native restoration evidence. This verifier checks hashes and source geometry, not archive extraction or native restoration behavior. |
+
+All source records explicitly retain original filename, pixel dimensions (null for
+nonimages), acquisition method/time (unknown/null when unavailable), observed,
+inferred or synthetic classification, masks and annotations. Source dimensions and
+calibration image size are compared with actual decoded pixels. Known acquisition
+methods require an ISO 8601 timestamp with timezone; dates are never fabricated.
+Arbitrary calibrated image viewpoints are supported alongside supplemental identity,
+texture, geometry and annotation references. Visual hull intent needs at least two
+calibrated image observations; supplemental sources do not invalidate those views.
+
+Requests include an optional existing asset version as an explicit nullable field,
+source modality, request-level provenance/rights/fixture classification even for
+text-only intent, material requirements, texture/runtime/compute budgets, LOD
+requirements and fallback policy. These are generation **intent**. No generation,
+fallback execution or runtime/compute reservation is supplied by this verifier.
+The separately enforced snapshot/import resource ceilings remain described below.
+
+Asset records include generation revision, identity reference, pivot, per-mesh/LOD
+geometry references, counts, material slots, normal/tangent/UV availability,
+topology measurements, surface attribution, provider/preview/quality references,
+repair history, available formats and explicit completeness. Each declared LOD is
+actually decoded and its mesh claims checked; this does not generate optimized
+LODs. Aggregate declared LOD counts must fit the geometry budget. Parts carry
+version/category, pivot/attachments, side, 2D component links, surface regions,
+visible/inferred evidence, confidence/method, rig association, review state and edit
+history. Parts may bind whole meshes or disjoint surface regions. Multiple whole-mesh
+owners and overlapping regions belonging to different parts are rejected. Region
+face indices and face/vertex uncertainty indices are checked against
+decoded base geometry. Materials retain texture dimensions, typed procedural
+parameters, projection evidence and observation class. Texture dimensions are
+verified against actual image bytes. Unknown metadata uses explicit unknown/null or
+empty evidence collections rather than invented measurements or approvals.
 
 Unknown fields, versions, duplicate JSON keys, NaN/Infinity, oversized values,
 unsafe relative paths and conflicting records are rejected. Schema validation
@@ -104,7 +151,9 @@ content fails; a valid manifest alone cannot pass payload verification.
 Files are streamed in bounded chunks. Links and nonregular files are rejected.
 On openat/O_NOFOLLOW platforms, held directory descriptors prevent parent renames
 from redirecting individual file reads. The portable fallback rechecks path and
-file identities, but is not a sandbox against a hostile process concurrently
+file identities (plus size/mtime; POSIX also checks change time). Windows creation
+time is not used as a write fingerprint because CRT handle/path APIs expose
+different precision; exact SHA-256 verification remains mandatory. This is not a sandbox against a hostile process concurrently
 replacing directories; isolate untrusted writers at OS level. Neither variant
 claims to make a mutable project a transactional multi-file source. SHA-bound
 snapshot consistency and source-directory locking are different guarantees.
@@ -113,7 +162,8 @@ Default maximums are 256 MiB per file, 1 GiB aggregate payload, 4,096 files/part
 1,000,000 vertices, 2,000,000 triangles, dependency depth 16, and 2 GiB estimated
 geometry memory. Project limits may lower these hard ceilings. Static image inputs
 are decoded and limited to 16,777,216 pixels and the snapshot's memory budget.
-Multiframe images are rejected in this initial contract. Native geometry budgets
+Multiframe images are rejected in this initial contract. Inspection selects the supported eight-influence preservation profile; it does
+not imply eight-influence playback in the four-influence local viewer. Native geometry budgets
 are delegated to the existing bounded importer, not disabled.
 
 Bounds tolerance is `abs(actual-declared) <= 1e-6 * max(1, abs(actual), abs(declared))`

@@ -48,7 +48,16 @@
       },
       "camera": {
         "status": "unknown"
-      }
+      },
+      "original_filename": "demo-robotic-input.glb",
+      "dimensions_px": null,
+      "acquisition": {
+        "method": "unknown",
+        "timestamp": null
+      },
+      "evidence_class": "synthetic",
+      "mask": null,
+      "annotations": []
     }
   ],
   "files": [
@@ -128,7 +137,25 @@
       "source_ids": [
         "original"
       ],
-      "uncertainty_ids": []
+      "uncertainty_ids": [],
+      "version": "1.0.0",
+      "category": "mechanical-assembly",
+      "pivot_m": [
+        0,
+        0,
+        0
+      ],
+      "attachments": [],
+      "anatomical_side": "not-applicable",
+      "decomposition_components": [],
+      "mesh_regions": [],
+      "visible_evidence": [],
+      "inferred_geometry": [],
+      "confidence": null,
+      "confidence_method": null,
+      "rig_association": null,
+      "review_state": "pending",
+      "edit_history": []
     }
   ],
   "materials": [
@@ -168,7 +195,11 @@
           "redistribution": "unknown",
           "evidence": null
         }
-      }
+      },
+      "evidence_class": "synthetic",
+      "texture_dimensions": {},
+      "procedural_parameters": [],
+      "projection_evidence": []
     },
     {
       "schema_version": 1,
@@ -206,7 +237,11 @@
           "redistribution": "unknown",
           "evidence": null
         }
-      }
+      },
+      "evidence_class": "synthetic",
+      "texture_dimensions": {},
+      "procedural_parameters": [],
+      "projection_evidence": []
     },
     {
       "schema_version": 1,
@@ -244,7 +279,11 @@
           "redistribution": "unknown",
           "evidence": null
         }
-      }
+      },
+      "evidence_class": "synthetic",
+      "texture_dimensions": {},
+      "procedural_parameters": [],
+      "projection_evidence": []
     },
     {
       "schema_version": 1,
@@ -282,7 +321,11 @@
           "redistribution": "unknown",
           "evidence": null
         }
-      }
+      },
+      "evidence_class": "synthetic",
+      "texture_dimensions": {},
+      "procedural_parameters": [],
+      "projection_evidence": []
     }
   ],
   "dependencies": [],
@@ -318,5 +361,264 @@
     "parts": 4096,
     "dependency_depth": 16,
     "memory_bytes": 2147483648
-  }
+  },
+  "generation_revision": "1.0.0",
+  "identity": null,
+  "pivot_m": [
+    0,
+    0,
+    0
+  ],
+  "mesh_details": [
+    {
+      "mesh_id": "base-shell",
+      "geometry": {
+        "path": "examples/rig-3d/robotic/exports/character.glb",
+        "bytes": 75956,
+        "sha256": "38c95ce549f58bdef2f06ce4652ac2026ca99c744f9593f348d0d1696131296e",
+        "media_type": "model/gltf-binary"
+      },
+      "lod": 0,
+      "vertices": 146,
+      "triangles": 288,
+      "material_slot": 2,
+      "normals": true,
+      "tangents": false,
+      "uv_sets": [],
+      "topology": {
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0
+      },
+      "evidence_class": "synthetic"
+    },
+    {
+      "mesh_id": "shoulder-shell",
+      "geometry": {
+        "path": "examples/rig-3d/robotic/exports/character.glb",
+        "bytes": 75956,
+        "sha256": "38c95ce549f58bdef2f06ce4652ac2026ca99c744f9593f348d0d1696131296e",
+        "media_type": "model/gltf-binary"
+      },
+      "lod": 0,
+      "vertices": 50,
+      "triangles": 96,
+      "material_slot": 0,
+      "normals": true,
+      "tangents": false,
+      "uv_sets": [],
+      "topology": {
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0
+      },
+      "evidence_class": "synthetic"
+    },
+    {
+      "mesh_id": "shoulder-joint",
+      "geometry": {
+        "path": "examples/rig-3d/robotic/exports/character.glb",
+        "bytes": 75956,
+        "sha256": "38c95ce549f58bdef2f06ce4652ac2026ca99c744f9593f348d0d1696131296e",
+        "media_type": "model/gltf-binary"
+      },
+      "lod": 0,
+      "vertices": 62,
+      "triangles": 120,
+      "material_slot": 1,
+      "normals": true,
+      "tangents": false,
+      "uv_sets": [],
+      "topology": {
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0
+      },
+      "evidence_class": "synthetic"
+    },
+    {
+      "mesh_id": "elbow-shell",
+      "geometry": {
+        "path": "examples/rig-3d/robotic/exports/character.glb",
+        "bytes": 75956,
+        "sha256": "38c95ce549f58bdef2f06ce4652ac2026ca99c744f9593f348d0d1696131296e",
+        "media_type": "model/gltf-binary"
+      },
+      "lod": 0,
+      "vertices": 50,
+      "triangles": 96,
+      "material_slot": 0,
+      "normals": true,
+      "tangents": false,
+      "uv_sets": [],
+      "topology": {
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0
+      },
+      "evidence_class": "synthetic"
+    },
+    {
+      "mesh_id": "elbow-joint",
+      "geometry": {
+        "path": "examples/rig-3d/robotic/exports/character.glb",
+        "bytes": 75956,
+        "sha256": "38c95ce549f58bdef2f06ce4652ac2026ca99c744f9593f348d0d1696131296e",
+        "media_type": "model/gltf-binary"
+      },
+      "lod": 0,
+      "vertices": 62,
+      "triangles": 120,
+      "material_slot": 1,
+      "normals": true,
+      "tangents": false,
+      "uv_sets": [],
+      "topology": {
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0
+      },
+      "evidence_class": "synthetic"
+    },
+    {
+      "mesh_id": "gripper-shell",
+      "geometry": {
+        "path": "examples/rig-3d/robotic/exports/character.glb",
+        "bytes": 75956,
+        "sha256": "38c95ce549f58bdef2f06ce4652ac2026ca99c744f9593f348d0d1696131296e",
+        "media_type": "model/gltf-binary"
+      },
+      "lod": 0,
+      "vertices": 50,
+      "triangles": 96,
+      "material_slot": 1,
+      "normals": true,
+      "tangents": false,
+      "uv_sets": [],
+      "topology": {
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0
+      },
+      "evidence_class": "synthetic"
+    },
+    {
+      "mesh_id": "gripper-joint",
+      "geometry": {
+        "path": "examples/rig-3d/robotic/exports/character.glb",
+        "bytes": 75956,
+        "sha256": "38c95ce549f58bdef2f06ce4652ac2026ca99c744f9593f348d0d1696131296e",
+        "media_type": "model/gltf-binary"
+      },
+      "lod": 0,
+      "vertices": 62,
+      "triangles": 120,
+      "material_slot": 1,
+      "normals": true,
+      "tangents": false,
+      "uv_sets": [],
+      "topology": {
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0
+      },
+      "evidence_class": "synthetic"
+    },
+    {
+      "mesh_id": "jaw.left-shell",
+      "geometry": {
+        "path": "examples/rig-3d/robotic/exports/character.glb",
+        "bytes": 75956,
+        "sha256": "38c95ce549f58bdef2f06ce4652ac2026ca99c744f9593f348d0d1696131296e",
+        "media_type": "model/gltf-binary"
+      },
+      "lod": 0,
+      "vertices": 50,
+      "triangles": 96,
+      "material_slot": 1,
+      "normals": true,
+      "tangents": false,
+      "uv_sets": [],
+      "topology": {
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0
+      },
+      "evidence_class": "synthetic"
+    },
+    {
+      "mesh_id": "jaw.left-joint",
+      "geometry": {
+        "path": "examples/rig-3d/robotic/exports/character.glb",
+        "bytes": 75956,
+        "sha256": "38c95ce549f58bdef2f06ce4652ac2026ca99c744f9593f348d0d1696131296e",
+        "media_type": "model/gltf-binary"
+      },
+      "lod": 0,
+      "vertices": 62,
+      "triangles": 120,
+      "material_slot": 1,
+      "normals": true,
+      "tangents": false,
+      "uv_sets": [],
+      "topology": {
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0
+      },
+      "evidence_class": "synthetic"
+    },
+    {
+      "mesh_id": "jaw.right-shell",
+      "geometry": {
+        "path": "examples/rig-3d/robotic/exports/character.glb",
+        "bytes": 75956,
+        "sha256": "38c95ce549f58bdef2f06ce4652ac2026ca99c744f9593f348d0d1696131296e",
+        "media_type": "model/gltf-binary"
+      },
+      "lod": 0,
+      "vertices": 50,
+      "triangles": 96,
+      "material_slot": 1,
+      "normals": true,
+      "tangents": false,
+      "uv_sets": [],
+      "topology": {
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0
+      },
+      "evidence_class": "synthetic"
+    },
+    {
+      "mesh_id": "jaw.right-joint",
+      "geometry": {
+        "path": "examples/rig-3d/robotic/exports/character.glb",
+        "bytes": 75956,
+        "sha256": "38c95ce549f58bdef2f06ce4652ac2026ca99c744f9593f348d0d1696131296e",
+        "media_type": "model/gltf-binary"
+      },
+      "lod": 0,
+      "vertices": 62,
+      "triangles": 120,
+      "material_slot": 1,
+      "normals": true,
+      "tangents": false,
+      "uv_sets": [],
+      "topology": {
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0
+      },
+      "evidence_class": "synthetic"
+    }
+  ],
+  "provider_receipts": [],
+  "previews": [],
+  "quality_reports": [],
+  "repair_history": [],
+  "available_formats": [
+    "glb"
+  ],
+  "completeness": "partial"
 }

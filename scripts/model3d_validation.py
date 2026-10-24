@@ -9,6 +9,7 @@ from contextlib import contextmanager
 import hashlib
 import importlib.metadata
 import platform
+import re
 import os
 from pathlib import Path
 import stat
@@ -18,6 +19,14 @@ import unicodedata
 
 from model3d_contracts import KINDS, LIMITS, VERSION, file_references, validate_contract
 from rig_errors import RigError, MAX_JSON_BYTES, object_hash, read_json, require, safe_path, sha256
+
+
+def _file_fingerprint(info):
+    # Windows st_ctime is creation time, and CRT fstat/path stat can expose it
+    # with different precision. It cannot detect writes there. Identity, size,
+    # nanosecond mtime and the mandatory content digest remain authoritative.
+    fields = (info.st_dev, info.st_ino, info.st_size, info.st_mtime_ns)
+    return fields if os.name == 'nt' else fields + (info.st_ctime_ns,)
 
 
 @contextmanager
@@ -50,10 +59,7 @@ file identity; hostile concurrent directory replacement still needs OS isolation
             yield stream, before
             after = os.fstat(stream.fileno())
             current = safe_path(root, name, exists=True).stat()
-            require((before.st_dev, before.st_ino, before.st_size, before.st_mtime_ns, before.st_ctime_ns) ==
-                    (after.st_dev, after.st_ino, after.st_size, after.st_mtime_ns, after.st_ctime_ns) and
-                    (current.st_dev, current.st_ino, current.st_size, current.st_mtime_ns, current.st_ctime_ns) ==
-                    (after.st_dev, after.st_ino, after.st_size, after.st_mtime_ns, after.st_ctime_ns),
+            require(_file_fingerprint(before) == _file_fingerprint(after) == _file_fingerprint(current),
                     'MODEL3D_CHANGED', 'Payload changed during verification.', asset=name)
     finally:
         for descriptor in reversed(descriptors):
@@ -62,9 +68,10 @@ file identity; hostile concurrent directory replacement still needs OS isolation
 
 class _Snapshot:
     def __init__(self, root, destination, limits):
-        self.root, self.destination, self.limits = root, destination, limits
+        self.root, self.destination, self.limits = root, Path(destination).resolve(), limits
         self.files, self.aliases = {}, {}
         self.total = 0
+        self.image_dimensions = {}
 
     def capture(self, record):
         name = record['path']
@@ -101,6 +108,7 @@ class _Snapshot:
                             'MODEL3D_BUDGET', 'Decoded texture exceeds its pixel/memory budget.', asset=name)
                     require(getattr(image, 'n_frames', 1) == 1, 'MODEL3D_TEXTURE',
                             'This contract accepts static source textures only.', asset=name)
+                    self.image_dimensions[name] = [image.width, image.height]
                     image.load()
             except ImportError as exc:
                 raise RigError('MODEL3D_DEPENDENCY', 'Pillow is required to inspect source images.') from exc
@@ -117,6 +125,7 @@ def _inspect_asset(document, snapshot):
     try:
         from rig_contracts import DEFAULT_LIMITS
         from rig_import import load_character_model
+        from PIL import Image, UnidentifiedImageError
     except ImportError as exc:
         raise RigError('MODEL3D_DEPENDENCY', 'Install Pillow and requirements-rig.txt for geometry inspection.', stage='model3d') from exc
     record = document['geometry']
@@ -126,12 +135,14 @@ def _inspect_asset(document, snapshot):
     limits = document['limits']
     backend_limits = dict(DEFAULT_LIMITS, source_bytes=limits['file_bytes'],
                           dependency_bytes=limits['total_bytes'], vertices=limits['vertices'],
-                          triangles=limits['triangles'], memory_bytes=limits['memory_bytes'])
+                          triangles=limits['triangles'], memory_bytes=limits['memory_bytes'],
+                          influences=8)  # Inspect/preserve supported skins; this is not a viewer profile.
     try:
         model = load_character_model(snapshot.destination / record['path'], limits=backend_limits)
     except RigError:
         raise
-    except (ValueError, TypeError, KeyError, IndexError, AttributeError, OverflowError, struct.error) as exc:
+    except (ValueError, TypeError, KeyError, IndexError, AttributeError, OverflowError,
+            struct.error, Image.DecompressionBombError, UnidentifiedImageError, OSError) as exc:
         raise RigError('MODEL3D_MODEL', 'Malformed model rejected at the existing importer boundary.',
                        stage='model3d', asset=record['path']) from exc
     actual_dependencies = {p.relative_to(snapshot.destination).as_posix() for p in model.source_files}
@@ -140,11 +151,75 @@ def _inspect_asset(document, snapshot):
             'Actual model resources are absent from the asset file inventory.',
             observed=sorted(actual_dependencies - inventory))
     geometry = model.geometry
+    require(all(isinstance(mesh.id, str) and 1 <= len(mesh.id) <= 128 and
+                re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9._:-]*', mesh.id)
+                for mesh in geometry.meshes), 'MODEL3D_MESH_ID',
+            'Imported mesh identities must be portable Model3D identifiers.')
     ids = {mesh.id for mesh in geometry.meshes}
-    declared_ids = {name for part in document['parts'] for name in part['mesh_ids']}
+    require(len(ids) == len(geometry.meshes), 'MODEL3D_MESH_ID', 'Imported mesh identities must be unique.')
+    declared_ids = ({name for part in document['parts'] for name in part['mesh_ids']} |
+                    {region['mesh_id'] for part in document['parts'] for region in part['mesh_regions']})
     require(declared_ids == ids, 'MODEL3D_MESH_BINDING',
             'Semantic part bindings must cover the actual decoded mesh identities exactly.',
             expected=sorted(ids), observed=sorted(declared_ids))
+    # Every declared LOD is decoded using the same import authority. The metadata
+    # below is measured from those bytes, never promoted from manifest assertions.
+    details_by_file = {}
+    for detail in document['mesh_details']:
+        details_by_file.setdefault(detail['geometry']['path'], []).append(detail)
+    lod_reports = []
+    for name, details in details_by_file.items():
+        geometry_record = details[0]['geometry']
+        if name == record['path']:
+            imported = model
+        else:
+            require(geometry_record['media_type'] in expected and
+                    Path(name).suffix.lower() == expected[geometry_record['media_type']],
+                    'MODEL3D_FORMAT', 'LOD media type and geometry extension disagree.')
+            try:
+                imported = load_character_model(snapshot.destination / name, limits=backend_limits)
+            except RigError:
+                raise
+            except (ValueError, TypeError, KeyError, IndexError, AttributeError, OverflowError,
+                    struct.error, Image.DecompressionBombError, UnidentifiedImageError, OSError) as exc:
+                raise RigError('MODEL3D_MODEL', 'Malformed LOD rejected at the importer boundary.', asset=name) from exc
+            dependencies = {p.relative_to(snapshot.destination).as_posix() for p in imported.source_files}
+            require(dependencies <= inventory, 'MODEL3D_INVENTORY', 'LOD resources are absent from the file inventory.')
+        require(all(isinstance(mesh.id, str) and re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9._:-]{0,127}', mesh.id)
+                    for mesh in imported.geometry.meshes), 'MODEL3D_MESH_ID', 'LOD mesh identities must be portable identifiers.')
+        declared = {item['mesh_id'] for item in details}
+        require(declared == set(imported.geometry.by_id()), 'MODEL3D_MESH_BINDING',
+                'Mesh measurements must cover every decoded mesh in each LOD file.')
+        for detail in details:
+            mesh = imported.geometry.by_id()[detail['mesh_id']]
+            analysis = next(item for item in imported.report['meshes'] if item['id'] == detail['mesh_id'])
+            actual = dict(vertices=len(mesh.positions), triangles=len(mesh.triangles), material_slot=mesh.material,
+                          normals='NORMAL' in mesh.attributes, tangents='TANGENT' in mesh.attributes,
+                          uv_sets=[i for i in (0,1) if 'TEXCOORD_' + str(i) in mesh.attributes],
+                          topology=dict(boundary_edges=analysis['boundary_edges'],
+                                        nonmanifold_edges=analysis['nonmanifold_edges'],
+                                        degenerate_faces=analysis['degenerate_triangles']))
+            require(all(detail[key] == observed for key, observed in actual.items()), 'MODEL3D_MEASUREMENTS',
+                    'Per-mesh topology, attribute or count declarations differ from decoded geometry.',
+                    asset=detail['mesh_id'], expected=actual)
+        lod_reports.append(dict(path=name, sha256=geometry_record['sha256'],
+                                levels=sorted({item['lod'] for item in details}), inspection=imported.report))
+        del imported  # Do not retain every decoded LOD simultaneously.
+    for part in document['parts']:
+        for region in part['mesh_regions']:
+            mesh = geometry.by_id().get(region['mesh_id'])
+            require(mesh is not None, 'MODEL3D_REFERENCE', 'Surface region references an absent decoded mesh.')
+            require(len(set(region['face_indices'])) == len(region['face_indices']) and
+                    max(region['face_indices']) < len(mesh.triangles), 'MODEL3D_REGION',
+                    'Surface region contains repeated or out-of-range face indices.')
+    for uncertainty in document['uncertainties']:
+        scope = uncertainty['scope']
+        if scope['level'] in ('faces', 'vertices'):
+            mesh = geometry.by_id()[scope['target']]
+            count = len(mesh.triangles) if scope['level'] == 'faces' else len(mesh.positions)
+            require(bool(scope['indices']) and len(set(scope['indices'])) == len(scope['indices']) and
+                    max(scope['indices']) < count, 'MODEL3D_UNCERTAINTY',
+                    'Scoped uncertainty has repeated, empty or out-of-range element indices.')
     for material in document['materials']:
         require(material['slot'] < len(geometry.materials), 'MODEL3D_MATERIAL', 'Material slot is absent from the model.')
     measured = document['measurements']
@@ -162,7 +237,7 @@ def _inspect_asset(document, snapshot):
                 rig_implementation_sha256=code_signature(),
                 software={name: importlib.metadata.version(name) for name in ('numpy', 'Pillow')},
                 geometry_sha256=record['sha256'], importer='rig_import.load_character_model',
-                inspection=model.report, mesh_ids=sorted(ids),
+                inspection=model.report, lod_geometry=lod_reports, mesh_ids=sorted(ids),
                 skin_bindings=len(model.weights), animation_clips=len(model.clips),
                 material_parameter_equivalence='not-assessed', visual_approval='not-assessed')
 
@@ -206,6 +281,21 @@ Raises RigError for expected invalid input; does not modify the selected root.
             for record in file_references(value):
                 snapshot.capture(record)
                 names.add(record['path'])
+            for material in ([value] if value['kind'] == KINDS['material'] else value.get('materials', []) + value.get('material_requirements', [])):
+                for role, dimensions in material['texture_dimensions'].items():
+                    require(role in material['textures'], 'MODEL3D_TEXTURE', 'Texture dimensions reference a missing texture.')
+                    require(dimensions is not None and snapshot.image_dimensions.get(material['textures'][role]['file']['path']) == dimensions,
+                            'MODEL3D_DIMENSIONS', 'Material texture dimensions differ from decoded pixels.')
+            sources = [value] if value['kind'] == KINDS['source'] else value.get('sources', [])
+            for source in sources:
+                dimensions = snapshot.image_dimensions.get(source['file']['path'])
+                if dimensions is not None:
+                    require(source['dimensions_px'] == dimensions, 'MODEL3D_DIMENSIONS',
+                            'Declared source dimensions differ from the decoded image.',
+                            asset=source['file']['path'], expected=dimensions, observed=source['dimensions_px'])
+                    require(source['camera'].get('image_size', dimensions) == dimensions, 'MODEL3D_CAMERA',
+                            'Calibration image size differs from the decoded observation.',
+                            asset=source['file']['path'])
             if value['kind'] == KINDS['job']:
                 record = value['request']
                 require(record['media_type'] == 'application/json' and record['bytes'] <= MAX_JSON_BYTES,
@@ -218,8 +308,12 @@ Raises RigError for expected invalid input; does not modify the selected root.
                 names.update(request_names)
                 height = request_height + 1
             dependencies = list(value.get('dependencies', []))
-            if value['kind'] == KINDS['export']:
+            if value['kind'] in (KINDS['export'], KINDS['archive']):
                 dependencies.append(value['asset'])
+            if value['kind'] == KINDS['repair-operation']:
+                dependencies.append(value['before'])
+                if value['after'] is not None:
+                    dependencies.append(value['after'])
             for dependency in dependencies:
                 record = dependency['manifest']
                 require(record['media_type'] == 'application/json' and record['bytes'] <= MAX_JSON_BYTES,

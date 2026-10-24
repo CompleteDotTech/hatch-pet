@@ -30,7 +30,7 @@ is required at any boundary, never a silent reinterpretation of legacy pixels.
 | Required work | Implemented behavior / executable evidence |
 |---|---|
 | Record baseline and preserve existing contracts | Full clean baseline at `7995804`: 853 tests, zero failures/errors, nine local environmental/optional skips. Initial host-startup NumPy isolation failure retained separately. Current source-delivery verification passes actual restored v3 payloads. Older unavailable historical/private media remains unavailable. |
-| Strict request/source/asset/part/material/uncertainty/job/export schemas | `model3d_contracts.py` generates all eight definitions and runtime uses the same generated definitions. `generate_schemas.py --check` verifies parity. No legacy generated-schema bytes change. |
+| Strict request/source/asset/part/material/uncertainty/job/export schemas | `model3d_contracts.py` generates all fifteen definitions and runtime uses the same generated definitions. `generate_schemas.py --check` verifies parity. No legacy generated-schema bytes change. |
 | Hashes, units, bounds, versions, graph references and unknown fields | Unit tests cover malformed values, unsafe paths, declared/actual geometry mismatch, missing and same-size corrupt payloads, cycles, conflicting immutable versions, graph depth, source modality, calibration, fixture provenance and unsupported fields. |
 | Capability detection and isolated dependencies | `model3d.py capabilities` reports installed packages without importing the numeric backend or making network/provider calls. Existing rig dependency files are reused. `doctor.py` advertises the bounded read-only feature and explicitly says generation/provider execution/approval are false. |
 | Real affected workflows | `model3d.py validate` decodes the retained robotic GLB: 706 vertices, 1,368 triangles, 11 skin bindings and three actual clips. GLB SHA-256 `38c95ce549f58bdef2f06ce4652ac2026ca99c744f9593f348d0d1696131296e`; original fixture source SHA-256 `0a1c4fe3927c93588964f3cea225c4b78abe0ce096fd3d6fae6159e4277274ad`. |
@@ -57,12 +57,14 @@ provider, review authority or scheduler. Future producers must emit these contra
 and pass real payload inspection; merely selecting a method in a request is not
 an implementation of that method.
 
-## Executed changed-tree results
+## Historical local results before review corrections
 
-The local source-hash-bound run completed **893 tests, zero failures/errors, ten
+At original implementation head `c08a73a3ed93ec1dbf0c9e1d34448cf3a168d3a6`,
+the local source-hash-bound run completed **893 tests, zero failures/errors, ten
 explicit environmental/optional skips** in 245.662 seconds. All **31 new Model3D
 tests passed without skips** in 5.714 seconds, including actual OBJ and an independent
-pygltflib read. No source/test file changed during the full run. The targeted log, full-suite summary/checksum, source hashes,
+pygltflib read. No source/test file changed during that historical full run. These results do not
+cover subsequent fixture, security/portability or contract-completeness corrections. The targeted log, full-suite summary/checksum, source hashes,
 capability discovery and actual GLB inspection are retained in
 `tests/results/model3d-contracts-20261023/`. Remote CI and independent review remain
 separate gates; these local results do not claim that either has completed.

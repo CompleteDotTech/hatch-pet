@@ -30,6 +30,25 @@ def provenance():
                 license=dict(identifier=None, attribution=None, redistribution='unknown', evidence=None))
 
 
+def mesh_details(model, record):
+    reports = {item['id']: item for item in model.report['meshes']}
+    return [dict(mesh_id=mesh.id, geometry=record, lod=0, vertices=len(mesh.positions),
+                 triangles=len(mesh.triangles), material_slot=mesh.material,
+                 normals='NORMAL' in mesh.attributes, tangents='TANGENT' in mesh.attributes,
+                 uv_sets=[index for index in (0,1) if 'TEXCOORD_' + str(index) in mesh.attributes],
+                 topology=dict(boundary_edges=reports[mesh.id]['boundary_edges'],
+                               nonmanifold_edges=reports[mesh.id]['nonmanifold_edges'],
+                               degenerate_faces=reports[mesh.id]['degenerate_triangles']),
+                 evidence_class='synthetic') for mesh in model.geometry.meshes]
+
+
+def part_metadata():
+    return dict(version='1.0.0', category='general', pivot_m=[0,0,0], attachments=[],
+                anatomical_side='unknown', decomposition_components=[], mesh_regions=[],
+                visible_evidence=[], inferred_geometry=[], confidence=None, confidence_method=None,
+                rig_association=None, review_state='pending', edit_history=[])
+
+
 def asset_fixture(root, identifier='fixture', *, suffix='.glb'):
     from rig_gltf import export_geometry
     from rig_import import load_character_model
@@ -55,7 +74,10 @@ def asset_fixture(root, identifier='fixture', *, suffix='.glb'):
              for p in model.source_files]
     geometry = next(f for f in files if f['path'] == path.name)
     source = dict(schema_version=1, kind='model3d-source', id='original', version='1.0.0',
-                  file=geometry, role='geometry', provenance=provenance(), camera=dict(status='unknown'))
+                  file=geometry, role='geometry', provenance=provenance(), camera=dict(status='unknown'),
+                  original_filename=path.name, dimensions_px=None,
+                  acquisition=dict(method='unknown', timestamp=None), evidence_class='synthetic',
+                  mask=None, annotations=[])
     return dict(schema_version=1, kind='model3d-asset', id=identifier, version='1.0.0', category='character',
                 coordinate_system=deepcopy(COORDINATES), sources=[source], files=files, geometry=geometry,
                 measurements=dict(vertices=model.geometry.vertex_count, triangles=model.geometry.triangle_count,
@@ -63,9 +85,12 @@ def asset_fixture(root, identifier='fixture', *, suffix='.glb'):
                 parts=[dict(schema_version=1, kind='model3d-part', id='body', name='Body', parent=None,
                             local_transform=dict(translation=[0, 0, 0], rotation=[0, 0, 0, 1], scale=[1, 1, 1]),
                             mesh_ids=[m.id for m in model.geometry.meshes], material_ids=[],
-                            source_ids=['original'], uncertainty_ids=[])],
+                            source_ids=['original'], uncertainty_ids=[], **part_metadata())],
                 materials=[], dependencies=[], uncertainties=[], provenance=provenance(),
-                review=dict(status='pending', evidence=[]), limits=deepcopy(LIMITS))
+                review=dict(status='pending', evidence=[]), limits=deepcopy(LIMITS),
+                generation_revision='1.0.0', identity=None, pivot_m=[0,0,0], mesh_details=mesh_details(model, geometry),
+                provider_receipts=[], previews=[], quality_reports=[], repair_history=[],
+                available_formats=[suffix[1:]], completeness='partial')
 
 
 def write_document(root, name, document):
@@ -78,7 +103,10 @@ def request_fixture(sources):
         category='prop', method='import', description='Import the specified mesh.', negative_constraints=[],
         sources=deepcopy(sources), coordinate_system=deepcopy(COORDINATES), dimensions_m=[1,1,1],
         scale_evidence='estimated', intended_use='editing', formats=['glb'], semantic_parts=['body'],
-        allowed_assumptions=[], identity=None, style=None, provider=None, seed=0, limits=deepcopy(LIMITS))
+        allowed_assumptions=[], identity=None, style=None, provider=None, seed=0, limits=deepcopy(LIMITS),
+        existing_asset_version=None, source_type='geometry', provenance=provenance(), material_requirements=[],
+        execution_budgets=dict(texture_pixels=None, runtime_seconds=None, compute_seconds=None),
+        lod_requirements=[], fallback_policy='reject')
 
 
 class Model3DContracts(unittest.TestCase):
@@ -140,6 +168,150 @@ class Model3DContracts(unittest.TestCase):
         self.assertTrue(alias.is_symlink())
         self.assertEqual(alias.readlink(), link_target)
 
+    def _replace_geometry(self, document, path):
+        record = payload(self.root, path.name, 'model/gltf+json' if path.suffix == '.gltf' else 'model/gltf-binary')
+        old = document['geometry']
+        document['files'] = [record if item == old else item for item in document['files']]
+        document['geometry'] = record
+        document['sources'][0]['file'] = record
+        for item in document['mesh_details']:
+            if item['geometry'] == old:
+                item['geometry'] = record
+        return document
+
+    def test_snapshot_temporary_directory_with_aliased_parent(self):
+        actual = self.root / 'temporary-parent'
+        actual.mkdir()
+        alias = self.root / 'temporary-alias'
+        try:
+            alias.symlink_to(actual, target_is_directory=True)
+        except OSError as exc:
+            self.skipTest('Host cannot create symlinks: ' + str(exc))
+        # Exercise the internal temporary snapshot, not just the input root.
+        with mock.patch('tempfile.tempdir', str(alias)):
+            report = validate_document(self.asset, self.root)
+        self.assertTrue(report['geometry_inspected'])
+        self.assertEqual(list(actual.iterdir()), [])
+
+    def test_visual_hull_counts_calibrated_observations_with_other_sources(self):
+        from PIL import Image
+        Image.new('RGB', (8, 8)).save(self.root / 'view.png')
+        source = deepcopy(self.asset['sources'][0])
+        source.update(id='front-view', role='front', file=payload(self.root, 'view.png', 'image/png'),
+                      original_filename='view.png', dimensions_px=[8, 8])
+        source['camera'] = dict(status='supplied', projection='orthographic',
+            camera_to_world=[1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1], image_size=[8,8],
+            orthographic_size=[1,1], evidence=source['file'])
+        second = deepcopy(source)
+        second.update(id='right-view', role='right')
+        second['camera']['camera_to_world'][3] = 1
+        request = request_fixture([source, second] + self.asset['sources'])
+        request.update(method='visual-hull', source_type='mixed')
+        self.assertTrue(validate_document(request, self.root)['payloads_verified'])
+        request['sources'] = [source] + self.asset['sources']
+        self.assertInvalid(request, 'MODEL3D_CAMERA')
+
+    def test_source_and_calibration_dimensions_match_decoded_image(self):
+        from PIL import Image
+        Image.new('RGB', (8, 8)).save(self.root / 'view.png')
+        source = deepcopy(self.asset['sources'][0])
+        source.update(role='viewpoint', file=payload(self.root, 'view.png', 'image/png'),
+                      original_filename='view.png', dimensions_px=[8, 8])
+        source['camera'] = dict(status='supplied', projection='orthographic',
+            camera_to_world=[1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1], image_size=[32768,32768],
+            orthographic_size=[1,1], evidence=source['file'])
+        self.assertInvalid(source, 'MODEL3D_CAMERA', payloads=True)
+        source['camera']['image_size'] = [8,8]
+        source['dimensions_px'] = [9,8]
+        self.assertInvalid(source, 'MODEL3D_DIMENSIONS', payloads=True)
+        source['dimensions_px'] = [8,8]
+        self.assertTrue(validate_document(source, self.root)['payloads_verified'])
+        source['acquisition'] = dict(method='imported', timestamp='invented')
+        self.assertInvalid(source, 'MODEL3D_ACQUISITION')
+        source['acquisition'] = dict(method='imported', timestamp=None)
+        self.assertInvalid(source, 'MODEL3D_ACQUISITION')
+
+    def test_malformed_mesh_identity_and_embedded_image_are_structured_cli_errors(self):
+        import io
+        from PIL import Image
+        doc = asset_fixture(self.root, 'adversarial', suffix='.gltf')
+        path = self.root / 'adversarial.gltf'
+        original = json.loads(path.read_text())
+        malformed = deepcopy(original)
+        malformed['meshes'][0]['extras']['hatchMeshId'] = 42
+        malformed['meshes'][0]['primitives'][0]['attributes'].pop('NORMAL', None)
+        malformed['meshes'].append(deepcopy(original['meshes'][0]))
+        malformed['meshes'][1].pop('extras', None)
+        malformed['nodes'].append(dict(mesh=1))
+        malformed['scenes'][0]['nodes'].append(len(malformed['nodes']) - 1)
+        image = io.BytesIO()
+        Image.new('RGB', (8,8)).save(image, format='PNG')
+        image_data = image.getvalue()
+        bomb = deepcopy(original)
+        bomb['images'] = [dict(uri='data:image/png;base64,' + base64.b64encode(image_data).decode())]
+        for content, lowered_threshold, code in ((malformed, None, 'MODEL3D_MESH_ID'), (bomb, 1, 'MODEL3D_MODEL')):
+            path.write_text(json.dumps(content), encoding='utf-8')
+            current = self._replace_geometry(deepcopy(doc), path)
+            write_document(self.root, 'adversarial.json', current)
+            # Lower Pillow's threshold for this real embedded PNG; no giant allocation.
+            script = ('import sys;sys.path.insert(0,' + repr(str(ROOT / 'scripts')) + ');'
+                      + ('from PIL import Image;Image.MAX_IMAGE_PIXELS=1;' if lowered_threshold else '')
+                      + 'import model3d;raise SystemExit(model3d.main())')
+            result = subprocess.run([sys.executable, '-B', '-c', script, 'validate',
+                '--file', str(self.root / 'adversarial.json')], capture_output=True, text=True)
+            self.assertEqual(result.returncode, 2, result.stderr)
+            error = json.loads(result.stderr)
+            self.assertFalse(error['ok'])
+            self.assertEqual(error['error']['code'], code)
+            self.assertNotIn('Traceback', result.stderr)
+
+    def test_eight_influence_skin_is_inspected_without_loss(self):
+        import numpy as np
+        from rig_gltf import GltfBuilder, _export_geometry
+        from rig_import import load_character_model
+        from test_rig_skinning import bound_fixture
+        rig = bound_fixture()
+        skin = rig.weights['strip']
+        skin.joints = ['b' + str(i) for i in range(8)]
+        skin.indices = np.tile(np.arange(8, dtype=np.uint16), (4, 1))
+        skin.weights = np.full((4, 8), 1/8)
+        skin.inverse_bind = np.tile(np.eye(4), (8, 1, 1))
+        # Two bind joints at their actual rest locations.
+        builder = GltfBuilder()
+        builder.json['nodes'] = [dict(name=name) for name in skin.joints]
+        nodes = _export_geometry(builder, rig.geometry, weights=rig.weights,
+                                 bone_nodes={name:i for i, name in enumerate(skin.joints)}, root_node=0)
+        builder.json['scenes'] = [dict(nodes=list(range(8)) + list(nodes.values()))]
+        path = self.root / 'eight.glb'
+        builder.write(path)
+        model = load_character_model(path, limits={**__import__('rig_contracts').DEFAULT_LIMITS, 'influences':8})
+        doc = deepcopy(self.asset)
+        record = payload(self.root, path.name, 'model/gltf-binary')
+        doc.update(geometry=record, files=[record])
+        doc['sources'][0]['file'] = record
+        doc['parts'][0]['mesh_ids'] = [mesh.id for mesh in model.geometry.meshes]
+        doc['mesh_details'] = mesh_details(model, record)
+        doc['measurements'] = dict(vertices=model.geometry.vertex_count, triangles=model.geometry.triangle_count,
+                                  bounds=dict(minimum=model.report['bounds'][0], maximum=model.report['bounds'][1]))
+        report = validate_document(doc, self.root)
+        self.assertEqual(report['geometry'][0]['skin_bindings'], 1)
+        self.assertEqual(model.weights['strip'].indices.shape[1], 8)
+        np.testing.assert_allclose(model.weights['strip'].weights.sum(axis=1), 1)
+
+    def test_windows_creation_time_is_not_used_as_a_write_fingerprint(self):
+        from types import SimpleNamespace
+        from model3d_validation import _file_fingerprint
+        first = SimpleNamespace(st_dev=1, st_ino=2, st_size=3, st_mtime_ns=4, st_ctime_ns=5)
+        second = SimpleNamespace(**vars(first))
+        second.st_ctime_ns = 6
+        with mock.patch('model3d_validation.os.name', 'nt'):
+            self.assertEqual(_file_fingerprint(first), _file_fingerprint(second))
+            second.st_mtime_ns = 7
+            self.assertNotEqual(_file_fingerprint(first), _file_fingerprint(second))
+        second.st_mtime_ns = 4
+        with mock.patch('model3d_validation.os.name', 'posix'):
+            self.assertNotEqual(_file_fingerprint(first), _file_fingerprint(second))
+
     def test_obj_boundary_and_independent_glb_reader(self):
         from pygltflib import GLTF2
         from rig_import import load_character_model
@@ -156,6 +328,7 @@ class Model3DContracts(unittest.TestCase):
         doc.update(geometry=record, files=[record])
         doc['sources'][0]['file'] = record
         doc['parts'][0]['mesh_ids'] = [mesh.id for mesh in model.geometry.meshes]
+        doc['mesh_details'] = mesh_details(model, record)
         doc['measurements'] = dict(vertices=model.geometry.vertex_count, triangles=model.geometry.triangle_count,
                                    bounds=dict(minimum=model.report['bounds'][0], maximum=model.report['bounds'][1]))
         report = validate_document(doc, self.root)
@@ -339,9 +512,11 @@ class Model3DContracts(unittest.TestCase):
         self.assertInvalid(doc, 'MODEL3D_DUPLICATE')
 
     def test_uncertainty_requires_evidence_not_invented_confidence(self):
-        entry = dict(schema_version=1, kind='model3d-uncertainty', id='u', target='body',
+        entry = dict(schema_version=1, kind='model3d-uncertainty', id='u', version='1.0.0', target='body',
                      classification='procedurally-inferred', message='Hidden surfaces were authored, not observed.',
-                     evidence=['original'], confidence=None, confidence_method=None, status='pending')
+                     evidence=['original'], confidence=None, confidence_method=None, status='pending',
+                     scope=dict(level='part', target='body', indices=[]), inferred_method=None,
+                     missing_viewpoints=[], recommended_actions=[])
         validate_contract(entry)
         entry['confidence'] = .9
         self.assertInvalid(entry, 'MODEL3D_CONFIDENCE')
@@ -367,7 +542,8 @@ class Model3DContracts(unittest.TestCase):
                         slot=0, base_color=[.5,.5,.5,1], metallic=0, roughness=.5,
                         alpha_mode='OPAQUE', alpha_cutoff=.5, double_sided=False,
                         textures=dict(normal=dict(file=record, texcoord=0, color_space='linear-data')),
-                        provenance=provenance())
+                        provenance=provenance(), evidence_class='unknown', texture_dimensions=dict(normal=[8,8]),
+                        procedural_parameters=[], projection_evidence=[])
         validate_contract(material)
         material['textures']['normal']['color_space'] = 'srgb'
         self.assertInvalid(material, 'MODEL3D_COLOR_SPACE')
@@ -385,7 +561,7 @@ class Model3DContracts(unittest.TestCase):
 
     def test_job_and_export_are_claims_not_execution(self):
         request_file = write_document(self.root, 'input.json', request_fixture(self.asset['sources']))
-        job = dict(schema_version=1, kind='model3d-job', id='job', request=request_file, asset_id='fixture',
+        job = dict(schema_version=1, kind='model3d-job', id='job', version='1.0.0', request=request_file, asset_id='fixture',
                    status='completed', attempts=1, maximum_attempts=2, outputs=[self.asset['geometry']],
                    error=None, dependencies=[], limits=deepcopy(LIMITS))
         result = validate_document(job, self.root)
@@ -396,7 +572,7 @@ class Model3DContracts(unittest.TestCase):
         job['status'] = 'failed'
         self.assertInvalid(job, 'MODEL3D_JOB')
         asset_file = write_document(self.root, 'asset.json', self.asset)
-        export = dict(schema_version=1, kind='model3d-export', id='export',
+        export = dict(schema_version=1, kind='model3d-export', id='export', version='1.0.0',
                       asset=dict(id='fixture', version='1.0.0', manifest=asset_file), format='glb',
                       status='complete', files=[self.asset['geometry']], tools=[dict(name='native', version='1.0.0')],
                       losses=[], independent_inspection=None, limits=deepcopy(LIMITS))
@@ -433,7 +609,8 @@ class Model3DContracts(unittest.TestCase):
         from PIL import Image
         Image.new('RGB', (8, 8)).save(self.root / 'texture.png')
         source = deepcopy(self.asset['sources'][0])
-        source.update(role='texture', file=payload(self.root, 'texture.png', 'image/png'))
+        source.update(role='texture', file=payload(self.root, 'texture.png', 'image/png'),
+                      original_filename='texture.png', dimensions_px=[8, 8])
         self.assertTrue(validate_document(source, self.root)['payloads_verified'])
         source['file']['media_type'] = 'image/jpeg'
         self.assertInvalid(source, 'MODEL3D_FORMAT', payloads=True)
@@ -447,7 +624,7 @@ class Model3DContracts(unittest.TestCase):
 
     def test_job_request_must_be_a_matching_request_contract(self):
         reference = write_document(self.root, 'request.json', {'invented': 'success'})
-        job = dict(schema_version=1, kind='model3d-job', id='job', request=reference, asset_id='fixture',
+        job = dict(schema_version=1, kind='model3d-job', id='job', version='1.0.0', request=reference, asset_id='fixture',
                    status='queued', attempts=0, maximum_attempts=1, outputs=[], error=None,
                    dependencies=[], limits=deepcopy(LIMITS))
         self.assertInvalid(job, 'MODEL3D_REFERENCE', payloads=True)
@@ -503,6 +680,153 @@ class Model3DContracts(unittest.TestCase):
             (fresh / self.asset['geometry']['path']).unlink()
             with self.assertRaises(RigError):
                 validate_file(fresh / 'asset.json')
+
+    def test_additional_lod_geometry_is_actually_decoded_and_budgeted(self):
+        second = asset_fixture(self.root, 'alternate-lod')
+        doc = deepcopy(self.asset)
+        doc['files'].extend(second['files'])
+        detail = deepcopy(second['mesh_details'][0])
+        detail['lod'] = 1
+        doc['mesh_details'].append(detail)
+        report = validate_document(doc, self.root)
+        observations = report['geometry'][0]['lod_geometry']
+        self.assertEqual({item['path'] for item in observations}, {'fixture.glb', 'alternate-lod.glb'})
+        self.assertEqual({level for item in observations for level in item['levels']}, {0,1})
+        limited = deepcopy(doc)
+        limited['limits']['vertices'] = self.asset['measurements']['vertices']
+        self.assertInvalid(limited, 'MODEL3D_BUDGET')
+        path = self.root / 'alternate-lod.glb'
+        path.write_bytes(b'hash-correct malformed LOD')
+        record = payload(self.root, path.name, 'model/gltf-binary')
+        doc['files'][-1] = record
+        doc['mesh_details'][1]['geometry'] = record
+        self.assertInvalid(doc, payloads=True)
+
+    def test_required_metadata_is_explicit_and_extensions_remain_hash_bound(self):
+        source = deepcopy(self.asset['sources'][0])
+        source['acquisition'] = dict(method='imported', timestamp='2026-10-23T12:00:00Z')
+        validate_contract(source)
+        for field in ('acquisition', 'dimensions_px', 'original_filename', 'evidence_class'):
+            broken = deepcopy(source)
+            del broken[field]
+            self.assertInvalid(broken, 'MODEL3D_SCHEMA')
+        request = request_fixture(self.asset['sources'])
+        request.update(existing_asset_version='1.0.0', source_type='mixed', fallback_policy='import-only',
+            execution_budgets=dict(texture_pixels=4096, runtime_seconds=30, compute_seconds=10),
+            lod_requirements=[dict(level=0, triangles=1000, maximum_deviation_m=None)])
+        validate_contract(request)
+        for key in request['execution_budgets']:
+            broken = deepcopy(request)
+            broken['execution_budgets'][key] = -1
+            self.assertInvalid(broken, 'MODEL3D_SCHEMA')
+        request['lod_requirements'].append(deepcopy(request['lod_requirements'][0]))
+        self.assertInvalid(request, 'MODEL3D_DUPLICATE')
+        doc = deepcopy(self.asset)
+        (self.root / 'extension.txt').write_text('Exact extension bytes.', encoding='utf-8')
+        doc['extensions'] = [dict(namespace='fixture-extra', payload=payload(self.root, 'extension.txt', 'text/plain'))]
+        self.assertTrue(validate_document(doc, self.root)['payloads_verified'])
+        doc['extensions'][0]['payload']['sha256'] = '0' * 64
+        self.assertInvalid(doc, 'MODEL3D_HASH', payloads=True)
+
+    def test_region_only_parts_and_text_only_request_provenance(self):
+        doc = deepcopy(self.asset)
+        doc['parts'][0].update(mesh_ids=[], mesh_regions=[dict(mesh_id='strip', face_indices=[0])])
+        second = deepcopy(doc['parts'][0])
+        second.update(id='other-surface', mesh_regions=[dict(mesh_id='strip', face_indices=[1])])
+        doc['parts'].append(second)
+        self.assertTrue(validate_document(doc, self.root)['geometry_inspected'])
+        doc['parts'][1]['mesh_regions'][0]['face_indices'] = [0]
+        self.assertInvalid(doc, 'MODEL3D_REGION')
+        request = request_fixture([])
+        request.update(method='procedural', source_type='text')
+        self.assertTrue(validate_document(request, self.root)['payloads_verified'])
+        self.assertEqual(request['provenance']['license']['redistribution'], 'unknown')
+        request['provenance']['fixture'] = False
+        self.assertInvalid(request, 'MODEL3D_PROVENANCE')
+
+    def test_all_evidence_contracts_roundtrip_without_promoting_claims(self):
+        import zipfile
+        evidence = self.root / 'native-evidence.txt'
+        evidence.write_text('Synthetic schema fixture, not production execution or approval.', encoding='utf-8')
+        native = payload(self.root, evidence.name, 'text/plain')
+        request = write_document(self.root, 'request.json', request_fixture(self.asset['sources']))
+        asset = write_document(self.root, 'asset.json', self.asset)
+        asset_ref = dict(id=self.asset['id'], version=self.asset['version'], manifest=asset)
+        with zipfile.ZipFile(self.root / 'portable.zip', 'w') as archive:
+            archive.write(self.root / 'fixture.glb', 'fixture.glb')
+        archive_record = payload(self.root, 'portable.zip', 'application/zip')
+        common = dict(schema_version=1, id='fixture-evidence', version='1.0.0',
+                      subject=dict(id='fixture', version='1.0.0'), owner='model3d',
+                      native_evidence=[native], extensions=[])
+        fields = {
+            'provider-receipt': dict(provider='unconfigured', model='unavailable', provider_version=None,
+                request=request, status='unavailable', executed=False, outputs=[], seed=None, usage=None, error=None),
+            'processing-stage': dict(operation='inspect', status='queued', inputs=[self.asset['geometry']],
+                outputs=[], tools=[dict(name='test-fixture', version='1.0.0')], usage=None, error=None),
+            'resource-usage': dict(status='unavailable', wall_seconds=None, cpu_seconds=None,
+                peak_memory_bytes=None, input_bytes=None, output_bytes=None, compute_device=None, measurement_method=None),
+            'validation-result': dict(validator=dict(name='test-fixture', version='1.0.0'), status='unverified',
+                contract_valid=False, payloads_verified=False, geometry_inspected=False, diagnostics=[]),
+            'review-decision': dict(reviewer='synthetic-fixture', reviewer_kind='automated', timestamp=None,
+                verdict='pending', dimensions=['geometry'], inspected=[self.asset['geometry']],
+                notes='Tests only; this is not approval.'),
+            'repair-operation': dict(operation='repair', before=asset_ref, after=None, status='proposed',
+                changed_parts=['body'], reason='Synthetic contract fixture only.', tools=[dict(name='test-fixture', version='1.0.0')]),
+            'archive': dict(archive=archive_record, format='zip', asset=asset_ref, inventory=[self.asset['geometry']],
+                status='unverified', restoration_evidence=None, preserved_reviews=[])}
+        invalid = {
+            'provider-receipt': dict(status='completed', executed=False),
+            'processing-stage': dict(status='completed'),
+            'resource-usage': dict(status='measured'),
+            'validation-result': dict(geometry_inspected=True),
+            'review-decision': dict(verdict='approved'),
+            'repair-operation': dict(status='completed'),
+            'archive': dict(status='restored')}
+        from jsonschema import Draft202012Validator
+        validator = Draft202012Validator(schemas()['model3d.schema.json'])
+        for name, values in fields.items():
+            with self.subTest(kind=name):
+                document = dict(common, kind=KINDS[name], **values)
+                validator.validate(document)
+                encoded = json.dumps(document, sort_keys=True)
+                self.assertEqual(validate_contract(decode_json(encoded)), document)
+                report = validate_document(document, self.root)
+                self.assertTrue(report['payloads_verified'])
+                self.assertEqual(report['provider_execution'], 'not-assessed')
+                self.assertEqual(report['visual_approval'], 'not-assessed')
+                broken = deepcopy(document)
+                broken.update(invalid[name])
+                self.assertInvalid(broken)
+                broken = deepcopy(document)
+                broken['schema_version'] = 999
+                self.assertInvalid(broken, 'MODEL3D_SCHEMA')
+                broken = deepcopy(document)
+                broken['fictional_approval'] = True
+                self.assertInvalid(broken, 'MODEL3D_SCHEMA')
+                broken = deepcopy(document)
+                broken['native_evidence'][0]['sha256'] = '0' * 64
+                self.assertInvalid(broken, 'MODEL3D_HASH', payloads=True)
+
+    def test_part_regions_scoped_uncertainty_and_mesh_claims_are_measured(self):
+        doc = deepcopy(self.asset)
+        doc['parts'][0]['mesh_regions'] = [dict(mesh_id='strip', face_indices=[0])]
+        uncertainty = dict(schema_version=1, kind=KINDS['uncertainty'], id='surface', version='1.0.0', target='body',
+            classification='observed', message='Synthetic triangle observation.', evidence=['original'],
+            confidence=None, confidence_method=None, status='pending',
+            scope=dict(level='faces', target='strip', indices=[0]), inferred_method=None,
+            missing_viewpoints=['back'], recommended_actions=['Inspect the back surface.'])
+        doc['uncertainties'] = [uncertainty]
+        self.assertTrue(validate_document(doc, self.root)['geometry_inspected'])
+        for mutate, code in (
+            (lambda x: x['parts'][0]['mesh_regions'][0].update(face_indices=[999]), 'MODEL3D_REGION'),
+            (lambda x: x['uncertainties'][0]['scope'].update(indices=[999]), 'MODEL3D_UNCERTAINTY'),
+            (lambda x: x['uncertainties'][0]['scope'].update(target='missing'), 'MODEL3D_REFERENCE'),
+            (lambda x: x['mesh_details'][0].update(vertices=999), 'MODEL3D_MEASUREMENTS'),
+            (lambda x: x['mesh_details'][0].update(normals=False), 'MODEL3D_MEASUREMENTS'),
+            (lambda x: x['mesh_details'][0]['topology'].update(boundary_edges=999), 'MODEL3D_MEASUREMENTS')):
+            broken = deepcopy(doc)
+            mutate(broken)
+            self.assertInvalid(broken, code, payloads=True)
 
     def test_schema_discovery_does_not_import_numpy(self):
         command = [sys.executable, '-B', '-c',
