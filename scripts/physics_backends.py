@@ -762,8 +762,9 @@ class BlenderBackend:
         require(type(source_bytes) is int and 0 <= source_bytes <= MAX_INPUT_BYTES,
                 'PHYSICS_RESOURCE_LIMIT', 'Native source byte bound exceeded.', category='resource-exhaustion')
         frames, bodies = world['frame_range']['end'], len(world['bodies'])
-        memory = 512*1024**2 + source_bytes*8 + mesh_vertices*128 + bodies*frames*1024
-        output = 8*1024**2 + source_bytes*2 + bodies*frames*1024
+        cache_samples = timing_clock(world)['solver_steps']+1 if self.backend_id=='pybullet' else frames
+        memory = 512*1024**2 + source_bytes*8 + mesh_vertices*128 + bodies*cache_samples*1024
+        output = 8*1024**2 + source_bytes*2 + bodies*cache_samples*1024
         budgets = world['budgets']
         require(memory <= budgets['memory_bytes'] and output <= min(budgets['cache_bytes'], budgets['temporary_bytes']) and
                 output <= budgets['bake_file_bytes'],
@@ -1171,6 +1172,7 @@ class PyBulletBackend(BlenderBackend):
         _validate_samples(states,world,prepared.world_sha256,prepared.fixture)
         contacts=parse((root/'contacts.json').read_bytes())
         _validate_contacts(contacts,world,prepared.world_sha256)
+        _validate_solver_samples(parse((root/'solver-states.json').read_bytes()),world,prepared.world_sha256,prepared.fixture)
         _write(root/'timing.json',canonical(_timing_receipt(world, identity)))
         _write(root/'simulation-report.json',canonical(report))
         _write(root/'verification.json',canonical(dict(schema_version=1,world_sha256=prepared.world_sha256,
@@ -1329,6 +1331,23 @@ def _inventory(root):
     return files
 
 
+def _validate_solver_samples(value, world, world_hash, fixture):
+    require(type(value) is dict and set(value)=={'schema_version','kind','world_sha256','effective_step','samples'} and
+            value['schema_version']==1 and value['kind']=='hatch-physics-solver-states' and value['world_sha256']==world_hash and
+            value['effective_step']==timing_clock(world)['effective_solver_step'],
+            'PHYSICS_CACHE_CORRUPT','Solver-step cache identity/clock differs.',category='cache-corruption')
+    count=timing_clock(world)['solver_steps']+1
+    require(type(value['samples']) is list and len(value['samples'])==count,
+            'PHYSICS_CACHE_CORRUPT','Solver-step cache count differs.',category='cache-corruption')
+    projected=[]
+    for entry in value['samples']:
+        require(type(entry) is dict and set(entry)=={'step','bodies'},'PHYSICS_CACHE_CORRUPT','Malformed solver sample.',category='cache-corruption')
+        projected.append(dict(frame=entry['step'],bodies=entry['bodies']))
+    synthetic=deepcopy(world);synthetic['frame_range']=dict(start=0,end=count)
+    _validate_samples(dict(schema_version=1,kind='hatch-physics-samples',world_sha256=world_hash,
+        frame_range=synthetic['frame_range'],fps=world['fps'],fixture=fixture,samples=projected),synthetic,world_hash,fixture)
+
+
 def _validate_samples(value, world, world_hash, fixture):
     require(isinstance(value, dict) and set(value) == {'schema_version', 'kind', 'world_sha256', 'frame_range', 'fps', 'fixture', 'samples'} and
             value['schema_version'] == 1 and value['kind'] == 'hatch-physics-samples' and value['world_sha256'] == world_hash and
@@ -1479,9 +1498,16 @@ def _read_cache_impl(root, *, expected_world_sha256=None):
         else:
             _check_pybullet_report(receipt.get('solver_report'),world,receipt.get('backend_module',{}))
             _validate_contacts(parse(payloads['contacts.json']),world,world_hash)
+            if 'solver-states.json' in payloads:
+                _validate_solver_samples(parse(payloads['solver-states.json']),world,world_hash,manifest['fixture'])
+            else:
+                require(digest(payloads['worker.py'])!=digest(_worker_bytes('pybullet')),
+                        'PHYSICS_CACHE_CORRUPT','Current PyBullet output omitted solver cache.',category='cache-corruption')
             require(receipt.get('sample_cache_verification') == dict(status='structure-and-finite-values-verified',
                     sample_count=len(states['samples']),contact_frames=len(states['samples'])),
                     'PHYSICS_CACHE_CORRUPT','DIRECT sampled-cache verification receipt differs.',category='cache-corruption')
+        if 'solver-states.json' in payloads:
+            receipt['_solver_states']=parse(payloads['solver-states.json'])
         return manifest, world, states, receipt
 
 
@@ -1500,14 +1526,20 @@ def verify_cache(root, *, expected_world_sha256=None):
 def inspect_time(root, timestamp):
     """Seek verified completed output states at an exact rational timestamp."""
     require(isinstance(timestamp,Fraction), 'PHYSICS_CACHE_SAMPLE', 'Timestamp must be an exact Fraction.',category='invalid-input')
-    manifest, world, states, _ = _read_cache(root)
-    coordinate=timestamp*_ratio(world['fps'])
-    require(0<=coordinate<=len(states['samples'])-1,'PHYSICS_CACHE_SAMPLE',
+    manifest, world, states, receipt = _read_cache(root)
+    output_coordinate=timestamp*_ratio(world['fps'])
+    require(0<=output_coordinate<=len(states['samples'])-1,'PHYSICS_CACHE_SAMPLE',
             'Timestamp lies outside completed cache samples; extrapolation is unsupported.',category='invalid-input')
+    coordinate=output_coordinate
+    if '_solver_states' in receipt:
+        solver_states=receipt['_solver_states']
+        coordinate=timestamp/_ratio(solver_states['effective_step'])
+        states=solver_states
     left=math.floor(coordinate); right=math.ceil(coordinate)
     alpha=coordinate-left
     bodies=[interpolate_state(a,b,alpha) for a,b in zip(states['samples'][left]['bodies'],states['samples'][right]['bodies'])]
-    return dict(time=rational(timestamp),bodies=bodies,bracket_frames=[left,right],
+    return dict(time=rational(timestamp),bodies=bodies,bracket_frames=[math.floor(output_coordinate),math.ceil(output_coordinate)],
+        interpolation_bracket=[left,right],sample_clock='solver' if states.get('kind')=='hatch-physics-solver-states' else 'output',
         interpolation='linear translation and shortest-arc quaternion slerp',
         source='hash-verified-completed-output-state-interpolation',world_sha256=manifest['world_sha256'],fixture=manifest['fixture'])
 

@@ -125,6 +125,7 @@ def main():
         samples=[]; contacts=[]
         index=0
         left=right=state()
+        solved=[dict(step=0,bodies=right)]
         for frame in range(frames):
             target=Fraction(frame,1)/fps/step
             upper=math.ceil(target)
@@ -133,6 +134,7 @@ def main():
                 p.stepSimulation(physicsClientId=client)
                 right=state()
                 index+=1
+                solved.append(dict(step=index,bodies=right))
             alpha=target-(upper-1) if target.denominator!=1 else Fraction(1)
             bodies=right if target.denominator==1 else [interpolate(a,b,alpha) for a,b in zip(left,right)]
             values=[]
@@ -143,6 +145,9 @@ def main():
                     distance=contact[8],normal_force=contact[9]))
             contacts.append(dict(frame=frame,contacts=values))
             samples.append(dict(frame=frame,bodies=bodies))
+        (root/'solver-states.json').write_bytes(canonical(dict(schema_version=1,
+            kind='hatch-physics-solver-states',world_sha256=job['world_sha256'],
+            effective_step=dict(numerator=step.numerator,denominator=step.denominator),samples=solved)))
         (root/'states.json').write_bytes(canonical(dict(schema_version=1,kind='hatch-physics-samples',
             world_sha256=job['world_sha256'],frame_range=world['frame_range'],fps=world['fps'],fixture=job['fixture'],samples=samples)))
         (root/'contacts.json').write_bytes(canonical(dict(schema_version=1,kind='hatch-pybullet-contacts',

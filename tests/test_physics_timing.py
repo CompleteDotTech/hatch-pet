@@ -100,6 +100,10 @@ class NativeTimingTests(unittest.TestCase):
                             self.assertLess(abs(observed-(3-9.81*float(t)**2/2)),.004)
                         sought=physics.inspect_time(destination,Fraction(q,2*p))
                         self.assertEqual(sought['bracket_frames'],[0,1])
+                        self.assertEqual(sought['sample_clock'],'solver')
+                        native=physics.parse((destination/'solver-states.json').read_bytes())
+                        self.assertEqual(len(native['samples']),clock(world)['solver_steps']+1)
+                        self.assertEqual(physics.inspect_time(destination,Fraction(48*q,p))['time'],dict(numerator=Fraction(48*q,p).numerator,denominator=Fraction(48*q,p).denominator))
                         with self.assertRaises(physics.BackendError):physics.inspect_time(destination,Fraction(49*q,p))
                         outputs.append(values)
                         records.append(dict(rate=[p,q],repeat=repeat,discrete_euler_max_error=maximum,
@@ -109,4 +113,4 @@ class NativeTimingTests(unittest.TestCase):
                     finally:backend.cleanup(prepared)
                 self.assertEqual(outputs[0],outputs[1])
             target=os.environ.get('HATCH_TIMING_EVIDENCE')
-            if target:Path(target).write_bytes(physics.canonical(dict(scope='real PyBullet; pinned same-environment paired runs only',records=records)))
+            if target:Path(target).write_bytes(physics.canonical(dict(scope='real PyBullet; pinned same-environment paired runs only',classification='pinned-numerical for these paired runs only',maximum_paired_output_difference=0,records=records)))
