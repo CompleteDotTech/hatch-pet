@@ -48,7 +48,10 @@ policy; versions use exact `major.minor.patch` with no leading zeros.
 quaternions, bounds, reference inventories, graph/constraint/attachment cycles,
 unique identities, timestamp ordering, fixture declarations and exact timing.
 Schema-only validation is explicitly insufficient for these relational rules.
-`canonical_bytes` produces deterministic UTF-8 JSON; `document_hash` hashes that
+Strings must contain encodable Unicode scalar values; escaped lone surrogates
+are rejected instead of admitting documents that cannot serialize/reopen. Free-form
+metadata/parameter string values have explicit 4096-character caps.
+`canonical_bytes` streams deterministic UTF-8 JSON under the manifest byte cap; `document_hash` hashes that
 canonical serialization. Referenced **files** are always hashed as their actual
 bytes, including original whitespace, not canonical reserializations.
 
@@ -201,7 +204,7 @@ contract/file-loading tests also run in the existing 2D gate with NumPy blocked.
 The example refuses an existing destination. Its direct file creation is for a
 new, caller-owned fixture directory only; it is not a package publisher.
 
-The implementation's focused execution passed **64 tests**, including real
+The implementation's focused execution passed **67 tests**, including real
 fresh-process reopening and actual geometry-byte/hash tampering. Source delivery
 inventory and generated schema/template checks passed. Exact source revision,
 full legacy regression results, CI and independent Astra review are recorded in

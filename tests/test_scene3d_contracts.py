@@ -321,6 +321,33 @@ class SceneContractTests(unittest.TestCase):
         with self.assertRaisesRegex(RigError, 'hash-bound material'):
             validate_document(animation)
 
+    def test_utf8_scalar_strings_are_required_for_reopenable_canonical_documents(self):
+        for bad in ('\ud800', '\udfff', 'note\ud800tail'):
+            doc = fixture('project')
+            doc['metadata']['note'] = bad
+            with self.subTest(bad=repr(bad)), self.assertRaisesRegex(RigError, 'Unicode scalar'):
+                validate_document(doc)
+        doc = fixture('project')
+        doc['metadata']['note'] = 'é😀'
+        self.assertEqual(decode_json(canonical_bytes(doc)), doc)
+
+    def test_free_form_string_values_have_explicit_bounded_lengths(self):
+        for kind, field in (('project', 'metadata'), ('example-prefab', 'parameters')):
+            doc = fixture(kind)
+            doc[field]['oversized'] = 'x' * 4097
+            with self.subTest(kind=kind), self.assertRaises(RigError):
+                validate_document(doc)
+
+    def test_streamed_canonical_encoding_enforces_exact_utf8_manifest_byte_cap(self):
+        doc = fixture('project')
+        doc['metadata']['note'] = 'é😀'
+        expected = canonical_bytes(doc)
+        with patch('scene3d_contracts.MAX_DOCUMENT_BYTES', len(expected)):
+            self.assertEqual(canonical_bytes(doc), expected)
+        with patch('scene3d_contracts.MAX_DOCUMENT_BYTES', len(expected)-1):
+            with self.assertRaisesRegex(RigError, 'manifest exceeds'):
+                canonical_bytes(doc)
+
     def test_canonical_serialization_is_stable_without_mutation(self):
         doc = fixture('example-scene')
         original = deepcopy(doc)

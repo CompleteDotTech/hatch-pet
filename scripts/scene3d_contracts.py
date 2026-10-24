@@ -94,7 +94,7 @@ def definitions():
         return {'allOf': [ref('reference'), {'properties': {'kind': {'enum': list(kinds)}}}]}
     material_ref = typed_ref('material')
     clip_ref = typed_ref('scene3d-animation', 'hatch-3d-animation')
-    meta = mapping({'type': ['string', 'number', 'boolean', 'null']}, 64)
+    meta = mapping({'type': ['string', 'number', 'boolean', 'null'], 'maxLength': 4096}, 64)
     transform = obj(dict(translation=vec, rotation=quat, scale=arr(POS, 3, 3), pivot=vec),
                     ['translation', 'rotation', 'scale'])
     bounds = obj(dict(minimum=vec, maximum=vec))
@@ -121,7 +121,7 @@ def definitions():
     attachment = obj(dict(owner=ID, socket=ID, offset=ref('transform')))
     override = obj(dict(slot=ID, material=material_ref))
     node_override = obj(dict(node=ID, transform=ref('transform'), visible=BOOL), ['node'])
-    instance_overrides = obj(dict(parameters=mapping({'type': ['number', 'string', 'boolean']}),
+    instance_overrides = obj(dict(parameters=mapping({'type': ['number', 'string', 'boolean'], 'maxLength': 4096}),
                                  materials=mapping(material_ref),
                                  nodes=arr(node_override, maximum=256)))
     node = obj(dict(id=ID, name=TEXT,
@@ -162,7 +162,7 @@ def definitions():
         dependencies=arr(ref('reference')), bounds=nullable(ref('bounds')), shots=ids,
         continuity=arr(ref('file'), maximum=256), metadata=meta, provenance=ref('provenance')))
     prefab = base('prefab', dict(name=TEXT, roots=ids, nodes=arr(ref('node'), 1, MAX_NODES),
-        parameters=mapping({'type': ['number', 'string', 'boolean']}),
+        parameters=mapping({'type': ['number', 'string', 'boolean'], 'maxLength': 4096}),
         material_slots=ids, sockets=ids,
         overrides=arr(node_override, maximum=256), dependencies=arr(ref('reference')),
         provenance=ref('provenance')))
@@ -266,6 +266,21 @@ def _unique(items, label, key=lambda x: x):
     values = [key(item) for item in items]
     require(len(values) == len(set(values)), 'Duplicate ' + label + '.')
     return set(values)
+
+
+def _unicode_scalars(value):
+    if isinstance(value, str):
+        try:
+            value.encode('utf-8')
+        except UnicodeError:
+            fail('Scene3D strings must contain UTF-8 encodable Unicode scalar values.')
+    elif isinstance(value, dict):
+        for key, child in value.items():
+            _unicode_scalars(key)
+            _unicode_scalars(child)
+    elif isinstance(value, list):
+        for child in value:
+            _unicode_scalars(child)
 
 
 def _transforms(value):
@@ -429,6 +444,7 @@ def validate_document(value, kind=None):
         kind = value['kind'][8:]
     error = next(validator(kind).iter_errors(value), None)
     require(error is None, '' if error is None else '.'.join(map(str, error.absolute_path)) + ': ' + error.message)
+    _unicode_scalars(value)
     for item in all_refs(value):
         portable_path(item['path'])
     if kind == 'render':
@@ -493,8 +509,17 @@ def validate_document(value, kind=None):
 
 def canonical_bytes(value):
     validate_document(value)
-    return (json.dumps(value, sort_keys=True, separators=(',', ':'), ensure_ascii=False,
-                       allow_nan=False) + '\n').encode('utf-8')
+    # Bound encoded output while walking tokens instead of materializing a
+    # potentially oversized whole JSON string before checking its byte length.
+    encoder = json.JSONEncoder(sort_keys=True, separators=(',', ':'),
+                               ensure_ascii=False, allow_nan=False)
+    chunks, size = [], 1  # Include the terminating newline in the byte budget.
+    for token in encoder.iterencode(value):
+        chunk = token.encode('utf-8')
+        size += len(chunk)
+        require(size <= MAX_DOCUMENT_BYTES, 'Canonical manifest exceeds 16 MiB.')
+        chunks.append(chunk)
+    return b''.join(chunks) + b'\n'
 
 
 def document_hash(value):
