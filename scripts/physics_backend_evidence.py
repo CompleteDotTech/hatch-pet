@@ -131,7 +131,7 @@ def native_report(value,world,operation):
 def direct_report(value,world):
     object_fields(value,('ok','operation','backend','connection_mode','sample_count','object_count','actual_steps_per_frame',
                         'actual_solver_steps','actual_bodies','cache_storage','restart','contacts_queried') +
-                        (('effective_engine',) if 'effective_engine' in value else ()), 'DIRECT solver report')
+                        (('effective_engine',) if type(value) is dict and 'effective_engine' in value else ()), 'DIRECT solver report')
     if 'effective_engine' in value:
         object_fields(value['effective_engine'],('fixed_time_step','internal_substeps','iterations'),'DIRECT engine')
         need(number(value['effective_engine']['fixed_time_step']) and integer(value['effective_engine']['internal_substeps']) and integer(value['effective_engine']['iterations']),

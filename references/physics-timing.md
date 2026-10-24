@@ -11,3 +11,16 @@ The strict optional `solver.stability` object supports PyBullet `contact_penetra
 Replay classification is hash-verified saved-state replay. Reruns remain not-guaranteed by default. A pinned-environment comparison only establishes numerical reproduction for its tested backend/version/executable/module/settings, seeds, hardware and tolerances. Seeds identify inputs; this rigid-body adapter uses no stochastic parameter. Native parallelism is the backend default; no cross-platform or bitwise simulation guarantee is made. Existing #168 caches remain readable with their original evidence; newly emitted caches require the timing receipt.
 
 `tests/test_physics_timing.py` tests rational NTSC boundaries, terminal brackets, quaternion antipodes, unsupported controls and real solver oracles. Native checks require the same explicit environment and exclusive managed-process slot as #168. The real PyBullet oracle compares six early free-fall samples to the semi-implicit Euler solution within 1e-9m and continuous free fall within .004m; paired runs compare complete output values only in the pinned tested environment. Blender's continuous free-fall tolerance is .03m. These numerical checks do not establish artistic visual approval.
+
+Exact seeking is also available with `python scripts/physics_backends.py seek CACHE --time 1001/60000`. PyBullet seeks the separately retained full solver-step cache; output-frame inspection remains `inspect CACHE --frame N`. `effective_engine` records the native `getPhysicsEngineParameters` timestep, internal substeps and iterations and must match admission.
+
+| #169 acceptance | Implementation | Verification / limitation |
+| --- | --- | --- |
+| Distinct exact solver/substep/output/cache/render clocks | `physics_timing.py`, worker full-step cache, `inspect_time` | Integer, NTSC and47/2fps; Blender integral restriction explicit |
+| Requested/effective restrictions | `timing.json`, native engine readback, Blender readback | Hash-bound requested settings and actual step brackets; no shortening/clamping |
+| Stability and interpolation | Strict optional stability schema, PyBullet contactSlop and velocity failure checks, slerp | Unsupported Blender controls/CCD/sleeping/constraint overrides reject; completed states only |
+| Replay and rerun classes | `_timing_receipt`, paired numeric evidence | Verified replay; pinned reproduction only for actual paired tested runs; approximate oracle tolerances; default reruns nonguaranteed |
+| Seeking and terminal mapping | `inspect_cache`, `inspect_time`, `seek` | No extrapolation; end frame excluded; full final solver bracket retained |
+| Numerical behavior | `test_physics_timing.py` | Actual Blender and PyBullet free fall, paired pinned runs, exact discrete Euler oracle; no universal bitwise claim |
+
+Independent animation/kinematic body evaluation remains explicitly unsupported by #168's backend profile. The timing contract records the output animation evaluation clock without claiming that unsupported animated bodies were executed. Blender's internal solver substeps cannot be independently extracted through this adapter; those caches retain native baked point-cache semantics.
