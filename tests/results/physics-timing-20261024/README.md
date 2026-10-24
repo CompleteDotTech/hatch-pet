@@ -17,7 +17,7 @@ No human visual or artistic approval is implied by these numerical checks.
 Final runtime: ec9f120. Final test-retention HEAD: a09930f (runtime unchanged). Final local dependency is actual independent Astra PASS1682e1190c, normally merged with Scene59 integer-parity and mainB. `validation.json` binds exact source-file SHA256 values and these checks:
 
 - 48 actual Blender/PyBullet lifecycle tests: PASS47.751seconds, zero skips.
-- Six timing tests: PASS34.892seconds, zero skips, including two actual Blender bakes/native reopens/consumption controls, six real PyBullet simulations, paired pinned-output equality, analytic physical errors, rational seeking, terminal boundaries and legacy-cache verification.
+- Six timing tests: PASS34.892seconds, zero skips, including two actual Blender bakes/native reopens, six real PyBullet simulations, paired pinned-output equality, analytic physical errors, rational seeking, terminal boundaries and legacy-cache verification.
 - 22 strict physics contract tests: PASS1.543seconds.
 - 67 Scene3D contract tests: PASS12.009seconds.
 - Generated physics schema consistency: PASS.
