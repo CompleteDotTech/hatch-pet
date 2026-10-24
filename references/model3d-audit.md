@@ -105,3 +105,24 @@ Current and historical evidence are separate in
 binds actual tested source hashes and commands. No publication, CI, independent
 approval, native application exercise or production signoff is inferred from these
 local results.
+
+
+A subsequent independent review reproduced order-dependent cached geometry
+admission through a stricter ancestor memory budget. The correction keys dependency
+results by effective memory context, re-inspects geometry when necessary and retains
+one observation per asset revision at its tightest successfully inspected budget.
+Regression cases prove that both dependency orders reject an actual 800-vertex,
+400-triangle mesh under a 64 KiB intermediate budget, while small geometry passes
+both orders with one correctly budget-bound observation per revision.
+
+The final shared decoder followup
+`cf15e97027ab48d028de6dfd8dc8f2440f2cf2d8` adds bounded UTF-8 text-byte admission
+and was independently reviewed before normal integration. With that dependency
+and the cache correction, actual checks passed **50 Model3D tests** (8.283 seconds)
+and **30 schema/math tests** (7.731 seconds), zero failures/errors/skips, plus schema/
+template parity, real robotic inspection and original source-delivery verification.
+`final-summary.json` records the exact tested source hashes. The earlier full
+922-test run still applies only to `2d77a38`; final current-head CI and independent
+review remain required. The final decoder must merge through its own qualified PR
+before this dependent PR becomes eligible; main ancestry, review and CI must then
+be reconciled against the actual final head.

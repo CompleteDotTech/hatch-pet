@@ -141,7 +141,11 @@ versions, path aliases, case collisions and non-NFC spellings fail. Global and
 per-document transitive file/byte/depth and image-decode memory ceilings are enforced, including cached
 shared dependencies reached through a deeper path. Image memory admission occurs
 before decoding and is enforced again for cached files under tighter child budgets.
-Every decoded LOD propagates embedded fixture provenance.
+Every decoded LOD propagates embedded fixture provenance. Cached geometry validation
+is keyed by its effective inherited memory budget; a result from a looser context
+cannot waive a stricter ancestor budget. Reports retain one geometry observation per
+asset revision at the tightest budget under which inspection actually succeeded.
+Dependency ordering therefore cannot admit an otherwise over-budget model.
 
 The verifier copies all declared files into a unique temporary directory while
 checking actual sizes, SHA-256 and file identity. It decodes models **only from

@@ -240,6 +240,7 @@ def _inspect_asset(document, snapshot, memory_bytes=None):
             'MODEL3D_PROVENANCE', 'Embedded fixture provenance cannot be relabeled as production.')
     from rig_jobs import code_signature
     return dict(asset_id=document['id'], version=document['version'],
+                inspection_memory_budget_bytes=backend_limits['memory_bytes'],
                 rig_implementation_sha256=code_signature(),
                 software={name: importlib.metadata.version(name) for name in ('numpy', 'Pillow')},
                 geometry_sha256=record['sha256'], importer='rig_import.load_character_model',
@@ -272,7 +273,7 @@ Raises RigError for expected invalid input; does not modify the selected root.
     root = Path(root).absolute()
     require(root.is_dir() and not root.is_symlink(), 'MODEL3D_ROOT', 'Choose a regular project directory, not a link.')
     root = root.resolve()
-    active, identities, results = set(), {}, {}
+    active, identities, results, geometry_positions = set(), {}, {}, {}
     with tempfile.TemporaryDirectory(prefix='hatch-model3d-verify-') as temporary:
         snapshot = _Snapshot(root, Path(temporary), document.get('limits', LIMITS))
 
@@ -342,9 +343,11 @@ Raises RigError for expected invalid input; does not modify the selected root.
                 require(child_key not in identities or identities[child_key] == record['sha256'],
                         'MODEL3D_VERSION_CONFLICT', 'An immutable asset version has conflicting manifest hashes.')
                 identities[child_key] = record['sha256']
-                if child_key not in results:
-                    results[child_key] = visit(child, depth + 1, effective_memory)
-                child_names, child_height = results[child_key]
+                child_memory = min(effective_memory, child['limits']['memory_bytes'])
+                context_key = child_key, child_memory
+                if context_key not in results:
+                    results[context_key] = visit(child, depth + 1, child_memory)
+                child_names, child_height = results[context_key]
                 height = max(height, child_height + 1)
                 require(depth + height <= snapshot.limits['dependency_depth'],
                         'MODEL3D_DEPTH', 'Cached dependency closure exceeds the selected depth budget.')
@@ -360,7 +363,14 @@ Raises RigError for expected invalid input; does not modify the selected root.
             require(len(names) <= limits['files'] and sum(snapshot.files[n]['bytes'] for n in names) <= limits['total_bytes'],
                     'MODEL3D_BUDGET', 'Transitive payload closure exceeds an asset budget.')
             if value['kind'] == KINDS['asset']:
-                report['geometry'].append(_inspect_asset(value, snapshot, effective_memory))
+                observation = _inspect_asset(value, snapshot, effective_memory)
+                if key not in geometry_positions:
+                    geometry_positions[key] = len(report['geometry'])
+                    report['geometry'].append(observation)
+                else:
+                    position = geometry_positions[key]
+                    if observation['inspection_memory_budget_bytes'] < report['geometry'][position]['inspection_memory_budget_bytes']:
+                        report['geometry'][position] = observation
                 active.remove(key)
             return names, height
 

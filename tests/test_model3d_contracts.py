@@ -940,6 +940,53 @@ class Model3DContracts(unittest.TestCase):
             broken['geometry']['path'] = path
             self.assertTrue(validator.is_valid(broken), path)
 
+    def test_cached_geometry_rechecks_tighter_inherited_memory_in_both_dependency_orders(self):
+        import numpy as np
+        from rig_gltf import export_geometry
+        from rig_import import load_character_model
+        from test_rig_skinning import test_geometry
+        leaf = asset_fixture(self.root, 'memory-leaf')
+        middle = asset_fixture(self.root, 'memory-middle')
+        def dependency_graph():
+            leaf_record = write_document(self.root, 'memory-leaf.json', leaf)
+            leaf_reference = dict(id=leaf['id'], version=leaf['version'], manifest=leaf_record)
+            middle['dependencies'] = [leaf_reference]
+            middle['limits']['memory_bytes'] = 65536
+            middle_record = write_document(self.root, 'memory-middle.json', middle)
+            return leaf_reference, dict(id=middle['id'], version=middle['version'], manifest=middle_record)
+        # Small real geometry fits both budgets; retain one asset observation,
+        # bound to the tightest memory context that was actually inspected.
+        direct, indirect = dependency_graph()
+        for references in ([direct, indirect], [indirect, direct]):
+            doc = deepcopy(self.asset)
+            doc['dependencies'] = references
+            report = validate_document(doc, self.root)
+            self.assertEqual(len(report['geometry']), 3)
+            observation = next(item for item in report['geometry'] if item['asset_id'] == leaf['id'])
+            self.assertEqual(observation['inspection_memory_budget_bytes'], 65536)
+        # Enlarge the source to800 actual vertices/400 triangles; 64KiB cannot
+        # admit its native importer allocation, regardless of cache visit order.
+        geometry = test_geometry()
+        mesh = geometry.meshes[0]
+        vertices, faces = mesh.positions, mesh.triangles
+        mesh.positions = np.concatenate([vertices + [i*3,0,0] for i in range(200)])
+        mesh.triangles = np.concatenate([faces + 4*i for i in range(200)])
+        path = self.root / 'memory-leaf.glb'
+        export_geometry(geometry, path, provenance={'fixture': True})
+        model = load_character_model(path)
+        record = payload(self.root, path.name, 'model/gltf-binary')
+        leaf.update(geometry=record, files=[record], mesh_details=mesh_details(model, record),
+                    measurements=dict(vertices=model.geometry.vertex_count, triangles=model.geometry.triangle_count,
+                        bounds=dict(minimum=model.report['bounds'][0], maximum=model.report['bounds'][1])))
+        leaf['sources'][0]['file'] = record
+        direct, indirect = dependency_graph()
+        before = {p.name: p.read_bytes() for p in self.root.iterdir()}
+        for references in ([direct, indirect], [indirect, direct]):
+            doc = deepcopy(self.asset)
+            doc['dependencies'] = references
+            self.assertInvalid(doc, 'RIG_LIMIT_MEMORY', payloads=True)
+        self.assertEqual(before, {p.name: p.read_bytes() for p in self.root.iterdir()})
+
     def test_public_cli_rejects_oversized_json_integer_without_mutating_inputs(self):
         path = self.root / 'oversized-integer.json'
         raw = b'{"schema_version":1,"kind":"model3d-asset","untrusted":' + b'9' * 5000 + b'}'
