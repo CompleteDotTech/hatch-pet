@@ -284,8 +284,9 @@ def _walk(value):
 
 
 def validate_document(value, kind=None):
-    value = deepcopy(value)
+    # Enforce resource bounds before recursive copying of programmatic inputs.
     canonical_bytes(value)
+    value = deepcopy(value)
     if kind is None:
         kind = str(value.get('kind', '')).removeprefix('continuity-') if isinstance(value, dict) else ''
     if kind not in KINDS and kind not in ('bindings',):

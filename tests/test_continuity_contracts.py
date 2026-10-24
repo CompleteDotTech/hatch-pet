@@ -189,6 +189,20 @@ class ContractTests(unittest.TestCase):
             self.assertFalse(json.loads(result.stdout)['valid'])
             self.assertNotIn('Traceback',result.stdout+result.stderr)
 
+    def test_programmatic_depth_limit_precedes_recursive_copy(self):
+        from rig_errors import RigError
+        root={};cursor=root
+        for _ in range(1500):
+            child={};cursor['nested']=child;cursor=child
+        with self.assertRaises(RigError) as error:
+            validate_document(root,'identity')
+        self.assertEqual(error.exception.report['code'],'RIG_JSON_DEPTH')
+        cursor=root;depth=0
+        while cursor:
+            self.assertEqual(set(cursor),{'nested'})
+            cursor=cursor['nested'];depth+=1
+        self.assertEqual(depth,1500)
+
     def test_import_requires_no_optional_numerical_or_renderer_dependencies(self):
         script = """import sys
 class Block:
