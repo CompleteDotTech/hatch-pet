@@ -31,6 +31,14 @@ def fixture(name):
 
 
 class SceneContractTests(unittest.TestCase):
+    def test_hash_bound_example_files_disable_checkout_newline_conversion(self):
+        result = subprocess.run(['git', 'check-attr', 'text', '--',
+                                 'examples/scene3d-contracts/project.json',
+                                 'examples/scene3d-contracts/triangle.obj'],
+                                cwd=ROOT, capture_output=True, text=True, check=True)
+        self.assertEqual(len(result.stdout.splitlines()), 2)
+        self.assertTrue(all(line.endswith(': text: unset') for line in result.stdout.splitlines()), result.stdout)
+
     def test_every_generated_schema_is_current_and_valid(self):
         self.assertEqual(len(schemas()), 8)
         for name, schema in schemas().items():
