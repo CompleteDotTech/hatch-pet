@@ -73,7 +73,7 @@
   "scripts/rig_corrections.py": "7f79fd47d8065a6e66556584a6184e1132c37cc986ba1f0ce5d06c23a49c07c6",
   "scripts/rig_demo.py": "0f01c3808ca86c84a46328afba093bc5a016d70bb10c87a5b35c13f661009716",
   "scripts/rig_doctor.py": "33f4692a54fd54881d44f540f8ea9046898fcf68902675e6d5df3edb23b0c8aa",
-  "scripts/rig_errors.py": "8e23cf08acfe0e4e3dd794f127383748734662b7cc1090f36b7a651e388b1a55",
+  "scripts/rig_errors.py": "b700ab8f786164b9b81595468723740af67f3dd7b0617c5551d5ad2d6afb1683",
   "scripts/rig_facial.py": "fee3deb4a8d6522500200a96d6174bd173c603da695091d1a625766d1ab7b556",
   "scripts/rig_geometry.py": "2d759526bfa7b36b08566509e66fba0786e6db5571c42e14bde3830e5f14b92d",
   "scripts/rig_gltf.py": "3d5117c5f6c69df785abefab1fe19fe0b867c821a0e3764da5777f0b841fab92",
@@ -104,5 +104,6 @@
   "scripts/validate_atlas.py": "cb1208ff3eeea0c7fec03921b04e9e647ac5ae7f6645184925f3c759cd0c8854",
   "scripts/verify_public_delivery.py": "1c38e7cbc8596e2f098ab4a9492fa8e959940d7ec859533926e9d6fd5d46c9fb",
   "scripts/verify_rig_demos.py": "a639878f8e7ec83a005cec5189210f77e21ede06667f793a70a7c610ff424d1b",
-  "tests/test_rig_camera3d_contracts.py": "4a6f05f808f05cf179f3fff0186c872c235cbe73fe50b3f32ca101158109c35f"
+  "tests/test_rig_camera3d_contracts.py": "4a6f05f808f05cf179f3fff0186c872c235cbe73fe50b3f32ca101158109c35f",
+  "tests/test_rig_contracts.py": "6453895e218277d92cf651a9f909c8a3643f06a38a2a8f412bbb2a103517cb9e"
 }

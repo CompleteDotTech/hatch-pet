@@ -51,6 +51,6 @@ test_source_edit_rerenders_only_frames_using_changed_drawing (test_production_re
 test_timing_only_revision_reuses_pixels_and_output_cache_is_bounded (test_production_render.ProductionRenderTests.test_timing_only_revision_reuses_pixels_and_output_cache_is_bounded) ... ok
 
 ----------------------------------------------------------------------
-Ran 51 tests in 8.901s
+Ran 51 tests in 8.245s
 
 OK

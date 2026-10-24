@@ -14,6 +14,12 @@ test_retained_blender_report_contract_requires_reopen_evidence (test_rig_contrac
 test_runtime_pose_keeps_segment_length_guard (test_rig_contracts.RigContractTests.test_runtime_pose_keeps_segment_length_guard) ... ok
 test_unused_chains_reject_unmeasurable_rest_segments_before_export (test_rig_contracts.RigContractTests.test_unused_chains_reject_unmeasurable_rest_segments_before_export) ... ok
 test_unused_controller_declarations_are_structurally_validated (test_rig_contracts.RigContractTests.test_unused_controller_declarations_are_structurally_validated) ... ok
+test_actual_5000_digit_integer_reports_structured_decode_error (test_rig_contracts.SharedJsonDecoderTests.test_actual_5000_digit_integer_reports_structured_decode_error) ... ok
+test_actual_cli_rejects_huge_integer_without_persisting_state (test_rig_contracts.SharedJsonDecoderTests.test_actual_cli_rejects_huge_integer_without_persisting_state) ... ok
+test_integer_conversion_limit_boundary_stays_supported (test_rig_contracts.SharedJsonDecoderTests.test_integer_conversion_limit_boundary_stays_supported) ... ok
+test_json_byte_bound_and_unicode (test_rig_contracts.SharedJsonDecoderTests.test_json_byte_bound_and_unicode) ... ok
+test_specific_duplicate_nonfinite_and_depth_codes_survive (test_rig_contracts.SharedJsonDecoderTests.test_specific_duplicate_nonfinite_and_depth_codes_survive) ... ok
+test_unrelated_runtime_errors_are_not_reclassified (test_rig_contracts.SharedJsonDecoderTests.test_unrelated_runtime_errors_are_not_reclassified) ... ok
 test_cli_failure_is_nonzero_and_structured (test_rig_compatibility.RigCompatibilityTests.test_cli_failure_is_nonzero_and_structured) ... ok
 test_existing_capabilities_work_with_3d_imports_blocked (test_rig_compatibility.RigCompatibilityTests.test_existing_capabilities_work_with_3d_imports_blocked) ... ok
 test_existing_contract_bytes_are_unchanged (test_rig_compatibility.RigCompatibilityTests.test_existing_contract_bytes_are_unchanged) ... ok
@@ -42,7 +48,7 @@ test_roundtrip_unprojection_and_actual_center_rays (test_rig_camera3d_contracts.
 test_sensor_fit_gate_shift_overscan_and_singular_projection_rejection (test_rig_camera3d_contracts.CameraMathTests.test_sensor_fit_gate_shift_overscan_and_singular_projection_rejection) ... ok
 
 ----------------------------------------------------------------------
-Ran 42 tests in 10.964s
+Ran 48 tests in 11.297s
 
 OK
 Discovered 802 2D tests without optional 3D dependencies
