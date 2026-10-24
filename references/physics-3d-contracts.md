@@ -266,3 +266,33 @@ The earlier 811-case run remains bound only to 68b9b87. No new full-suite or sol
 execution is inferred from this integration. Fresh whole-tree independent review
 and exact-head GitHub CI remain required before merge; PR #205 is an explicit
 predecessor.
+
+
+## Exact-byte preservation under CRLF checkout
+
+The normal merge of reviewed shared candidate
+`91d14b8339eb16a6285969d9bc772b11bdfec3ec` supplies the common recursive validation-
+receipt/example byte policy and source LF rules. No duplicate physics-only
+attributes or runtime changes are introduced. This corrects the confirmed
+conversion of a hash-bound nested log under `core.autocrlf=true`.
+
+The [preservation validation record](../tests/results/physics-contracts-20261024/provenance-integration/verification.json)
+binds source `4b7deeea1473c08a6382018fd1fefb3a11c5cc55`, unchanged before/after
+checkout fingerprints and actual commands/log hashes. A real Git checkout with
+`core.autocrlf=true` and `core.eol=crlf` checked 1645 tracked files, verified exact
+Git blobs for 1524 explicitly byte/LF-protected files, and preserved all 17 existing
+physics evidence artifacts. Every referenced physics raw-log digest and current
+artifact-source digest matched. The formerly changed log now retains its original
+SHA-256 `66d868d02ad7723fdcac74f8b6d9599962d5d9a56402048a28f0fda9d7eeec91`.
+
+The compact [CRLF summary](../tests/results/physics-contracts-20261024/provenance-integration/crlf-summary.json)
+retains all relevant receipt/source checks and hashes the full per-file inventory
+held in the supervisor checkpoint. The accompanying `crlf-probe.py` reproduces
+that inventory against the pinned source checkout using `--repository` and
+`--destination`. This tests actual Git newline conversion on Linux; it does not
+claim native Windows execution.
+
+All 22 physics tests, four compatibility checks, schema/template parity and 14 actual
+byte-boundary API probes pass after integration. No 811-case legacy rerun is claimed.
+Earlier 7cff push/PR CI runs remain attributed to 7cff; final-head independent review
+and new exact-head CI remain separate merge gates.
