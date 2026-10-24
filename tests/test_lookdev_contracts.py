@@ -337,6 +337,27 @@ class LookdevContractTests(unittest.TestCase):
                              ('blue-coat.json', canonical_bytes(instance))])
         with self.assertRaises(RigError): registry.check_material_compatibility(reference(instance), supported)
 
+    def test_review_slot_spelling_cannot_bypass_active_surface_capabilities(self):
+        slots = dict(normal='normal', height='height', displacement='true-displacement',
+                     occlusion='occlusion', emission='emission', opacity='opacity', transmission='transmission',
+                     thickness='volume', clearcoat='clearcoat', clearcoat_roughness='clearcoat',
+                     sheen_color='sheen', sheen_roughness='sheen', anisotropy='anisotropy', iridescence='iridescence')
+        for slot, feature in slots.items():
+            tex = texture(); tex['role'] = slot.replace('_', '-')
+            tex['encoding'] = 'srgb' if slot in ('emission', 'sheen_color') else 'data'
+            tex['normal_orientation'] = 'opengl-positive-y' if slot == 'normal' else 'not-applicable'
+            base = material(); base['texture_slots'][slot] = dict(texture=reference(tex), texcoord=0,
+                channels='rgb' if slot in ('normal', 'emission', 'sheen_color') else 'r',
+                scale=[1, 1, 1], offset=[0, 0, 0], rotation_radians=0, strength=1)
+            base['dependencies'] = [reference(tex)]
+            registry = Registry([('ceramic.json', canonical_bytes(base)), ('albedo.json', canonical_bytes(tex))],
+                                payloads={'textures/albedo.png': image_bytes()})
+            with self.subTest(slot=slot):
+                with self.assertRaises(RigError):
+                    registry.check_material_compatibility(reference(base), {'metallic-roughness', 'texture-slots'})
+                self.assertEqual(registry.check_material_compatibility(reference(base),
+                    {'metallic-roughness', 'texture-slots', feature})['status'], 'compatible')
+
     def test_review_graph_fallback_cannot_weaken_strict_material(self):
         base, shader = material(), graph()
         shader['render_policy'].update(strict=False, allow_approximations=True, fallback='bake')

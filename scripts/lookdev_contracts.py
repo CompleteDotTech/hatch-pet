@@ -678,6 +678,19 @@ def _surface_features(surface):
     return features
 
 
+def _slot_features(slots):
+    features = set()
+    role_features = dict(normal='normal', height='height', displacement='true-displacement',
+                         occlusion='occlusion', emission='emission', opacity='opacity',
+                         transmission='transmission', thickness='volume', clearcoat='clearcoat',
+                         clearcoat_roughness='clearcoat', sheen_color='sheen', sheen_roughness='sheen',
+                         anisotropy='anisotropy', iridescence='iridescence')
+    for slot, setting in slots.items():
+        if setting['strength'] > 0 and slot in role_features:
+            features.add(role_features[slot])
+    return features
+
+
 def _inherit_policy(base, derived):
     strict = base['strict'] or derived['strict']
     allowed = base['allow_approximations'] and derived['allow_approximations'] and not strict
@@ -725,6 +738,7 @@ def _check_compatibility(resource, supported_features, *, resolved_material=Fals
             needed.add('material-graph')
         if value['texture_slots']:
             needed.add('texture-slots')
+            needed.update(_slot_features(value['texture_slots']))
     elif value['kind'] == 'light3d':
         needed.add('light-' + value['type'])
         if value['casts_shadow']:
