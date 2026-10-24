@@ -1,0 +1,47 @@
+{
+  "base_sha": "a08569cbdb593651807c887f4c9edd5e7b243973",
+  "scope": "Partial shared JSON safety under #11/#58; new local defect, no issue closure",
+  "runtime": "Linux Python 3.14.7, NumPy 2.5.4, jsonschema 4.26.0, Pillow 13.0.0; distinct from pinned CI",
+  "results": {
+    "focused": "6 tests passed in 1.102 seconds, zero failures/errors/skips",
+    "schema_math_gate": "26 tests passed in 7.792 seconds, zero failures/errors/skips",
+    "operations_compatibility": "21 tests passed in 5.906 seconds, zero failures/errors/skips",
+    "baseline_control": "Exact old decoder loaded in memory; three genuine unhandled ValueError subcases reproduced. No source-file mutation. Diagnostic trailing whitespace stripped only. CLI baseline separately observed RIG_INPUT_OR_DEPENDENCY before fix; not included as an in-memory subprocess control.",
+    "actual_cli": "Genuine saved GLB fixture and 5000-digit configure input returned structured RIG_JSON/nonzero. All saved files and input bytes unchanged; actual response and inventory digest retained.",
+    "checks": "Schema/template generation and complete diff whitespace checks passed",
+    "compatibility": "802 existing 2D tests discovered without optional 3D imports; discovery is not execution"
+  },
+  "limitations": [
+    "No interpreter integer limit is changed outside test processes; no unbounded integer parsing added",
+    "No production artwork, external rendering or human approval claimed",
+    "Independent Astra review and integrated head-specific CI remain pending"
+  ],
+  "files": {
+    "baseline-control.log": {
+      "sha256": "6c621414d9cbefd2275f1e5e63687594a870ad307b2af1019206ba634e220b7b",
+      "bytes": 5663
+    },
+    "cli-verification.json": {
+      "sha256": "47ea8969ab9ebc3af7df2bb2fe9520e27fa6d80b3553b06c69b79e005dbc78f8",
+      "bytes": 784
+    },
+    "focused.log": {
+      "sha256": "e781798de68d3cff609c9db996c3faf45c8081b0c16e0dddd023edd2d27bd3c5",
+      "bytes": 1048
+    },
+    "operations-compatibility.log": {
+      "sha256": "c574f610dc62fe3e014f776364858e463b7c3001a780534a938f371c03dd36ed",
+      "bytes": 3240
+    },
+    "schema-math.log": {
+      "sha256": "a0e02f5da23d7846eae360a18f7af5b1581eaaefa8cda121785257e5f74025ab",
+      "bytes": 4158
+    },
+    "scripts/rig_errors.py": {
+      "sha256": "b700ab8f786164b9b81595468723740af67f3dd7b0617c5551d5ad2d6afb1683"
+    },
+    "tests/test_rig_contracts.py": {
+      "sha256": "6453895e218277d92cf651a9f909c8a3643f06a38a2a8f412bbb2a103517cb9e"
+    }
+  }
+}

@@ -78,10 +78,15 @@ def decode_json(payload: bytes | str) -> Any:
         value = json.loads(payload, object_pairs_hook=pairs,
                            parse_constant=lambda _: (_ for _ in ()).throw(
                                RigError('RIG_NONFINITE', 'JSON numbers must be finite.')))
-        finite_json(value)
-        return value
-    except (json.JSONDecodeError, UnicodeError, RecursionError) as exc:
+    except RigError:
+        # Duplicate-key/nonfinite hooks already carry their specific diagnosis.
+        raise
+    except (ValueError, RecursionError) as exc:
+        # JSONDecodeError, UnicodeError and integer-conversion limits all reach
+        # this decoder boundary as ValueError; preserve the shared report shape.
         raise RigError('RIG_JSON', 'Invalid JSON: ' + str(exc)) from exc
+    finite_json(value)
+    return value
 
 
 def read_json(path: str | Path) -> Any:
