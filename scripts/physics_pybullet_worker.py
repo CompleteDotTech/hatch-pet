@@ -10,6 +10,7 @@ import json
 import math
 from pathlib import Path
 import sys
+from fractions import Fraction
 
 
 def canonical(value):
@@ -27,6 +28,24 @@ def discovery():
         return p,value
     except (ImportError,importlib.metadata.PackageNotFoundError,OSError) as exc:
         return None,dict(available=False,message='Optional PyBullet is not installed in the isolated interpreter: '+str(exc))
+
+
+def interpolate(left, right, alpha):
+    """Interpolate states already computed by a solver, never create dynamics."""
+    a = float(alpha)
+    position = [x+(y-x)*a for x,y in zip(left['translation'],right['translation'])]
+    q, r = left['rotation'], right['rotation']
+    dot = sum(x*y for x,y in zip(q,r))
+    if dot < 0:
+        r = [-x for x in r]; dot = -dot
+    dot = min(1., max(-1., dot))
+    if dot > .9995:
+        rotation = [x+(y-x)*a for x,y in zip(q,r)]
+    else:
+        theta=math.acos(dot)
+        rotation=[(math.sin((1-a)*theta)*x+math.sin(a*theta)*y)/math.sin(theta) for x,y in zip(q,r)]
+    norm=math.sqrt(sum(x*x for x in rotation))
+    return dict(id=left['id'],translation=position,rotation=[x/norm for x in rotation])
 
 
 def main():
@@ -52,17 +71,20 @@ def main():
     frames=int(world['frame_range']['end'])
     if world['frame_range']['start']!=0 or not 2<=frames<=1024:
         raise ValueError('Unsupported frame range.')
-    fps=world['fps']['numerator']/world['fps']['denominator']
-    step=world['solver']['fixed_step']['numerator']/world['solver']['fixed_step']['denominator']/world['solver']['substeps']
-    per_frame=round(1/(fps*step))
+    fps=Fraction(world['fps']['numerator'],world['fps']['denominator'])
+    step=Fraction(world['solver']['fixed_step']['numerator'],world['solver']['fixed_step']['denominator'])/world['solver']['substeps']
+    per_frame=math.ceil(1/(fps*step))
     client=p.connect(p.DIRECT)
     if client<0:
         raise RuntimeError('PyBullet DIRECT connection failed.')
     try:
         p.setGravity(*world['gravity'],physicsClientId=client)
-        p.setTimeStep(step,physicsClientId=client)
+        p.setTimeStep(float(step),physicsClientId=client)
         p.setPhysicsEngineParameter(numSolverIterations=int(world['solver']['iterations']),
             deterministicOverlappingPairs=1,physicsClientId=client)
+        stability=world['solver'].get('stability',{})
+        if 'contact_penetration_tolerance' in stability:
+            p.setPhysicsEngineParameter(contactSlop=stability['contact_penetration_tolerance'],physicsClientId=client)
         materials={x['id']:x for x in world['materials']}
         identifiers={}
         for body in world['bodies']:
@@ -88,16 +110,31 @@ def main():
             effective.append(dict(id=body['id'],mass=observed[0],friction=observed[1],
                 inertia=list(observed[2]),center_of_mass=list(observed[3]),restitution=observed[5],
                 native_margin=observed[11],margin_semantics='inherent sphere radius' if body['colliders'][0]['shape']['type']=='sphere' else 'explicit box collision margin'))
-        samples=[]; contacts=[]
-        for frame in range(frames):
-            if frame:
-                for _ in range(per_frame):p.stepSimulation(physicsClientId=client)
-            bodies=[]
+        def state():
+            values=[]
             for identifier,index in identifiers.items():
                 translation,rotation=p.getBasePositionAndOrientation(index,physicsClientId=client)
+                linear,angular=p.getBaseVelocity(index,physicsClientId=client)
+                for key,velocity in [('max_linear_velocity',linear),('max_angular_velocity',angular)]:
+                    if key in stability and math.sqrt(sum(v*v for v in velocity))>stability[key]:
+                        raise ValueError('Numerical stability velocity limit exceeded: '+key)
                 if not all(math.isfinite(v) for v in [*translation,*rotation]):
                     raise ValueError('Nonfinite PyBullet state.')
-                bodies.append(dict(id=identifier,translation=list(translation),rotation=list(rotation)))
+                values.append(dict(id=identifier,translation=list(translation),rotation=list(rotation)))
+            return values
+        samples=[]; contacts=[]
+        index=0
+        left=right=state()
+        for frame in range(frames):
+            target=Fraction(frame,1)/fps/step
+            upper=math.ceil(target)
+            while index<upper:
+                left=right
+                p.stepSimulation(physicsClientId=client)
+                right=state()
+                index+=1
+            alpha=target-(upper-1) if target.denominator!=1 else Fraction(1)
+            bodies=right if target.denominator==1 else [interpolate(a,b,alpha) for a,b in zip(left,right)]
             values=[]
             for contact in p.getContactPoints(physicsClientId=client):
                 if len(values)>=4096:raise ValueError('Contact output bound exceeded.')
@@ -112,7 +149,7 @@ def main():
             world_sha256=job['world_sha256'],samples=contacts)))
         (root/'worker-report.json').write_bytes(canonical(dict(ok=True,operation='simulate',
             backend=identity,connection_mode='DIRECT',sample_count=frames,object_count=len(identifiers),
-            actual_steps_per_frame=per_frame,actual_solver_steps=(frames-1)*per_frame,
+            actual_steps_per_frame=per_frame,actual_solver_steps=index,
             actual_bodies=effective,
             cache_storage='immutable native transform/contact samples',restart='clean-restart-only',
             contacts_queried=True)))

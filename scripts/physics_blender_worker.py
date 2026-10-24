@@ -1,3 +1,4 @@
+# Exact-clock adapter revision: native integral stepping restrictions recorded in timing.json.
 """Package-owned Blender physics worker. Not an entry point for arbitrary scenes.
 
 The parent snapshots this exact file into a private workspace and supplies only

@@ -12,6 +12,7 @@ from contextlib import contextmanager
 from copy import deepcopy
 from dataclasses import asdict, dataclass
 from fractions import Fraction
+from physics_timing import clock as timing_clock, interpolate as interpolate_state, rational
 import hashlib
 import json
 import math
@@ -527,6 +528,23 @@ def _remaining(deadline):
     return value
 
 
+def _timing_receipt(world, identity):
+    return dict(schema_version=1, timing=timing_clock(world), backend=identity,
+        settings_sha256=digest(canonical(world['solver'])), seed=world['solver']['seed'],
+        seed_policy='identity only; rigid-body adapter uses no stochastic parameter',
+        threads=dict(cpu_workers=world['budgets']['cpu_workers'],
+                     solver_parallelism='backend default; cross-platform repeatability not guaranteed'),
+        stability=dict(requested=world['solver'].get('stability', {}),
+            iterations=world['solver']['iterations'],
+            velocity_policy='fail on observed excess; never clamp',
+            penetration_policy='PyBullet contactSlop when explicitly requested; otherwise backend default'),
+        reproducibility=dict(replay='verified-cache-replay after manifest hash verification',
+            rerun='not-guaranteed', pinned_environment='unverified until paired numerical comparison',
+            approximate='only when a named numerical oracle and tolerance passes',
+            cross_platform='no bitwise guarantee'),
+        contact_clock='contacts observed at upper solver bracket; not interpolated')
+
+
 def _primitive_inertia(body):
     shape = body['colliders'][0]['shape']
     mass = body['mass']['kilograms']
@@ -545,12 +563,16 @@ def _admit_world(value, backend):
             'PHYSICS_CAPABILITY_UNAVAILABLE', 'Only uncoupled rigid-body worlds are implemented in this adapter.', category='capability-gap')
     require(solver['reproducibility'] in ('not-guaranteed', 'verified-cache-replay'),
             'PHYSICS_REPRODUCIBILITY', 'Recomputation is not promised deterministic; request verified cache replay or not-guaranteed.', category='capability-gap')
+    stability = solver.get('stability', {})
+    supported = {'contact_penetration_tolerance', 'max_linear_velocity', 'max_angular_velocity'} if backend == 'pybullet' else set()
+    require(not (set(stability)-supported), 'PHYSICS_STABILITY_UNSUPPORTED',
+            'Requested stability controls are unsupported by this backend: '+str(sorted(set(stability)-supported)), category='capability-gap')
     require(world['frame_range']['start'] == 0 and 2 <= world['frame_range']['end'] <= MAX_FRAMES,
             'PHYSICS_TIME_UNSUPPORTED', 'Native v1 supports zero-origin jobs with 2..1024 output frames.', category='capability-gap')
     fps, step = _ratio(world['fps']), _ratio(solver['fixed_step']) / int(solver['substeps'])
     steps_per_frame = 1 / (fps * step)
-    require(steps_per_frame.denominator == 1 and 1 <= steps_per_frame <= 1000 and 1 <= fps <= 240 and world['fps']['numerator'] <= 32767,
-            'PHYSICS_TIME_UNSUPPORTED', 'Native frame interval must contain 1..1000 exact fixed steps at 1..240fps.', category='capability-gap')
+    require((backend == 'pybullet' or steps_per_frame.denominator == 1) and 1 <= steps_per_frame <= 1000 and 1 <= fps <= 240 and world['fps']['numerator'] <= 32767,
+            'PHYSICS_TIME_UNSUPPORTED', 'Blender requires integral substeps per output; PyBullet brackets output with full fixed steps; ratio must be 1..1000 at 1..240fps.', category='capability-gap')
     require(1 <= len(world['bodies']) <= MAX_BODIES and any(b['mode'] == 'dynamic' for b in world['bodies']),
             'PHYSICS_RESOURCE_LIMIT', 'A readiness world requires 1..32 bodies including a dynamic body.', category='resource-exhaustion')
     require(max(map(abs, world['gravity'])) <= 1000, 'PHYSICS_SETTINGS', 'Gravity exceeds the documented native bound.', category='invalid-input')
@@ -590,7 +612,7 @@ def _admit_world(value, backend):
                     target = expected[i] if i == j else 0.
                     require(abs(observed-target) <= max(expected)*1e-6,
                             'PHYSICS_INERTIA_UNSUPPORTED', 'Requested inertia differs from the native uniform primitive.', category='capability-gap')
-    return world, int(steps_per_frame)
+    return world, math.ceil(steps_per_frame)
 
 
 def _source_admission(root, world, project_manifest):
@@ -732,7 +754,7 @@ class BlenderBackend:
         admitted, steps = _admit_world(world, self.backend_id)
         return dict(status='configuration-valid', world_sha256=digest(canonical(admitted)),
                     category='rigid-body', native_scene_verified=False, payloads_verified=False,
-                    solver_executed=False, steps_per_frame=steps,
+                    solver_executed=False, steps_per_frame=steps, timing=timing_clock(admitted),
                     unsupported_categories=[c for c in ALL_CATEGORIES if c != 'rigid-body'])
 
     def estimate_resources(self, world, *, source_bytes=0, mesh_vertices=0, mesh_triangles=0):
@@ -746,7 +768,7 @@ class BlenderBackend:
         require(memory <= budgets['memory_bytes'] and output <= min(budgets['cache_bytes'], budgets['temporary_bytes']) and
                 output <= budgets['bake_file_bytes'],
                 'PHYSICS_RESOURCE_LIMIT', 'Conservative native allocation estimate exceeds resource admission.', category='resource-exhaustion')
-        return ResourceEstimate(source_bytes, mesh_vertices, mesh_triangles, frames, (frames-1)*steps,
+        return ResourceEstimate(source_bytes, mesh_vertices, mesh_triangles, frames, timing_clock(world)['solver_steps'],
                                 memory, output, min(float(budgets['timeout_seconds']), 300.))
 
     def prepare(self, world, source_payloads: Mapping[str, bytes], *, project_manifest='project.json'):
@@ -852,6 +874,7 @@ class BlenderBackend:
         sample_bytes = (root/'states.json').read_bytes()
         blend_hash = digest((root/'scene.blend').read_bytes())
         _validate_samples(parse(sample_bytes), world, prepared.world_sha256, prepared.fixture)
+        _write(root/'timing.json', canonical(_timing_receipt(world, identity)))
         _write(root/'simulation-report.json', canonical(report))
         job = parse((root/'worker-job.json').read_bytes())
         job['mode'] = 'reopen'
@@ -1148,6 +1171,7 @@ class PyBulletBackend(BlenderBackend):
         _validate_samples(states,world,prepared.world_sha256,prepared.fixture)
         contacts=parse((root/'contacts.json').read_bytes())
         _validate_contacts(contacts,world,prepared.world_sha256)
+        _write(root/'timing.json',canonical(_timing_receipt(world, identity)))
         _write(root/'simulation-report.json',canonical(report))
         _write(root/'verification.json',canonical(dict(schema_version=1,world_sha256=prepared.world_sha256,
             source_admission='native Scene3D contract/hash closure and actual rig OBJ decode',
@@ -1223,11 +1247,11 @@ def _check_pybullet_report(report,world,module):
     try:evidence_direct_report(report,world)
     except EvidenceError as exc:
         raise BackendError('PHYSICS_BAKE_FAILED','Malformed DIRECT solver observations: '+str(exc),category='backend-crash') from exc
-    steps=int(1/(_ratio(world['fps'])*_ratio(world['solver']['fixed_step'])/world['solver']['substeps']))
+    steps=math.ceil(1/(_ratio(world['fps'])*_ratio(world['solver']['fixed_step'])/world['solver']['substeps']))
     require(isinstance(report,dict) and isinstance(module,dict) and report.get('ok') is True and report.get('operation')=='simulate' and
             report.get('connection_mode')=='DIRECT' and report.get('contacts_queried') is True and
             report.get('sample_count')==world['frame_range']['end'] and report.get('object_count')==len(world['bodies']) and
-            report.get('actual_steps_per_frame')==steps and report.get('actual_solver_steps')==(world['frame_range']['end']-1)*steps and
+            report.get('actual_steps_per_frame')==steps and report.get('actual_solver_steps')==timing_clock(world)['solver_steps'] and
             report.get('backend')==module and module.get('solver_version')=='3.2.7',
             'PHYSICS_BAKE_FAILED','Actual DIRECT lifecycle/module/step observations differ from admission.',category='backend-crash')
     require(type(report.get('actual_bodies')) is list and len(report['actual_bodies'])==len(world['bodies']),
@@ -1378,7 +1402,13 @@ def _read_cache_impl(root, *, expected_world_sha256=None):
         require(total+len(manifest_payload)<=min(world['budgets']['cache_bytes'],world['budgets']['temporary_bytes'],MAX_CACHE_BYTES) and
                 all(file['bytes']<=world['budgets']['bake_file_bytes'] for file in manifest['files']),
                 'PHYSICS_CACHE_CORRUPT','Actual retained cache files/manifest exceed bound world budgets.',category='cache-corruption')
-        expected_steps=(world['frame_range']['end']-1)*int(1/(_ratio(world['fps'])*_ratio(world['solver']['fixed_step'])/world['solver']['substeps']))
+        if 'timing.json' in payloads:
+            require(parse(payloads['timing.json']) == _timing_receipt(world,manifest['backend']),
+                    'PHYSICS_CACHE_CORRUPT','Exact timing/settings/reproducibility receipt changed.',category='cache-corruption')
+        else:
+            require(digest(payloads['worker.py']) != digest(_worker_bytes(world['solver']['backend'])),
+                    'PHYSICS_CACHE_CORRUPT','Current adapter output omitted exact timing receipt.',category='cache-corruption')
+        expected_steps=timing_clock(world)['solver_steps']
         require(manifest['usage']['solver_steps']==expected_steps and manifest['numerical_tolerance']==1e-5,
                 'PHYSICS_CACHE_CORRUPT','Cache step/tolerance observations differ from the admitted profile.',category='cache-corruption')
         world_hash = digest(payloads['world.json'])
@@ -1467,6 +1497,21 @@ def verify_cache(root, *, expected_world_sha256=None):
                 numerical_recompute_guarantee='not-established')
 
 
+def inspect_time(root, timestamp):
+    """Seek verified completed output states at an exact rational timestamp."""
+    require(isinstance(timestamp,Fraction), 'PHYSICS_CACHE_SAMPLE', 'Timestamp must be an exact Fraction.',category='invalid-input')
+    manifest, world, states, _ = _read_cache(root)
+    coordinate=timestamp*_ratio(world['fps'])
+    require(0<=coordinate<=len(states['samples'])-1,'PHYSICS_CACHE_SAMPLE',
+            'Timestamp lies outside completed cache samples; extrapolation is unsupported.',category='invalid-input')
+    left=math.floor(coordinate); right=math.ceil(coordinate)
+    alpha=coordinate-left
+    bodies=[interpolate_state(a,b,alpha) for a,b in zip(states['samples'][left]['bodies'],states['samples'][right]['bodies'])]
+    return dict(time=rational(timestamp),bodies=bodies,bracket_frames=[left,right],
+        interpolation='linear translation and shortest-arc quaternion slerp',
+        source='hash-verified-completed-output-state-interpolation',world_sha256=manifest['world_sha256'],fixture=manifest['fixture'])
+
+
 def inspect_cache(root, frame):
     manifest, world, states, _ = _read_cache(root)
     require(type(frame) is int and 0 <= frame < len(states['samples']),
@@ -1474,6 +1519,7 @@ def inspect_cache(root, frame):
     value = deepcopy(states['samples'][frame])
     t = Fraction(frame, 1)/_ratio(world['fps'])
     value.update(time=dict(numerator=t.numerator, denominator=t.denominator),
+                 sampling=timing_clock(world)['sample_brackets'][frame],
                  source='hash-verified-sample-cache-replay', world_sha256=manifest['world_sha256'],
                  fixture=manifest['fixture'], contacts='not-exposed-by-Blender-adapter' if manifest['backend']['id']=='blender' else 'available-in-contacts.json')
     return value
