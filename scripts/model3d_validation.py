@@ -339,6 +339,7 @@ Raises RigError for expected invalid input; does not modify the selected root.
                 require(isinstance(child, dict) and child.get('kind') == KINDS['asset'] and
                         (child.get('id'), child.get('version')) == child_key,
                         'MODEL3D_REFERENCE', 'Dependency manifest does not match its exact asset identity.')
+                validate_contract(child)
                 require(child_key not in active, 'MODEL3D_CYCLE', 'Asset dependency cycle detected.')
                 require(child_key not in identities or identities[child_key] == record['sha256'],
                         'MODEL3D_VERSION_CONFLICT', 'An immutable asset version has conflicting manifest hashes.')

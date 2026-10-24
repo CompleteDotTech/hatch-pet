@@ -987,6 +987,27 @@ class Model3DContracts(unittest.TestCase):
             self.assertInvalid(doc, 'RIG_LIMIT_MEMORY', payloads=True)
         self.assertEqual(before, {p.name: p.read_bytes() for p in self.root.iterdir()})
 
+    def test_public_cli_rejects_malformed_dependency_limits_as_structured_failures(self):
+        child = asset_fixture(self.root, 'malformed-child')
+        for missing, limit in ((True, None), (False, None), (False, [])):
+            broken = deepcopy(child)
+            if missing:
+                del broken['limits']
+            else:
+                broken['limits'] = limit
+            reference = write_document(self.root, 'malformed-child.json', broken)
+            root = deepcopy(self.asset)
+            root['dependencies'] = [dict(id=child['id'], version=child['version'], manifest=reference)]
+            path = self.root / 'malformed-root.json'
+            write_document(self.root, path.name, root)
+            before = {p.name: p.read_bytes() for p in self.root.iterdir()}
+            result = subprocess.run([sys.executable, '-B', str(ROOT / 'scripts/model3d.py'),
+                'validate', '--file', str(path)], capture_output=True, text=True)
+            self.assertEqual(result.returncode, 2, result.stderr)
+            self.assertEqual(json.loads(result.stderr)['error']['code'], 'MODEL3D_SCHEMA')
+            self.assertNotIn('Traceback', result.stderr)
+            self.assertEqual(before, {p.name: p.read_bytes() for p in self.root.iterdir()})
+
     def test_public_cli_rejects_oversized_json_integer_without_mutating_inputs(self):
         path = self.root / 'oversized-integer.json'
         raw = b'{"schema_version":1,"kind":"model3d-asset","untrusted":' + b'9' * 5000 + b'}'

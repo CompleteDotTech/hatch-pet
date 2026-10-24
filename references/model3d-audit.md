@@ -126,3 +126,15 @@ template parity, real robotic inspection and original source-delivery verificati
 review remain required. The final decoder must merge through its own qualified PR
 before this dependent PR becomes eligible; main ancestry, review and CI must then
 be reconciled against the actual final head.
+
+
+The next independent review verified the 50-test candidate and its evidence hashes,
+then caught child budget access occurring before child-contract validation in the
+new cache lookup. Validation now precedes any child-limit access. Three public CLI
+negative cases (missing, null and array limits) require structured schema failures
+and prove unchanged inputs. All **51 focused Model3D tests** passed in **10.852
+seconds**, no failures/errors/skips; generated schema/template parity also passed.
+`latest-summary.json` binds this correction's exact tested source hashes. Earlier
+`final-summary.json`, helper summaries and the 922-test full receipt remain scoped
+to their explicitly recorded earlier implementations, not this later correction.
+Fresh exact-head independent review and native CI are still separate merge gates.
