@@ -1,0 +1,227 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AssetProvenance v1",
+  "$defs": {
+    "AssetProvenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "method": {
+          "enum": [
+            "import",
+            "generated",
+            "derived",
+            "fixture"
+          ]
+        },
+        "origin": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "fixture": {
+          "type": "boolean"
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/AssetFile"
+          },
+          "minItems": 1,
+          "maxItems": 256,
+          "uniqueItems": false
+        },
+        "provider": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 256
+              },
+              "receipt": {
+                "$ref": "#/$defs/AssetFile"
+              }
+            },
+            "required": [
+              "name",
+              "receipt"
+            ]
+          },
+          "minItems": 0,
+          "maxItems": 1,
+          "uniqueItems": false
+        },
+        "tools": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 256
+              },
+              "version": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              }
+            },
+            "required": [
+              "name",
+              "version"
+            ]
+          },
+          "minItems": 0,
+          "maxItems": 256,
+          "uniqueItems": false
+        },
+        "parents": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_-]{0,63}$",
+                "maxLength": 64
+              },
+              "version": {
+                "type": "string",
+                "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$",
+                "maxLength": 32
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            },
+            "required": [
+              "id",
+              "version",
+              "sha256"
+            ]
+          },
+          "minItems": 0,
+          "maxItems": 256,
+          "uniqueItems": false
+        },
+        "edits": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "minItems": 0,
+          "maxItems": 128,
+          "uniqueItems": true
+        },
+        "license_evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/AssetFile"
+          },
+          "minItems": 1,
+          "maxItems": 256,
+          "uniqueItems": false
+        },
+        "permissions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/AssetFile"
+          },
+          "minItems": 0,
+          "maxItems": 256,
+          "uniqueItems": false
+        },
+        "uncertainty": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "minItems": 0,
+          "maxItems": 128,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "method",
+        "origin",
+        "fixture",
+        "sources",
+        "provider",
+        "tools",
+        "parents",
+        "edits",
+        "license_evidence",
+        "permissions",
+        "uncertainty"
+      ]
+    },
+    "AssetFile": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024,
+          "pattern": "^[A-Za-z0-9_][A-Za-z0-9_./-]*$"
+        },
+        "role": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_-]{0,63}$",
+          "maxLength": 64
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 67108864
+        },
+        "format": {
+          "enum": [
+            "glb",
+            "gltf",
+            "obj",
+            "png",
+            "jpeg",
+            "webp",
+            "json",
+            "binary"
+          ]
+        },
+        "mime_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "required": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "path",
+        "role",
+        "sha256",
+        "bytes",
+        "format",
+        "mime_type",
+        "required"
+      ]
+    }
+  },
+  "$ref": "#/$defs/AssetProvenance"
+}

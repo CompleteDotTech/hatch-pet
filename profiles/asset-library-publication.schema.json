@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AssetPublication v1",
+  "$defs": {
+    "AssetPublication": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "visibility": {
+          "enum": [
+            "private",
+            "project-local"
+          ]
+        },
+        "distribution": {
+          "enum": [
+            "not-evaluated",
+            "restricted"
+          ]
+        },
+        "license_evaluation": {
+          "enum": [
+            "not-evaluated",
+            "evidence-retained"
+          ]
+        },
+        "inventory": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1024,
+            "pattern": "^[A-Za-z0-9_][A-Za-z0-9_./-]*$"
+          },
+          "minItems": 1,
+          "maxItems": 256,
+          "uniqueItems": true
+        },
+        "verification": {
+          "enum": [
+            "payload-verified"
+          ]
+        },
+        "integration": {
+          "enum": [
+            "not-exercised",
+            "native-reference"
+          ]
+        }
+      },
+      "required": [
+        "visibility",
+        "distribution",
+        "license_evaluation",
+        "inventory",
+        "verification",
+        "integration"
+      ]
+    }
+  },
+  "$ref": "#/$defs/AssetPublication"
+}

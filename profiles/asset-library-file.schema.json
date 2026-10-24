@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AssetFile v1",
+  "$defs": {
+    "AssetFile": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024,
+          "pattern": "^[A-Za-z0-9_][A-Za-z0-9_./-]*$"
+        },
+        "role": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_-]{0,63}$",
+          "maxLength": 64
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 67108864
+        },
+        "format": {
+          "enum": [
+            "glb",
+            "gltf",
+            "obj",
+            "png",
+            "jpeg",
+            "webp",
+            "json",
+            "binary"
+          ]
+        },
+        "mime_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "required": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "path",
+        "role",
+        "sha256",
+        "bytes",
+        "format",
+        "mime_type",
+        "required"
+      ]
+    }
+  },
+  "$ref": "#/$defs/AssetFile"
+}

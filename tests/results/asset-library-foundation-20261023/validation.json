@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "scope": "Issue #138 foundation only",
+  "fixture": true,
+  "python": "3.14.7 (main, Aug 10 2026, 07:46:56) [GCC 16.1.1 20260728]",
+  "sqlite": "3.53.4",
+  "platform": "Linux-7.2.5-3-omarchy-x86_64-with-glibc2.44",
+  "jsonschema": "4.26.0",
+  "commands": [
+    {
+      "command": "PYTHONPATH=scripts python -m unittest discover -s tests -p test_asset_library.py -v",
+      "passed": 16,
+      "failed": 0,
+      "skipped": 0,
+      "log": "focused.log"
+    },
+    {
+      "command": "PYTHONPATH=scripts python -m unittest discover -s tests -p test_rig_compatibility.py -v",
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0,
+      "log": "compatibility.log"
+    },
+    {
+      "command": "PYTHONPATH=scripts python -m unittest [test_profiles.py,test_production_contracts.py,test_schemas_and_compatibility.py]",
+      "passed": 60,
+      "failed": 0,
+      "skipped": 0,
+      "log": "legacy.log"
+    },
+    {
+      "command": "python scripts/generate_asset_library_schemas.py --check",
+      "returncode": 0
+    },
+    {
+      "command": "python scripts/generate_schemas.py --check",
+      "returncode": 0
+    },
+    {
+      "command": "python scripts/production_sources.py verify-delivery",
+      "returncode": 0,
+      "verified": true
+    },
+    {
+      "command": "python scripts/demonstrate_asset_library.py --destination /tmp/hatch-asset138-demo",
+      "returncode": 0,
+      "report": "demonstration.json"
+    }
+  ],
+  "source_sha256": {
+    "examples/asset-library-foundation/README.md": "2e4641056105171ab4734ac8545dccaef78d12d3dbfe75ff0ad5627bc9edce8a",
+    "examples/asset-library-foundation/manifest.json": "3c6c5f60824a159e7362c855086edda92494b80cce9ac7ead01a18e0cf02e648",
+    "examples/asset-library-foundation/mesh/triangle.obj": "830e41de3e98d4841fcc666158ba5f55c2e542968e0dbb0c82a360909b992431",
+    "examples/asset-library-foundation/source/license.txt": "a984165690a05e694a9affcdaaa457ed48efad956069f5ae23cb151262c64380",
+    "profiles/asset-library-annotations.schema.json": "735f0a6f48b079eb6ff00be7797a06e95fb09c025310d51a8938d50b6dcad4b9",
+    "profiles/asset-library-compatibility.schema.json": "efd795a291a2a25a06abb1d5d86ab0690effae8a3fe5416e4ff4a78c8f1ea274",
+    "profiles/asset-library-dependency.schema.json": "65fade00ac221a91732c0cae7412081d5e3a2442a7558146ea162dc93f5908fd",
+    "profiles/asset-library-file.schema.json": "e38d369528223d94d1bf0da14a2b6f16bda0fdff819afb527998e022337f5f67",
+    "profiles/asset-library-identity.schema.json": "bbbf8c2eb4afe6878e0731895d45d13332332b1d9cd04b7b14bfd7d2cb5b75ae",
+    "profiles/asset-library-metadata.schema.json": "69dedf986a4630cde34da55542b2a7514bba93d35ab0c8e3d39a844238ad3a33",
+    "profiles/asset-library-preview.schema.json": "d0f1c45ad03b006016f56903a478e39b10ee6dfe409562da0fc5da6cf0f85839",
+    "profiles/asset-library-provenance.schema.json": "5d5f16f45ba55b43b2f9918daf05e7b685820d891bcbf4c0075f8625fa65d766",
+    "profiles/asset-library-publication.schema.json": "252a47d0df2e39da4fa84ed3b6f0ccb333e59dc89234ca636428f34d482e0ad8",
+    "profiles/asset-library-ref.schema.json": "c8bb7ad5343bc14d416d40d0c1d928d955af5b828a5b27a8052453f75f7e057f",
+    "profiles/asset-library-version.schema.json": "5cc8dc92740eca0145b2f43cde0c408eb52f8874f2d4a8af28dd6d5454302d10",
+    "scripts/asset_library.py": "117def91dea6a68c49ac0c6e50448db36c5691b0efad2e833fe9e18f6dab424e",
+    "scripts/asset_library_contracts.py": "5676e86e23a75f38b0f06671100b828d4c82cb104f643763445b545aa9c80136",
+    "scripts/demonstrate_asset_library.py": "a325558e3b1512b86ceda79c62f6390216401d8708b892392676ba1d9bcfffd4",
+    "scripts/generate_asset_library_schemas.py": "24461b4798f5e477015a29aff5257ee6af84210fd23268e1ae546eedc57d61c3",
+    "tests/test_asset_library.py": "fefcf182030398ee2512ebd6f6a5cf6b170600e65242bbbe20723819a118b077"
+  },
+  "limitations": [
+    "Linux local execution; Windows/macOS pending actual CI",
+    "Header recognition and payload verification do not establish geometry validation or import/export support",
+    "No Blender/browser/production-art approval claims",
+    "Broader storage lifecycle/search/GC/project-scoped resolution remain later issues",
+    "The private owned library directory is the trusted write boundary; Windows private ACLs are caller responsibility"
+  ]
+}
