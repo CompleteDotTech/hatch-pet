@@ -27,6 +27,7 @@ test_legacy_shot_and_track_contracts_delegate_without_changes (test_rig_camera3d
 test_malformed_kind_json_values_paths_and_cli_errors_are_structured (test_rig_camera3d_contracts.CameraContractTests.test_malformed_kind_json_values_paths_and_cli_errors_are_structured) ... ok
 test_real_exact_byte_registry_closure_and_negative_payload_cases (test_rig_camera3d_contracts.CameraContractTests.test_real_exact_byte_registry_closure_and_negative_payload_cases) ... ok
 test_real_owned_reference_links_enforce_native_timeline_type_scene_and_timing (test_rig_camera3d_contracts.CameraContractTests.test_real_owned_reference_links_enforce_native_timeline_type_scene_and_timing) ... ok
+test_regular_file_admission_rejects_actual_fifo_without_blocking (test_rig_camera3d_contracts.CameraContractTests.test_regular_file_admission_rejects_actual_fifo_without_blocking) ... ok
 test_resolved_storyboard_overlap_and_evaluated_dependency_semantics (test_rig_camera3d_contracts.CameraContractTests.test_resolved_storyboard_overlap_and_evaluated_dependency_semantics) ... ok
 test_schema_and_runtime_reject_identifier_hash_and_path_newline_aliases (test_rig_camera3d_contracts.CameraContractTests.test_schema_and_runtime_reject_identifier_hash_and_path_newline_aliases) ... ok
 test_semantic_graph_path_constraint_and_boundary_rejections (test_rig_camera3d_contracts.CameraContractTests.test_semantic_graph_path_constraint_and_boundary_rejections) ... ok
@@ -41,7 +42,7 @@ test_roundtrip_unprojection_and_actual_center_rays (test_rig_camera3d_contracts.
 test_sensor_fit_gate_shift_overscan_and_singular_projection_rejection (test_rig_camera3d_contracts.CameraMathTests.test_sensor_fit_gate_shift_overscan_and_singular_projection_rejection) ... ok
 
 ----------------------------------------------------------------------
-Ran 41 tests in 12.763s
+Ran 42 tests in 10.964s
 
 OK
 Discovered 802 2D tests without optional 3D dependencies

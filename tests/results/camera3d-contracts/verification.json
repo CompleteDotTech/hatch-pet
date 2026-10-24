@@ -7,11 +7,11 @@
   "command_results": [
     {
       "command": "/tmp/hatch-restore-venv/bin/python scripts/test_rig_gate.py schema-math",
-      "tests": 41,
+      "tests": 42,
       "failures": 0,
       "errors": 0,
       "skips": 0,
-      "seconds": 12.763,
+      "seconds": 10.964,
       "exit": 0
     },
     {
@@ -20,7 +20,7 @@
       "failures": 0,
       "errors": 0,
       "skips": 0,
-      "seconds": 8.85,
+      "seconds": 8.901,
       "exit": 0
     },
     {
@@ -29,7 +29,7 @@
       "failures": 0,
       "errors": 0,
       "skips": 0,
-      "seconds": 10.532,
+      "seconds": 10.349,
       "browser": "Chromium 152.0.7977.82",
       "exit": 0
     },
@@ -71,15 +71,15 @@
   ],
   "artifacts": {
     "schema-math.log": {
-      "sha256": "3c36b9242762a1a0ebc562762f47a540931e6627ba94442b0b7cbddb75a52b35",
-      "bytes": 7200
+      "sha256": "011c83a1333bfdcb5077dce1639121140190c9c7e9210901a1c1ef17d7a17ab3",
+      "bytes": 7387
     },
     "legacy-contract-render.log": {
-      "sha256": "da5e073674af3675b97e44f36666e8227c02aa6585a72de94b48920058795a1c",
+      "sha256": "91153de698ead9ac38974197df05dd5524f861f06b21cbb0a98f66a5bc929078",
       "bytes": 9692
     },
     "actual-browser.log": {
-      "sha256": "0eb341df21a29e157d7e8b62c9216faa46d1852f948cfaf760a39c03dbb576e2",
+      "sha256": "40f69dd2b1e6eff9af51ca85e67d85949d5461de7b58e8d636303ea1c5a812aa",
       "bytes": 884
     },
     "registry-example.json": {
@@ -87,7 +87,7 @@
       "bytes": 276
     },
     "source-snapshot.json": {
-      "sha256": "9dcd438a86054e389f28a6f5f27279c7127cfe07663ff4f619ced85429b4433a",
+      "sha256": "c01494d28f450d832a8cbc6da3ee1cf14724afb2b0b5bdd8ed7976eab88e0aff",
       "bytes": 10764
     },
     "protected-inputs.json": {
@@ -120,7 +120,19 @@
       "finding": "Valid native bone/socket IDs rejected",
       "fix": "Preserve native identifier policy for attachments",
       "regression": "test_real_owned_reference_links_enforce_native_timeline_type_scene_and_timing"
+    },
+    {
+      "finding": "Selected camera mounted on multiple rig nodes with no node selector",
+      "fix": "Selected camera must occur exactly once in bound rig",
+      "regression": "test_real_owned_reference_links_enforce_native_timeline_type_scene_and_timing"
+    },
+    {
+      "finding": "Standalone validation could block on nonregular FIFO input",
+      "fix": "Bounded binary regular-file descriptor admission, nonblocking and nofollow where available",
+      "regression": "test_regular_file_admission_rejects_actual_fifo_without_blocking"
     }
   ],
-  "current_execution_note": "Corrected candidate after independent findings; exact source snapshot preserved before and after all validation"
+  "current_execution_note": "Corrected candidate after independent findings; exact source snapshot preserved before and after all validation",
+  "previous_candidate_commit": "73af07270025f06bbe4f044f566a366f98ce1750",
+  "previous_candidate_source_hashes_verified_against_commit": true
 }

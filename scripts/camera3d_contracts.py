@@ -12,6 +12,8 @@ from functools import lru_cache
 import hashlib
 import json
 import math
+import os
+import stat
 from pathlib import Path, PurePosixPath
 import re
 import unicodedata
@@ -299,11 +301,19 @@ def validate(value, kind=None):
 
 
 def _read_payload(path):
+    """Read at most 8 MiB from an admitted regular binary file descriptor."""
     path = Path(path)
-    if path.stat().st_size > MAX_BYTES:
-        raise ValueError('camera3d document exceeds 8 MiB')
-    with path.open('rb') as stream:
-        payload = stream.read(MAX_BYTES + 1)
+    if path.is_symlink():
+        raise ValueError('camera3d rejects symlink document files')
+    flags = os.O_RDONLY | getattr(os,'O_BINARY',0) | getattr(os,'O_NONBLOCK',0) | getattr(os,'O_NOFOLLOW',0)
+    descriptor = os.open(path,flags)
+    with os.fdopen(descriptor,'rb') as stream:
+        metadata = os.fstat(stream.fileno())
+        if not stat.S_ISREG(metadata.st_mode):
+            raise ValueError('camera3d document requires a regular file')
+        if metadata.st_size > MAX_BYTES:
+            raise ValueError('camera3d document exceeds 8 MiB')
+        payload = stream.read(MAX_BYTES+1)
     if len(payload) > MAX_BYTES:
         raise ValueError('camera3d document exceeds bounded read')
     return payload
@@ -337,15 +347,11 @@ def load_registry(root, registry):
                 raise ValueError('camera3d registry rejects symlink resources')
         if not path.is_file() or not path.resolve().is_relative_to(root):
             raise ValueError('camera3d registry resource missing or outside root')
-        size = path.stat().st_size
-        total += size
-        if size > MAX_BYTES or total > 256*1024*1024:
+        payload = _read_payload(path)
+        total += len(payload)
+        if total > 256*1024*1024:
             raise ValueError('camera3d registry byte budget exceeded')
-        with path.open('rb') as stream:
-            payload = stream.read(MAX_BYTES + 1)
-        if len(payload) > MAX_BYTES:
-            raise ValueError('camera3d resource exceeds bounded read')
-        if len(payload) != size or hashlib.sha256(payload).hexdigest() != pointer['sha256']:
+        if hashlib.sha256(payload).hexdigest() != pointer['sha256']:
             raise ValueError('camera3d registry resource hash mismatch')
         resources[key] = pointer
         if pointer['kind'] == 'hatch-production-shot':
@@ -401,8 +407,8 @@ def _validate_bindings(documents,external_shots=None):
             if any(get(target)['scene'] != doc['scene'] for target in all_targets):
                 raise ValueError('camera3d target belongs to another bound scene')
             if doc['rig'] is not None:
-                if doc['camera'] not in [node['camera'] for node in get(doc['rig'])['nodes']]:
-                    raise ValueError('camera3d selected camera is not in bound rig')
+                if [node['camera'] for node in get(doc['rig'])['nodes']].count(doc['camera']) != 1:
+                    raise ValueError('camera3d selected camera must occur exactly once in bound rig')
             combined = [get(p) for p in camera['constraints'] + doc['constraints']]
             priorities = [c['priority'] for c in combined if c is not None and c['enabled']]
             if len(priorities) != len(set(priorities)):

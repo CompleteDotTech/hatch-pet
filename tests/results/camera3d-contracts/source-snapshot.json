@@ -17,7 +17,7 @@
   "profiles/camera3d-transition.schema.json": "ac46348b0bfe008becec79bed81195f6790a099ebbbd4e9113a830d3f22fb1c9",
   "scripts/asset_contracts.py": "ada924819e6855c592a8313f91f020521c85e61f283cd2f3ec8b2b01b204fa51",
   "scripts/asset_exporters.py": "8f922101e7a7203b4a682934a07b74b6c0410a64c06f7016a17bb58075c8c5f9",
-  "scripts/camera3d_contracts.py": "9913c851eb786529474f078d03e817e8ef6b46ba1a1150191cae6a0407804834",
+  "scripts/camera3d_contracts.py": "8ffa961cea4cdf1fccad130ee78fd465ff961c3ad64c05993ebd9a2eb8ac5f81",
   "scripts/camera3d_math.py": "42634bdbfef74edeadf32f8af294bec6680e5a64dbbf9d417881b591a73dec28",
   "scripts/character_decomposition.py": "d79b98072602a9890eda37064e089823238675778c5dcffed2e3589e46d3c101",
   "scripts/compose_atlas.py": "53de4d6e8352e14a5c2f155af4544435bd5518962dc671fdd015f426500c754f",
@@ -104,5 +104,5 @@
   "scripts/validate_atlas.py": "cb1208ff3eeea0c7fec03921b04e9e647ac5ae7f6645184925f3c759cd0c8854",
   "scripts/verify_public_delivery.py": "1c38e7cbc8596e2f098ab4a9492fa8e959940d7ec859533926e9d6fd5d46c9fb",
   "scripts/verify_rig_demos.py": "a639878f8e7ec83a005cec5189210f77e21ede06667f793a70a7c610ff424d1b",
-  "tests/test_rig_camera3d_contracts.py": "85431727a12da47fa4912c8d5a8e53edca37ab22cc5049100d5a6088601162fc"
+  "tests/test_rig_camera3d_contracts.py": "4a6f05f808f05cf179f3fff0186c872c235cbe73fe50b3f32ca101158109c35f"
 }

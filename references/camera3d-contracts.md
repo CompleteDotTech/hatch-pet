@@ -170,7 +170,9 @@ Validation results and exact source hashes are recorded in [retained verificatio
 
 The spatial reference layer also delegates vector/quaternion operations to `rig_math`, exposes explicitly fixed-axis/extrinsic XYZ Euler angles (`Rz @ Ry @ Rx`), world/camera point conversion, world or rotated target offsets, forward ray/plane intersection, normalized frustum planes/corners/containment, and exact convex AABB/frustum intersection projection. Bounding-box projection enumerates at most 220 plane triples and handles near-plane crossings and camera-enclosing boxes; it does not establish rendered occlusion visibility. Native bone/socket identifiers retain their original punctuation/case. Schema-valid integral JSON numbers such as `24.0` are accepted for integer fields by normalizing only arithmetic operands, leaving authentic source bytes and hashes unchanged. Camera-owned path/animation/shot timing and bound scene/rig relationships are checked; retiming is never implicit.
 
-The corrected frozen candidate passed **41 schema/math/compatibility tests
-(including 21 camera tests), 51 legacy contract/render tests, and 4 actual
+The corrected frozen candidate passed **42 schema/math/compatibility tests
+(including 22 camera tests), 51 legacy contract/render tests, and 4 actual
 Chromium preview tests**, with zero final failures/errors/skips. The original
 35-test schema/math execution is preserved at its authentic e202ca4 revision.
+
+A bound rig must mount the selected camera exactly once, preventing ambiguous camera world transforms. File reads admit regular binary descriptors only, read at most 8 MiB, and use nonblocking/no-follow flags where available. The actual FIFO CLI regression terminates with a structured rejection on platforms with FIFOs; Windows has no `os.mkfifo`, so that subcase is inapplicable there.

@@ -4,6 +4,7 @@ from fractions import Fraction
 import hashlib
 import json
 import math
+import os
 from pathlib import Path
 import subprocess
 import sys
@@ -285,7 +286,8 @@ class CameraContractTests(unittest.TestCase):
                 ('shot',lambda d:d['shot'].update(duration_frames=25),'shot/animation timing'),
                 ('camera',lambda d:d.update(parent=dict(scene=dict(id='scene-other',kind='scene3d-scene',version='1.0.0',path='scene-other.json',sha256='0'*64),node='camera-parent')),'parent belongs'),
                 ('target',lambda d:d.update(scene=dict(d['scene'],id='scene-other')),'target belongs'),
-                ('rig',lambda d:d['nodes'][0].update(camera=None),'not in bound rig')):
+                ('rig',lambda d:d['nodes'][0].update(camera=None),'exactly once'),
+                ('rig',lambda d:d['nodes'].append(dict(deepcopy(d['nodes'][0]),id='second-mount',transform=dict(translation=[1,0,0],rotation=[0,0,0,1],scale=[1,1,1]))),'exactly once')):
                 edited=deepcopy(values);edit(edited[kind])
                 registry=save_native_closure(root,[edited[n] for n in names])
                 with self.subTest(kind=kind),self.assertRaisesRegex(ValueError,message):contracts.load_registry(root,registry)
@@ -339,6 +341,17 @@ class CameraContractTests(unittest.TestCase):
             self.assertEqual(len(contracts.load_registry(root,registry_for(wrapper))),2)
             wrapper['shot']['duration_frames']+=1
             with self.assertRaisesRegex(ValueError,'duration'):contracts.load_registry(root,registry_for(wrapper))
+
+    def test_regular_file_admission_rejects_actual_fifo_without_blocking(self):
+        if not hasattr(os,'mkfifo'):
+            return  # Windows lacks FIFOs; descriptor regular-file check is universal.
+        with tempfile.TemporaryDirectory() as directory:
+            path=Path(directory)/'document.pipe';os.mkfifo(path)
+            completed=subprocess.run([sys.executable,str(ROOT/'scripts/camera3d_contracts.py'),'--validate',str(path)],
+                capture_output=True,text=True,timeout=5)
+            self.assertEqual(completed.returncode,2)
+            self.assertIn('regular file',json.loads(completed.stdout)['error'])
+            self.assertNotIn('Traceback',completed.stderr)
 
     def test_duplicate_json_keys_and_unknown_versions_fail_on_actual_file(self):
         with tempfile.TemporaryDirectory() as directory:
