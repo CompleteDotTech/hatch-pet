@@ -8,8 +8,8 @@ or continuity comparison is represented.
 
 `identity.json` is an unreviewed logical identity. `revision.json` is a candidate
 revision with exact native-file pointers; it does not assert asset inspection or
-approval. Its schema-only statistics are fixture declarations and remain
-unverified until a native geometry inspector runs. The current foundation's
+approval. Its geometry statistics and bounds are explicitly unverified/null until a native
+geometry inspector runs; no fabricated measurements are retained. The current foundation's
 byte-verification API reports `geometry_inspected=false` explicitly.
 
 See [the API and validation guide](../../references/continuity-contracts.md).

@@ -31,8 +31,8 @@ SEMVER = dict(type='string', pattern=r'^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-
 TEXT = dict(type='string', minLength=1, maxLength=4096)
 SHA = dict(type='string', pattern=r'^[0-9a-f]{64}' + END)
 _BOUNDARY = r'(?:/|' + END + ')'
-_RESERVED = r'(?:[Cc][Oo][Nn]|[Pp][Rr][Nn]|[Aa][Uu][Xx]|[Nn][Uu][Ll]|[Cc][Oo][Mm][1-9]|[Ll][Pp][Tt][1-9])'
-_SEGMENT = (r'(?![.]{1,2}' + _BOUNDARY + r')(?!' + _RESERVED + r'(?:[.]|/|' + END + r'))'
+_RESERVED = r'(?:[Cc][Oo][Nn]|[Pp][Rr][Nn]|[Aa][Uu][Xx]|[Nn][Uu][Ll]|[Cc][Oo][Mm][1-9¹²³]|[Ll][Pp][Tt][1-9¹²³]|[Cc][Oo][Nn][Ii][Nn]\$|[Cc][Oo][Nn][Oo][Uu][Tt]\$)'
+_SEGMENT = (r'(?! )(?![.]{1,2}' + _BOUNDARY + r')(?!' + _RESERVED + r'(?:[.]|/|' + END + r'))'
             + r'(?![^/]*[. ]' + _BOUNDARY + r')[^/]+')
 PATH = dict(type='string', minLength=1, maxLength=1024,
             pattern=r'^(?!.*[\\:<>\"|?*\x00-\x1f])(?:' + _SEGMENT + r'/)*' + _SEGMENT + END)
@@ -117,8 +117,10 @@ def definitions():
     d['component'] = obj(dict(id=ID, parent_id=nullable(ID), local_transform=ref('transform'),
                               mesh=ref('ref'), materials=arr(ref('ref'), maximum=256)))
     d['morph'] = obj(dict(id=ID, minimum=NUMBER, maximum=NUMBER, default=NUMBER))
-    d['metrics'] = obj(dict(vertices=integer(1, 2_000_000_000), triangles=integer(1, 2_000_000_000),
-                            components=integer(1, 65536), measured_by=ref('ref')))
+    d['metrics'] = obj(dict(status=enum('unverified', 'measured'),
+                            vertices=nullable(integer(1, 2_000_000_000)),
+                            triangles=nullable(integer(1, 2_000_000_000)),
+                            components=nullable(integer(1, 65536)), measured_by=nullable(ref('ref'))))
     d['state-base'] = obj(dict(entity_id=ID, query=ref('query'), transform=ref('transform'),
                               source_evaluation=ref('ref'), unavailable_fields=arr(ID, unique=True)))
     d['fact'] = obj(dict(id=ID, value=dict(type=['string', 'number', 'boolean', 'null']),
@@ -141,7 +143,7 @@ def definitions():
         materials=arr(ref('ref')), textures=arr(ref('ref')), rig=nullable(ref('ref')),
         skin_weights=arr(ref('ref')), morphs=arr(ref('morph'), maximum=1024),
         attachments=arr(ref('attachment'), maximum=1024), coordinates=ref('coordinates'),
-        rest_pose=nullable(ref('ref')), bounds=ref('bounds'), geometry_statistics=ref('metrics'),
+        rest_pose=nullable(ref('ref')), bounds=nullable(ref('bounds')), geometry_statistics=ref('metrics'),
         source_provenance=ref('provenance'), dependencies=arr(ref('ref')),
         reference_renders=arr(ref('ref'), maximum=256), review_records=arr(ref('ref'), maximum=256),
         visual_spec=ref('visual-spec'), created_at=STAMP))
@@ -263,9 +265,9 @@ def portable_path(value):
     if (not isinstance(value, str) or len(value) > 1024 or not value or '\\' in value or ':' in value
             or value.startswith('/') or unicodedata.normalize('NFC', value) != value):
         raise ValueError('CONTINUITY_PATH: expected canonical portable relative path')
-    reserved = {'CON', 'PRN', 'AUX', 'NUL', *(f'COM{i}' for i in range(1, 10)), *(f'LPT{i}' for i in range(1, 10))}
+    reserved = {'CON', 'PRN', 'AUX', 'NUL', 'CONIN$', 'CONOUT$', *(f'COM{i}' for i in '123456789¹²³'), *(f'LPT{i}' for i in '123456789¹²³')}
     for part in value.split('/'):
-        if (part in ('', '.', '..') or part.endswith(('.', ' ')) or any(ord(c) < 32 for c in part)
+        if (part in ('', '.', '..') or part.startswith(' ') or part.endswith(('.', ' ')) or any(ord(c) < 32 for c in part)
                 or any(c in part for c in '<>"|?*') or part.split('.')[0].upper() in reserved):
             raise ValueError('CONTINUITY_PATH: unsafe portable path')
     return value
@@ -300,6 +302,9 @@ def validate_document(value, kind=None):
         if 'confidence' in item and item['confidence'] is not None and not item.get('evidence'):
             raise ValueError('CONTINUITY_CONFIDENCE: confidence requires documented evidence')
         if set(item) == {'numerator', 'denominator'}:
+            # JSON Schema integer means a number with zero fractional part;
+            # normalize exact validated values before Python integer arithmetic.
+            item['numerator'], item['denominator'] = int(item['numerator']), int(item['denominator'])
             if math.gcd(item['numerator'], item['denominator']) != 1:
                 raise ValueError('CONTINUITY_TIME: rational times must be reduced')
         if set(item) == {'translation', 'rotation', 'scale'}:
@@ -310,7 +315,7 @@ def validate_document(value, kind=None):
                 raise ValueError('CONTINUITY_BOUNDS: inverted bounds')
         if set(item) == {'start', 'end', 'project_id', 'world_id', 'timeline_id', 'branch_id', 'entity_ids', 'shot_ids'}:
             from fractions import Fraction
-            if Fraction(**item['start']) >= Fraction(**item['end']):
+            if Fraction(int(item['start']['numerator']), int(item['start']['denominator'])) >= Fraction(int(item['end']['numerator']), int(item['end']['denominator'])):
                 raise ValueError('CONTINUITY_SCOPE: interval must be nonempty and half-open')
         if item.get('origin') == 'procedural-fixture' and not item['fixture']:
             raise ValueError('CONTINUITY_PROVENANCE: procedural fixtures cannot become original artwork')
@@ -324,6 +329,15 @@ def validate_document(value, kind=None):
             if len(ids) != len(set(ids)):
                 raise ValueError('CONTINUITY_REFERENCE: duplicate ' + key + ' IDs')
     if kind == 'revision':
+        metrics = value['geometry_statistics']
+        measured = metrics['status'] == 'measured'
+        values = [metrics[key] for key in ('vertices', 'triangles', 'components', 'measured_by')]
+        if measured and (any(item is None for item in values) or value['bounds'] is None):
+            raise ValueError('CONTINUITY_INSPECTION: measured geometry requires actual metrics, bounds and receipt')
+        if not measured and any(item is not None for item in values):
+            raise ValueError('CONTINUITY_INSPECTION: unverified metrics must remain explicitly unavailable')
+        if measured and metrics['measured_by']['kind'] != 'evidence':
+            raise ValueError('CONTINUITY_INSPECTION: measurement source must be an inspection receipt, not mesh metadata')
         components = {x['id']: x for x in value['components']}
         state = {}
         for component in components.values():
@@ -348,6 +362,8 @@ def validate_document(value, kind=None):
             raise ValueError('CONTINUITY_ASSET: canonical asset must reference native 3D authority')
         if value['geometry']['kind'] not in ('mesh', 'model3d-asset', 'hatch-3d-rig'):
             raise ValueError('CONTINUITY_ASSET: geometry reference must be 3D, not an image')
+    if kind == 'identity' and value['canonical_revision'] is not None and value['canonical_revision']['identity_id'] != value['identity_id']:
+        raise ValueError('CONTINUITY_IDENTITY: canonical revision belongs to another logical identity')
     if kind == 'identity' and value['approval_status'] == 'approved' and value['canonical_revision'] is None:
         raise ValueError('CONTINUITY_APPROVAL: approved identity must select an exact revision')
     if kind == 'asset' and value['fixture'] != value['provenance']['fixture']:
@@ -451,6 +467,35 @@ def verify_references(root, value, *, maximum_bytes=MAX_DEPENDENCY_BYTES):
         total += count
         result.append(dict(path=relative, sha256=item['sha256'], byte_size=count))
     return dict(files=result, total_bytes=total, geometry_inspected=False, visual_approval=False)
+
+
+def read_reference_bytes(root, item, *, limit=MAX_BYTES):
+    """One bounded nofollow/nonblocking descriptor binds inspected receipt bytes."""
+    if type(limit) is not int or not 1 <= limit <= MAX_BYTES:
+        raise ValueError('CONTINUITY_LIMIT: invalid receipt byte bound')
+    relative = portable_path(item['path'])
+    path = Path(root).resolve(strict=True)
+    for part in relative.split('/'):
+        path /= part
+        if path.is_symlink():
+            raise ValueError('CONTINUITY_PATH: receipt symlink is forbidden')
+    flags = (os.O_RDONLY | getattr(os, 'O_BINARY', 0) | getattr(os, 'O_NOFOLLOW', 0)
+             | getattr(os, 'O_NONBLOCK', 0))
+    with os.fdopen(os.open(path, flags), 'rb') as stream:
+        before = os.fstat(stream.fileno())
+        if not stat.S_ISREG(before.st_mode) or before.st_size > limit:
+            raise ValueError('CONTINUITY_LIMIT: nonregular or oversized receipt')
+        payload = stream.read(limit + 1)
+        after = os.fstat(stream.fileno())
+        current = path.stat(follow_symlinks=False)
+    fingerprint = lambda status: (status.st_dev, status.st_ino, status.st_size, status.st_mtime_ns)
+    if fingerprint(before) != fingerprint(after) or fingerprint(after) != fingerprint(current):
+        raise ValueError('CONTINUITY_CHANGED: receipt changed while reading')
+    if len(payload) > limit:
+        raise ValueError('CONTINUITY_LIMIT: receipt exceeds byte bound')
+    if hashlib.sha256(payload).hexdigest() != item['sha256']:
+        raise ValueError('CONTINUITY_HASH: receipt bytes disagree with pinned decision')
+    return payload
 
 
 def generate(destination, check=False):

@@ -56,7 +56,7 @@ class ContractTests(unittest.TestCase):
             bad=sample('revision');bad['asset'][field]=value
             self.assertTrue(list(validator.iter_errors(bad)))
             with self.assertRaises(ValueError):validate_document(bad)
-        for path in ('../x','a//b','CON.txt','x.','x ','a/../b','a\n','/abs','C:drive','a\\b','a?b'):
+        for path in ('../x','a//b','CON.txt','x.','x ','a/../b','a\n','/abs','C:drive','a\\b','a?b','COM¹.txt','LPT²','CONIN$','CONOUT$.json',' leading/file'):
             bad=sample('revision');bad['asset']['path']=path
             with self.subTest(path=repr(path)):
                 self.assertTrue(list(validator.iter_errors(bad)))
@@ -144,6 +144,37 @@ class ContractTests(unittest.TestCase):
         bad=sample('prop-state');bad['owner_socket_id']='hand'
         with self.assertRaisesRegex(ValueError,'owner'):validate_document(bad)
 
+    def test_schema_integer_equivalent_floats_remain_exact_and_structured(self):
+        from jsonschema import Draft202012Validator
+        def float_integers(value):
+            if type(value) is int:return float(value)
+            if isinstance(value,dict):return {k:float_integers(v) for k,v in value.items()}
+            if isinstance(value,list):return [float_integers(v) for v in value]
+            return value
+        for kind in KINDS:
+            value=float_integers(sample(kind))
+            with self.subTest(kind=kind):
+                Draft202012Validator(schemas()[kind]).validate(value)
+                result=validate_document(value)
+                self.assertEqual(result['kind'],value['kind'])
+        value=sample('snapshot');value['query']['story_time']=dict(numerator=1.0,denominator=3.0)
+        result=validate_document(value)
+        self.assertIs(type(result['query']['story_time']['numerator']),int)
+        self.assertEqual(result['query']['story_time'],dict(numerator=1,denominator=3))
+
+    def test_uninspected_geometry_is_explicitly_unavailable_not_fake_measurements(self):
+        value=sample('revision')
+        self.assertEqual(value['geometry_statistics']['status'],'unverified')
+        self.assertIsNone(value['bounds'])
+        self.assertTrue(all(value['geometry_statistics'][key] is None for key in ('vertices','triangles','components','measured_by')))
+        bad=deepcopy(value);bad['geometry_statistics']['vertices']=1
+        with self.assertRaisesRegex(ValueError,'unverified'):validate_document(bad)
+        bad=deepcopy(value);bad['geometry_statistics'].update(status='measured',vertices=3,triangles=1,components=1,measured_by=pointer())
+        bad['bounds']=dict(minimum=[0,0,0],maximum=[1,1,0])
+        with self.assertRaisesRegex(ValueError,'inspection receipt'):validate_document(bad)
+        bad=sample('identity');bad['canonical_revision']=dict(identity_id='other',revision_id='r1',semantic_version='1.0.0',sha256='0'*64)
+        with self.assertRaisesRegex(ValueError,'another logical identity'):validate_document(bad)
+
     def test_actual_cli_structured_success_and_invalid_document(self):
         command=[PYTHON,str(ROOT/'scripts/continuity_contracts.py'),'--validate']
         result=subprocess.run(command+[str(ROOT/'examples/continuity/revision.json')],capture_output=True,text=True)
@@ -219,7 +250,7 @@ class RegistryTests(unittest.TestCase):
         self.registry.create_draft('deprecated-copy',revision)
         before=list(self.registry.db.iterdump())
         with self.assertRaisesRegex(ValueError,'deprecated'):
-            self.registry.promote('deprecated-copy',expected_sha256=checksum,review=review,select=True)
+            self.registry.promote('deprecated-copy',expected_sha256=checksum,review=review,select=True,expected_selected_revision_id='robot-r1')
         self.assertEqual(list(self.registry.db.iterdump()),before)
 
     def test_invalid_draft_and_stale_edits_preserve_all_rows(self):
@@ -294,6 +325,105 @@ class RegistryTests(unittest.TestCase):
         self.assertEqual(self.registry.bindings('project')['sha256'],changed)
         with self.assertRaisesRegex(ValueError,'deprecated'):
             self.registry.migrate_selected('project',['b'],'robot-r2',expected_sha256=changed)
+
+    def test_authoritative_asset_and_dependency_changes_need_real_migration_adapter(self):
+        first,h1=self.promote()
+        for name,field in [('asset-change','asset'),('closure-change','dependencies')]:
+            changed=deepcopy(first);changed.update(revision_id=name,semantic_version='2.0.0' if field=='asset' else '3.0.0')
+            payload=b'new native bytes';(self.assets/(name+'.obj')).write_bytes(payload)
+            native=pointer(name+'.obj',payload)
+            if field=='asset':changed['asset']=native
+            else:changed['dependencies']=[native]
+            h=self.registry.create_draft(name,changed);review=review_for(self.assets,changed,name=name)
+            self.registry.promote(name,expected_sha256=h,review=review)
+        bindings=dict(schema_version='1.0.0',project_id='project',project_revision=pointer(),instances=[
+            dict(instance_id='a',entity_id='entity-a',shot_id='shot',revision=dict(identity_id='robot',revision_id='robot-r1',semantic_version='1.0.0',sha256=h1))])
+        initial=self.registry.register_bindings(bindings)
+        for target in ('asset-change','closure-change'):
+            before=list(self.registry.db.iterdump())
+            with self.assertRaisesRegex(ValueError,'ADAPTER_REQUIRED'):
+                self.registry.migrate_selected('project',['a'],target,expected_sha256=initial)
+            self.assertEqual(list(self.registry.db.iterdump()),before)
+
+    def test_register_deprecation_race_and_project_byte_changes_are_atomic(self):
+        from contextlib import contextmanager
+        r1,h1=self.promote()
+        project_bytes=b'{"native":"project"}';(self.assets/'project.json').write_bytes(project_bytes)
+        bindings=dict(schema_version='1.0.0',project_id='project',project_revision=pointer('project.json',project_bytes,kind='scene'),instances=[
+            dict(instance_id='a',entity_id='entity-a',shot_id='shot',revision=dict(identity_id='robot',revision_id='robot-r1',semantic_version='1.0.0',sha256=h1))])
+        original=self.registry._transaction
+        with IdentityRegistry(self.root/'identity.sqlite',asset_root=self.assets) as second:
+            @contextmanager
+            def race():
+                second.deprecate('robot-r1',expected_sha256=h1,reason='other controller before admission lock')
+                with original():yield
+            with patch.object(self.registry,'_transaction',race):
+                with self.assertRaisesRegex(ValueError,'DEPRECATED'):self.registry.register_bindings(bindings)
+            self.assertEqual(self.registry.db.execute('SELECT count(*) FROM projects').fetchone()[0],0)
+        r2,h2=self.promote(2,'robot-r1')
+        bindings['instances'][0]['revision']=dict(identity_id='robot',revision_id='robot-r2',semantic_version='2.0.0',sha256=h2)
+        initial=self.registry.register_bindings(bindings);before=list(self.registry.db.iterdump())
+        (self.assets/'project.json').write_bytes(b'{"native":"modified project"}')
+        with self.assertRaisesRegex(ValueError,'HASH'):self.registry.bindings('project')
+        with self.assertRaisesRegex(ValueError,'HASH'):
+            self.registry.migrate_selected('project',['a'],'robot-r2',expected_sha256=initial)
+        self.assertEqual(list(self.registry.db.iterdump()),before)
+
+    def test_promotion_selection_cas_preserves_concurrent_pin(self):
+        from contextlib import contextmanager
+        r1,h1=self.promote(select=True);r2,h2=self.promote(2,'robot-r1')
+        r3=sample('revision');r3.update(revision_id='robot-r3',semantic_version='3.0.0',parent_revision_id='robot-r2')
+        h3=self.registry.create_draft('draft3',r3);review=review_for(self.assets,r3,name='review3')
+        original=self.registry._transaction
+        with IdentityRegistry(self.root/'identity.sqlite',asset_root=self.assets) as second:
+            @contextmanager
+            def race():
+                second.select('robot','robot-r2',expected_revision_id='robot-r1')
+                with original():yield
+            with patch.object(self.registry,'_transaction',race):
+                with self.assertRaisesRegex(ValueError,'stale promotion selection'):
+                    self.registry.promote('draft3',expected_sha256=h3,review=review,select=True,expected_selected_revision_id='robot-r1')
+            self.assertEqual(self.registry.identity('robot')['selected_revision'],'robot-r2')
+            self.assertEqual(self.registry.draft('draft3')['sha256'],h3)
+            with self.assertRaisesRegex(ValueError,'unknown immutable'):self.registry.revision('robot-r3')
+        self.registry.promote('draft3',expected_sha256=h3,review=review,select=True,expected_selected_revision_id='robot-r2')
+        self.assertEqual(self.registry.identity('robot')['selected_revision'],'robot-r3')
+
+    def test_indexed_revision_and_selected_identity_integrity(self):
+        r1,h1=self.promote();r2,h2=self.promote(2,'robot-r1')
+        self.registry.db.execute("UPDATE revisions SET hash=? WHERE id='robot-r1'",(h2,))
+        with self.assertRaisesRegex(ValueError,'indexed identity/version'):self.registry.revision('robot-r1')
+        self.registry.db.execute("UPDATE revisions SET hash=? WHERE id='robot-r1'",(h1,))
+        other=deepcopy(self.identity);other['identity_id']='other';self.registry.create_identity(other)
+        self.registry.db.execute("UPDATE identities SET selected='robot-r1' WHERE id='other'")
+        with self.assertRaisesRegex(ValueError,'another identity'):self.registry.identity('other')
+
+    if hasattr(os,'mkfifo'):
+        def test_review_receipt_fifo_swap_after_verification_never_blocks(self):
+            source="""import sys,os,tempfile
+from pathlib import Path
+from unittest.mock import patch
+import continuity_registry as cr
+from continuity_test_helpers import sample,write_assets,review_for
+with tempfile.TemporaryDirectory() as temp:
+ root=Path(temp);assets=root/'assets';write_assets(assets)
+ with cr.IdentityRegistry(root/'registry.sqlite',asset_root=assets) as registry:
+  registry.create_identity(sample('identity'));revision=sample('revision');checksum=registry.create_draft('draft',revision);review=review_for(assets,revision)
+  original=cr.verify_references
+  def race(root,value,**kwargs):
+   result=original(root,value,**kwargs)
+   if value.get('kind')=='continuity-review':
+    leaf=Path(root)/value['native_receipt']['path'];leaf.unlink();os.mkfifo(leaf)
+   return result
+  with patch.object(cr,'verify_references',race):
+   try:registry.promote('draft',expected_sha256=checksum,review=review)
+   except ValueError as error:
+    assert 'nonregular' in str(error);assert registry.draft('draft')['sha256']==checksum
+   else:raise AssertionError('racing FIFO accepted')
+"""
+            process=subprocess.run([PYTHON,'-c',source],capture_output=True,text=True,timeout=5,
+                env={**os.environ,'PYTHONPATH':str(ROOT/'scripts')+os.pathsep+str(ROOT/'tests')})
+            self.assertEqual(process.returncode,0,process.stdout+process.stderr)
 
     def test_revision_drafts_cannot_upgrade_fixture_identity_to_production(self):
         revision=sample('revision');revision['source_provenance'].update(origin='import',fixture=False)

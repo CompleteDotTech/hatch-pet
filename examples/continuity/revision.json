@@ -66,29 +66,13 @@
     "angles": "radian"
   },
   "rest_pose": null,
-  "bounds": {
-    "minimum": [
-      0,
-      0,
-      0
-    ],
-    "maximum": [
-      0,
-      0,
-      0
-    ]
-  },
+  "bounds": null,
   "geometry_statistics": {
-    "vertices": 1,
-    "triangles": 1,
-    "components": 1,
-    "measured_by": {
-      "id": "fixture",
-      "version": "1.0.0",
-      "path": "mesh.obj",
-      "sha256": "255781d0b7345ac14d332a09cac513e0c508d693ab5dfe15bcc7d37532840235",
-      "kind": "mesh"
-    }
+    "status": "unverified",
+    "vertices": null,
+    "triangles": null,
+    "components": null,
+    "measured_by": null
   },
   "source_provenance": {
     "origin": "procedural-fixture",

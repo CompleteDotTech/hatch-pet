@@ -1,31 +1,37 @@
 # Continuity foundation validation
 
-Frozen local execution used Python 3.12.15 and pinned public-delivery dependencies.
-`regression.log` records 69 passing tests in 26.635 seconds with no failures,
-errors or skips: 21 new contract/lifecycle cases plus existing production-v1,
-optional-dependency/atlas/catalog compatibility and retained production-pilot
-cases. The compatibility suite discovered 823 ordinary 2D tests; it did not execute
-all 823. The public pilot cases exercised actual source/project loading and
-existing provenance, timing, review and continuity protections.
+The current frozen local execution used Python 3.12.15 and pinned public-delivery
+dependencies. `regression.log` records 76 passing tests in 25.656 seconds with no
+failures, errors or skips: 28 new contract/lifecycle cases plus existing
+production-v1, optional-dependency/atlas/catalog compatibility and retained
+production-pilot cases. The compatibility suite discovered 830 ordinary 2D tests;
+it did not execute all 830. Public pilot cases exercised actual source/project
+loading and existing provenance, timing, review and continuity protections.
 
 `verification.json` hashes every script, all new generated schemas and focused
 test/helper files before and after the frozen run, and checks protected original
 inputs against base `a08569c`. It binds the raw log and records limitations. These
 results describe those input hashes, not a future modified head. Generated-schema
-parity, actual CLI validation of the retained synthetic revision, and exact native
-fixture byte verification also passed. The retained fixture reference payloads
-are 71-byte OBJ and 14-byte PPM files; this is byte verification, not a geometry
-inspection or reference-render approval.
+parity, actual structured CLI validation, and exact native fixture byte
+verification also passed. Retained fixture files are a 71-byte OBJ and 14-byte
+PPM: this establishes exact bytes, not geometry inspection or rendered-reference
+approval. Uninspected geometry statistics and bounds remain explicitly null.
 
-Earlier development runs passed 64 tests before schema/regex hardening and 67
-before the last provenance/CLI cases. They are superseded for the final tree;
-their source snapshots/logs remain session-local under `/tmp/continuity113-*`.
-No earlier passing output is presented as validation of later source bytes.
+The original reviewed commit 63f5810 had 69 passing tests, but independent Astra
+reviewers exposed five security/numerical and three acceptance/representability
+findings. Their correction adds real two-connection admission/CAS races,
+project-source freshness, receipt-to-FIFO replacement, all-23-model integral-float
+coverage, native asset/dependency migration closure, unavailable measurements and
+cross-identity/index-integrity regressions. Current results are fresh after those
+fixes. `history-63f5810` preserves the exact old log/receipt; its internal paths
+refer to that historical commit, not today's sibling files. Earlier uncommitted
+development logs remain session-local under `/tmp/continuity113-*`.
 
 Tests simulate explicitly labelled supplied review decisions only to exercise
-promotion/rejection. They do not constitute actual assistant/human visual
-inspection, production approval, changed-asset compatibility or full continuity
-acceptance. Real native geometry inspection, event replay, continuity comparison,
-reference rendering, evidence lifecycle, scene integration and final production
-demonstrations remain separate open work. Windows/macOS execution and current-head
-CI require the published PR; no cross-platform execution is claimed here.
+promotion/rejection. They do not establish actual assistant/human visual
+inspection, production approval, changed-asset compatibility, or full continuity
+acceptance. Real asset inspection, event replay, rendered comparisons, native
+review-adapter execution, scene integration and final production demonstrations
+remain separate work. Windows/macOS execution, published-head CI and fresh
+independent review remain gates; no cross-platform execution or new PASS is
+claimed by this report.

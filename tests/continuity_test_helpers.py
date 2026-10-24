@@ -71,6 +71,7 @@ def sample(kind):
         value.update(identity_id='robot', revision_id='robot-r1', semantic_version='1.0.0')
         value['source_provenance'].update(fixture=True, origin='procedural-fixture')
         value['components'][0]['parent_id'] = None
+        value['bounds'] = None
         value['reference_renders'] = [pointer('reference.ppm', b'P6\n1 1\n255\n\xff\x00\x00', kind='evidence', identity='reference')]
     if kind == 'rig-compatibility':
         value['status'] = 'unverified'

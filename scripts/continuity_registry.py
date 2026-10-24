@@ -16,7 +16,7 @@ import sqlite3
 import stat
 
 from continuity_contracts import (MAX_BYTES, canonical_bytes, decode_json, digest, ID,
-    references, validate_document, verify_references)
+    references, read_reference_bytes, validate_document, verify_references)
 
 MAX_RECORDS = 10000
 MAX_DB_BYTES = 256 * 1024 * 1024
@@ -160,6 +160,8 @@ class IdentityRegistry:
         pin = None
         if row[2] is not None:
             selected = self.revision(row[2])
+            if selected['document']['identity_id'] != identity_id:
+                raise ValueError('CONTINUITY_REFERENCE: selected revision belongs to another identity')
             pin = dict(identity_id=identity_id, revision_id=row[2],
                        semantic_version=selected['document']['semantic_version'], sha256=selected['sha256'])
         return dict(document=document, sha256=row[1], selected_revision=row[2], selected_pin=pin)
@@ -218,7 +220,7 @@ class IdentityRegistry:
             if version(document['semantic_version']) <= version(previous['document']['semantic_version']):
                 raise ValueError('CONTINUITY_VERSION: derived revision must advance semantic version')
 
-    def promote(self, draft_id, *, expected_sha256, review, select=False):
+    def promote(self, draft_id, *, expected_sha256, review, select=False, expected_selected_revision_id=None):
         """Freeze an explicitly reviewed draft. Submitted review is not an attestation.
 
         Synthetic receipts never approve. Exact receipt bytes and inspected native
@@ -227,6 +229,8 @@ class IdentityRegistry:
         """
         _sha(expected_sha256)
         review = validate_document(review, 'review')
+        if expected_selected_revision_id is not None:
+            _id(expected_selected_revision_id)
         current = self.draft(draft_id)
         document, checksum = current['document'], current['sha256']
         if checksum != expected_sha256:
@@ -246,11 +250,7 @@ class IdentityRegistry:
         # The native receipt is itself real, hash-pinned, and retained by its owner.
         # Only explicitly bound continuity receipts are accepted here. Native rig
         # approvals can be adapted by a future capability-tested review adapter.
-        native = self.asset_root / review['native_receipt']['path']
-        with native.open('rb') as stream:
-            native_bytes = stream.read(MAX_BYTES + 1)
-        if len(native_bytes) > MAX_BYTES:
-            raise ValueError('CONTINUITY_LIMIT: review receipt too large')
+        native_bytes = read_reference_bytes(self.asset_root, review['native_receipt'])
         native_record = decode_json(native_bytes)
         expected_record = {key: value for key, value in review.items() if key != 'native_receipt'}
         if native_record != expected_record:
@@ -260,6 +260,8 @@ class IdentityRegistry:
             # Re-read after obtaining the write lock so a concurrent draft edit
             # cannot promote bytes other than those actually verified above.
             latest = self.draft(draft_id)
+            if select and self.identity(document['identity_id'])['selected_revision'] != expected_selected_revision_id:
+                raise ValueError('CONTINUITY_CONFLICT: stale promotion selection')
             if latest['sha256'] != checksum:
                 raise ValueError('CONTINUITY_CONFLICT: draft changed during promotion')
             old = self.db.execute('SELECT hash,deprecated FROM revisions WHERE id=?', (document['revision_id'],)).fetchone()
@@ -289,13 +291,16 @@ class IdentityRegistry:
         return checksum
 
     def revision(self, revision_id, *, verify=True):
-        row = self.db.execute('SELECT r.hash,c.document,r.review,r.deprecated FROM revisions r JOIN contents c ON r.hash=c.hash WHERE r.id=?',
+        row = self.db.execute('SELECT r.hash,c.document,r.review,r.deprecated,r.identity_id,r.version FROM revisions r JOIN contents c ON r.hash=c.hash WHERE r.id=?',
                               (_id(revision_id),)).fetchone()
         if not row:
             raise ValueError('CONTINUITY_REFERENCE: unknown immutable revision')
         document = validate_document(_unpack(row[1]), 'revision')
         if digest(document) != row[0]:
             raise ValueError('CONTINUITY_HASH: corrupted immutable revision')
+        if (document['revision_id'] != revision_id or document['identity_id'] != row[4]
+                or document['semantic_version'] != row[5]):
+            raise ValueError('CONTINUITY_REFERENCE: immutable document disagrees with indexed identity/version')
         review = validate_document(_unpack(row[2]), 'review')
         if review['subject_sha256'] != row[0] or review['verdict'] != 'approved':
             raise ValueError('CONTINUITY_REVIEW: corrupted approval binding')
@@ -362,10 +367,10 @@ class IdentityRegistry:
 
     def register_bindings(self, bindings):
         bindings = validate_document(bindings, 'bindings')
-        self._validate_pins(bindings)
-        verify_references(self.asset_root, bindings)
         checksum = digest(bindings)
         with self._transaction():
+            self._validate_pins(bindings)
+            verify_references(self.asset_root, bindings)
             if self.db.execute('SELECT 1 FROM projects WHERE id=?', (bindings['project_id'],)).fetchone():
                 raise ValueError('CONTINUITY_CONFLICT: project bindings already registered')
             self._limit('projects')
@@ -381,6 +386,7 @@ class IdentityRegistry:
         if digest(document) != row[1]:
             raise ValueError('CONTINUITY_HASH: corrupted project binding')
         self._validate_pins(document, allow_deprecated=True)
+        verify_references(self.asset_root, document)
         return dict(document=document, sha256=row[1])
 
     def migrate_selected(self, project_id, instance_ids, target_revision_id, *, expected_sha256):
@@ -417,7 +423,7 @@ class IdentityRegistry:
                 # may only rebind a metadata revision of exactly the same native
                 # structural payload. Changed assets require real compatibility
                 # inspection, never a name/ID-only substitution.
-                structural = ('geometry', 'components', 'materials', 'textures', 'rig', 'skin_weights',
+                structural = ('asset', 'dependencies', 'geometry', 'components', 'materials', 'textures', 'rig', 'skin_weights',
                               'morphs', 'attachments', 'coordinates', 'rest_pose', 'bounds')
                 if any(old[key] != doc[key] for key in structural):
                     raise ValueError('CONTINUITY_ADAPTER_REQUIRED: changed native structure needs verified compatibility adapter')
