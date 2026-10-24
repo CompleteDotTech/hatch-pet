@@ -16,7 +16,7 @@
         },
         "source_version_sha256": {
           "type": "string",
-          "pattern": "^[0-9a-f]{64}$"
+          "pattern": "^[0-9a-f]{64}$(?![\\s\\S])"
         },
         "backend": {
           "type": "string",
@@ -30,15 +30,24 @@
         },
         "settings_sha256": {
           "type": "string",
-          "pattern": "^[0-9a-f]{64}$"
+          "pattern": "^[0-9a-f]{64}$(?![\\s\\S])"
         },
         "camera_sha256": {
           "type": "string",
-          "pattern": "^[0-9a-f]{64}$"
+          "pattern": "^[0-9a-f]{64}$(?![\\s\\S])"
         },
         "lighting_sha256": {
           "type": "string",
-          "pattern": "^[0-9a-f]{64}$"
+          "pattern": "^[0-9a-f]{64}$(?![\\s\\S])"
+        },
+        "settings_file": {
+          "$ref": "#/$defs/AssetFile"
+        },
+        "camera_file": {
+          "$ref": "#/$defs/AssetFile"
+        },
+        "lighting_file": {
+          "$ref": "#/$defs/AssetFile"
         },
         "file": {
           "$ref": "#/$defs/AssetFile"
@@ -68,6 +77,9 @@
         "settings_sha256",
         "camera_sha256",
         "lighting_sha256",
+        "settings_file",
+        "camera_file",
+        "lighting_file",
         "file",
         "width",
         "height",
@@ -82,16 +94,16 @@
           "type": "string",
           "minLength": 1,
           "maxLength": 1024,
-          "pattern": "^[A-Za-z0-9_][A-Za-z0-9_./-]*$"
+          "pattern": "^(?!(?:[Cc][Oo][Nn]|[Pp][Rr][Nn]|[Aa][Uu][Xx]|[Nn][Uu][Ll]|[Cc][Oo][Mm]1|[Cc][Oo][Mm]2|[Cc][Oo][Mm]3|[Cc][Oo][Mm]4|[Cc][Oo][Mm]5|[Cc][Oo][Mm]6|[Cc][Oo][Mm]7|[Cc][Oo][Mm]8|[Cc][Oo][Mm]9|[Ll][Pp][Tt]1|[Ll][Pp][Tt]2|[Ll][Pp][Tt]3|[Ll][Pp][Tt]4|[Ll][Pp][Tt]5|[Ll][Pp][Tt]6|[Ll][Pp][Tt]7|[Ll][Pp][Tt]8|[Ll][Pp][Tt]9)(?:\\.|/|$))[A-Za-z0-9_](?:[A-Za-z0-9_.-]*[A-Za-z0-9_-])?(?:/(?!(?:[Cc][Oo][Nn]|[Pp][Rr][Nn]|[Aa][Uu][Xx]|[Nn][Uu][Ll]|[Cc][Oo][Mm]1|[Cc][Oo][Mm]2|[Cc][Oo][Mm]3|[Cc][Oo][Mm]4|[Cc][Oo][Mm]5|[Cc][Oo][Mm]6|[Cc][Oo][Mm]7|[Cc][Oo][Mm]8|[Cc][Oo][Mm]9|[Ll][Pp][Tt]1|[Ll][Pp][Tt]2|[Ll][Pp][Tt]3|[Ll][Pp][Tt]4|[Ll][Pp][Tt]5|[Ll][Pp][Tt]6|[Ll][Pp][Tt]7|[Ll][Pp][Tt]8|[Ll][Pp][Tt]9)(?:\\.|/|$))[A-Za-z0-9_](?:[A-Za-z0-9_.-]*[A-Za-z0-9_-])?)*$(?![\\s\\S])"
         },
         "role": {
           "type": "string",
-          "pattern": "^[a-z][a-z0-9_-]{0,63}$",
+          "pattern": "^[a-z][a-z0-9_-]{0,63}$(?![\\s\\S])",
           "maxLength": 64
         },
         "sha256": {
           "type": "string",
-          "pattern": "^[0-9a-f]{64}$"
+          "pattern": "^[0-9a-f]{64}$(?![\\s\\S])"
         },
         "bytes": {
           "type": "integer",
@@ -117,6 +129,60 @@
         },
         "required": {
           "type": "boolean"
+        },
+        "format_version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "technical_metadata": {
+          "type": "object",
+          "maxProperties": 64,
+          "propertyNames": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_-]{0,63}$(?![\\s\\S])",
+            "maxLength": 64
+          },
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096
+              },
+              {
+                "type": "number",
+                "minimum": -1000000000000.0,
+                "maximum": 1000000000000.0
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 4096
+                    },
+                    {
+                      "type": "number",
+                      "minimum": -1000000000000.0,
+                      "maximum": 1000000000000.0
+                    },
+                    {
+                      "type": "boolean"
+                    }
+                  ]
+                },
+                "minItems": 0,
+                "maxItems": 64,
+                "uniqueItems": false
+              }
+            ]
+          }
         }
       },
       "required": [

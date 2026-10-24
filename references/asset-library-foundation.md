@@ -14,9 +14,18 @@ reference. `generate_asset_library_schemas.py --check` checks those definitions;
 the schema drift test also runs through existing test discovery. Existing
 schemas and native manifests are unchanged. Runtime validation uses the same
 JSON Schema definitions, followed by semantic evidence/inventory/reference checks.
+Timestamps are checked with a built-in RFC3339 spelling/calendar validator,
+including standalone identity/provenance contracts, without optional format packages.
 Unknown fields/versions, duplicate JSON keys, nonfinite numbers, excessive
 nesting/manifest sizes, unsafe paths and invalid hashes fail with a `RigError`
 containing a machine-readable `LIBRARY_*` diagnostic and affected field/path.
+
+File contracts can retain format versions and bounded typed technical metadata.
+Optional truthful source records retain the original filename, URI, acquisition
+timestamp, author and known copyright holder. Providers can retain actual IDs and
+bounded scalar/list generation parameters. Typed conversion and human/automated
+edit histories retain exact input/output/evidence files and timestamps. Missing
+historical fields stay absent; registration never invents them.
 
 The existing `rig_errors` owner supplies bounded JSON decoding, canonical object
 hashes and diagnostics. Optional NumPy, Blender and glTF tool imports are absent
@@ -31,7 +40,7 @@ Library IDs use the established lowercase production identifier spelling and
 exact `major.minor.patch` versions. Library identity is separate from IDs inside
 native records: adapters do not rewrite valid uppercase/extended native rig IDs.
 A version cannot change the stable library identity's namespace, owning library
-or kind. `AssetRef` is `{id, version, sha256}`, with `sha256` the immutable manifest
+or kind, or rewrite its original creation timestamp. `AssetRef` is `{id, version, sha256}`, with `sha256` the immutable manifest
 object digest (excluding its own digest field). `scene_reference(ref, path)`
 returns `{id, version, path, sha256, kind}` with a **file** digest and library
 category kind; a scene consumer must map that category to its own typed asset
@@ -101,7 +110,9 @@ visibility and unevaluated/restricted distribution. Registration cannot produce
 public publication, human approval or geometry-ready status. License evidence is
 retained; its existence does not prove redistribution rights. Existing review
 status inside imported documents remains its original, independently scoped
-record. Preview schemas describe actual external preview evidence but this
+record. Preview schemas bind exact inventoried settings, camera and lighting files to
+their declared hashes, leaving those native payloads under their existing owners.
+Their source version must be an exact retained dependency or parent. This
 foundation does not render previews or upgrade them into production approval.
 
 ## Reproduce the real-byte demonstration
@@ -133,9 +144,10 @@ Observed manifest digest:
 | Independent mutable metadata and revision conflict | `test_annotation_cas_is_separate_and_concurrent_writers_cannot_lose_edits` |
 | Provenance/license/inventory/path/finite/size validation | `test_semantic_negatives_paths_aliases_origin_inventory_evidence`, `test_symlink_source_database_and_replaced_root_fail_closed`, `test_replaced_private_root_is_rejected_before_storage_access`, `test_public_source_reader_rejects_invalid_bounds_and_nonregular_files`, `test_quota_failure_rolls_back_blobs_and_registration` |
 | Dependency closure and concurrent publication | `test_exact_dependency_closure_is_verified_after_restart`, `test_duplicate_registration_writers_publish_exactly_one_version` |
+| Review regressions: strict trailing-newline rejection, nonadjacent ancestor aliases, path schema parity, native configuration/source evidence and immutable creation time | `test_review_regression_trailing_newline_identifiers_and_digests_reject_registration`, `test_review_regression_nonadjacent_file_directory_alias_rejects_registration`, `test_review_regression_portable_paths_have_schema_runtime_parity`, `test_review_source_fields_and_preview_configs_retain_bound_native_data`, `test_original_creation_time_is_stable_across_versions` |
 | Existing native owners and original bytes | `test_native_documents_use_original_owners_and_preserve_ids`, `test_legacy_profile_roundtrip_preserves_exact_bytes_and_2d_contract`; four existing rig compatibility cases |
 
-The local focused result is 16 passes, zero failures/skips; the separate existing
+The local focused result is 21 passes, zero failures/skips; the separate existing
 compatibility suite passes four cases. A separate 60-case profiles, production
 contracts and schema/legacy example suite passes with zero failures/skips. Exact
 logs, runtime versions, source hashes and the demonstration report are retained in

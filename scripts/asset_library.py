@@ -229,8 +229,8 @@ class AssetLibrary:
             prior = db.execute('SELECT manifest FROM versions WHERE id=? LIMIT 1', (identity,)).fetchone()
             if prior:
                 old_identity = load_manifest(prior[0])['identity']
-                if any(old_identity[k] != manifest['identity'][k] for k in ('namespace', 'library', 'kind')):
-                    _fail('IDENTITY', 'Stable identity cannot move namespace/library or change kind.')
+                if any(old_identity[k] != manifest['identity'][k] for k in ('namespace', 'library', 'kind', 'created_at')):
+                    _fail('IDENTITY', 'Stable identity cannot move namespace/library, change kind or rewrite original creation time.')
             pending = ([x['target'] for x in manifest['dependencies']] +
                        manifest['provenance']['parents'] + manifest['metadata']['style_refs'])
             visited = set()

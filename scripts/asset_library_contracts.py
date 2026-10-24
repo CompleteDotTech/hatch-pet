@@ -18,8 +18,8 @@ SCHEMA_VERSION = 1
 MAX_FILE_BYTES = 64 * 1024 * 1024
 MAX_VERSION_BYTES = 256 * 1024 * 1024
 MAX_MANIFEST_BYTES = 1024 * 1024
-ID_PATTERN = r'^[a-z][a-z0-9_-]{0,63}$'
-VERSION_PATTERN = r'^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$'
+ID_PATTERN = r'^[a-z][a-z0-9_-]{0,63}$(?![\s\S])'
+VERSION_PATTERN = r'^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$(?![\s\S])'
 KINDS = ('character', 'rig', 'animation', 'prop', 'material', 'texture', 'environment',
          'light', 'camera', 'prefab', 'reference', 'legacy-pet', 'legacy-cast', 'legacy-clip')
 
@@ -48,21 +48,40 @@ def ref(name):
 
 ID = dict(type='string', pattern=ID_PATTERN, maxLength=64)
 VERSION = dict(type='string', pattern=VERSION_PATTERN, maxLength=32)
-SHA = dict(type='string', pattern=r'^[0-9a-f]{64}$')
+SHA = dict(type='string', pattern=r'^[0-9a-f]{64}$(?![\s\S])')
 BOOL = dict(type='boolean')
+DATE = dict(type='string', minLength=20, maxLength=64, format='date-time',
+            pattern=r'^[0-9]{4}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12][0-9]|3[01])T'
+                    r'(?:[01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](?:\.[0-9]+)?'
+                    r'(?:Z|[+-](?:[01][0-9]|2[0-3]):[0-5][0-9])$(?![\s\S])')
 STRINGS = arr(text(256), maximum=128, unique=True)
+# Each component has a canonical portable spelling. The explicit end assertion
+# prevents Python/ECMA '$' from admitting a trailing newline in schema validation.
+_RESERVED = '|'.join(''.join('[' + c.upper() + c.lower() + ']' if c.isalpha() else c
+                             for c in name)
+                     for name in ('CON', 'PRN', 'AUX', 'NUL',
+                                  *(f'COM{i}' for i in range(1, 10)),
+                                  *(f'LPT{i}' for i in range(1, 10))))
+_SEGMENT = (r'(?!(?:' + _RESERVED + r')(?:\.|/|$))[A-Za-z0-9_]'
+            r'(?:[A-Za-z0-9_.-]*[A-Za-z0-9_-])?')
 FILE_PATH = dict(type='string', minLength=1, maxLength=1024,
-                 pattern=r'^[A-Za-z0-9_][A-Za-z0-9_./-]*$')
+                 pattern=r'^' + _SEGMENT + r'(?:/' + _SEGMENT + r')*$(?![\s\S])')
+
 
 
 def definitions():
+    scalar = {'anyOf': [text(), dict(type='number', minimum=-1e12, maximum=1e12), BOOL]}
+    parameters = dict(type='object', maxProperties=64, propertyNames=ID,
+                      additionalProperties={'anyOf': [*scalar['anyOf'], arr(scalar, maximum=64)]})
     exact = obj(dict(id=ID, version=VERSION, sha256=SHA))
     file = obj(dict(path=FILE_PATH, role=ID, sha256=SHA,
                     bytes=dict(type='integer', minimum=1, maximum=MAX_FILE_BYTES),
                     format=enum('glb', 'gltf', 'obj', 'png', 'jpeg', 'webp', 'json', 'binary'),
-                    mime_type=text(128), required=BOOL))
+                    mime_type=text(128), required=BOOL, format_version=text(128),
+                    technical_metadata=parameters),
+               ('path', 'role', 'sha256', 'bytes', 'format', 'mime_type', 'required'))
     identity = obj(dict(id=ID, namespace=ID, library=ID, slug=ID, name=text(256),
-                        kind=enum(*KINDS), subtype=text(128), created_at=text(64),
+                        kind=enum(*KINDS), subtype=text(128), created_at=DATE,
                         attribution=text(), owner=text(256)))
     dependency = obj(dict(target=exact, purpose=text(256), required=BOOL,
                           origin=enum('authored', 'imported', 'discovered'),
@@ -80,16 +99,29 @@ def definitions():
     preview = obj(dict(type=enum('thumbnail', 'turntable', 'motion', 'material'),
                        source_version_sha256=SHA, backend=text(256), backend_version=text(128),
                        settings_sha256=SHA, camera_sha256=SHA, lighting_sha256=SHA,
+                       settings_file=ref('AssetFile'), camera_file=ref('AssetFile'), lighting_file=ref('AssetFile'),
                        file=ref('AssetFile'), width=dict(type='integer', minimum=1, maximum=8192),
                        height=dict(type='integer', minimum=1, maximum=8192),
                        status=enum('generated', 'verified-externally')))
     provenance = obj(dict(method=enum('import', 'generated', 'derived', 'fixture'), origin=text(),
                           fixture=BOOL, sources=arr(ref('AssetFile'), 1),
-                          provider=arr(obj(dict(name=text(256), receipt=ref('AssetFile'))), maximum=1),
+                          provider=arr(obj(dict(name=text(256), receipt=ref('AssetFile'),
+                                                identifier=text(256), parameters=parameters),
+                                           ('name', 'receipt')), maximum=1),
                           tools=arr(obj(dict(name=text(256), version=text(128)))),
                           parents=arr(exact), edits=STRINGS,
                           license_evidence=arr(ref('AssetFile'), 1),
-                          permissions=arr(ref('AssetFile')), uncertainty=STRINGS))
+                          permissions=arr(ref('AssetFile')), uncertainty=STRINGS,
+                          source_records=arr(obj(dict(file=ref('AssetFile'), source_uri=text(),
+                              original_filename=text(1024), acquired_at=DATE, author=text(256),
+                              copyright_holder=text(256)),
+                              ('file', 'source_uri', 'original_filename', 'acquired_at', 'author'))),
+                          conversions=arr(obj(dict(tool=text(256), version=text(128), timestamp=DATE,
+                              operation=text(), inputs=arr(ref('AssetFile'), 1), outputs=arr(ref('AssetFile'), 1)))),
+                          edit_history=arr(obj(dict(kind=enum('human', 'automated'), description=text(),
+                              timestamp=DATE, evidence=arr(ref('AssetFile')))))),
+                     ('method', 'origin', 'fixture', 'sources', 'provider', 'tools', 'parents',
+                      'edits', 'license_evidence', 'permissions', 'uncertainty'))
     publication = obj(dict(visibility=enum('private', 'project-local'),
                            distribution=enum('not-evaluated', 'restricted'),
                            license_evaluation=enum('not-evaluated', 'evidence-retained'),
@@ -141,12 +173,25 @@ def schemas():
 @lru_cache(maxsize=16)
 def _validator(kind):
     try:
-        from jsonschema import Draft202012Validator
+        from jsonschema import Draft202012Validator, FormatChecker
     except ImportError as exc:
         raise RigError('LIBRARY_DEPENDENCY', 'Library validation requires the declared jsonschema dependency.') from exc
     if kind not in definitions():
         raise RigError('LIBRARY_SCHEMA_KIND', 'Unknown library contract kind.', asset=str(kind))
-    return Draft202012Validator({'$defs': definitions(), '$ref': '#/$defs/' + kind})
+    # Minimal jsonschema installs need no optional RFC3339 dependency: supply
+    # the date-time checker ourselves and use the same expressible spelling in
+    # the schema. datetime also rejects impossible calendar dates.
+    checker = FormatChecker(formats=())
+    @checker.checks('date-time')
+    def timestamp(value):
+        if not isinstance(value, str) or not re.fullmatch(DATE['pattern'], value):
+            return False
+        try:
+            return datetime.fromisoformat(value.replace('Z', '+00:00')).tzinfo is not None
+        except ValueError:
+            return False
+    return Draft202012Validator({'$defs': definitions(), '$ref': '#/$defs/' + kind},
+                                format_checker=checker)
 
 
 def portable_path(value):
@@ -189,8 +234,9 @@ def validate(value, kind='AssetVersion'):
         names = [f['path'].casefold() for f in value['files']]
         if len(set(names)) != len(names):
             raise RigError('LIBRARY_ALIAS', 'Duplicate or case-aliased payload names.')
-        ordered = sorted(names)
-        if any(b.startswith(a + '/') for a, b in zip(ordered, ordered[1:])):
+        names_set = set(names)
+        if any('/'.join(name.split('/')[:end]) in names_set
+               for name in names for end in range(1, len(name.split('/')))):
             raise RigError('LIBRARY_ALIAS', 'File paths cannot also be directories.')
         if sum(f['bytes'] for f in value['files']) > MAX_VERSION_BYTES:
             raise RigError('LIBRARY_LIMIT', 'Version payload exceeds 256 MiB.')
@@ -209,7 +255,21 @@ def validate(value, kind='AssetVersion'):
             raise RigError('LIBRARY_PREVIEW', 'Preview source must be an exact retained dependency or parent version.')
         if p['method'] == 'generated' and not p['provider']:
             raise RigError('LIBRARY_PROVIDER', 'Generated content requires actual retained provider evidence.')
-        for record in p['sources'] + p['license_evidence'] + p['permissions'] + [x['receipt'] for x in p['provider']] + [x['file'] for x in value['previews']]:
+        evidence = (p['sources'] + p['license_evidence'] + p['permissions'] +
+                    [x['receipt'] for x in p['provider']] +
+                    [x['file'] for x in p.get('source_records', [])])
+        for conversion in p.get('conversions', []):
+            evidence.extend(conversion['inputs'] + conversion['outputs'])
+        for edit in p.get('edit_history', []):
+            evidence.extend(edit['evidence'])
+        for preview in value['previews']:
+            evidence.append(preview['file'])
+            for name in ('settings', 'camera', 'lighting'):
+                record = preview[name + '_file']
+                if record['sha256'] != preview[name + '_sha256']:
+                    raise RigError('LIBRARY_PREVIEW', 'Preview configuration hash differs from retained bytes.', asset=name)
+                evidence.append(record)
+        for record in evidence:
             if files.get(record['path']) != record:
                 raise RigError('LIBRARY_EVIDENCE', 'Evidence must name an exact inventoried payload.', asset=record['path'])
         dependencies = [(x['target']['id'], x['target']['version']) for x in value['dependencies']]

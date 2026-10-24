@@ -285,6 +285,7 @@ class AssetLibraryTests(unittest.TestCase):
             AssetPreview=dict(type='thumbnail', source_version_sha256=reference['sha256'],
                               backend='test-fixture', backend_version='1.0.0', settings_sha256='0'*64,
                               camera_sha256='0'*64, lighting_sha256='0'*64, file=self.files[0],
+                              settings_file=self.files[1], camera_file=self.files[1], lighting_file=self.files[1],
                               width=1, height=1, status='generated'))
         for kind, value in samples.items():
             schema = next(value for value in schemas().values() if value['title'] == kind + ' v1')
@@ -305,6 +306,95 @@ class AssetLibraryTests(unittest.TestCase):
             with self.subTest(kind=kind):
                 self.assertEqual(legacy_roundtrip(kind, original), original)
                 self.assertEqual((ROOT / relative).read_bytes(), original)
+
+    def test_review_regression_trailing_newline_identifiers_and_digests_reject_registration(self):
+        for field in ('id', 'version'):
+            changed = deepcopy(self.manifest)
+            if field == 'id':
+                changed['identity']['id'] += '\n'
+            else:
+                changed['version'] += '\n'
+            changed['manifest_sha256'] = manifest_hash(changed)
+            with self.subTest(field=field), self.assertRaises(RigError):
+                self.register(changed)
+        reference = self.register()
+        with self.assertRaises(RigError):
+            self.library.resolve({**reference, 'sha256': reference['sha256'] + '\n'})
+        with self.assertRaises(RigError):
+            validate({**self.files[0], 'sha256': self.files[0]['sha256'] + '\n'}, 'AssetFile')
+
+    def test_review_regression_nonadjacent_file_directory_alias_rejects_registration(self):
+        changed = deepcopy(self.manifest)
+        changed['files'] = [{**self.files[0], 'path': path} for path in ('a', 'a-b', 'a/b')] + [self.files[1]]
+        changed['provenance']['sources'] = [changed['files'][0]]
+        changed['publication']['inventory'] = [f['path'] for f in changed['files']]
+        changed['manifest_sha256'] = manifest_hash(changed)
+        sources = {f['path']: self.mesh for f in changed['files'][:-1]}
+        sources[self.files[1]['path']] = self.license
+        with self.assertRaises(RigError) as error:
+            self.library.register(changed, sources)
+        self.assertEqual(error.exception.report['code'], 'LIBRARY_ALIAS')
+
+    def test_review_regression_portable_paths_have_schema_runtime_parity(self):
+        schema = schemas()['asset-library-file.schema.json']
+        validator = Draft202012Validator(schema)
+        for path in ('a/../secret', 'a/.', 'a//b', 'con.txt', 'a/Nul', 'a/COM1.bin',
+                     'a/last.', 'a\n', 'a/b\n', 'a/file.obj', 'a/COMP1.obj'):
+            value = {**self.files[0], 'path': path}
+            structural_ok = not list(validator.iter_errors(value))
+            try:
+                validate(value, 'AssetFile')
+                runtime_ok = True
+            except RigError:
+                runtime_ok = False
+            with self.subTest(path=path):
+                self.assertEqual(runtime_ok, structural_ok)
+                self.assertEqual(runtime_ok, path in ('a/file.obj', 'a/COMP1.obj'))
+
+    def test_review_source_fields_and_preview_configs_retain_bound_native_data(self):
+        reference = self.register()
+        changed = deepcopy(self.manifest)
+        changed['identity']['id'] = 'preview-record'
+        changed['provenance']['parents'] = [reference]
+        changed['files'][0]['format_version'] = 'Wavefront OBJ'
+        changed['files'][0]['technical_metadata'] = dict(vertices=3, triangles=1, engineering_fixture=True)
+        changed['provenance']['sources'] = [changed['files'][0]]
+        changed['provenance']['source_records'] = [dict(file=changed['files'][0],
+            source_uri='local:authored-triangle-fixture', original_filename='triangle.obj',
+            acquired_at='2026-10-23T00:00:00Z', author='Test author')]
+        # Native configuration files remain opaque exact files owned by the
+        # eventual renderer/camera owner. This test exercises source binding,
+        # not actual preview generation or a provider integration.
+        changed['previews'] = [dict(type='thumbnail', source_version_sha256=reference['sha256'],
+            backend='structural-test-fixture', backend_version='1.0.0',
+            settings_sha256=self.files[1]['sha256'], camera_sha256=self.files[1]['sha256'],
+            lighting_sha256=self.files[1]['sha256'], file=changed['files'][0],
+            settings_file=self.files[1], camera_file=self.files[1], lighting_file=self.files[1],
+            width=1, height=1, status='generated')]
+        result = self.register(seal(changed))
+        self.assertEqual(self.library.resolve(result)['provenance']['source_records'],
+                         changed['provenance']['source_records'])
+        changed['previews'][0]['settings_sha256'] = '0'*64
+        with self.assertRaises(RigError):
+            seal(changed)
+        bad = deepcopy(self.manifest['identity'])
+        for date in ('yesterday', '2026-99-99T00:00:00Z', '2026-02-30T00:00:00Z'):
+            bad['created_at'] = date
+            with self.subTest(date=date), self.assertRaises(RigError):
+                validate(bad, 'AssetIdentity')
+        bad_provenance = deepcopy(self.manifest['provenance'])
+        bad_provenance['source_records'] = [dict(file=self.files[0], source_uri='local:fixture',
+            original_filename='triangle.obj', acquired_at='2026-02-30T00:00:00Z', author='Test author')]
+        with self.assertRaises(RigError):
+            validate(bad_provenance, 'AssetProvenance')
+
+    def test_original_creation_time_is_stable_across_versions(self):
+        self.register()
+        changed = deepcopy(self.manifest)
+        changed['version'] = '2.0.0'
+        changed['identity']['created_at'] = '2026-10-24T00:00:00Z'
+        with self.assertRaises(RigError):
+            self.register(seal(changed))
 
     def test_legacy_profile_roundtrip_preserves_exact_bytes_and_2d_contract(self):
         source = ROOT / 'profiles/codex-v1.json'
