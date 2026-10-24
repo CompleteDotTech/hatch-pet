@@ -53,9 +53,11 @@ def atomic(path, value):
 
 
 @contextmanager
-def ownership(root):
+def ownership(root, *, resolve_leaf=True):
     """A kernel lock, released after a crash; an old lock file is harmless."""
-    root = Path(root).resolve()
+    root = Path(root)
+    # New destinations must not redirect their lock through a racing leaf link.
+    root = root.resolve() if resolve_leaf else root.parent.resolve() / root.name
     root.parent.mkdir(parents=True, exist_ok=True)
     lock = root.parent / ('.' + root.name + '.hatch.lock')
     with lock.open('a+b') as handle:

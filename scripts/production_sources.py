@@ -82,7 +82,7 @@ def _portable_inventory(paths):
 def _publish_stage(stage, destination):
     # All source-transport writers share the existing cross-platform kernel lock.
     # Recheck after streaming so a destination created during staging is retained.
-    with workflow.hatch.ownership(destination):
+    with workflow.hatch.ownership(destination, resolve_leaf=False):
         _new_destination(destination)
         _rename_no_replace(stage, destination)
 
@@ -121,7 +121,8 @@ def _new_destination(value):
     candidate = Path(value)
     if candidate.exists() or candidate.is_symlink():
         raise ValueError('destination must not exist; preserve the existing source files')
-    return candidate.resolve()
+    # Preserve the leaf if another writer creates a link after the check above.
+    return candidate.parent.resolve() / candidate.name
 
 
 def _hash_bounded(path, expected_bytes):
