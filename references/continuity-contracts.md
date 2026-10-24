@@ -177,3 +177,13 @@ Existing `test_production_contracts` exercises actual v1 project loading and
 package isolation. The dated validation record distinguishes those observed
 executions from future cross-platform CI, geometry inspection, rendering,
 production visual approval and the full continuity mission.
+
+## Cross-platform receipt bytes
+
+The shared decoder/provenance policy pins recursive `tests/results/**` and
+`examples/**` as exact bytes, all `tests/*.py` to LF, and the existing frozen
+playback/catalog files to LF. Scoped decoder rules remain in place. A real
+`core.autocrlf=true` checkout proves active CRLF conversion for unpinned README
+while all 114 continuity receipt-bound sources and nested evidence retain exact
+Git bytes. The retained final-provenance report distinguishes this Git conversion
+check on Linux from still-required native Windows/macOS CI.

@@ -72,3 +72,19 @@ Two real syscall-boundary regressions cover FIFO and regular-file substitution.
 `manifest-reader-focused.log` and its verification receipt bind 31 passing
 focused cases in 4.862s to the exact committed fix; no failures/errors/skips and
 schema parity passes. Earlier outputs keep their original code bindings.
+
+Reviewed shared decoder/provenance candidate 91d14b8 was normal-merged without
+rewriting any runtime or test source blobs. The additive attributes preserve both
+the scoped decoder rules and recursive receipt/example/test-source rules, plus
+frozen playback/catalog LF pins. Source ddbdcc1 passed all 31 focused cases in
+5.193s without failures/errors/skips, and schema parity passed.
+
+`final-provenance-crlf-proof.json` records an actual fresh Git checkout configured
+with core.autocrlf=true. README genuinely became CRLF, proving conversion was
+active. All 114 receipt-bound sources and 32 protected nested evidence, fixture,
+test and frozen-contract files instead retained exact Git bytes. Historical
+69/76 execution logs match their original Git objects; the checkout is clean.
+The real CRLF checkout also passed schema parity and actual fixture CLI
+validation. `final-provenance-verification.json` binds that proof and focused log.
+This tests Git byte preservation on Linux, not native Windows execution. Earlier
+results retain their historical source bindings; no broader rerun is implied.
