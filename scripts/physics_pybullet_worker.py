@@ -85,6 +85,10 @@ def main():
         stability=world['solver'].get('stability',{})
         if 'contact_penetration_tolerance' in stability:
             p.setPhysicsEngineParameter(contactSlop=stability['contact_penetration_tolerance'],physicsClientId=client)
+        engine=p.getPhysicsEngineParameters(physicsClientId=client)
+        effective_engine=dict(fixed_time_step=engine['fixedTimeStep'],internal_substeps=engine['numSubSteps'],iterations=engine['numSolverIterations'])
+        if effective_engine!=dict(fixed_time_step=float(step),internal_substeps=0,iterations=world['solver']['iterations']):
+            raise ValueError('Native engine changed requested fixed timestep/iterations/substep policy.')
         materials={x['id']:x for x in world['materials']}
         identifiers={}
         for body in world['bodies']:
@@ -155,7 +159,7 @@ def main():
         (root/'worker-report.json').write_bytes(canonical(dict(ok=True,operation='simulate',
             backend=identity,connection_mode='DIRECT',sample_count=frames,object_count=len(identifiers),
             actual_steps_per_frame=per_frame,actual_solver_steps=index,
-            actual_bodies=effective,
+            actual_bodies=effective,effective_engine=effective_engine,
             cache_storage='immutable native transform/contact samples',restart='clean-restart-only',
             contacts_queried=True)))
     finally:

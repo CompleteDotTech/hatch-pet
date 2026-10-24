@@ -130,7 +130,12 @@ def native_report(value,world,operation):
 
 def direct_report(value,world):
     object_fields(value,('ok','operation','backend','connection_mode','sample_count','object_count','actual_steps_per_frame',
-                        'actual_solver_steps','actual_bodies','cache_storage','restart','contacts_queried'),'DIRECT solver report')
+                        'actual_solver_steps','actual_bodies','cache_storage','restart','contacts_queried') +
+                        (('effective_engine',) if 'effective_engine' in value else ()), 'DIRECT solver report')
+    if 'effective_engine' in value:
+        object_fields(value['effective_engine'],('fixed_time_step','internal_substeps','iterations'),'DIRECT engine')
+        need(number(value['effective_engine']['fixed_time_step']) and integer(value['effective_engine']['internal_substeps']) and integer(value['effective_engine']['iterations']),
+             'Malformed native engine observations.')
     module_identity(value['backend'])
     need(value['ok'] is True and value['operation']=='simulate' and value['connection_mode']=='DIRECT' and value['contacts_queried'] is True and
          all(integer(value[key]) for key in ('sample_count','object_count','actual_steps_per_frame','actual_solver_steps')) and

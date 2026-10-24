@@ -1245,10 +1245,15 @@ class PyBulletBackend(BlenderBackend):
             ('native-sampled-json',),('native-transform-json',),hardware(),limitations,evidence)
 
 
-def _check_pybullet_report(report,world,module):
+def _check_pybullet_report(report,world,module,*,legacy=False):
     try:evidence_direct_report(report,world)
     except EvidenceError as exc:
         raise BackendError('PHYSICS_BAKE_FAILED','Malformed DIRECT solver observations: '+str(exc),category='backend-crash') from exc
+    if not legacy or 'effective_engine' in report:
+        expected_engine=dict(fixed_time_step=float(_ratio(world['solver']['fixed_step'])/world['solver']['substeps']),
+            internal_substeps=0,iterations=world['solver']['iterations'])
+        require(report.get('effective_engine')==expected_engine,'PHYSICS_BAKE_FAILED',
+                'Observed native timestep/internal substeps/iterations differ.',category='backend-crash')
     steps=math.ceil(1/(_ratio(world['fps'])*_ratio(world['solver']['fixed_step'])/world['solver']['substeps']))
     require(isinstance(report,dict) and isinstance(module,dict) and report.get('ok') is True and report.get('operation')=='simulate' and
             report.get('connection_mode')=='DIRECT' and report.get('contacts_queried') is True and
@@ -1496,7 +1501,7 @@ def _read_cache_impl(root, *, expected_world_sha256=None):
                     receipt['native_reopen'].get('maximum_replay_error', math.inf) <= 1e-5,
                     'PHYSICS_CACHE_CORRUPT', 'Cache lacks independent full native replay evidence.', category='cache-corruption')
         else:
-            _check_pybullet_report(receipt.get('solver_report'),world,receipt.get('backend_module',{}))
+            _check_pybullet_report(receipt.get('solver_report'),world,receipt.get('backend_module',{}),legacy=digest(payloads['worker.py'])!=digest(_worker_bytes('pybullet')))
             _validate_contacts(parse(payloads['contacts.json']),world,world_hash)
             if 'solver-states.json' in payloads:
                 _validate_solver_samples(parse(payloads['solver-states.json']),world,world_hash,manifest['fixture'])
@@ -1638,6 +1643,9 @@ def main():
     inspect = commands.add_parser('inspect')
     inspect.add_argument('cache', type=Path)
     inspect.add_argument('--frame', type=int, required=True)
+    seek=commands.add_parser('seek',help='Interpolate verified completed samples at exact rational seconds')
+    seek.add_argument('cache',type=Path)
+    seek.add_argument('--time',type=Fraction,required=True)
     export = commands.add_parser('export')
     export.add_argument('cache', type=Path)
     export.add_argument('destination', type=Path)
@@ -1654,6 +1662,8 @@ def main():
         result=demonstrate(args.destination,backend)
     elif args.command == 'verify':
         result = verify_cache(args.cache)
+    elif args.command == 'seek':
+        result=inspect_time(args.cache,args.time)
     elif args.command == 'inspect':
         result = inspect_cache(args.cache, args.frame)
     else:
