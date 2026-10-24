@@ -161,7 +161,19 @@ def _inspect_asset(document, snapshot, memory_bytes=None, file_bytes=None):
                           influences=8)  # Inspect/preserve supported skins; this is not a viewer profile.
     try:
         model = load_character_model(snapshot.destination / record['path'], limits=backend_limits)
-    except RigError:
+    except RigError as exc:
+        # Keep the Model3D boundary stable when the native texture authority
+        # replaces Pillow exceptions with actionable structured diagnostics.
+        # Other native limits retain their established public codes.
+        if exc.report['code'] in {'RIG_TEXTURE_DECODE', 'RIG_TEXTURE_FORMAT',
+                                  'RIG_LIMIT_TEXTURE', 'RIG_TEXTURE_POLICY',
+                                  'RIG_TEXTURE_VERIFIER_UNAVAILABLE'}:
+            unavailable = exc.report['code'] == 'RIG_TEXTURE_VERIFIER_UNAVAILABLE'
+            raise RigError('MODEL3D_DEPENDENCY' if unavailable else 'MODEL3D_MODEL',
+                           'Required native texture verifier is unavailable.' if unavailable
+                           else 'Texture rejected at the native model importer boundary.',
+                           stage='model3d', asset=record['path'], observed=exc.report,
+                           correction=exc.report['correction']) from exc
         raise
     except (ValueError, TypeError, KeyError, IndexError, AttributeError, OverflowError,
             struct.error, Image.DecompressionBombError, UnidentifiedImageError, OSError) as exc:
